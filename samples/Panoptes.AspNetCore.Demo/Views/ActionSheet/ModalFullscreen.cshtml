@@ -1,0 +1,98 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "ActionSheet - Modal & Fullscreen Modes" : "ActionSheet - Modal & Tam Ekran Modu (Modal & Fullscreen)";
+    ViewData["ActiveTab"] = "ModalFullscreen";
+}
+
+<div class="space-y-6">
+    <partial name="_ActionSheetNav" />
+
+    <!-- Info Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight mb-2">@(isEn ? "Modal Backdrop & Fullscreen Modes (Modal & Fullscreen)" : "Modal Backdrop & Tam Ekran Modları (Modal & Fullscreen)")</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            @(isEn ? "ActionSheet dims the background with modal=\"true\" to maintain user focus, or keeps the background interactive with modal=\"false\". Furthermore, fullscreen=\"true\" turns the sheet into an immersive full-screen experience on mobile devices." : "ActionSheet, modal=\"true\" ile arkadaki sayfayı karartıp odaklanmayı sağlarken, modal=\"false\" ile sayfa arkasında etkileşimi sürdürmeye imkan tanır. Ayrıca fullscreen=\"true\" parametresi ile mobil cihazlarda tam ekran eylem/onay sayfasına dönüştürülebilir.")
+        </p>
+    </div>
+
+    <!-- Live Demo Comparison -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+        <h2 class="text-base font-bold text-slate-800">@(isEn ? "Mode Comparison Examples" : "Mod Karşılaştırma Örnekleri")</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <!-- 1. Standart Modal -->
+            <div class="p-5 rounded-2xl bg-indigo-50/50 border border-indigo-100 flex flex-col justify-between">
+                <div>
+                    <span class="text-xs font-bold text-indigo-700 block mb-1">@(isEn ? "Standard Modal (Default)" : "Standart Modal (Varsayılan)")</span>
+                    <p class="text-xs text-slate-600">@(isEn ? "Includes a dark semi-transparent backdrop. Closes when clicking outside." : "Arka planda koyu yarı saydam perde bulunur. Dışarı tıklanınca kapanır.")</p>
+                </div>
+                <button type="button" onclick="window.Panoptes.ActionSheet.open('standardModalSheet')" class="mt-4 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-sm cursor-pointer">
+                    @(isEn ? "Open Standard Modal" : "Standart Modalı Aç")
+                </button>
+            </div>
+
+            <!-- 2. Tam Ekran (Fullscreen) -->
+            <div class="p-5 rounded-2xl bg-purple-50/50 border border-purple-100 flex flex-col justify-between">
+                <div>
+                    <span class="text-xs font-bold text-purple-700 block mb-1">fullscreen="true"</span>
+                    <p class="text-xs text-slate-600">@(isEn ? "Covers the whole screen for enterprise mobile action views." : "Sayfanın tamamını kaplayan kurumsal mobil eylem görünümü.")</p>
+                </div>
+                <button type="button" onclick="window.Panoptes.ActionSheet.open('fullscreenSheet')" class="mt-4 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition shadow-sm cursor-pointer">
+                    @(isEn ? "Open Fullscreen" : "Tam Ekran Aç")
+                </button>
+            </div>
+
+            <!-- 3. Modalsız (Non-Modal) -->
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between">
+                <div>
+                    <span class="text-xs font-bold text-slate-700 block mb-1">modal="false"</span>
+                    <p class="text-xs text-slate-600">@(isEn ? "No background overlay; page underneath remains clickable." : "Arka plan karartması yoktur, sayfa arkası tıklanabilir kalır.")</p>
+                </div>
+                <button type="button" onclick="window.Panoptes.ActionSheet.open('nonModalSheet')" class="mt-4 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold transition shadow-sm cursor-pointer">
+                    @(isEn ? "Open Non-Modal" : "Modalsız Aç")
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sheet Definitions -->
+    <panoptes-actionsheet id="standardModalSheet" title='@(isEn ? "Standard Modal Sheet" : "Standart Modal Sayfa")' subtitle='@(isEn ? "With background backdrop" : "Arka plan karartmalı")' modal="true">
+        <panoptes-actionsheet-item text='@(isEn ? "Action Option 1" : "Eylem Seçeneği 1")' theme-color="primary" />
+        <panoptes-actionsheet-item text='@(isEn ? "Action Option 2" : "Eylem Seçeneği 2")' />
+    </panoptes-actionsheet>
+
+    <panoptes-actionsheet id="fullscreenSheet" title='@(isEn ? "Fullscreen Action Sheet" : "Tam Ekran Eylem Sayfası")' subtitle='@(isEn ? "Full screen view" : "Tüm ekranı kaplayan görünüm")' fullscreen="true">
+        <panoptes-actionsheet-item text='@(isEn ? "Step 1: Approve" : "1. Adım: Onay")' theme-color="primary" />
+        <panoptes-actionsheet-item text='@(isEn ? "Step 2: Edit Details" : "2. Adım: Bilgileri Düzenle")' />
+        <panoptes-actionsheet-item text='@(isEn ? "Cancel" : "İptal Et")' theme-color="danger" />
+    </panoptes-actionsheet>
+
+    <panoptes-actionsheet id="nonModalSheet" title='@(isEn ? "Non-Modal Bottom Panel" : "Modalsız Alt Panel")' subtitle='@(isEn ? "Background remains clickable" : "Arka plan tıklanabilir kalır")' modal="false">
+        <panoptes-actionsheet-item text='@(isEn ? "Quick Action 1" : "Hızlı Eylem 1")' />
+        <panoptes-actionsheet-item text='@(isEn ? "Quick Action 2" : "Hızlı Eylem 2")' />
+    </panoptes-actionsheet>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;!-- Tam Ekran Modu --&gt;
+&lt;panoptes-actionsheet id=&quot;fullscreenSheet&quot; title=&quot;Tam Ekran&quot; fullscreen=&quot;true&quot;&gt;
+    &lt;panoptes-actionsheet-item text=&quot;Eylem 1&quot; /&gt;
+&lt;/panoptes-actionsheet&gt;
+
+&lt;!-- Modalsız (Perdesiz) Mod --&gt;
+&lt;panoptes-actionsheet id=&quot;nonModalSheet&quot; title=&quot;Modalsız&quot; modal=&quot;false&quot;&gt;
+    &lt;panoptes-actionsheet-item text=&quot;Eylem 1&quot; /&gt;
+&lt;/panoptes-actionsheet&gt;</code></pre>
+        </div>
+    </div>
+</div>

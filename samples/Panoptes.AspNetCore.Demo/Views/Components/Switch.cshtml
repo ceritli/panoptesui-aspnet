@@ -1,0 +1,731 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Switch - Panoptes Enterprise UI" : "Switch (Aç/Kapa Anahtarı) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Components/Switch" : "/Components/Switch")" class="hover:text-blue-600 transition">@(isEn ? "Form Components" : "Form Bileşenleri")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Switch</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Switch @(isEn ? "" : "(Aç/Kapa Anahtarı)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    &lt;panoptes-switch&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Switch Compliant" : "WAI-ARIA Switch Uyumlu")
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Smooth hardware-accelerated transitions for boolean toggles, custom on/off labels, keyboard shortcuts (Space/Enter), and comprehensive form model binding." 
+                    : "İki durumlu (Açık/Kapalı) boolean seçenekler için pürüzsüz donanım hızlandırmalı CSS geçişleri, özel durum etiketleri (On/Off Labels), klavye etkileşimi (Space/Enter) ve tam form bağlama desteği sunan modern anahtar bileşeni.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>Örnekler (Features)</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">5</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>API Referansı (Props & Events)</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>Erişilebilirlik (WAI-ARIA)</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        
+        <!-- 1. Temel Kullanım (Basic Switch) -->
+        <div class="panoptes-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="border-b border-slate-100 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                        1. Temel Kullanım (Basic Switch)
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">En yalın kullanım: Tıklanarak veya Boşluk (Space) tuşuyla durumu değiştirilebilir.</p>
+                </div>
+                <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2.5 py-1 rounded font-medium border border-blue-100 self-start sm:self-auto">
+                    is-checked="true"
+                </span>
+            </div>
+
+            <div class="p-8 bg-white flex flex-col items-center justify-center">
+                <div class="max-w-md w-full p-4 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+                    <div>
+                        <div class="text-sm font-bold text-slate-800">E-Posta Bildirimleri</div>
+                        <div class="text-xs text-slate-500">Sipariş durum güncellemelerini anında e-posta ile alın</div>
+                    </div>
+                    <panoptes-switch id="swBasic" is-checked="true" on-label="Açık" off-label="Kapalı" />
+                </div>
+            </div>
+
+            <!-- Tabbed Light Code Block (Resimdeki gibi) -->
+            <div class="panoptes-code-block border-t border-slate-200 bg-white">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex gap-1.5">
+                        <button type="button" onclick="switchCodeTab(this, 'sw_basic_razor')" class="tab-btn px-3 py-1 rounded-md text-xs font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs">Razor TagHelper</button>
+                        <button type="button" onclick="switchCodeTab(this, 'sw_basic_html')" class="tab-btn px-3 py-1 rounded-md text-xs font-medium text-slate-600 hover:text-slate-900 transition">HTML Çıktısı</button>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>Kopyala</span>
+                    </button>
+                </div>
+                <div id="sw_basic_razor" class="tab-pane panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-switch id="notificationsSwitch" 
+                 is-checked="true" 
+                 on-label="Açık" 
+                 off-label="Kapalı" /&gt;</code></pre>
+                </div>
+                <div id="sw_basic_html" class="tab-pane panoptes-code-viewer hidden">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;div id="notificationsSwitch" class="panoptes-switch-wrapper inline-flex items-center gap-2 cursor-pointer select-none"&gt;
+  &lt;input type="hidden" id="notificationsSwitch-value" name="notificationsSwitch" value="true" /&gt;
+  &lt;div class="panoptes-switch-track relative inline-flex h-6 w-11 rounded-full bg-blue-600 transition-colors duration-200"&gt;
+    &lt;span class="panoptes-switch-thumb inline-block h-5 w-5 rounded-full bg-white shadow transform translate-x-5 transition duration-200"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;span class="panoptes-switch-label text-xs font-medium text-slate-700"&gt;Açık&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Özel Durum Etiketleri (Custom On/Off Labels) -->
+        <div class="panoptes-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="border-b border-slate-100 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block"></span>
+                        2. Özel Açık / Kapalı Etiketleri (Custom Labels)
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">İş mantığınıza göre "Aktif/Pasif", "Evet/Hayır" veya "Online/Offline" gibi özel metinler tanımlayın.</p>
+                </div>
+                <span class="text-xs font-mono bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded font-medium border border-indigo-100 self-start sm:self-auto">
+                    on-label="..." off-label="..."
+                </span>
+            </div>
+
+            <div class="p-8 bg-white grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                    <label class="block text-xs font-bold text-slate-700">Kullanıcı Durumu</label>
+                    <panoptes-switch id="swCustom1" is-checked="true" on-label="Aktif" off-label="Pasif" />
+                    <div class="text-[11px] text-slate-400">Aktif / Pasif</div>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                    <label class="block text-xs font-bold text-slate-700">Otomatik Yedekleme</label>
+                    <panoptes-switch id="swCustom2" is-checked="false" on-label="Evet" off-label="Hayır" />
+                    <div class="text-[11px] text-slate-400">Evet / Hayır</div>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                    <label class="block text-xs font-bold text-slate-700">Sunucu Bağlantısı</label>
+                    <panoptes-switch id="swCustom3" is-checked="true" on-label="Online" off-label="Offline" />
+                    <div class="text-[11px] text-slate-400">Online / Offline</div>
+                </div>
+            </div>
+
+            <div class="panoptes-code-block border-t border-slate-200 bg-white">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <span class="text-xs font-semibold text-slate-700">Razor TagHelper</span>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>Kopyala</span>
+                    </button>
+                </div>
+                <div class="tab-pane panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-switch id="sw1" is-checked="true" on-label="Aktif" off-label="Pasif" /&gt;
+&lt;panoptes-switch id="sw2" is-checked="false" on-label="Evet" off-label="Hayır" /&gt;
+&lt;panoptes-switch id="sw3" is-checked="true" on-label="Online" off-label="Offline" /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Devre Dışı Durumları (Disabled State) -->
+        <div class="panoptes-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="border-b border-slate-100 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-slate-600 inline-block"></span>
+                        3. Devre Dışı Durumu (Disabled State)
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Yetkisiz veya kilitli ayarlarda kullanıcı müdahalesini engelleme modu.</p>
+                </div>
+                <span class="text-xs font-mono bg-slate-100 text-slate-700 px-2.5 py-1 rounded font-medium border border-slate-200 self-start sm:self-auto">
+                    disabled="true"
+                </span>
+            </div>
+
+            <div class="p-8 bg-white grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+                    <div>
+                        <div class="text-sm font-bold text-slate-700">Kilitli Açık (Disabled Checked)</div>
+                        <div class="text-xs text-slate-400">Yönetici tarafından zorunlu kılınmış ayar</div>
+                    </div>
+                    <panoptes-switch id="swDis1" is-checked="true" disabled="true" on-label="Zorunlu" off-label="Kapalı" />
+                </div>
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+                    <div>
+                        <div class="text-sm font-bold text-slate-700">Kilitli Kapalı (Disabled Unchecked)</div>
+                        <div class="text-xs text-slate-400">Bu planda desteklenmeyen özellik</div>
+                    </div>
+                    <panoptes-switch id="swDis2" is-checked="false" disabled="true" on-label="Açık" off-label="Kullanılamaz" />
+                </div>
+            </div>
+
+            <div class="panoptes-code-block border-t border-slate-200 bg-white">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <span class="text-xs font-semibold text-slate-700">Razor TagHelper</span>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>Kopyala</span>
+                    </button>
+                </div>
+                <div class="tab-pane panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-switch id="swDis1" is-checked="true" disabled="true" on-label="Zorunlu" /&gt;
+&lt;panoptes-switch id="swDis2" is-checked="false" disabled="true" off-label="Kullanılamaz" /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Form Entegrasyonu & Anlık Durum Paneli -->
+        <div class="panoptes-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="border-b border-slate-100 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                        4. Gerçek Form Entegrasyonu & Ayarlar Paneli
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Her switch otomatik gizli bir input barındırır ve standart form submit işleminde backend'e boolean olarak iletilir.</p>
+                </div>
+                <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded font-medium border border-emerald-100 self-start sm:self-auto">
+                    ASP.NET Core Form Model Binding
+                </span>
+            </div>
+
+            <div class="p-8 bg-white grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <div class="space-y-4 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">Gizlilik ve İletişim Tercihleri</h3>
+                    
+                    <div class="flex items-center justify-between py-2 border-b border-slate-200/80">
+                        <div>
+                            <div class="text-xs font-bold text-slate-800">SMS ile Giriş Doğrulama (2FA)</div>
+                            <div class="text-[11px] text-slate-500">Her girişte telefonunuza SMS kodu gönderilir</div>
+                        </div>
+                        <panoptes-switch id="swForm_2fa" is-checked="true" on-label="Açık" off-label="Kapalı" />
+                    </div>
+
+                    <div class="flex items-center justify-between py-2 border-b border-slate-200/80">
+                        <div>
+                            <div class="text-xs font-bold text-slate-800">Pazarlama & Bülten E-postaları</div>
+                            <div class="text-[11px] text-slate-500">Haftalık yeni ürün bültenlerini al</div>
+                        </div>
+                        <panoptes-switch id="swForm_promo" is-checked="false" on-label="Açık" off-label="Kapalı" />
+                    </div>
+
+                    <div class="flex items-center justify-between py-2">
+                        <div>
+                            <div class="text-xs font-bold text-slate-800">Anonim Kullanım Analitiği</div>
+                            <div class="text-[11px] text-slate-500">Hata raporlarını geliştiricilere gönder</div>
+                        </div>
+                        <panoptes-switch id="swForm_analytics" is-checked="true" on-label="Açık" off-label="Kapalı" />
+                    </div>
+                </div>
+
+                <!-- Canlı Form Verisi Önizleme -->
+                <div class="bg-slate-900 rounded-2xl p-6 text-slate-200 space-y-4 border border-slate-800 shadow-inner">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <span class="text-xs font-bold text-slate-300 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                            Backend Form Postback Modeli
+                        </span>
+                        <span class="text-[10px] font-mono text-slate-400">C# ViewModel</span>
+                    </div>
+                    <pre class="font-mono text-xs text-blue-300 overflow-x-auto"><code id="switchFormPreview">{
+  "TwoFactorAuth": true,
+  "MarketingEmails": false,
+  "UsageAnalytics": true
+}</code></pre>
+                    <p class="text-[11px] text-slate-400 leading-relaxed">
+                        Sol taraftaki anahtarlarla etkileşime girdiğinizde form modelinin değeri anlık senkronize olur.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. İstemci JavaScript API & Etkileşimli Olay Konsolu -->
+        <div class="panoptes-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="border-b border-slate-100 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+                        5. İstemci JavaScript API & Etkileşimli Olay Konsolu
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Programatik olarak anahtarın durumunu tersine çevirin, değer atayın ve olayları dinleyin.</p>
+                </div>
+                <span class="text-xs font-mono bg-amber-50 text-amber-700 px-2.5 py-1 rounded font-medium border border-amber-100 self-start sm:self-auto">
+                    window.Panoptes.Switch
+                </span>
+            </div>
+
+            <div class="p-8 bg-white grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div class="space-y-4">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-800">Hedef Test Switch'i</label>
+                            <span class="text-[11px] text-slate-400">ID: sw_api_target</span>
+                        </div>
+                        <panoptes-switch id="sw_api_target" is-checked="false" on-label="Açık" off-label="Kapalı" />
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <button type="button" onclick="swDemoToggle()" class="px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 rounded-lg text-xs font-semibold transition">
+                            Tersine Çevir (toggle)
+                        </button>
+                        <button type="button" onclick="swDemoSet(true)" class="px-3 py-1.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 rounded-lg text-xs font-semibold transition">
+                            Açık Yap (true)
+                        </button>
+                        <button type="button" onclick="swDemoSet(false)" class="px-3 py-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 rounded-lg text-xs font-semibold transition">
+                            Kapalı Yap (false)
+                        </button>
+                        <button type="button" onclick="swDemoRead()" class="px-3 py-1.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 rounded-lg text-xs font-semibold transition">
+                            Değeri Oku (getValue)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Event Log Console -->
+                <div class="bg-slate-950 p-4 rounded-xl text-xs font-mono text-slate-300 border border-slate-800 shadow-inner">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
+                        <span class="font-bold text-slate-400 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Etkileşimli Olay Konsolu (Live Events)
+                        </span>
+                        <button type="button" onclick="document.getElementById('eventLogSw').innerHTML=''" class="text-[11px] text-slate-400 hover:text-slate-200 transition">Temizle</button>
+                    </div>
+                    <div id="eventLogSw" class="space-y-1 max-h-40 overflow-y-auto font-mono text-[11px]">
+                        <div class="text-slate-500">[Hazır] Olaylar dinleniyor (change)...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panoptes-code-block border-t border-slate-200 bg-white">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <span class="text-xs font-semibold text-slate-700">JavaScript API Kullanım Kodu</span>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>Kopyala</span>
+                    </button>
+                </div>
+                <div class="tab-pane panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>// Switch Örneğine Erişme
+const sw = window.Panoptes.Switch.instances.get("sw_api_target");
+
+sw.toggle();            // Durumu tersine çevirir
+sw.setValue(true);      // Açık yapar
+sw.setValue(false);     // Kapalı yapar
+const val = sw.getValue(); // Mevcut durumu (boolean) döner</code></pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PANEL 2: API REFERENCE -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        
+        <!-- Properties / TagHelper Attributes Table -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h2 class="text-sm font-bold text-slate-900">TagHelper Özellikleri (Attributes / Properties)</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-switch&gt; etiketine verilebilecek tüm parametreler</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-indigo-100 text-indigo-800">SwitchTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-4">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (Type)</th>
+                            <th class="py-3 px-4">Varsayılan (Default)</th>
+                            <th class="py-3 px-4">Açıklama (Description)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">id</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">auto-guid</td><td>Bileşenin benzersiz DOM kimliği.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">name</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">id ile aynı</td><td>Form submit edildiğinde gönderilecek gizli input adı.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">checked / is-checked</td><td class="py-3 px-4 font-mono text-purple-600">bool</td><td class="py-3 px-4 font-mono text-emerald-600">false</td><td>Anahtarın başlangıçtaki açık/kapalı durumu.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">on-label</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-emerald-600">"Açık"</td><td>Anahtar açıkken yanında görüntülenecek metin etiketi.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">off-label</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-emerald-600">"Kapalı"</td><td>Anahtar kapalıyken yanında görüntülenecek metin etiketi.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">disabled</td><td class="py-3 px-4 font-mono text-purple-600">bool</td><td class="py-3 px-4 font-mono text-emerald-600">false</td><td>Bileşeni kilitler, tıklama ve klavye etkileşimini engeller.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">class</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td>Kapsayıcı div etiketine eklenecek özel Tailwind/CSS sınıfları.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">on-change</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td>Durum değiştiğinde tetiklenecek global JavaScript fonksiyon adı.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Events Table -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70">
+                <h2 class="text-sm font-bold text-slate-900">Bileşen Olayları (Events)</h2>
+                <p class="text-xs text-slate-500 mt-0.5">DOM üzerinden dinlenebilen standart ve özel olaylar</p>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-4">Olay Adı (Event)</th>
+                            <th class="py-3 px-4">Parametreler (detail)</th>
+                            <th class="py-3 px-4">Açıklama (Description)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr>
+                            <td class="py-3 px-4 font-mono text-emerald-600 font-bold">change</td>
+                            <td class="py-3 px-4 font-mono text-slate-600">{ checked: boolean, value: boolean }</td>
+                            <td>Anahtarın durumu kullanıcı tıklaması veya API ile değiştiğinde tetiklenir.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- JS Methods Table -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70">
+                <h2 class="text-sm font-bold text-slate-900">İstemci Metodları (JavaScript API Methods)</h2>
+                <p class="text-xs text-slate-500 mt-0.5"><code>window.Panoptes.Switch.instances.get(id)</code> üzerinden çağrılabilen fonksiyonlar</p>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-4">Metod</th>
+                            <th class="py-3 px-4">Parametreler</th>
+                            <th class="py-3 px-4">Dönüş Tipi</th>
+                            <th class="py-3 px-4">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr><td class="py-3 px-4 font-mono text-indigo-600 font-bold">toggle()</td><td class="py-3 px-4 font-mono">-</td><td class="py-3 px-4 font-mono text-slate-400">void</td><td>Anahtarın mevcut durumunu tersine çevirir (true &harr; false).</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-indigo-600 font-bold">setValue(val)</td><td class="py-3 px-4 font-mono">val: boolean</td><td class="py-3 px-4 font-mono text-slate-400">void</td><td>Anahtara doğrudan açık veya kapalı değeri atar.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-indigo-600 font-bold">getValue()</td><td class="py-3 px-4 font-mono">-</td><td class="py-3 px-4 font-mono text-purple-600">boolean</td><td>Mevcut durum değerini (true veya false) döner.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Ekran Okuyucu Desteği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes Switch bileşeni, W3C WAI-ARIA 1.2 <strong>Switch Pattern</strong> standartlarına tam uyumludur. Ekran okuyucu yazılımlar anahtarın rolünü ve açık/kapalı durumunu anında seslendirir.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">role="switch"</div>
+                    <div class="text-slate-600">Öğenin iki durumlu bir anahtar/anahtarlama elemanı olduğunu belirtir.</div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">aria-checked="true | false"</div>
+                    <div class="text-slate-600">Anahtarın açık veya kapalı olma durumunu anlık olarak ekran okuyucuya iletir.</div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">tabindex="0"</div>
+                    <div class="text-slate-600">Klavyeyle gezinirken Tab tuşuyla anahtar üzerine odaklanılmasını sağlar.</div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">aria-disabled="true"</div>
+                    <div class="text-slate-600">Bileşen kilitlendiğinde ekran okuyucuya devre dışı olduğunu bildirir.</div>
+                </div>
+            </div>
+
+            <!-- Keyboard Navigation Table -->
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları ve Etkileşimler (Keyboard Navigation)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev (Function)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Space (Boşluk)</kbd></td>
+                                <td class="py-2.5 px-4">Odaklanmış olan anahtarın durumunu tersine çevirir (Açık &harr; Kapalı).</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter</kbd></td>
+                                <td class="py-2.5 px-4">Anahtar durumunu değiştirir veya bağlı olduğu formu onaylar.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Tab</kbd></td>
+                                <td class="py-2.5 px-4">Anahtara odaklanır veya sayfadaki bir sonraki form elemanına geçer.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Tabbed Top Navigation Switcher
+    function switchMainDocTab(tabName) {
+        document.querySelectorAll('.main-doc-tab').forEach(b => {
+            b.classList.remove('text-blue-600', 'border-blue-600', 'font-bold', 'bg-blue-50/40');
+            b.classList.add('text-slate-600', 'hover:text-slate-900', 'border-transparent');
+        });
+        const activeBtn = document.getElementById('tab-btn-' + tabName);
+        if (activeBtn) {
+            activeBtn.classList.add('text-blue-600', 'border-blue-600', 'font-bold', 'bg-blue-50/40');
+            activeBtn.classList.remove('text-slate-600', 'hover:text-slate-900', 'border-transparent');
+        }
+        document.querySelectorAll('.main-doc-panel').forEach(p => p.classList.add('hidden'));
+        const targetPanel = document.getElementById('panel-' + tabName);
+        if (targetPanel) {
+            targetPanel.classList.remove('hidden');
+            initPanoptesLightCodeBlocks();
+        }
+    }
+
+    // Code Snippet Sub-tab Switcher
+    function switchCodeTab(btn, tabId) {
+        const parent = btn.closest('.panoptes-code-block');
+        parent.querySelectorAll('.tab-btn').forEach(b => {
+            b.classList.remove('text-blue-600', 'bg-white', 'border', 'border-slate-200', 'shadow-2xs', 'font-semibold');
+            b.classList.add('text-slate-600', 'font-medium');
+        });
+        btn.classList.add('text-blue-600', 'bg-white', 'border', 'border-slate-200', 'shadow-2xs', 'font-semibold');
+        btn.classList.remove('text-slate-600', 'font-medium');
+
+        parent.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+        const target = parent.querySelector('#' + tabId);
+        if (target) {
+            target.classList.remove('hidden');
+            initPanoptesLightCodeBlocks();
+        }
+    }
+
+    // Tokenizer & Syntax Highlighter for Light-themed Code Display
+    function tokenizeLine(line) {
+        if (!line) return '';
+        let s = line;
+        const tokens = [];
+        let i = 0;
+        while (i < s.length) {
+            const commentMatch = s.slice(i).match(/^(\/\/.*|<!--.*?-->)/);
+            if (commentMatch) {
+                tokens.push({ type: 'comment', text: commentMatch[0] });
+                i += commentMatch[0].length;
+                continue;
+            }
+            const strMatch = s.slice(i).match(/^("[^"]*"|'[^']*')/);
+            if (strMatch) {
+                tokens.push({ type: 'string', text: strMatch[0] });
+                i += strMatch[0].length;
+                continue;
+            }
+            const tagMatch = s.slice(i).match(/^<\/?[a-zA-Z0-9_\-]+/);
+            if (tagMatch) {
+                tokens.push({ type: 'tag', text: tagMatch[0] });
+                i += tagMatch[0].length;
+                continue;
+            }
+            const closeMatch = s.slice(i).match(/^\/?>/);
+            if (closeMatch) {
+                tokens.push({ type: 'tag', text: closeMatch[0] });
+                i += closeMatch[0].length;
+                continue;
+            }
+            const attrMatch = s.slice(i).match(/^([a-zA-Z0-9_\-:]+)(?=\=)/);
+            if (attrMatch) {
+                tokens.push({ type: 'attr', text: attrMatch[0] });
+                i += attrMatch[0].length;
+                continue;
+            }
+            const kwMatch = s.slice(i).match(/^(import|from|const|let|var|function|return|true|false|new|public|void|string|bool|class)\b/);
+            if (kwMatch) {
+                tokens.push({ type: 'kw', text: kwMatch[0] });
+                i += kwMatch[0].length;
+                continue;
+            }
+            tokens.push({ type: 'plain', text: s[i] });
+            i++;
+        }
+        return tokens.map(t => {
+            const esc = t.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            if (t.type === 'tag') return `<span class="text-emerald-600 font-medium">${esc}</span>`;
+            if (t.type === 'attr') return `<span class="text-purple-600">${esc}</span>`;
+            if (t.type === 'string') return `<span class="text-sky-700">${esc}</span>`;
+            if (t.type === 'kw') return `<span class="text-rose-600 font-semibold">${esc}</span>`;
+            if (t.type === 'comment') return `<span class="text-slate-400 italic">${esc}</span>`;
+            return esc;
+        }).join('');
+    }
+
+    // Light Code Block Initializer with Line Numbers
+    function initPanoptesLightCodeBlocks() {
+        document.querySelectorAll('.panoptes-code-viewer').forEach(container => {
+            if (container.dataset.initialized) return;
+            container.dataset.initialized = 'true';
+            
+            const rawPre = container.querySelector('.panoptes-raw-code code');
+            if (!rawPre) return;
+            
+            const rawText = rawPre.textContent.replace(/^\n+|\n+$/g, '');
+            const lines = rawText.split('\n');
+            
+            let tableHtml = '<div class="overflow-x-auto"><table class="w-full border-collapse font-mono text-xs leading-relaxed select-text">';
+            tableHtml += '<tbody>';
+            
+            lines.forEach((line, index) => {
+                const lineNum = index + 1;
+                const highlighted = tokenizeLine(line);
+                tableHtml += `
+                    <tr class="hover:bg-slate-50/70 transition-colors">
+                        <td class="w-10 select-none text-right pr-4 text-slate-400 font-mono text-xs align-top py-0.5">${lineNum}</td>
+                        <td class="font-mono text-xs text-slate-800 whitespace-pre align-top py-0.5">${highlighted || '&nbsp;'}</td>
+                    </tr>`;
+            });
+            
+            tableHtml += '</tbody></table></div>';
+            
+            const displayDiv = document.createElement('div');
+            displayDiv.className = 'panoptes-code-display p-4 bg-white';
+            displayDiv.innerHTML = tableHtml;
+            container.appendChild(displayDiv);
+        });
+    }
+
+    // Copy Code Helper with Visual Feedback
+    function copyPanoptesCode(btn) {
+        const block = btn.closest('.panoptes-code-block');
+        const activePane = block.querySelector('.tab-pane:not(.hidden)');
+        const rawCode = activePane ? activePane.querySelector('.panoptes-raw-code code') : null;
+        const textToCopy = rawCode ? rawCode.innerText.trim() : (activePane ? activePane.innerText.trim() : '');
+        if (!textToCopy) return;
+        
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = `<svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-emerald-600 font-bold">Kopyalandı!</span>`;
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+            }, 2000);
+        });
+    }
+
+    // Live Event Logger & API Demo
+    function logSwEvent(msg) {
+        const log = document.getElementById('eventLogSw');
+        if (!log) return;
+        const time = new Date().toLocaleTimeString();
+        const div = document.createElement('div');
+        div.innerHTML = `<span class="text-slate-600">[${time}]</span> ${msg}`;
+        log.prepend(div);
+    }
+
+    function swDemoToggle() {
+        const inst = window.Panoptes?.Switch?.instances?.get('sw_api_target');
+        if (inst) {
+            inst.toggle();
+            logSwEvent(`API: <strong class="text-blue-600">toggle()</strong> -> Yeni Değer: <span class="font-bold ${inst.getValue() ? 'text-emerald-600' : 'text-slate-500'}">${inst.getValue()}</span>`);
+        }
+    }
+
+    function swDemoSet(val) {
+        const inst = window.Panoptes?.Switch?.instances?.get('sw_api_target');
+        if (inst) {
+            inst.setValue(val);
+            logSwEvent(`API: <strong class="text-emerald-600">setValue(${val})</strong> çağrıldı`);
+        }
+    }
+
+    function swDemoRead() {
+        const inst = window.Panoptes?.Switch?.instances?.get('sw_api_target');
+        if (inst) {
+            const val = inst.getValue();
+            logSwEvent(`API: <strong class="text-indigo-600">getValue()</strong> -> <span class="font-bold ${val ? 'text-emerald-600' : 'text-slate-500'}">${val}</span>`);
+        }
+    }
+
+    // Form Binding Live Synchronizer
+    function updateFormPreview() {
+        const sw2fa = window.Panoptes?.Switch?.instances?.get('swForm_2fa')?.getValue() ?? true;
+        const swPromo = window.Panoptes?.Switch?.instances?.get('swForm_promo')?.getValue() ?? false;
+        const swAnalytics = window.Panoptes?.Switch?.instances?.get('swForm_analytics')?.getValue() ?? true;
+
+        const previewEl = document.getElementById('switchFormPreview');
+        if (previewEl) {
+            previewEl.textContent = JSON.stringify({
+                TwoFactorAuth: sw2fa,
+                MarketingEmails: swPromo,
+                UsageAnalytics: swAnalytics
+            }, null, 2);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initPanoptesLightCodeBlocks();
+        const targetEl = document.getElementById('sw_api_target');
+        if (targetEl) {
+            targetEl.addEventListener('change', function(e) {
+                logSwEvent(`Olay: <strong class="text-blue-600">change</strong> -> Durum: <span class="text-emerald-600 font-bold">${e.detail?.checked ? 'Açık (true)' : 'Kapalı (false)'}</span>`);
+            });
+        }
+
+        ['swForm_2fa', 'swForm_promo', 'swForm_analytics'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('change', updateFormPreview);
+            }
+        });
+    });
+</script>

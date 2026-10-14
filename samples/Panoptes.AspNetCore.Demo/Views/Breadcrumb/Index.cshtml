@@ -1,0 +1,446 @@
+@model List<Panoptes.AspNetCore.Models.BreadcrumbItemModel>
+
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Breadcrumb - Panoptes UI" : "Breadcrumb (Sayfa Yolu Navigasyonu) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/Breadcrumb" class="hover:text-blue-600 transition">@(isEn ? "Navigation & Layout" : "Navigasyon & Düzen")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Breadcrumb</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Breadcrumb @(isEn ? "(Breadcrumb Navigation)" : "(Sayfa Yolu Navigasyonu)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-breadcrumb&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "Displays the user current location within site hierarchy, with custom delimiters (separators), icons, and clickable navigation links." : "Kullanıcının site hiyerarşisindeki mevcut konumunu gösteren, özel ayraçlar (separator), ikonlar ve şık tıklanabilir bağlantılar.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Examples (Features)" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">5</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">2</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+<!-- DEMO 1: Standart Chevron Ayraçlı Yol Çubuğu -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                    1. Standart Chevron Ayraçlı Yol Çubuğu
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Varsayılan modern chevron ayracı ve hiyerarşik SVG ikonları ile sayfa konumu.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">delimiter="chevron"</span>
+        </div>
+
+        <div class="p-6">
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 max-w-3xl">
+                <panoptes-breadcrumb delimiter="chevron">
+                    <panoptes-breadcrumb-item text="Ana Sayfa" url="/" icon="home" />
+                    <panoptes-breadcrumb-item text="Yönetim Paneli" url="/Breadcrumb" icon="folder" />
+                    <panoptes-breadcrumb-item text="Kullanıcı Yönetimi" url="/Breadcrumb" icon="user" />
+                    <panoptes-breadcrumb-item text="Güvenlik & Yetkiler" is-current="true" />
+                </panoptes-breadcrumb>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu (1. Resimdeki Standart Kapalı Details) -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-breadcrumb delimiter="chevron"&gt;
+    &lt;panoptes-breadcrumb-item text="Ana Sayfa" url="/" icon="home" /&gt;
+    &lt;panoptes-breadcrumb-item text="Yönetim Paneli" url="/Admin" icon="folder" /&gt;
+    &lt;panoptes-breadcrumb-item text="Kullanıcı Yönetimi" url="/Admin/Users" icon="user" /&gt;
+    &lt;panoptes-breadcrumb-item text="Güvenlik &amp; Yetkiler" is-current="true" /&gt;
+&lt;/panoptes-breadcrumb&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 2: Bölü Ayracı (Slash Delimiter) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                    2. Bölü Ayracı Modu (Slash Delimiter)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Klasik Unix/URL tarzı bölü (<code class="text-emerald-700 bg-emerald-50 px-1 py-0.5 rounded font-mono">/</code>) karakteri ile yalın ve sade yol çubuğu.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">delimiter="slash"</span>
+        </div>
+
+        <div class="p-6">
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 max-w-3xl">
+                <panoptes-breadcrumb delimiter="slash">
+                    <panoptes-breadcrumb-item text="Projeler" url="/" icon="folder" />
+                    <panoptes-breadcrumb-item text="Kurumsal UI Kit" url="/Breadcrumb" />
+                    <panoptes-breadcrumb-item text="Bileşenler" url="/Breadcrumb" />
+                    <panoptes-breadcrumb-item text="Breadcrumb" is-current="true" />
+                </panoptes-breadcrumb>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-breadcrumb delimiter="slash"&gt;
+    &lt;panoptes-breadcrumb-item text="Projeler" url="/" icon="folder" /&gt;
+    &lt;panoptes-breadcrumb-item text="Kurumsal UI Kit" url="/Projects/Panoptes" /&gt;
+    &lt;panoptes-breadcrumb-item text="Bileşenler" url="/Components" /&gt;
+    &lt;panoptes-breadcrumb-item text="Breadcrumb" is-current="true" /&gt;
+&lt;/panoptes-breadcrumb&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 3: Ok Ayracı & Pasif Öğe (Arrow Delimiter & Disabled Item) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-purple-600 inline-block"></span>
+                    3. Ok Ayracı ve Pasif/Erişilemez Öğe (Arrow Delimiter & Disabled)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Sağa dönük ok simgesi (<code class="text-purple-700 bg-purple-50 px-1 py-0.5 rounded font-mono">arrow</code>) ve tıklanamayan devre dışı (<code class="text-purple-700 bg-purple-50 px-1 py-0.5 rounded font-mono">disabled="true"</code>) ara bağlantı örneği.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-purple-50 text-purple-700 px-2 py-1 rounded font-medium border border-purple-100">delimiter="arrow"</span>
+        </div>
+
+        <div class="p-6">
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 max-w-3xl">
+                <panoptes-breadcrumb delimiter="arrow">
+                    <panoptes-breadcrumb-item text="Finans Portali" url="/" icon="home" />
+                    <panoptes-breadcrumb-item text="Gizli Denetim (Erişim Yok)" disabled="true" icon="folder" />
+                    <panoptes-breadcrumb-item text="Yıllık Bilançolar" url="/Breadcrumb" icon="document" />
+                    <panoptes-breadcrumb-item text="2026 Q3 Raporu" is-current="true" />
+                </panoptes-breadcrumb>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-breadcrumb delimiter="arrow"&gt;
+    &lt;panoptes-breadcrumb-item text="Finans Portali" url="/" icon="home" /&gt;
+    &lt;panoptes-breadcrumb-item text="Gizli Denetim (Erişim Yok)" disabled="true" icon="folder" /&gt;
+    &lt;panoptes-breadcrumb-item text="Yıllık Bilançolar" url="/Finance/Balance" icon="document" /&gt;
+    &lt;panoptes-breadcrumb-item text="2026 Q3 Raporu" is-current="true" /&gt;
+&lt;/panoptes-breadcrumb&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 4: C# Modelinden Dinamik Bağlama (Model Binding) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-600 inline-block"></span>
+                    4. C# Modelinden Dinamik Bağlama (Model Binding)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Controller'da oluşturulan dinamik <code class="text-amber-700 bg-amber-50 px-1 py-0.5 rounded font-mono">List&lt;BreadcrumbItemModel&gt;</code> koleksiyonunun doğrudan <code class="text-amber-700 bg-amber-50 px-1 py-0.5 rounded font-mono">items="@@Model"</code> niteliği ile render edilmesi.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-amber-50 text-amber-700 px-2 py-1 rounded font-medium border border-amber-100">items="@@Model"</span>
+        </div>
+
+        <div class="p-6">
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 max-w-3xl">
+                <panoptes-breadcrumb delimiter="chevron" items="@Model" />
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&commat;model List&lt;Panoptes.AspNetCore.Models.BreadcrumbItemModel&gt;
+
+&lt;panoptes-breadcrumb delimiter="chevron" items="&commat;Model" /&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- API Dokümantasyonu & Nitelik Referans Tablosu -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+            <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                Panoptes Breadcrumb TagHelper Parametre & Nitelik Referansı
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">
+                <code class="text-blue-600 font-mono">&lt;panoptes-breadcrumb&gt;</code> ve <code class="text-blue-600 font-mono">&lt;panoptes-breadcrumb-item&gt;</code> TagHelper'ları tarafından desteklenen tüm nitelikler.
+            </p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-600 border-collapse">
+                <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                    <tr>
+                        <th class="py-3 px-4">TagHelper</th>
+                        <th class="py-3 px-4">Nitelik (Attribute)</th>
+                        <th class="py-3 px-4">Tip</th>
+                        <th class="py-3 px-4">Varsayılan</th>
+                        <th class="py-3 px-4">Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-blue-600 font-semibold">&lt;panoptes-breadcrumb&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">id</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Yol çubuğu elemanının benzersiz HTML ID'si.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-blue-600 font-semibold">&lt;panoptes-breadcrumb&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">delimiter</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">"chevron"</td>
+                        <td class="py-2.5 px-4">Ayraç simgesi: <code class="font-mono">"chevron"</code>, <code class="font-mono">"slash"</code> veya <code class="font-mono">"arrow"</code>.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-blue-600 font-semibold">&lt;panoptes-breadcrumb&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">items</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">IEnumerable&lt;BreadcrumbItemModel&gt;</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">C# Model veya ViewBag üzerinden gelen dinamik liste.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-breadcrumb-item&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">text</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Yol öğesinde görüntülenecek metin başlığı.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-breadcrumb-item&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">url</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Öğenin yönlendireceği bağlantı adresi (href).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-breadcrumb-item&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">icon</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Öğenin solundaki SVG ikonu (<code class="font-mono">"home"</code>, <code class="font-mono">"folder"</code>, <code class="font-mono">"document"</code>, <code class="font-mono">"user"</code> vb.).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-breadcrumb-item&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">is-current</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">bool</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">false</td>
+                        <td class="py-2.5 px-4">Aktif sayfayı temsil eder. Tıklanamaz kalın metin ve <code class="font-mono">aria-current="page"</code> niteliği üretir.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-breadcrumb-item&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">disabled</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">bool</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">false</td>
+                        <td class="py-2.5 px-4">Öğeyi devre dışı / tıklanamaz duruma getirir.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">TagHelper Özellikleri & Parametreleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-breadcrumb&gt; bileşeninin desteklediği tüm C# ve HTML nitelikleri.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesBreadcrumbTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-4">Varsayılan</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşen kimliği.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">delimiter</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"/"</td>
+                            <td class="py-3 px-6 text-slate-700">Öğeler arasındaki ayraç sembolü.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Klavye Erişilebilirliği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes Breadcrumb bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Nitelikleri</div>
+                    <div class="text-slate-600">
+                        Standart <code>role="navigation (breadcrumb)"</code> rolünü taşır. Duruma göre <code>aria-disabled</code>, <code>aria-expanded</code>, <code>aria-selected</code> ve <code>aria-label</code> nitelikleri dinamik olarak güncellenir.
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Odak Yönetimi (Focus Management)</div>
+                    <div class="text-slate-600">
+                        Sekme sırasını doğal akışında korur (<code>tabIndex="0"</code>). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları (Keyboard Shortcuts)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev (Function)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Tab</kbd></td>
+                                <td class="py-2.5 px-4">Sayfa yolu bağlantıları arasında gezinir.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter</kbd></td>
+                                <td class="py-2.5 px-4">Seçili sayfa yoluna yönlendirir.</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,37 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    var langPrefix = DemoTranslations.Prefix(isEn);
+    var activeTab = (string)(ViewData["ActiveTab"] ?? "Overview");
+    var navLinks = new[]
+    {
+        new { Key = "Overview", Title = isEn ? "1. Overview" : "1. Genel Bakış", Url = langPrefix + "/Scheduler" },
+        new { Key = "RemoteData", Title = isEn ? "2. Remote Data" : "2. Uzaktan Veri", Url = langPrefix + "/Scheduler/RemoteData" },
+        new { Key = "Views", Title = isEn ? "3. Views" : "3. Görünümler", Url = langPrefix + "/Scheduler/Views" },
+        new { Key = "Grouping", Title = isEn ? "4. Grouping" : "4. Gruplama", Url = langPrefix + "/Scheduler/Grouping" },
+        new { Key = "Resources", Title = isEn ? "5. Resources" : "5. Kaynaklar", Url = langPrefix + "/Scheduler/Resources" },
+        new { Key = "Events", Title = isEn ? "6. Events" : "6. Olaylar (Events)", Url = langPrefix + "/Scheduler/Events" },
+        new { Key = "Api", Title = isEn ? "7. Client API" : "7. İstemci API", Url = langPrefix + "/Scheduler/Api" }
+    };
+}
+
+<div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm overflow-x-auto mb-6">
+    <div class="flex items-center gap-1.5 min-w-max">
+        @foreach (var tab in navLinks)
+        {
+            var isActive = tab.Key.Equals(activeTab, System.StringComparison.OrdinalIgnoreCase);
+            if (isActive)
+            {
+                <span class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm flex items-center gap-1.5 cursor-default">
+                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                    <span>@tab.Title</span>
+                </span>
+            }
+            else
+            {
+                <a href="@tab.Url" class="px-3.5 py-1.5 rounded-xl text-xs font-medium text-slate-600 hover:text-blue-600 hover:bg-slate-100 transition">
+                    @tab.Title
+                </a>
+            }
+        }
+    </div>
+</div>

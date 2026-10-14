@@ -1,0 +1,23 @@
+@model Panoptes.AspNetCore.Demo.Controllers.SpreadsheetPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <div class="flex flex-wrap gap-2">
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().sort('A2:F16', 5, 'desc')">Maaşa göre azalan sırala</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().sort('A2:F16', 1, 'asc')">Ada göre artan sırala</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().filter('A1:F16')">Filtreyi aç / kapat</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().clearFilters()">Filtreleri temizle</button>
+        </div>
+        <panoptes-spreadsheet id="sheet" sheets="@Model.Sheets" height="460" on-event="pssOnEvent" />
+        <p class="text-xs text-slate-500 leading-relaxed">İpucu: başlık hücresindeki ok düğmesine tıklayın veya <kbd class="px-1 border rounded bg-slate-100">Alt</kbd>+<kbd class="px-1 border rounded bg-slate-100">↓</kbd> ile filtre menüsünü açın.</p>
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+}

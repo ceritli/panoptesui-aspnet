@@ -1,0 +1,623 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Slider & RangeSlider - Panoptes Enterprise UI" : "Slider & RangeSlider (Sürgü ve Aralık Seçici) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Slider" : "/Slider")" class="hover:text-blue-600 transition">@(isEn ? "Form Components" : "Form Bileşenleri")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Slider & RangeSlider</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Slider & RangeSlider (Sürgü ve Aralık Seçici)</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-slider&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    WAI-ARIA Uyumlu
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                Tekli sayısal değer girişi veya çift tutamaçlı minimum-maksimum aralık filtreleme için fare/dokunmatik sürükleme, klavye ok tuşları, adımlama (step) ve hareketli tooltip destekli arayüz bileşeni.
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>Örnekler (Features)</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">5</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>API Referansı (Props & Events)</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">8</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>Erişilebilirlik (WAI-ARIA)</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+<!-- DEMO 1: Standart Tekli Sayısal Slider -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                    1. Standart Tekli Sayısal Slider (Min/Max, Adım, Stepper Butonları & Ticks)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Hacim, yüzde veya skaler değerler için tutamacı sürükleyebilir, doğrudan ray üzerine tıklayabilir veya klavyenizdeki sol/sağ ok tuşlarıyla adımlayabilirsiniz.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">&lt;panoptes-slider&gt;</span>
+        </div>
+
+        <div class="p-8 max-w-2xl mx-auto space-y-6">
+            <div class="space-y-2">
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider">İşlem Kapasitesi Oranı (%)</label>
+                <panoptes-slider id="standardSliderDemo" 
+                                min="@(0m)" 
+                                max="@(100m)" 
+                                step="@(5m)" 
+                                value="@(65m)" 
+                                color="blue" 
+                                show-ticks="true" 
+                                show-buttons="true" />
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>Kopyala</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-slider id=&quot;standardSliderDemo&quot; 
+                 min=&quot;@@(0m)&quot; 
+                 max=&quot;@@(100m)&quot; 
+                 step=&quot;@@(5m)&quot; 
+                 value=&quot;@@(65m)&quot; 
+                 color=&quot;blue&quot; 
+                 show-ticks=&quot;true&quot; 
+                 show-buttons=&quot;true&quot; /&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 2: Çift Tutamaçlı Fiyat & Bütçe Aralık Seçici (RangeSlider) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                    2. Çift Tutamaçlı Fiyat & Bütçe Aralık Seçici (Dual-Handle RangeSlider)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    İki bağımsız tutamaç ile minimum ve maksimum sınırların dinamik olarak belirlendiği e-ticaret filtreleme çubuğu.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">&lt;panoptes-range-slider&gt;</span>
+        </div>
+
+        <div class="p-8 max-w-2xl mx-auto space-y-6">
+            <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider">Bütçe Aralığı (₺ TL)</label>
+                    <span id="budgetRangeBadge" class="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">5.000 ₺ - 35.000 ₺</span>
+                </div>
+                <panoptes-range-slider id="budgetRangeDemo" 
+                                      min="@(0m)" 
+                                      max="@(50000m)" 
+                                      step="@(500m)" 
+                                      value-start="@(5000m)" 
+                                      value-end="@(35000m)" 
+                                      color="emerald" 
+                                      on-slide="onBudgetRangeSlide"
+                                      show-ticks="true" />
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>Kopyala</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-range-slider id=&quot;budgetRangeDemo&quot; 
+                       min=&quot;@@(0m)&quot; 
+                       max=&quot;@@(50000m)&quot; 
+                       step=&quot;@@(500m)&quot; 
+                       value-start=&quot;@@(5000m)&quot; 
+                       value-end=&quot;@@(35000m)&quot; 
+                       color=&quot;emerald&quot; 
+                       show-ticks=&quot;true&quot; /&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 3: Hassas Ondalık Adım ve Renk Varyantları -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block"></span>
+                    3. Hassas Ondalık Adım (Step: 0.1) ve Renk Temaları
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Bilimsel ölçümler, ses düzeyi (dB), faiz oranları gibi hassas ayarlar için ondalıklı adım ve kurumsal renk alternatifleri.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-indigo-50 text-indigo-700 px-2 py-1 rounded font-medium border border-indigo-100">step="@@(0.1m)"</span>
+        </div>
+
+        <div class="p-8 max-w-2xl mx-auto space-y-6">
+            <div class="space-y-2">
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider">Aylık Kredi Faiz Oranı (% step 0.05)</label>
+                <panoptes-slider id="rateSliderDemo" 
+                                min="@(1.0m)" 
+                                max="@(5.0m)" 
+                                step="@(0.05m)" 
+                                value="@(2.85m)" 
+                                color="indigo" 
+                                show-ticks="true" />
+            </div>
+
+            <div class="space-y-2 pt-4">
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider">Kritik Sıcaklık Eşiği (°C amber)</label>
+                <panoptes-slider id="tempSliderDemo" 
+                                min="@(20m)" 
+                                max="@(90m)" 
+                                step="@(1m)" 
+                                value="@(68m)" 
+                                color="amber" 
+                                show-ticks="true" />
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>Kopyala</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-slider id=&quot;rateSliderDemo&quot; 
+                 min=&quot;@@(1.0m)&quot; 
+                 max=&quot;@@(5.0m)&quot; 
+                 step=&quot;@@(0.05m)&quot; 
+                 value=&quot;@@(2.85m)&quot; 
+                 color=&quot;indigo&quot; 
+                 show-ticks=&quot;true&quot; /&gt;
+
+&lt;panoptes-slider id=&quot;tempSliderDemo&quot; 
+                 min=&quot;@@(20m)&quot; 
+                 max=&quot;@@(90m)&quot; 
+                 step=&quot;@@(1m)&quot; 
+                 value=&quot;@@(68m)&quot; 
+                 color=&quot;amber&quot; 
+                 show-ticks=&quot;true&quot; /&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 4: Programatik JavaScript API ve Canlı Olay Günlüğü -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-purple-600 inline-block"></span>
+                    4. Programatik JavaScript API ve Canlı Olay Günlüğü (Event Log)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    setValue(), setValues(), getValue() fonksiyonları ile dışarıdan müdahale ve on-slide / on-change olay dinleyicileri.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-purple-50 text-purple-700 px-2 py-1 rounded font-medium border border-purple-100">Panoptes.Slider API</span>
+        </div>
+
+        <div class="p-8 max-w-2xl mx-auto space-y-6">
+            <div class="space-y-2">
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider">Hedef Puan Slider (0 - 100)</label>
+                <panoptes-slider id="apiSliderDemo" 
+                                min="@(0m)" 
+                                max="@(100m)" 
+                                step="@(1m)" 
+                                value="@(40m)" 
+                                color="purple" 
+                                show-ticks="true" 
+                                on-slide="onApiSliderSlide" 
+                                on-change="onApiSliderChange" />
+            </div>
+
+            <!-- API Kontrol Butonları -->
+            <div class="flex flex-wrap items-center gap-2 pt-2">
+                <button type="button" onclick="setSliderVal(25)" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition active:scale-95 border border-slate-200">
+                    25 Yap
+                </button>
+                <button type="button" onclick="setSliderVal(50)" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition active:scale-95 border border-slate-200">
+                    50 Yap (Orta)
+                </button>
+                <button type="button" onclick="setSliderVal(85)" class="px-3 py-1.5 text-xs font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-lg transition active:scale-95 border border-purple-200">
+                    85 Yap
+                </button>
+                <button type="button" onclick="getSliderVal()" class="px-3 py-1.5 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition active:scale-95 border border-blue-200">
+                    Mevcut Değeri Oku (getValue)
+                </button>
+                <button type="button" onclick="clearSliderLog()" class="ml-auto px-3 py-1.5 text-xs font-medium text-slate-500 hover:text-slate-800 transition">
+                    Günlüğü Temizle
+                </button>
+            </div>
+
+            <!-- Canlı Olay Günlüğü Terminali -->
+            <div class="space-y-1">
+                <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Canlı Olay Günlüğü (Terminal):</div>
+                <div id="sliderEventLog" class="h-28 bg-slate-950 text-slate-200 p-3 rounded-xl font-mono text-[11px] overflow-y-auto space-y-1 border border-slate-800 shadow-inner">
+                    <div class="text-slate-500">// Slider olayları burada canlı listelenecektir...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>Kopyala</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-slider id=&quot;apiSliderDemo&quot; 
+                 min=&quot;@@(0m)&quot; 
+                 max=&quot;@@(100m)&quot; 
+                 step=&quot;@@(1m)&quot; 
+                 value=&quot;@@(40m)&quot; 
+                 color=&quot;purple&quot; 
+                 show-ticks=&quot;true&quot; 
+                 on-slide=&quot;onApiSliderSlide&quot; 
+                 on-change=&quot;onApiSliderChange&quot; /&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- Parametre & Nitelik Referans Tablosu -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+            <h2 class="text-base font-bold text-slate-800">TagHelper Parametre & Nitelik Referansı</h2>
+            <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-slider&gt; ve &lt;panoptes-range-slider&gt; bileşenlerinin desteklediği tüm nitelikler</p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-600">
+                <thead class="bg-slate-50 text-slate-800 font-bold border-b border-slate-200">
+                    <tr>
+                        <th class="px-6 py-3">Nitelik (Attribute)</th>
+                        <th class="px-6 py-3">Tür (Type)</th>
+                        <th class="px-6 py-3">Varsayılan</th>
+                        <th class="px-6 py-3">Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr>
+                        <td class="px-6 py-3 font-mono font-semibold text-blue-600">id</td>
+                        <td class="px-6 py-3 font-mono text-slate-500">string</td>
+                        <td class="px-6 py-3 font-mono text-slate-400">otomatik guid</td>
+                        <td class="px-6 py-3">Bileşenin benzersiz DOM kimliği ve JavaScript API referansı.</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-3 font-mono font-semibold text-blue-600">min</td>
+                        <td class="px-6 py-3 font-mono text-slate-500">decimal</td>
+                        <td class="px-6 py-3 font-mono text-slate-400">0</td>
+                        <td class="px-6 py-3">Kaydırma çubuğunun kabul edebileceği minimum sayısal sınır.</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-3 font-mono font-semibold text-blue-600">max</td>
+                        <td class="px-6 py-3 font-mono text-slate-500">decimal</td>
+                        <td class="px-6 py-3 font-mono text-slate-400">100</td>
+                        <td class="px-6 py-3">Kaydırma çubuğunun kabul edebileceği maksimum sayısal sınır.</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-3 font-mono font-semibold text-blue-600">step</td>
+                        <td class="px-6 py-3 font-mono text-slate-500">decimal</td>
+                        <td class="px-6 py-3 font-mono text-slate-400">1</td>
+                        <td class="px-6 py-3">Her sürükleme veya klavye ok tuşundaki artış/azalış adımı. Ondalıklı olabilir (0.1, 0.05 vb.).</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-3 font-mono font-semibold text-blue-600">value</td>
+                        <td class="px-6 py-3 font-mono text-slate-500">decimal</td>
+                        <td class="px-6 py-3 font-mono text-slate-400">50</td>
+                        <td class="px-6 py-3">Tekli slider için başlangıç seçili değeri.</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-3 font-mono font-semibold text-blue-600">value-start / value-end</td>
+                        <td class="px-6 py-3 font-mono text-slate-500">decimal?</td>
+                        <td class="px-6 py-3 font-mono text-slate-400">min / max</td>
+                        <td class="px-6 py-3">Çift tutamaçlı RangeSlider için alt ve üst başlangıç değerleri.</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-3 font-mono font-semibold text-blue-600">color</td>
+                        <td class="px-6 py-3 font-mono text-slate-500">string</td>
+                        <td class="px-6 py-3 font-mono text-slate-400">"blue"</td>
+                        <td class="px-6 py-3">Vurgu rengi teması ("blue", "emerald", "indigo", "amber", "purple").</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-3 font-mono font-semibold text-blue-600">show-tooltip</td>
+                        <td class="px-6 py-3 font-mono text-slate-500">bool</td>
+                        <td class="px-6 py-3 font-mono text-slate-400">true</td>
+                        <td class="px-6 py-3">Sürükleme veya üzerine gelme sırasında tutamacın üstünde açılan değer balonu.</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-3 font-mono font-semibold text-blue-600">show-ticks</td>
+                        <td class="px-6 py-3 font-mono text-slate-500">bool</td>
+                        <td class="px-6 py-3 font-mono text-slate-400">true</td>
+                        <td class="px-6 py-3">Ray altında min, orta ve max değer işaretçilerini gösterir.</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-3 font-mono font-semibold text-blue-600">show-buttons</td>
+                        <td class="px-6 py-3 font-mono text-slate-500">bool</td>
+                        <td class="px-6 py-3 font-mono text-slate-400">false</td>
+                        <td class="px-6 py-3">Sol ve sağ tarafta artı/eksi adımlama butonları gösterir.</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-3 font-mono font-semibold text-blue-600">on-change</td>
+                        <td class="px-6 py-3 font-mono text-slate-500">string</td>
+                        <td class="px-6 py-3 font-mono text-slate-400">null</td>
+                        <td class="px-6 py-3">Kullanıcı tutamacı bıraktığında çağrılan JavaScript fonksiyon adı.</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-3 font-mono font-semibold text-blue-600">on-slide</td>
+                        <td class="px-6 py-3 font-mono text-slate-500">string</td>
+                        <td class="px-6 py-3 font-mono text-slate-400">null</td>
+                        <td class="px-6 py-3">Sürükleme devam ederken her adım değişiminde anlık tetiklenen JavaScript fonksiyon adı.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">TagHelper Özellikleri & Parametreleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-slider&gt; bileşeninin desteklediği tüm C# ve HTML nitelikleri.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesSliderTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-4">Varsayılan</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşen kimliği.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">value</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">decimal?</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">0</td>
+                            <td class="py-3 px-6 text-slate-700">Tekli sürgü için seçili sayısal değer.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">min</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">decimal</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">0</td>
+                            <td class="py-3 px-6 text-slate-700">İzin verilen en küçük değer.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">max</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">decimal</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">100</td>
+                            <td class="py-3 px-6 text-slate-700">İzin verilen en büyük değer.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">step</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">decimal</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">1</td>
+                            <td class="py-3 px-6 text-slate-700">Artış ve azalış adım miktarı.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">color</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"blue"</td>
+                            <td class="py-3 px-6 text-slate-700">Vurgu rengi: "blue", "indigo", "emerald", "rose".</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">show-ticks</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                            <td class="py-3 px-6 text-slate-700">Ölçek çizgilerinin gösterimi.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">show-buttons</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                            <td class="py-3 px-6 text-slate-700">Uçlardaki +/- artırma azaltma düğmeleri.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Klavye Erişilebilirliği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes Slider & RangeSlider bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Nitelikleri</div>
+                    <div class="text-slate-600">
+                        Standart <code>role="slider"</code> rolünü taşır. Duruma göre <code>aria-disabled</code>, <code>aria-expanded</code>, <code>aria-selected</code> ve <code>aria-label</code> nitelikleri dinamik olarak güncellenir.
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Odak Yönetimi (Focus Management)</div>
+                    <div class="text-slate-600">
+                        Sekme sırasını doğal akışında korur (<code>tabIndex="0"</code>). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları (Keyboard Shortcuts)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev (Function)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Sağ / Yukarı Ok (→ / ↑)</kbd></td>
+                                <td class="py-2.5 px-4">Değeri adım miktarı kadar artırır.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Sol / Aşağı Ok (← / ↓)</kbd></td>
+                                <td class="py-2.5 px-4">Değeri adım miktarı kadar azaltır.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Home / End</kbd></td>
+                                <td class="py-2.5 px-4">Minimum veya maksimum değere zıplar.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Page Up / Page Down</kbd></td>
+                                <td class="py-2.5 px-4">Büyük adımla (10x step) değiştirir.</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function setSliderVal(v) {
+            Panoptes.Slider.setValue('apiSliderDemo', v);
+            logSliderEvent(`Panoptes.Slider.setValue('apiSliderDemo', ${v}) çağrıldı.`);
+        }
+
+        function getSliderVal() {
+            const v = Panoptes.Slider.getValue('apiSliderDemo');
+            logSliderEvent(`Panoptes.Slider.getValue('apiSliderDemo') -> Değer: ${v}`);
+            alert(`Mevcut Slider Değeri: ${v}`);
+        }
+
+        function onBudgetRangeSlide(val) {
+            if (Array.isArray(val)) {
+                const badge = document.getElementById('budgetRangeBadge');
+                if (badge) {
+                    badge.textContent = `${Number(val[0]).toLocaleString('tr-TR')} ₺ - ${Number(val[1]).toLocaleString('tr-TR')} ₺`;
+                }
+            }
+        }
+
+        function onApiSliderSlide(val) {
+            logSliderEvent(`[on-slide]: Canlı Sürükleme Değeri: ${val}`);
+        }
+
+        function onApiSliderChange(val) {
+            logSliderEvent(`[on-change]: Nihai Bırakılan Değer: ${val}`);
+        }
+
+        function logSliderEvent(msg) {
+            const logBox = document.getElementById('sliderEventLog');
+            if (!logBox) return;
+            const time = new Date().toLocaleTimeString('tr-TR');
+            const row = document.createElement('div');
+            row.innerHTML = `<span class="text-purple-400 font-mono">[${time}]</span> <span class="text-slate-200">${msg}</span>`;
+            logBox.appendChild(row);
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        function clearSliderLog() {
+            const logBox = document.getElementById('sliderEventLog');
+            if (logBox) logBox.innerHTML = '<div class="text-slate-500">// Günlük temizlendi...</div>';
+        }
+</script>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-slider.js"></script>
+}

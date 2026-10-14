@@ -1,0 +1,134 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Select - Cascading DropDownLists" : "Select - Bağımlı Seçim (Cascading)";
+}
+
+<div class="space-y-8">
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Select" : "/Select")" class="hover:text-blue-600 transition">Select</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">@(isEn ? "Cascading" : "Bağımlı Seçim (Cascading)")</span>
+    </nav>
+
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "Cascading DropDownLists (Parent-Child)" : "Bağımlı Seçim (Cascading DropDownList)")</h1>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Link multiple dropdown lists in parent-child hierarchies. Changing the parent automatically filters or triggers new async data fetches for child lists."
+                    : "Birbirine bağlı açılır listeler oluşturun. Ana liste (Parent) değiştirildiğinde, bağlı liste (Child) otomatik olarak filtrelenir veya sunucudan yeni verileri getirir.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ Production Ready
+            </span>
+        </div>
+    </div>
+
+    <!-- Live Demo Card -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "Client-Side Cascading Selection" : "İstemci Taraflı Kademeli Seçim")</h2>
+            <p class="text-xs text-slate-500 mt-1">@(isEn ? "Child dropdown remains disabled until a parent option is selected." : "Ana seçim yapılmadan ikincil seçim kilitli kalır; ana seçim değiştikçe alt liste otomatik filtrelenir.")</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- 1. Kategori (Ana) -->
+            <div class="space-y-2">
+                <label class="block text-xs font-bold text-slate-700">@(isEn ? "Step 1: Select Category (Parent)" : "1. Adım: Ana Kategori Seçin")</label>
+                <panoptes-select id="sel_cascade_parent"
+                                 placeholder="@(isEn ? "Select category..." : "Kategori seçiniz...")"
+                                 options='[
+                                     {"text":"Elektronik","value":"elektronik"},
+                                     {"text":"Giyim & Moda","value":"giyim"},
+                                     {"text":"Ev & Yaşam","value":"ev"}
+                                 ]' />
+                <span class="text-[11px] text-slate-400">@(isEn ? "Changing this filters options in the child dropdown below." : "Bu seçim alt listedeki verileri belirler.")</span>
+            </div>
+
+            <!-- 2. Alt Ürün (Bağlı) -->
+            <div class="space-y-2">
+                <label class="block text-xs font-bold text-slate-700">@(isEn ? "Step 2: Select Sub-Product (Child - Filtered)" : "2. Adım: Alt Ürün Seçin (Otomatik Filtreli)")</label>
+                <panoptes-select id="sel_cascade_child"
+                                 cascade-from="sel_cascade_parent"
+                                 cascade-from-field="category"
+                                 placeholder="@(isEn ? "First select category above..." : "Önce kategori seçiniz...")"
+                                 options='[
+                                     {"text":"Laptop & Bilgisayar","value":"c1","category":"elektronik"},
+                                     {"text":"Akıllı Telefon","value":"c2","category":"elektronik"},
+                                     {"text":"Kablosuz Kulaklık","value":"c3","category":"elektronik"},
+                                     {"text":"Deri Ceket","value":"c4","category":"giyim"},
+                                     {"text":"Kot Pantolon","value":"c5","category":"giyim"},
+                                     {"text":"Spor Ayakkabı","value":"c6","category":"giyim"},
+                                     {"text":"Kahve Makinesi","value":"c7","category":"ev"},
+                                     {"text":"Robot Süpürge","value":"c8","category":"ev"},
+                                     {"text":"Yemek Masası Takımı","value":"c9","category":"ev"}
+                                 ]' />
+                <span class="text-[11px] text-slate-400">@(isEn ? "Automatically enables and filters when category is chosen." : "Üst kategori seçilince otomatik aktifleşir ve ilgili ürünleri getirir.")</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature Description Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Auto-Disable & Reset Safety" : "Otomatik Kilit & Sıfırlama Güvenliği")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Child controls automatically clear their selection and disable themselves if the parent selection is changed or wiped."
+                    : "Üst liste temizlendiğinde veya değiştirildiğinde alt kontroller otomatik olarak değerini sıfırlar ve kilitlenir.")
+            </div>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Declarative Configuration" : "Bildirimsel TagHelper Tanımı")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Use cascade-from and cascade-from-field attributes to declare dependencies with zero manual event listener wiring."
+                    : "cascade-from ve cascade-from-field öznitelikleriyle tek satırda bağımlılık ilişkisi tanımlanır.")
+            </div>
+        </div>
+    </div>
+
+    <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+    <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                    @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                </span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;!-- 1. Üst Kategori (Parent) --&gt;
+&lt;panoptes-select id="sel_cascade_parent"
+                 placeholder="@(isEn ? "Select category..." : "Kategori seçiniz...")"
+                 options='[{"text":"Elektronik","value":"elektronik"},{"text":"Giyim","value":"giyim"}]' /&gt;
+
+&lt;!-- 2. Alt Ürün (Child - Bağlı) --&gt;
+&lt;panoptes-select id="sel_cascade_child"
+                 cascade-from="sel_cascade_parent"
+                 cascade-from-field="category"
+                 placeholder="@(isEn ? "First select category..." : "Önce kategori seçiniz...")"
+                 options='[
+                     {"text":"Laptop","value":"c1","category":"elektronik"},
+                     {"text":"Deri Ceket","value":"c2","category":"giyim"}
+                 ]' /&gt;</code></pre>
+        </div>
+    </div>
+</div>

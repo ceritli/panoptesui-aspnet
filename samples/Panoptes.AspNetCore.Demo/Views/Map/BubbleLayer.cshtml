@@ -1,0 +1,140 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Map - Bubble Layer" : "Map - Kabarcık Katmanı (Bubble Layer)";
+    ViewData["ActiveTab"] = "BubbleLayer";
+}
+
+<div class="space-y-6">
+    <partial name="_MapNav" />
+
+    <!-- Hero Header -->
+    <div class="bg-gradient-to-r from-purple-700 via-indigo-600 to-pink-600 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
+        <div class="relative z-10 max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold text-white mb-4">
+                <span>@(isEn ? "Data-Driven Proportional Visualization" : "Veriye Dayalı Oransal Görselleştirme")</span>
+            </div>
+            <h1 class="text-3xl font-extrabold tracking-tight mb-3">@(isEn ? "Bubble Layer" : "Kabarcık Katmanı (Bubble Layer)")</h1>
+            <p class="text-purple-100 text-sm sm:text-base leading-relaxed">
+                @(isEn ? "Visualizes numeric metrics such as population, sales volume, user density or order counts on the map proportional to point circle diameters. Fully compatible with OpenStreetMap basemap." : "Nüfus, satış hacmi, kullanıcı yoğunluğu veya sipariş sayıları gibi sayısal metrikleri noktasal daire çaplarıyla orantılı olarak harita üzerinde görselleştirir. OpenStreetMap taban haritası ile tam uyumlu ve yüksek performanslı çalışır.")
+            </p>
+        </div>
+        <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+    </div>
+
+    <!-- Metric Summary & Legend Bar -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm flex flex-wrap items-center justify-between gap-4">
+        <div>
+            <h3 class="text-sm font-bold text-slate-800">@(isEn ? "City Population & Trade Scale" : "Şehir Nüfus & Ticaret Skalası")</h3>
+            <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "Bubble diameters are dynamically calculated based on TURKSTAT population data." : "Kabarcık boyutları TÜİK 2024 nüfus verilerine göre dinamik olarak hesaplanmıştır.")</p>
+        </div>
+        <div class="flex items-center gap-6 bg-slate-50 px-5 py-2.5 rounded-2xl border border-slate-200 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="w-3.5 h-3.5 rounded-full bg-indigo-500/70 border-2 border-white shadow-sm"></span>
+                <span class="text-slate-600">@(isEn ? "< 1 Million" : "< 1 Milyon")</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="w-5 h-5 rounded-full bg-indigo-500/70 border-2 border-white shadow-sm"></span>
+                <span class="text-slate-600">@(isEn ? "2 - 5 Million" : "2 - 5 Milyon")</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="w-7 h-7 rounded-full bg-indigo-500/70 border-2 border-white shadow-sm"></span>
+                <span class="text-slate-900 font-bold">@(isEn ? "15+ Million (Istanbul)" : "15+ Milyon (İstanbul)")</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Map & Details Card -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div class="lg:col-span-3 bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+            <panoptes-map id="bubbleMap" center="39.0, 34.5" zoom="6" min-zoom="4" max-zoom="15" height="520px" controls="true" on-shape-click="handleBubbleClick">
+                <!-- Açık OpenStreetMap Taban Katmanı -->
+                <panoptes-map-layer type="tile" title="OpenStreetMap" 
+                                    url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png" 
+                                    attribution="&copy; OpenStreetMap contributors" />
+
+                <!-- Uzak JSON Verisine Bağlı Bubble Katmanı -->
+                <panoptes-map-layer type="bubble" source-url="/Map/GetCitiesJson" 
+                                    lat-field="lat" lng-field="lng" value-field="population" 
+                                    min-size="12" max-size="52" color="#6366f1"
+                                    tooltip-template="&lt;b&gt;{title}&lt;/b&gt;&lt;br/&gt;Nüfus: {value} Kişi" />
+            </panoptes-map>
+        </div>
+
+        <!-- Seçilen Şehir Kartı -->
+        <div class="lg:col-span-1 bg-white rounded-3xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
+            <div>
+                <span class="text-[11px] font-bold tracking-wider uppercase text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">@(isEn ? "Selected City Card" : "Seçili Şehir Kartı")</span>
+                <h4 id="bubbleCardTitle" class="text-xl font-extrabold text-slate-900 mt-3">İstanbul</h4>
+                <p id="bubbleCardCategory" class="text-xs text-slate-500 mt-0.5">@(isEn ? "Finance & Commerce Metropolis" : "Finans & Ticaret Metropolü")</p>
+
+                <div class="mt-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-3 text-xs">
+                    <div>
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">@(isEn ? "Total Population" : "Toplam Nüfus")</span>
+                        <span id="bubbleCardValue" class="text-base font-extrabold text-indigo-600">15.655.924</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">@(isEn ? "Phone & Contact" : "Telefon & İletişim")</span>
+                        <span id="bubbleCardPhone" class="text-slate-700 font-semibold">+90 (212) 555-0100</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">@(isEn ? "Region & Address" : "Bölge & Adres")</span>
+                        <span id="bubbleCardAddress" class="text-slate-700">Levent & Maslak, İstanbul</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-100 text-[11px] text-slate-400">
+                @(isEn ? "Click any bubble on the map to update the details in this panel." : "Haritadaki herhangi bir kabarcığa tıklayarak bu paneldeki detayları güncelleyebilirsiniz.")
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-map id=&quot;bubbleMap&quot; center=&quot;39.0, 34.5&quot; zoom=&quot;6&quot; height=&quot;520px&quot;&gt;
+    &lt;!-- Açık OpenStreetMap Taban Haritası --&gt;
+    &lt;panoptes-map-layer type=&quot;tile&quot; title=&quot;OpenStreetMap&quot; 
+                        url-template=&quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot; 
+                        attribution=&quot;&amp;copy; OpenStreetMap contributors&quot; /&gt;
+
+    &lt;!-- Uzaktan Veri Bağlamalı Oransal Kabarcık Katmanı --&gt;
+    &lt;panoptes-map-layer type=&quot;bubble&quot; 
+                        source-url=&quot;/Map/GetCitiesJson&quot; 
+                        lat-field=&quot;lat&quot; 
+                        lng-field=&quot;lng&quot; 
+                        value-field=&quot;population&quot; 
+                        min-size=&quot;12&quot; 
+                        max-size=&quot;52&quot; 
+                        color=&quot;#6366f1&quot;
+                        tooltip-template=&quot;&lt;b&gt;{title}&lt;/b&gt;&lt;br/&gt;Nüfus: {value} Kişi&quot; /&gt;
+&lt;/panoptes-map&gt;</code></pre>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const isEnBubble = @(isEn ? "true" : "false");
+
+    function handleBubbleClick(e) {
+        if (!e.item) return;
+        const item = e.item;
+        document.getElementById('bubbleCardTitle').textContent = item.title || item.name;
+        document.getElementById('bubbleCardCategory').textContent = item.category || (isEnBubble ? 'Metropolitan Area' : 'Büyükşehir');
+        const unit = isEnBubble ? ' People' : ' Kişi';
+        document.getElementById('bubbleCardValue').textContent = (item.value || item.population || 0).toLocaleString(isEnBubble ? 'en-US' : 'tr-TR') + unit;
+        document.getElementById('bubbleCardPhone').textContent = item.phone || '+90 850 000 0000';
+        document.getElementById('bubbleCardAddress').textContent = item.address || item.tooltip || (isEnBubble ? 'Turkey' : 'Türkiye');
+    }
+</script>
+}

@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/samples/">
+    <Project Path="samples/Panoptes.AspNetCore.Demo/Panoptes.AspNetCore.Demo.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Panoptes.AspNetCore/Panoptes.AspNetCore.csproj" />
+    <Project Path="src/Panoptes.Core/Panoptes.Core.csproj" />
+  </Folder>
+</Solution>

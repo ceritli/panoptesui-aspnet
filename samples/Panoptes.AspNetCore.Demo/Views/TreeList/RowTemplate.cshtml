@@ -1,0 +1,44 @@
+@model Panoptes.AspNetCore.Demo.Controllers.TreeListPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <panoptes-treelist id="tplTree"
+                           title="Çalışan Kartları"
+                           columns="@Model.Columns"
+                           items="@Model.Items"
+                           row-template="empRow"
+                           on-event="ptlOnEvent" />
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+    <script>
+        const deptColors = { 'İcra Kurulu': '#7c3aed', 'Teknoloji': '#2563eb', 'Finans': '#059669', 'Pazarlama': '#db2777' };
+
+        // Her satır için <td> HTML'i üretir (sütun sırasıyla aynı sayıda hücre döndürülmelidir).
+        function empRow(d) {
+            const v = d.values;
+            const name = String(v.Name || '');
+            const initials = name.split(' ').map(function (p) { return p.charAt(0); }).slice(0, 2).join('');
+            const color = deptColors[v.Department] || '#64748b';
+            const salary = Number(v.Salary) || 0;
+            const pct = Math.min(100, Math.round(salary / 2500));
+            return ''
+                + '<td><div class="ptl-treecell" style="padding-left:' + d.indent + 'px">' + d.toggle
+                +   '<span style="display:inline-flex;align-items:center;gap:.5rem;min-width:0">'
+                +     '<span style="width:28px;height:28px;border-radius:9999px;background:' + color + ';color:#fff;font-weight:700;font-size:11px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">' + d.esc(initials) + '</span>'
+                +     '<span style="display:flex;flex-direction:column;min-width:0;line-height:1.2"><b style="color:#0f172a">' + d.esc(name) + '</b><span style="color:#64748b;font-size:10px">' + d.esc(v.Role || '') + '</span></span>'
+                +   '</span></div></td>'
+                + '<td><span style="padding:2px 8px;border-radius:9999px;font-size:10px;font-weight:700;color:' + color + ';background:' + color + '1a">' + d.esc(v.Department || '') + '</span></td>'
+                + '<td>' + d.esc(v.Location || '') + '</td>'
+                + '<td style="text-align:right"><div style="font-weight:700;color:#0f172a">' + d.esc(d.fmt('Salary', v.Salary)) + '</div>'
+                +   '<div style="height:4px;background:#e2e8f0;border-radius:9999px;margin-top:3px"><div style="height:4px;width:' + pct + '%;background:' + color + ';border-radius:9999px"></div></div></td>';
+        }
+    </script>
+}

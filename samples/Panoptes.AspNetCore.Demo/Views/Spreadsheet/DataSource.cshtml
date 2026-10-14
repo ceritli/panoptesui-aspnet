@@ -1,0 +1,39 @@
+@model Panoptes.AspNetCore.Demo.Controllers.SpreadsheetPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <div class="flex flex-wrap gap-2">
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssRefresh()">Sunucudan yenile (20 kayıt)</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssAddRow()">Yeni kayıt ekle</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssShowData()">Veriyi göster (getData)</button>
+        </div>
+        <panoptes-spreadsheet id="sheet" sheets="@Model.Sheets" height="460" on-event="pssOnEvent" />
+        <pre id="pssData" class="hidden bg-slate-900 text-slate-100 p-3 rounded-lg overflow-auto max-h-56 font-mono text-[11px]"></pre>
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+    <script>
+        const pssCols = @Json.Serialize(Model.Sheets[0].DataSource!.Columns);
+        function pssRefresh() {
+            pssSheet().fetchData('/Spreadsheet/Orders?count=20', pssCols).then(function (items) { pssLog('Sunucudan ' + items.length + ' kayıt alındı', 'text-emerald-400'); });
+        }
+        function pssAddRow() {
+            const items = pssSheet().getData();
+            const next = items.length ? Math.max.apply(null, items.map(function (x) { return +x.orderId || 0; })) + 1 : 1000;
+            items.push({ orderId: next, customer: 'Yeni Müşteri', product: 'Ağ Anahtarı', quantity: 1, unitPrice: 999, orderDate: new Date().toISOString().slice(0, 10), status: 'Beklemede', approved: false });
+            pssSheet().bindData(pssCols, items);
+        }
+        function pssShowData() {
+            const el = document.getElementById('pssData');
+            el.textContent = JSON.stringify(pssSheet().getData(), null, 2);
+            el.classList.remove('hidden');
+        }
+    </script>
+}

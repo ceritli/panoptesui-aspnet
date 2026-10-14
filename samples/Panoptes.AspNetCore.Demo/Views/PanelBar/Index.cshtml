@@ -1,0 +1,699 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "PanelBar - Panoptes UI" : "PanelBar (Akordeon & Daraltılabilir Panel) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/PanelBar" class="hover:text-blue-600 transition">@(isEn ? "Navigation & Layout" : "Navigasyon & Düzen")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">PanelBar</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">PanelBar @(isEn ? "(Accordion & Collapsible Panels)" : "(Akordeon & Daraltılabilir Panel)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-panelbar&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "Vertical expandable accordion panels, single or multiple expand modes, AJAX lazy loading, and nested category hierarchy." : "Dikey açılır/kapanır akordeon panelleri, tekli veya çoklu panel genişletme modu ve iç içe alt kategori hiyerarşisi.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Examples (Features)" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">5</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">2</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+<!-- DEMO 1: Akordeon Modu (Tek Açık Panel) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                    1. Akordeon Modu (Tek Açık Panel - Single Expand Mode)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Bir panel genişletildiğinde açık olan diğer panel otomatik olarak daraltılır. İkonlar, rozetler ve devre dışı (disabled) panel durumları.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">expand-mode="single"</span>
+        </div>
+
+        <div class="p-6">
+            <panoptes-panelbar id="accordionDemo" expand-mode="single" class="max-w-3xl">
+                <panoptes-panel title="Kişisel Bilgiler & Profil" icon="heroicon:user" expanded="true" badge="Tamamlandı" badge-class="bg-emerald-100 text-emerald-800">
+                    <div class="space-y-3 text-sm text-slate-600">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Ad Soyad</label>
+                                <input type="text" value="Ahmet Yılmaz" class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg bg-slate-50" readonly />
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">E-Posta</label>
+                                <input type="email" value="ahmet.yilmaz@kurumsal.com" class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg bg-slate-50" readonly />
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-500">Profil bilgileriniz kurumsal dizin servisi ile eşitlenmektedir.</p>
+                    </div>
+                </panoptes-panel>
+
+                <panoptes-panel title="Erişim Yetkileri & Roller" icon="heroicon:shield-check" badge="3 Aktif Rol" badge-class="bg-blue-100 text-blue-800">
+                    <div class="space-y-2 text-sm text-slate-600">
+                        <ul class="divide-y divide-slate-100">
+                            <li class="py-2 flex items-center justify-between">
+                                <span class="font-medium text-slate-700">Sistem Yöneticisi</span>
+                                <span class="text-xs px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-medium">Tam Yetki</span>
+                            </li>
+                            <li class="py-2 flex items-center justify-between">
+                                <span class="font-medium text-slate-700">Mali Müşavir / Onaycı</span>
+                                <span class="text-xs px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-medium">Bütçe Onayı</span>
+                            </li>
+                            <li class="py-2 flex items-center justify-between">
+                                <span class="font-medium text-slate-700">Rapor Görüntüleyici</span>
+                                <span class="text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-medium">Salt Okunur</span>
+                            </li>
+                        </ul>
+                    </div>
+                </panoptes-panel>
+
+                <panoptes-panel title="Bildirim Tercihleri" icon="heroicon:bell">
+                    <div class="space-y-3 text-sm text-slate-600">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" checked class="rounded text-blue-600 focus:ring-blue-500 w-4 h-4" />
+                            <span>Önemli sistem uyarılarını e-posta ile al</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" checked class="rounded text-blue-600 focus:ring-blue-500 w-4 h-4" />
+                            <span>Haftalık özet raporlarını SMS ile bildir</span>
+                        </label>
+                    </div>
+                </panoptes-panel>
+
+                <panoptes-panel title="Faturalandırma & Finans (Kilitli)" icon="heroicon:lock-closed" disabled="true" badge="Erişim Yok" badge-class="bg-slate-200 text-slate-600">
+                    <p class="text-xs text-slate-400">Bu panele erişim için muhasebe departmanından onay almalısınız.</p>
+                </panoptes-panel>
+            </panoptes-panelbar>
+        </div>
+
+        <!-- Standart Kod Kutusu (1. Resimdeki Standart Kapalı Details) -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-panelbar id="accordionDemo" expand-mode="single" class="max-w-3xl"&gt;
+    &lt;panoptes-panel title="Kişisel Bilgiler & Profil" icon="heroicon:user" expanded="true" badge="Tamamlandı" badge-class="bg-emerald-100 text-emerald-800"&gt;
+        &lt;div class="space-y-3 text-sm text-slate-600"&gt;
+            &lt;!-- Form Alanları --&gt;
+        &lt;/div&gt;
+    &lt;/panoptes-panel&gt;
+
+    &lt;panoptes-panel title="Erişim Yetkileri & Roller" icon="heroicon:shield-check" badge="3 Aktif Rol" badge-class="bg-blue-100 text-blue-800"&gt;
+        &lt;!-- Liste Detayları --&gt;
+    &lt;/panoptes-panel&gt;
+
+    &lt;panoptes-panel title="Faturalandırma & Finans (Kilitli)" icon="heroicon:lock-closed" disabled="true" badge="Erişim Yok"&gt;
+        &lt;!-- Devre Dışı Panel İçeriği --&gt;
+    &lt;/panoptes-panel&gt;
+&lt;/panoptes-panelbar&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 2: Çoklu Genişleme Modu (Multiple Expand Mode) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block"></span>
+                    2. Çoklu Genişleme Modu (Multiple Expand Mode)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Kullanıcı dilediği sayıda paneli aynı anda açık tutabilir. Paneller birbirinden bağımsız katlanır ve açılır.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-indigo-50 text-indigo-700 px-2 py-1 rounded font-medium border border-indigo-100">expand-mode="multiple"</span>
+        </div>
+
+        <div class="p-6">
+            <panoptes-panelbar id="multiPanelBar" expand-mode="multiple" class="max-w-3xl">
+                <panoptes-panel title="Sunucu & Donanım Durumu" icon="heroicon:server" expanded="true" badge="Normal" badge-class="bg-emerald-100 text-emerald-800">
+                    <div class="space-y-2 text-xs text-slate-600">
+                        <div class="flex justify-between items-center py-1 border-b border-slate-100">
+                            <span>CPU Kullanımı:</span>
+                            <span class="font-bold text-slate-800">%24.2 (8 Çekirdek)</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1 border-b border-slate-100">
+                            <span>Bellek (RAM):</span>
+                            <span class="font-bold text-slate-800">14.8 GB / 32 GB</span>
+                        </div>
+                        <div class="flex justify-between items-center py-1">
+                            <span>Disk Doluluğu:</span>
+                            <span class="font-bold text-emerald-600">%41 (NVMe SSD)</span>
+                        </div>
+                    </div>
+                </panoptes-panel>
+
+                <panoptes-panel title="Ağ Trafiği ve Güvenlik Duvarı" icon="heroicon:shield-check" expanded="true" badge="420 Mbps" badge-class="bg-blue-100 text-blue-800">
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Gelen ve giden paket filtreleri devrede. Son 24 saatte 1.420 şüpheli istek otomatik olarak WAF tarafından engellendi.
+                    </p>
+                </panoptes-panel>
+
+                <panoptes-panel title="Veritabanı Kümesi (PostgreSQL)" icon="heroicon:circle-stack" badge="Replication OK" badge-class="bg-indigo-100 text-indigo-800">
+                    <p class="text-xs text-slate-600">
+                        Birincil ve iki replika sunucu senkron durumdadır. Ortalama sorgu yanıt süresi 4.2 ms.
+                    </p>
+                </panoptes-panel>
+            </panoptes-panelbar>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-panelbar id="multiPanelBar" expand-mode="multiple" class="max-w-3xl"&gt;
+    &lt;panoptes-panel title="Sunucu & Donanım Durumu" icon="heroicon:server" expanded="true" badge="Normal" badge-class="bg-emerald-100 text-emerald-800"&gt;
+        &lt;!-- İçerik --&gt;
+    &lt;/panoptes-panel&gt;
+    &lt;panoptes-panel title="Ağ Trafiği ve Güvenlik Duvarı" icon="heroicon:shield-check" expanded="true" badge="420 Mbps"&gt;
+        &lt;!-- İçerik --&gt;
+    &lt;/panoptes-panel&gt;
+    &lt;panoptes-panel title="Veritabanı Kümesi (PostgreSQL)" icon="heroicon:circle-stack" badge="Replication OK"&gt;
+        &lt;!-- İçerik --&gt;
+    &lt;/panoptes-panel&gt;
+&lt;/panoptes-panelbar&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 3: AJAX Dinamik Lazy Loading Panelleri -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                    3. AJAX Dinamik Lazy Loading (Tembel İçerik Yükleme)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Panel tıklandığı anda <code class="text-emerald-700 bg-emerald-50 px-1 py-0.5 rounded font-mono">content-url</code> adresine AJAX isteği yapılır, içerik yüklenir ve önbelleğe alınır.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">content-url="/PanelBar/LazyContent"</span>
+        </div>
+
+        <div class="p-6">
+            <panoptes-panelbar id="lazyPanelBar" expand-mode="single" class="max-w-3xl">
+                <panoptes-panel title="Statik Bilgilendirme Paneli" icon="heroicon:information-circle" expanded="true">
+                    <p class="text-xs text-slate-600">
+                        Bu panel sayfa yüklendiğinde hazır gelir. Aşağıdaki güvenlik panelini açtığınızda sunucudan AJAX ile dinamik içerik çekildiğini görebilirsiniz.
+                    </p>
+                </panoptes-panel>
+
+                <panoptes-panel title="Gelişmiş Güvenlik Günlüğü (AJAX ile Yüklenir)" 
+                                icon="heroicon:shield-check" 
+                                content-url="/PanelBar/LazyContent?section=security"
+                                badge="Dinamik İstek" 
+                                badge-class="bg-amber-100 text-amber-800">
+                    <!-- Başlangıçta boş kalır, tıklandığında AJAX ile doldurulur -->
+                </panoptes-panel>
+            </panoptes-panelbar>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-panelbar id="lazyPanelBar" expand-mode="single"&gt;
+    &lt;panoptes-panel title="Statik Bilgilendirme" icon="heroicon:information-circle" expanded="true"&gt;
+        &lt;p&gt;Statik içerik...&lt;/p&gt;
+    &lt;/panoptes-panel&gt;
+
+    &lt;panoptes-panel title="Gelişmiş Güvenlik Günlüğü" 
+                    icon="heroicon:shield-check" 
+                    content-url="/PanelBar/LazyContent?section=security" 
+                    badge="Dinamik İstek" badge-class="bg-amber-100 text-amber-800"&gt;
+    &lt;/panoptes-panel&gt;
+&lt;/panoptes-panelbar&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 4: Programatik Kontrol API & Canlı Olay Günlüğü -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-purple-600 inline-block"></span>
+                    4. Programatik JavaScript API ve Canlı Olay Günlüğü (Event Log)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Harici butonlarla panelleri programatik olarak açma/kapatma ve <code class="text-purple-700 bg-purple-50 px-1 py-0.5 rounded font-mono">on-select</code>, <code class="text-purple-700 bg-purple-50 px-1 py-0.5 rounded font-mono">on-expand</code>, <code class="text-purple-700 bg-purple-50 px-1 py-0.5 rounded font-mono">on-collapse</code> olaylarını izleme.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-purple-50 text-purple-700 px-2 py-1 rounded font-medium border border-purple-100">panoptesPanelBar API</span>
+        </div>
+
+        <div class="p-6 space-y-6">
+            <!-- Kontrol Butonları -->
+            <div class="flex flex-wrap items-center gap-2 pb-2">
+                <button type="button" onclick="window.expandAllPanels()" class="px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-lg border border-purple-200 transition">
+                    Tüm Panelleri Aç (expandAll)
+                </button>
+                <button type="button" onclick="window.collapseAllPanels()" class="px-3 py-1.5 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-200 transition">
+                    Tüm Panelleri Kapat (collapseAll)
+                </button>
+                <button type="button" onclick="window.togglePanelIndex(1)" class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition">
+                    2. Paneli Tersine Çevir (toggle 1)
+                </button>
+                <button type="button" onclick="window.clearEventLog()" class="px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg border border-red-200 transition ml-auto">
+                    Konsolu Temizle
+                </button>
+            </div>
+
+            <!-- PanelBar -->
+            <panoptes-panelbar id="demoApiPanelBar" 
+                               expand-mode="multiple" 
+                               on-select="handlePanelSelect" 
+                               on-expand="handlePanelExpand" 
+                               on-collapse="handlePanelCollapse" 
+                               class="max-w-3xl">
+                <panoptes-panel title="Modül 1: Satış & Siparişler" icon="heroicon:shopping-cart" expanded="true">
+                    <p class="text-xs text-slate-600">
+                        Günlük sipariş akışı ve teslimat durumları bu panel altında izlenmektedir.
+                    </p>
+                </panoptes-panel>
+
+                <panoptes-panel title="Modül 2: Stok & Depo Yönetimi" icon="heroicon:archive-box">
+                    <p class="text-xs text-slate-600">
+                        Kritik stok seviyesindeki ürünler ve depo sayım raporları.
+                    </p>
+                </panoptes-panel>
+
+                <panoptes-panel title="Modül 3: Finans & Mutabakat" icon="heroicon:banknotes">
+                    <p class="text-xs text-slate-600">
+                        Banka hareketleri ve müşteri cari hesap mutabakatları.
+                    </p>
+                </panoptes-panel>
+            </panoptes-panelbar>
+
+            <!-- Canlı Olay Günlüğü Konsolu -->
+            <div class="mt-4">
+                <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Canlı Olay Günlüğü (Event Log Console)
+                    </span>
+                    <span id="eventCount" class="text-[11px] font-mono text-slate-400">0 olay tetiklendi</span>
+                </div>
+                <div id="eventLogContainer" class="bg-slate-900 text-slate-200 font-mono text-[11px] p-3 rounded-lg h-36 overflow-y-auto space-y-1 shadow-inner border border-slate-800">
+                    <div class="text-slate-500 italic">// Panelleri açıp kapatın veya butonları kullanın, olaylar burada görünecektir.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-panelbar id="demoApiPanelBar" 
+                   expand-mode="multiple" 
+                   on-select="handlePanelSelect" 
+                   on-expand="handlePanelExpand" 
+                   on-collapse="handlePanelCollapse"&gt;
+    &lt;panoptes-panel title="Modül 1: Satış & Siparişler" icon="heroicon:shopping-cart" expanded="true"&gt;...&lt;/panoptes-panel&gt;
+    &lt;panoptes-panel title="Modül 2: Stok & Depo Yönetimi" icon="heroicon:archive-box"&gt;...&lt;/panoptes-panel&gt;
+    &lt;panoptes-panel title="Modül 3: Finans & Mutabakat" icon="heroicon:banknotes"&gt;...&lt;/panoptes-panel&gt;
+&lt;/panoptes-panelbar&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- API Dokümantasyonu & Nitelik Referans Tablosu -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+            <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                Panoptes PanelBar TagHelper Parametre & Nitelik Referansı
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">
+                <code class="text-blue-600 font-mono">&lt;panoptes-panelbar&gt;</code> ve <code class="text-blue-600 font-mono">&lt;panoptes-panel&gt;</code> TagHelper'ları tarafından desteklenen tüm nitelikler.
+            </p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-600 border-collapse">
+                <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                    <tr>
+                        <th class="py-3 px-4">TagHelper</th>
+                        <th class="py-3 px-4">Nitelik (Attribute)</th>
+                        <th class="py-3 px-4">Tip</th>
+                        <th class="py-3 px-4">Varsayılan</th>
+                        <th class="py-3 px-4">Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-blue-600 font-semibold">&lt;panoptes-panelbar&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">id</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">PanelBar kapsayıcısının benzersiz HTML ID'si. JS API erişiminde kullanılır.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-blue-600 font-semibold">&lt;panoptes-panelbar&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">expand-mode</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">"single"</td>
+                        <td class="py-2.5 px-4"><code class="font-mono text-slate-700">"single"</code> (akordeon - tek açık) veya <code class="font-mono text-slate-700">"multiple"</code> (bağımsız çoklu açık).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-blue-600 font-semibold">&lt;panoptes-panelbar&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">animation</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">bool</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">true</td>
+                        <td class="py-2.5 px-4">Yumuşak CSS geçiş animasyonlarının etkin olup olmadığını belirler.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-blue-600 font-semibold">&lt;panoptes-panelbar&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">on-select / on-expand / on-collapse</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Panel tıklandığında, açıldığında veya kapandığında tetiklenecek global JS fonksiyon adları.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-panel&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">title</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Panel başlığında görüntülenecek metin.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-panel&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">icon</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Başlığın solunda gösterilecek Heroicon SVG adı (örn: <code class="font-mono">"heroicon:user"</code>).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-panel&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">expanded</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">bool</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">false</td>
+                        <td class="py-2.5 px-4">Panelin sayfa ilk yüklendiğinde açık gelip gelmeyeceğini belirler.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-panel&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">disabled</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">bool</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">false</td>
+                        <td class="py-2.5 px-4">Panelin tıklanamaz ve pasif duruma getirilmesini sağlar.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-panel&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">content-url</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">AJAX ile dinamik çekilecek HTML parçacığının uç noktası (Lazy Loading).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-panel&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">badge / badge-class</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Panel başlığının sağında görüntülenecek rozet metni ve CSS stilleri.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">TagHelper Özellikleri & Parametreleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-panelbar&gt; bileşeninin desteklediği tüm C# ve HTML nitelikleri.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesPanelbarTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-4">Varsayılan</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşen kimliği.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">expand-mode</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"multiple"</td>
+                            <td class="py-3 px-6 text-slate-700">Açılma kuralı: "single" veya "multiple".</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Klavye Erişilebilirliği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes PanelBar bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Nitelikleri</div>
+                    <div class="text-slate-600">
+                        Standart <code>role="region / button"</code> rolünü taşır. Duruma göre <code>aria-disabled</code>, <code>aria-expanded</code>, <code>aria-selected</code> ve <code>aria-label</code> nitelikleri dinamik olarak güncellenir.
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Odak Yönetimi (Focus Management)</div>
+                    <div class="text-slate-600">
+                        Sekme sırasını doğal akışında korur (<code>tabIndex="0"</code>). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları (Keyboard Shortcuts)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev (Function)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Aşağı / Yukarı Ok</kbd></td>
+                                <td class="py-2.5 px-4">Paneller arasında gezinir.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter / Space</kbd></td>
+                                <td class="py-2.5 px-4">Paneli genişletir veya daraltır.</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+let eventLogCounter = 0;
+
+        function logEvent(action, title, detail) {
+            eventLogCounter++;
+            const counterEl = document.getElementById('eventCount');
+            if (counterEl) {
+                counterEl.textContent = `${eventLogCounter} olay tetiklendi`;
+            }
+            
+            const container = document.getElementById('eventLogContainer');
+            if (!container) return;
+            const time = new Date().toLocaleTimeString();
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = 'flex items-center gap-2 py-0.5 border-b border-slate-800/60';
+            logEntry.innerHTML = `
+                <span class="text-slate-500">[${time}]</span>
+                <span class="font-bold text-purple-400">${action}</span>
+                <span class="text-slate-300 font-medium">"${title}"</span>
+                ${detail ? `<span class="text-slate-400">(${detail})</span>` : ''}
+            `;
+            
+            if (container.querySelector('.italic')) {
+                container.innerHTML = '';
+            }
+            
+            container.prepend(logEntry);
+        }
+
+        function handlePanelSelect(e) {
+            logEvent('SELECT', e.title, `indeks: ${e.index}`);
+        }
+
+        function handlePanelExpand(e) {
+            logEvent('EXPAND', e.title, `indeks: ${e.index}`);
+        }
+
+        function handlePanelCollapse(e) {
+            logEvent('COLLAPSE', e.title, `indeks: ${e.index}`);
+        }
+
+        function getDemoPanelBar() {
+            return (window.panoptesPanelBar && window.panoptesPanelBar.getInstance('demoApiPanelBar'))
+                || (window.Panoptes && window.Panoptes.PanelBar && window.Panoptes.PanelBar.get('demoApiPanelBar'));
+        }
+
+        // Programatik API Fonksiyonları
+        window.expandAllPanels = function() {
+            const pb = getDemoPanelBar();
+            if (pb) {
+                pb.expandAll();
+                logEvent('API_CALL', 'demoApiPanelBar', 'expandAll() çağrıldı');
+            } else {
+                console.warn('demoApiPanelBar örneği bulunamadı');
+            }
+        };
+
+        window.collapseAllPanels = function() {
+            const pb = getDemoPanelBar();
+            if (pb) {
+                pb.collapseAll();
+                logEvent('API_CALL', 'demoApiPanelBar', 'collapseAll() çağrıldı');
+            } else {
+                console.warn('demoApiPanelBar örneği bulunamadı');
+            }
+        };
+
+        window.togglePanelIndex = function(index) {
+            const pb = getDemoPanelBar();
+            if (pb) {
+                pb.toggle(index);
+                logEvent('API_CALL', 'demoApiPanelBar', `toggle(${index}) çağrıldı`);
+            } else {
+                console.warn('demoApiPanelBar örneği bulunamadı');
+            }
+        };
+
+        window.clearEventLog = function() {
+            eventLogCounter = 0;
+            const counterEl = document.getElementById('eventCount');
+            if (counterEl) counterEl.textContent = '0 olay tetiklendi';
+            const container = document.getElementById('eventLogContainer');
+            if (container) {
+                container.innerHTML = '<div class="text-slate-500 italic">// Olay günlüğü temizlendi.</div>';
+            }
+        };
+</script>
+}

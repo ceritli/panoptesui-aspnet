@@ -1,0 +1,98 @@
+@model List<Panoptes.AspNetCore.Models.SchedulerEventModel>
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Scheduler - Resource Grouping - Panoptes Corporate UI" : "Scheduler - Kaynak Gruplama (Grouping) - Panoptes Kurumsal UI";
+    ViewData["ActiveTab"] = "Grouping";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/Scheduler" class="hover:text-blue-600 transition">Scheduler</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">@(isEn ? "Grouping" : "Gruplama")</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "Horizontal Resource Grouping" : "Yatay Kaynak Gruplama (Horizontal Grouping)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    group-resources="RoomId"
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    Multi-Column
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "Split the calendar view into parallel resource columns such as meeting rooms, doctors or project teams." : "Takvimi belirlenen kaynaklara (Örn. Toplantı Odaları) göre yatay sütunlara böler.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Sub Navigation -->
+    <partial name="_SchedulerNav" />
+
+    <!-- Demo Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "Parallel Meeting Rooms Schedule" : "Paralel Toplantı Odaları Çizelgesi")</h2>
+            <p class="text-xs text-slate-500 mt-1">
+                @(isEn ? "Side-by-side view for Room A and Room 204." : "Salon A ve Oda 204 için yan yana randevu ve toplantı görünümü.")
+            </p>
+        </div>
+
+        <div class="w-full">
+            <panoptes-scheduler id="schedGroupingDemo" 
+                                default-view="@Panoptes.AspNetCore.Models.SchedulerViewType.Week" 
+                                events="@Model"
+                                group-resources="RoomId"
+                                group-orientation="horizontal">
+                
+                <panoptes-scheduler-view type="@Panoptes.AspNetCore.Models.SchedulerViewType.Day"></panoptes-scheduler-view>
+                <panoptes-scheduler-view type="@Panoptes.AspNetCore.Models.SchedulerViewType.Week"></panoptes-scheduler-view>
+
+                <panoptes-scheduler-resource field="RoomId" title="@(isEn ? "Rooms" : "Odalar")" multiple="false">
+                    <panoptes-scheduler-resource-item value="1" text="@(isEn ? "Room A" : "Salon A")" color="#3b82f6" />
+                    <panoptes-scheduler-resource-item value="2" text="@(isEn ? "Room 204" : "Oda 204")" color="#10b981" />
+                </panoptes-scheduler-resource>
+
+            </panoptes-scheduler>
+        </div>
+
+        <!-- Prime LightCodeViewer -->
+        <div class="mt-6">
+            <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy" : "Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-scheduler id="schedGroupingDemo" 
+                    default-view="@@Panoptes.AspNetCore.Models.SchedulerViewType.Week" 
+                    events="@@Model"
+                    group-resources="RoomId"
+                    group-orientation="horizontal"&gt;
+    
+    &lt;panoptes-scheduler-view type="@@Panoptes.AspNetCore.Models.SchedulerViewType.Day"&gt;&lt;/panoptes-scheduler-view&gt;
+    &lt;panoptes-scheduler-view type="@@Panoptes.AspNetCore.Models.SchedulerViewType.Week"&gt;&lt;/panoptes-scheduler-view&gt;
+
+    &lt;panoptes-scheduler-resource field="RoomId" title="Odalar" multiple="false"&gt;
+        &lt;panoptes-scheduler-resource-item value="1" text="Salon A" color="#3b82f6" /&gt;
+        &lt;panoptes-scheduler-resource-item value="2" text="Oda 204" color="#10b981" /&gt;
+    &lt;/panoptes-scheduler-resource&gt;
+
+&lt;/panoptes-scheduler&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

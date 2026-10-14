@@ -1,0 +1,376 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "ComboBox - Panoptes Enterprise UI" : "ComboBox (Açılır Metin Kutusu) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Components/ComboBox" : "/Components/ComboBox")" class="hover:text-blue-600 transition">@(isEn ? "Form Components" : "Form Bileşenleri")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">ComboBox</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">ComboBox (Açılır Metin Kutusu)</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-combobox&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Combines dropdown option picking with unrestricted custom text typing (free-text entry), server filtering, cascading, and a rich JavaScript client API."
+                    : "Hem listeden seçim yapabilme hem de serbest özel metin yazabilme (free-text entry), sunucu taraflı filtreleme, kademeli bağımlılık ve zengin JavaScript API.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ @(isEn ? "Free-Text & Dropdown" : "Serbest Metin + Dropdown")
+            </span>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Demos & Showcase" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">2</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">4</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        <!-- 1. Temel Kullanım & Serbest Metin Girişi -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+                <h2 class="text-base font-bold text-slate-800">
+                    @(isEn ? "1. Basic Usage & Free-Text Entry" : "1. Temel Kullanım & Serbest Metin Girişi (Free-Text Entry)")
+                </h2>
+                <p class="text-xs text-slate-500 mt-1">
+                    @(isEn 
+                        ? "Select an existing option from the list or type any custom city not present in the options."
+                        : "Kullanıcı listeden var olan bir şehri seçebilir veya listede bulunmayan yeni bir şehir adını serbestçe yazabilir.")
+                </p>
+            </div>
+
+            <div class="max-w-md space-y-2">
+                <label class="block text-xs font-bold text-slate-700">@(isEn ? "Choose City or Type Custom Value" : "Şehir Seçin veya Yeni Şehir Yazın")</label>
+                <panoptes-combobox id="cb_basic"
+                                  value="İstanbul"
+                                  options="İstanbul, Ankara, İzmir, Bursa, Antalya, Adana, Trabzon, Eskişehir, Gaziantep"
+                                  placeholder="@(isEn ? "Select or type city..." : "Şehir seçiniz veya yazınız...")" />
+                <span class="text-[11px] text-slate-400 block">
+                    @(isEn ? "You can select from list or freely enter any custom value." : "Listeden seçim yapabilir veya klavyeden dilediğiniz özel bir metni yazabilirsiniz.")
+                </span>
+            </div>
+
+            <!-- Razor TagHelper Code Block (Prime Standard) -->
+            <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                            Razor TagHelper
+                        </span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy Code" : "Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-combobox id="cb_basic"
+                   value="İstanbul"
+                   options="İstanbul, Ankara, İzmir, Bursa, Antalya, Adana, Trabzon"
+                   placeholder="Şehir seçiniz veya yazınız..." /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. İstemci JavaScript API ve Olay Yönetimi -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+                <h2 class="text-base font-bold text-slate-800">
+                    @(isEn ? "2. JavaScript Client API & Live Console" : "2. İstemci JavaScript API ve Canlı Olay Konsolu")
+                </h2>
+                <p class="text-xs text-slate-500 mt-1">
+                    @(isEn 
+                        ? "Inspect ComboBox events in real time and test client API methods."
+                        : "ComboBox olaylarını canlı konsolda izleyin ve API metotlarını test edin.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <div class="space-y-4">
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-slate-700">@(isEn ? "Interactive API ComboBox" : "API ile Yönetilen ComboBox")</label>
+                        <panoptes-combobox id="cb_api_demo"
+                                          placeholder="@(isEn ? "Type or select via API..." : "API ile test ediniz...")"
+                                          options="Yazılım, Tasarım, Pazarlama, Finans, İnsan Kaynakları, Ürün Yönetimi" />
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <button type="button" onclick="cbDemoSetValue('Yazılım')" class="px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 rounded-lg text-xs font-semibold transition cursor-pointer">
+                            @(isEn ? "Set: Yazılım" : "Değer: Yazılım")
+                        </button>
+                        <button type="button" onclick="cbDemoRead()" class="px-3 py-1.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 rounded-lg text-xs font-semibold transition cursor-pointer">
+                            @(isEn ? "Read Value" : "Değeri Oku")
+                        </button>
+                        <button type="button" onclick="cbDemoToggle()" class="px-3 py-1.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 rounded-lg text-xs font-semibold transition cursor-pointer">
+                            @(isEn ? "Open / Close" : "Aç / Kapat")
+                        </button>
+                        <button type="button" onclick="cbDemoClear()" class="px-3 py-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 rounded-lg text-xs font-semibold transition cursor-pointer">
+                            @(isEn ? "Clear" : "Temizle")
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Event Log Console -->
+                <div class="bg-slate-950 p-4 rounded-xl text-xs font-mono text-slate-300 border border-slate-800 shadow-inner">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
+                        <span class="font-bold text-slate-400 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+                            @(isEn ? "Live Event Console" : "Etkileşimli Olay Konsolu (Live Events)")
+                        </span>
+                        <button type="button" onclick="document.getElementById('eventLogCb').innerHTML=''" class="text-[11px] text-slate-400 hover:text-slate-200 transition cursor-pointer">
+                            @(isEn ? "Clear" : "Temizle")
+                        </button>
+                    </div>
+                    <div id="eventLogCb" class="space-y-1 max-h-40 overflow-y-auto font-mono text-[11px]">
+                        <div class="text-slate-500">[Ready] @(isEn ? "Listening to change, select, and toggle events..." : "Olaylar dinleniyor (select, change)...")</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JavaScript API Code Block (Prime Standard) -->
+            <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                            JavaScript API
+                        </span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy Code" : "Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>// JavaScript API Kullanımı:
+const cb = window.Panoptes.ComboBox.instances.get("cb_api_demo");
+
+cb.value("Yazılım");  // Değer atar
+const val = cb.value(); // Değeri okur
+cb.open();              // Listeyi açar
+cb.close();             // Listeyi kapatır
+cb.enable(false);       // Kilitler / Pasifleştirir</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "TagHelper Properties & Parameters" : "TagHelper Özellikleri & Parametreleri")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "Supported attributes for <panoptes-combobox>." : "<panoptes-combobox> bileşeninin desteklediği tüm C# ve HTML nitelikleri.")</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesComboboxTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">@(isEn ? "Attribute" : "Özellik (Attribute)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Type (C#)" : "Tip (C#)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-6">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">@(isEn ? "Auto" : "Otomatik")</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Component unique identifier." : "Bileşen kimliği.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">value</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Initial selected or custom text value." : "Seçili başlangıç metni.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">options</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Available options comma-separated or JSON list." : "Mevcut seçenekler listesi.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">placeholder</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Input placeholder string." : "İpucu metni.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Standards & Keyboard Accessibility" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    @(isEn 
+                        ? "Panoptes ComboBox complies with W3C WAI-ARIA standards for combobox and popup listbox patterns."
+                        : "Panoptes ComboBox bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "WAI-ARIA Attributes" : "WAI-ARIA Nitelikleri")</div>
+                    <div class="text-slate-600">
+                        @(isEn 
+                            ? "Carries role=\"combobox\" and aria-autocomplete=\"both\"."
+                            : "Standart role=\"combobox\" rolünü taşır. Duruma göre aria-disabled, aria-expanded ve aria-autocomplete nitelikleri dinamik olarak güncellenir.")
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "Focus Management" : "Odak Yönetimi (Focus Management)")</div>
+                    <div class="text-slate-600">
+                        @(isEn 
+                            ? "Preserves sequential tab navigation and focus indicators."
+                            : "Sekme sırasını doğal akışında korur (tabIndex=\"0\"). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.")
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları (Keyboard Shortcuts)")</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">@(isEn ? "Key" : "Tuş (Key)")</th>
+                                <th class="py-2.5 px-4">@(isEn ? "Function" : "İşlev (Function)")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Alt + Down Arrow</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Opens dropdown list." : "Açılır listeyi açar.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Up / Down Arrow</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Navigates between options." : "Seçenekler arasında gezinir.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Commits selected option." : "Vurgulanan öğeyi seçer ve listeyi kapatır.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Escape</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Closes dropdown list." : "Açılır menüyü kapatır.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function logCbEvent(msg) {
+        const log = document.getElementById('eventLogCb');
+        if (!log) return;
+        const time = new Date().toLocaleTimeString();
+        const div = document.createElement('div');
+        div.innerHTML = `<span class="text-slate-600">[${time}]</span> ${msg}`;
+        log.prepend(div);
+    }
+
+    function cbDemoSetValue(val) {
+        const inst = window.Panoptes?.ComboBox?.instances?.get('cb_api_demo');
+        if (inst) {
+            inst.value(val);
+            logCbEvent(`Değer atandı: <strong class="text-blue-400">${val}</strong>`);
+        }
+    }
+
+    function cbDemoRead() {
+        const inst = window.Panoptes?.ComboBox?.instances?.get('cb_api_demo');
+        if (inst) {
+            const val = inst.value();
+            logCbEvent(`Okunan değer: <span class="text-emerald-400 font-bold">${val || '(Boş)'}</span>`);
+        }
+    }
+
+    function cbDemoToggle() {
+        const inst = window.Panoptes?.ComboBox?.instances?.get('cb_api_demo');
+        if (inst) {
+            inst.toggle();
+            logCbEvent('Açılır liste durumu değiştirildi.');
+        }
+    }
+
+    function cbDemoClear() {
+        const inst = window.Panoptes?.ComboBox?.instances?.get('cb_api_demo');
+        if (inst) {
+            inst.value('');
+            logCbEvent('Değer temizlendi.');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const demoEl = document.getElementById('cb_api_demo');
+        if (demoEl) {
+            demoEl.addEventListener('change', function(e) {
+                logCbEvent(`Olay: <strong class="text-blue-400">change</strong> -> Değer: <span class="text-cyan-400 font-bold">${e.target?.value}</span>`);
+            });
+        }
+    });
+</script>

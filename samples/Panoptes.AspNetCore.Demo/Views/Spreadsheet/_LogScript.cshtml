@@ -1,0 +1,33 @@
+<script>
+    function pssSheet() { return Panoptes.Spreadsheet.getInstance('sheet'); }
+    function pssLog(msg, cls) {
+        const el = document.getElementById('pssLog');
+        if (!el) return;
+        if (el.children.length === 1 && el.firstElementChild.classList.contains('text-slate-500')) el.innerHTML = '';
+        const row = document.createElement('div');
+        const t = document.createElement('span');
+        t.className = 'text-slate-500';
+        t.textContent = '[' + new Date().toLocaleTimeString('tr-TR') + '] ';
+        const m = document.createElement('span');
+        m.className = cls || 'text-sky-400';
+        m.textContent = msg;
+        row.appendChild(t);
+        row.appendChild(m);
+        el.appendChild(row);
+        while (el.children.length > 200) el.removeChild(el.firstChild);
+        el.scrollTop = el.scrollHeight;
+    }
+    function pssLogClear() {
+        const el = document.getElementById('pssLog');
+        if (el) el.innerHTML = '<div class="text-slate-500">// Günlük temizlendi...</div>';
+    }
+    function pssOnEvent(e) {
+        const rest = {};
+        Object.keys(e).forEach(function (k) { if (k !== 'type' && k !== 'sender') rest[k] = e[k]; });
+        let txt = '';
+        try { txt = JSON.stringify(rest); } catch (err) { txt = '(serileştirilemedi)'; }
+        if (txt.length > 220) txt = txt.slice(0, 220) + '…';
+        const cls = e.type === 'blocked' || e.type === 'validation' ? 'text-amber-400' : (e.type === 'select' ? 'text-slate-400' : 'text-sky-400');
+        pssLog(e.type + '  ' + txt, cls);
+    }
+</script>

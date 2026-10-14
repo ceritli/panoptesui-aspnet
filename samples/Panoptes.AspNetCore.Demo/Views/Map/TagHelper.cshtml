@@ -1,0 +1,201 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Map - TagHelper Usage" : "Map - TagHelper Kullanımı";
+    ViewData["ActiveTab"] = "TagHelper";
+}
+
+<div class="space-y-6">
+    <partial name="_MapNav" />
+
+    <!-- Hero Header -->
+    <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
+        <div class="relative z-10 max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 backdrop-blur-md text-xs font-semibold text-indigo-300 mb-4 border border-indigo-500/30">
+                <span>@(isEn ? "Declarative Razor Syntax" : "Deklaratif Razor Sözdizimi")</span>
+            </div>
+            <h1 class="text-3xl font-extrabold tracking-tight mb-3">@(isEn ? "Map Configuration with TagHelper" : "TagHelper ile Harita Yapılandırması")</h1>
+            <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                @(isEn ? "Create rich map experiences without writing a single line of C# or JS using enterprise <panoptes-map>, <panoptes-map-layer> and <panoptes-map-marker> tags." : "Kurumsal düzeyde <panoptes-map>, <panoptes-map-layer> ve <panoptes-map-marker> etiketleri ile tek satır C# veya JS yazmadan zengin harita deneyimleri oluşturabilirsiniz.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Live Demo -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <h3 class="text-base font-bold text-slate-900">@(isEn ? "TagHelper Live Preview" : "TagHelper Canlı Önizleme")</h3>
+                <p class="text-xs text-slate-500">@(isEn ? "All layers and markers are defined with pure Razor TagHelper tags." : "Tüm katman ve işaretçiler saf Razor TagHelper etiketleri ile tanımlanmıştır.")</p>
+            </div>
+        </div>
+
+        <panoptes-map id="tagHelperMap" center="41.0082, 28.9784" zoom="11" min-zoom="5" max-zoom="17" height="420px" controls="true">
+            <panoptes-map-layer type="tile" title="OpenStreetMap" url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; OpenStreetMap" />
+            
+            <panoptes-map-marker lat="41.0082" lng="28.9784" title='@(isEn ? "Historic Peninsula" : "Tarihi Yarımada")' color="#6366f1" icon="building">
+                <div class="p-2 font-sans">
+                    <h5 class="font-bold text-slate-900 text-xs">@(isEn ? "Historic Peninsula & Sultanahmet" : "Tarihi Yarımada & Sultanahmet")</h5>
+                    <p class="text-[11px] text-slate-500 mt-1">@(isEn ? "Hagia Sophia, Topkapi Palace and Sultanahmet Square." : "Ayasofya, Topkapı Sarayı ve Sultanahmet Meydanı.")</p>
+                </div>
+            </panoptes-map-marker>
+
+            <panoptes-map-marker lat="41.0369" lng="28.9850" title='@(isEn ? "Taksim & Beyoglu" : "Taksim & Beyoğlu")' color="#ef4444" icon="star">
+                <div class="p-2 font-sans">
+                    <h5 class="font-bold text-slate-900 text-xs">@(isEn ? "Taksim Square & Istiklal Street" : "Taksim Meydanı & İstiklal Caddesi")</h5>
+                    <p class="text-[11px] text-slate-500 mt-1">@(isEn ? "Culture, arts, and entertainment center." : "Kültür, sanat ve eğlence merkezi.")</p>
+                </div>
+            </panoptes-map-marker>
+
+            <panoptes-map-marker lat="41.0422" lng="29.0067" title='@(isEn ? "Besiktas" : "Beşiktaş")' color="#059669" icon="pin">
+                <div class="p-2 font-sans">
+                    <h5 class="font-bold text-slate-900 text-xs">@(isEn ? "Besiktas Coastline" : "Beşiktaş Sahil")</h5>
+                    <p class="text-[11px] text-slate-500 mt-1">@(isEn ? "Dolmabahce Palace and Bosphorus coastline." : "Dolmabahçe Sarayı ve boğaz hattı.")</p>
+                </div>
+            </panoptes-map-marker>
+
+            <panoptes-map-marker lat="40.9902" lng="29.0298" title='@(isEn ? "Kadikoy" : "Kadıköy")' color="#06b6d4" icon="store">
+                <div class="p-2 font-sans">
+                    <h5 class="font-bold text-slate-900 text-xs">@(isEn ? "Kadikoy & Moda" : "Kadıköy & Moda")</h5>
+                    <p class="text-[11px] text-slate-500 mt-1">@(isEn ? "Anatolian side cultural and gastronomy hub." : "Anadolu yakasının canlı kültür ve gastronomi merkezi.")</p>
+                </div>
+            </panoptes-map-marker>
+        </panoptes-map>
+    </div>
+
+    <!-- Parameter Documentation Table -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+        <h3 class="text-base font-bold text-slate-900">@(isEn ? "TagHelper Attribute & Parameter Table" : "TagHelper Nitelik & Parametre Tablosu")</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold">
+                        <th class="p-3">@(isEn ? "Tag" : "Etiket")</th>
+                        <th class="p-3">@(isEn ? "Attribute" : "Nitelik (Attribute)")</th>
+                        <th class="p-3">@(isEn ? "Type" : "Tip")</th>
+                        <th class="p-3">@(isEn ? "Default" : "Varsayılan")</th>
+                        <th class="p-3">@(isEn ? "Description" : "Açıklama")</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-600">
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">&lt;panoptes-map&gt;</td>
+                        <td class="p-3 font-mono">id</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">@(isEn ? "auto guid" : "otomatik guid")</td>
+                        <td class="p-3">@(isEn ? "Map DOM element and JS access ID." : "Harita DOM öğesi ve JS erişim kimliği.")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">&lt;panoptes-map&gt;</td>
+                        <td class="p-3 font-mono">center</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">"39.9334, 32.8597"</td>
+                        <td class="p-3">@(isEn ? "Initial latitude and longitude coordinates (e.g. \"41.0082, 28.9784\")." : "Başlangıç enlem ve boylam koordinatı (ör. \"41.0082, 28.9784\").")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">&lt;panoptes-map&gt;</td>
+                        <td class="p-3 font-mono">zoom</td>
+                        <td class="p-3">double</td>
+                        <td class="p-3">6</td>
+                        <td class="p-3">@(isEn ? "Default zoom level (1 - 19)." : "Varsayılan yakınlaştırma düzeyi (1 - 19).")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">&lt;panoptes-map&gt;</td>
+                        <td class="p-3 font-mono">min-zoom / max-zoom</td>
+                        <td class="p-3">double</td>
+                        <td class="p-3">1 / 19</td>
+                        <td class="p-3">@(isEn ? "Boundary levels for zooming in and out." : "Kullanıcının uzaklaşabileceği ve yakınlaşabileceği sınır düzeyler.")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">&lt;panoptes-map&gt;</td>
+                        <td class="p-3 font-mono">controls</td>
+                        <td class="p-3">bool</td>
+                        <td class="p-3">true</td>
+                        <td class="p-3">@(isEn ? "Visibility of top-right toolbar controls (zoom, reset, fullscreen, export)." : "Sağ üstteki araç çubuğunun (zoom, merkez, tam ekran, export) görünürlüğü.")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">&lt;panoptes-map&gt;</td>
+                        <td class="p-3 font-mono">height / width</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">"500px" / "100%"</td>
+                        <td class="p-3">@(isEn ? "CSS width and height dimensions of the map container." : "Harita konteynerinin CSS genişlik ve yükseklik boyutu.")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-emerald-600">&lt;panoptes-map-layer&gt;</td>
+                        <td class="p-3 font-mono">type</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">"tile"</td>
+                        <td class="p-3">@(isEn ? "Layer type: tile, marker, bubble, shape." : "Katman türü: tile, marker, bubble, shape.")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-emerald-600">&lt;panoptes-map-layer&gt;</td>
+                        <td class="p-3 font-mono">url-template</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">@(isEn ? "OSM template" : "OSM şablonu")</td>
+                        <td class="p-3">@(isEn ? "Tile provider URL template (e.g. https://.../{z}/{x}/{y}.png)." : "Karo sağlayıcı URL formatı (ör: https://.../{z}/{x}/{y}.png).")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-emerald-600">&lt;panoptes-map-layer&gt;</td>
+                        <td class="p-3 font-mono">source-url / url</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">null</td>
+                        <td class="p-3">@(isEn ? "Controller endpoint for fetching remote JSON or GeoJSON." : "JSON veya GeoJSON verilerini uzaktan çekmek için Controller endpointi.")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-rose-600">&lt;panoptes-map-marker&gt;</td>
+                        <td class="p-3 font-mono">lat / lng</td>
+                        <td class="p-3">double</td>
+                        <td class="p-3">0, 0</td>
+                        <td class="p-3">@(isEn ? "Geographic latitude and longitude coordinates." : "İşaretçinin coğrafi enlem ve boylam koordinatı.")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-rose-600">&lt;panoptes-map-marker&gt;</td>
+                        <td class="p-3 font-mono">icon / shape</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">"pin" / "pin"</td>
+                        <td class="p-3">@(isEn ? "Icon type (pin, star, building, store, hospital, airport, info) and shape." : "İkon türü (pin, star, building, store, hospital, airport, info) ve şekil (pin, circle).")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-rose-600">&lt;panoptes-map-marker&gt;</td>
+                        <td class="p-3 font-mono">color</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">"#ef4444"</td>
+                        <td class="p-3">@(isEn ? "SVG pin fill color (Hex, rgb or Tailwind color code)." : "İğnenin SVG dolgu rengi (Hex, rgb veya Tailwind renk kodu).")</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-map id=&quot;tagHelperMap&quot; center=&quot;41.0082, 28.9784&quot; zoom=&quot;11&quot; height=&quot;420px&quot; controls=&quot;true&quot;&gt;
+    &lt;panoptes-map-layer type=&quot;tile&quot; title=&quot;OpenStreetMap&quot; 
+                        url-template=&quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot; 
+                        attribution=&quot;&amp;copy; OpenStreetMap&quot; /&gt;
+    
+    &lt;panoptes-map-marker lat=&quot;41.0082&quot; lng=&quot;28.9784&quot; title=&quot;Tarihi Yarımada&quot; color=&quot;#6366f1&quot; icon=&quot;building&quot;&gt;
+        &lt;div class=&quot;p-2&quot;&gt;
+            &lt;h5 class=&quot;font-bold&quot;&gt;Tarihi Yarımada&lt;/h5&gt;
+            &lt;p&gt;Ayasofya &amp; Sultanahmet&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/panoptes-map-marker&gt;
+
+    &lt;panoptes-map-marker lat=&quot;41.0369&quot; lng=&quot;28.9850&quot; title=&quot;Taksim &amp; Beyoğlu&quot; color=&quot;#ef4444&quot; icon=&quot;star&quot;&gt;
+        &lt;div class=&quot;p-2&quot;&gt;
+            &lt;h5 class=&quot;font-bold&quot;&gt;Taksim Meydanı&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/panoptes-map-marker&gt;
+&lt;/panoptes-map&gt;</code></pre>
+        </div>
+    </div>
+</div>

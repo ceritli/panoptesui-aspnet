@@ -1,0 +1,92 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "ActionSheet - Action Buttons & Theming" : "ActionSheet - Eylem Butonları & Gruplama (Action Buttons)";
+    ViewData["ActiveTab"] = "ActionButtons";
+}
+
+<div class="space-y-6">
+    <partial name="_ActionSheetNav" />
+
+    <!-- Info Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight mb-2">@(isEn ? "Action Buttons, Themes & Icons" : "Eylem Butonları, Temalar ve İkonlar (Action Buttons)")</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            @(isEn ? "Each button within the ActionSheet can have semantic colors via theme-color (primary, danger, warning, success, default), subtitles/descriptions, SVG or font icons, and disabled states." : "ActionSheet içindeki her bir düğme theme-color (primary, danger, warning, success, default) ile semantik renklere, açıklama metinlerine (subtitle/description), SVG veya font ikonlarına ve pasif durum (disabled) özelliklerine sahip olabilir.")
+        </p>
+    </div>
+
+    <!-- Live Demo Trigger -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+        <h2 class="text-base font-bold text-slate-800">@(isEn ? "Rich Button Set Example" : "Zengin Buton Seti Örneği")</h2>
+        <button type="button" onclick="window.Panoptes.ActionSheet.open('buttonSheet')" class="px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-sm flex items-center gap-2 cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+            <span>@(isEn ? "Open Colored & Icon Action Buttons" : "Renkli & İkonlu Eylem Butonlarını Aç")</span>
+        </button>
+
+        <panoptes-actionsheet id="buttonSheet" title='@(isEn ? "Content Management Menu" : "İçerik Yönetim Menüsü")' subtitle='@(isEn ? "Select action for Article #1042" : "Makale #1042 için eylem seçiniz")'>
+            <!-- Primary Tema Butonu -->
+            <panoptes-actionsheet-item id="btn-publish" text='@(isEn ? "Publish Now" : "Yayına Al (Publish)")' description='@(isEn ? "Content becomes immediately available to all users" : "İçerik hemen tüm kullanıcılara açılır")' theme-color="primary">
+                <span class="panoptes-actionsheet-item-icon shrink-0 w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                </span>
+            </panoptes-actionsheet-item>
+
+            <!-- Success Tema Butonu -->
+            <panoptes-actionsheet-item id="btn-approve" text='@(isEn ? "Give Editor Approval" : "Editör Onayı Ver")' description='@(isEn ? "Mark review as completed" : "İnceleme tamamlandı olarak işaretlenir")' theme-color="success">
+                <span class="panoptes-actionsheet-item-icon shrink-0 w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </span>
+            </panoptes-actionsheet-item>
+
+            <!-- Warning Tema Butonu -->
+            <panoptes-actionsheet-item id="btn-archive" text='@(isEn ? "Revert to Draft" : "Taslağa Geri Al")' description='@(isEn ? "Unpublished and moved back to drafts" : "Yayından kaldırılıp taslaklara taşınır")' theme-color="warning">
+                <span class="panoptes-actionsheet-item-icon shrink-0 w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </span>
+            </panoptes-actionsheet-item>
+
+            <!-- Disabled Buton -->
+            <panoptes-actionsheet-item id="btn-export" text='@(isEn ? "Export (No Permission)" : "Dışa Aktar (Yetkiniz Yok)")' description='@(isEn ? "Only super admins can use this" : "Yalnızca süper yöneticiler kullanabilir")' disabled="true">
+                <span class="panoptes-actionsheet-item-icon shrink-0 w-8 h-8 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                </span>
+            </panoptes-actionsheet-item>
+
+            <!-- Danger (Yıkıcı) Buton -->
+            <panoptes-actionsheet-item id="btn-delete" text='@(isEn ? "Delete Permanently" : "Kalıcı Olarak Sil")' description='@(isEn ? "This action cannot be undone" : "Bu işlem geri alınamaz")' theme-color="danger">
+                <span class="panoptes-actionsheet-item-icon shrink-0 w-8 h-8 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                </span>
+            </panoptes-actionsheet-item>
+        </panoptes-actionsheet>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-actionsheet id=&quot;buttonSheet&quot; title=&quot;İçerik Yönetimi&quot;&gt;
+    &lt;!-- Primary --&gt;
+    &lt;panoptes-actionsheet-item text=&quot;Yayına Al&quot; description=&quot;Detay&quot; theme-color=&quot;primary&quot; /&gt;
+
+    &lt;!-- Success --&gt;
+    &lt;panoptes-actionsheet-item text=&quot;Onayla&quot; theme-color=&quot;success&quot; /&gt;
+
+    &lt;!-- Disabled --&gt;
+    &lt;panoptes-actionsheet-item text=&quot;Dışa Aktar&quot; disabled=&quot;true&quot; /&gt;
+
+    &lt;!-- Danger --&gt;
+    &lt;panoptes-actionsheet-item text=&quot;Kalıcı Olarak Sil&quot; theme-color=&quot;danger&quot; /&gt;
+&lt;/panoptes-actionsheet&gt;</code></pre>
+        </div>
+    </div>
+</div>
+

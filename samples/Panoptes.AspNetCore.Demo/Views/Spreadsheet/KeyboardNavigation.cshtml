@@ -1,0 +1,63 @@
+@model Panoptes.AspNetCore.Demo.Controllers.SpreadsheetPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <panoptes-spreadsheet id="sheet" sheets="@Model.Sheets" height="380" on-event="pssOnEvent" />
+        <p class="text-xs text-slate-500 leading-relaxed">Izgaraya bir kez tıklayarak odaklanın, ardından kısayolları deneyin.</p>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+            <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-100 text-xs font-bold text-slate-700">Gezinme</div>
+            <table class="w-full text-xs"><tbody class="divide-y divide-slate-100">
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">← ↑ → ↓</kbd></td><td class="py-2 px-4 text-slate-600">Hücreler arasında gezin</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Tab</kbd> <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Shift+Tab</kbd></td><td class="py-2 px-4 text-slate-600">Sağdaki / soldaki hücreye geç</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Enter</kbd> <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Shift+Enter</kbd></td><td class="py-2 px-4 text-slate-600">Aşağıdaki / yukarıdaki hücreye geç</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Home</kbd> <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">End</kbd></td><td class="py-2 px-4 text-slate-600">Satırın başına / son dolu sütununa git</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+Home</kbd> <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+End</kbd></td><td class="py-2 px-4 text-slate-600">A1 hücresine / kullanılan aralığın sonuna git</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+↑ ↓ ← →</kbd></td><td class="py-2 px-4 text-slate-600">Veri bloğunun kenarına atla</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">PageUp</kbd> <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">PageDown</kbd></td><td class="py-2 px-4 text-slate-600">Bir ekran yukarı / aşağı</td></tr>
+            </tbody></table>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+            <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-100 text-xs font-bold text-slate-700">Seçim</div>
+            <table class="w-full text-xs"><tbody class="divide-y divide-slate-100">
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Shift+Oklar</kbd></td><td class="py-2 px-4 text-slate-600">Seçimi genişlet</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+A</kbd></td><td class="py-2 px-4 text-slate-600">Tümünü seç</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+Boşluk</kbd></td><td class="py-2 px-4 text-slate-600">Sütunu seç</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Shift+Boşluk</kbd></td><td class="py-2 px-4 text-slate-600">Satırı seç</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+Shift+Oklar</kbd></td><td class="py-2 px-4 text-slate-600">Seçimi veri bloğunun kenarına kadar genişlet</td></tr>
+            </tbody></table>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+            <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-100 text-xs font-bold text-slate-700">Düzenleme</div>
+            <table class="w-full text-xs"><tbody class="divide-y divide-slate-100">
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">F2</kbd> <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">çift tık</kbd></td><td class="py-2 px-4 text-slate-600">Hücreyi düzenle</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Yazmaya başla</kbd></td><td class="py-2 px-4 text-slate-600">Hücre içeriğinin üzerine yaz</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Enter</kbd></td><td class="py-2 px-4 text-slate-600">Değeri onayla</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Esc</kbd></td><td class="py-2 px-4 text-slate-600">Düzenlemeyi iptal et</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Delete</kbd> <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Backspace</kbd></td><td class="py-2 px-4 text-slate-600">Hücre içeriğini temizle</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Boşluk</kbd></td><td class="py-2 px-4 text-slate-600">Onay kutusu hücresinde değeri değiştir</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Shift+F2</kbd></td><td class="py-2 px-4 text-slate-600">Yorum ekle / düzenle</td></tr>
+            </tbody></table>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+            <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-100 text-xs font-bold text-slate-700">Komutlar</div>
+            <table class="w-full text-xs"><tbody class="divide-y divide-slate-100">
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+C</kbd> <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">X</kbd> <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">V</kbd></td><td class="py-2 px-4 text-slate-600">Kopyala / kes / yapıştır</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+Z</kbd> <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+Y</kbd></td><td class="py-2 px-4 text-slate-600">Geri al / yinele</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+B</kbd> <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">I</kbd> <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">U</kbd></td><td class="py-2 px-4 text-slate-600">Kalın / italik / altı çizili</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+Shift+L</kbd></td><td class="py-2 px-4 text-slate-600">Filtreyi aç / kapat</td></tr>
+                <tr><td class="py-2 px-4 w-56"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Alt+↓</kbd></td><td class="py-2 px-4 text-slate-600">Filtre menüsünü aç</td></tr>
+            </tbody></table>
+        </div>
+        </div>
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+}

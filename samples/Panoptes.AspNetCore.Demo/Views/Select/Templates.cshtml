@@ -1,0 +1,108 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Select - Custom Templates" : "Select - Şablonlar (Templates)";
+}
+
+<div class="space-y-8">
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Select" : "/Select")" class="hover:text-blue-600 transition">Select</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">@(isEn ? "Templates" : "Şablonlar (Templates)")</span>
+    </nav>
+
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "Custom Templates (Header, Item, Footer)" : "Özel Şablonlar (Templates)")</h1>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Customize individual dropdown items, the selected value display, sticky header banners, and action footers with HTML templates."
+                    : "Liste içindeki her bir öğeyi (Item), seçili öğeyi (Value), liste başlığını (Header) ve altbilgiyi (Footer) kendi HTML şablonlarınızla özelleştirebilirsiniz.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ Production Ready
+            </span>
+        </div>
+    </div>
+
+    <!-- Live Demo Card -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "Custom Item, Header & Footer Templates" : "Özel Şablonlar (Custom Templates)")</h2>
+            <p class="text-xs text-slate-500 mt-1">@(isEn ? "Fixed header, rich item with icons and descriptions, and informative footer." : "Sabit Başlık (Header), Açıklamalı & İkonlu Öğe (Item Template) ve Altbilgi (Footer Template).")</p>
+        </div>
+
+        <div class="max-w-xl space-y-2">
+            <label class="block text-xs font-bold text-slate-700">@(isEn ? "User Role & Permission Level" : "Kullanıcı Rolü & Yetki Seviyesi")</label>
+            <panoptes-select id="sel_custom_template"
+                             placeholder="@(isEn ? "Select system role..." : "Sistem rolü seçiniz...")"
+                             header-template="@(isEn ? "👑 System Roles & Permissions" : "👑 Sistem Yetki Rolleri")"
+                             footer-template='<span>🔒 Güvenli Yetkilendirme</span><span class="font-bold text-blue-600">4 Seviye</span>'
+                             options='[
+                                 {"text":"Süper Yönetici (Administrator)","value":"admin","icon":"🛡️","desc":"Tüm sisteme tam erişim ve yetkilendirme hakkı"},
+                                 {"text":"Departman Müdürü (Manager)","value":"manager","icon":"💼","desc":"Departman raporları ve onay süreçleri"},
+                                 {"text":"Yazılım Uzmanı (Developer)","value":"dev","icon":"💻","desc":"API ve teknik entegrasyon yönetimi"},
+                                 {"text":"Misafir Kullanıcı (Viewer)","value":"viewer","icon":"👁️","desc":"Yalnızca okuma yetkisine sahip pasif hesap"}
+                             ]' />
+            <span class="text-[11px] text-slate-400">@(isEn ? "Each item includes an icon, title, and descriptive subtitle." : "Her öğenin altında yetki açıklaması ve ikonu yer alır.")</span>
+        </div>
+    </div>
+
+    <!-- Feature Description Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Rich Content Formatting" : "Zengin İçerik Biçimlendirme")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Render icons, avatars, badges, and secondary text directly inside individual list items."
+                    : "İkonlar, profil resimleri, rozetler ve açıklama metinlerini liste öğelerinde doğrudan görselleştirin.")
+            </div>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Header & Footer Slots" : "Sabit Başlık ve Altbilgi Slotları")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Add contextual banners, quick actions, or item counts at the top and bottom of the popup panel."
+                    : "Açılır listenin en üstüne veya tabanına sabit bilgilendirme alanları ve eylemler ekleyin.")
+            </div>
+        </div>
+    </div>
+
+    <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+    <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                    @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                </span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-select id="sel_custom_template"
+                 placeholder="@(isEn ? "Select system role..." : "Sistem rolü seçiniz...")"
+                 header-template="👑 Sistem Yetki Rolleri"
+                 footer-template='&lt;span&gt;🔒 Güvenli Yetkilendirme&lt;/span&gt;&lt;span class="font-bold text-blue-600"&gt;4 Seviye&lt;/span&gt;'
+                 options='[
+                     {"text":"Süper Yönetici","value":"admin","icon":"🛡️","desc":"Tam sistem yetkisi"},
+                     {"text":"Departman Müdürü","value":"manager","icon":"💼","desc":"Onay süreçleri"},
+                     {"text":"Yazılım Uzmanı","value":"dev","icon":"💻","desc":"API yönetimi"}
+                 ]' /&gt;</code></pre>
+        </div>
+    </div>
+</div>

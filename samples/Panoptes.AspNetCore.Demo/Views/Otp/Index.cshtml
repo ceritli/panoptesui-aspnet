@@ -1,0 +1,457 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    var defaultOtp = ViewBag.DefaultOtp as string ?? "482915";
+    var defaultPin = ViewBag.DefaultPin as string ?? "1923";
+}
+
+@{
+    ViewData["Title"] = "OtpInput (Tek Kullanımlık Şifre / SMS Kodu) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Otp" : "/Otp")" class="hover:text-blue-600 transition">@(isEn ? "Form Components" : "Form Bileşenleri")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">OtpInput</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">OtpInput (Tek Kullanımlık Şifre / SMS Kodu)</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-otp&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    WAI-ARIA Uyumlu
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                2FA iki adımlı doğrulama, SMS onay kodları ve e-posta güvenlik anahtarları için otomatik kutu odaklanması (auto-focus), panodan yapıştırma (paste) desteği.
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>Örnekler (Features)</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">4</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>API Referansı (Props & Events)</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">5</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>Erişilebilirlik (WAI-ARIA)</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+<!-- DEMO 1: Standart 6 Haneli SMS Doğrulama Kodu -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                    1. Standart 6 Haneli SMS Doğrulama Kodu (Auto-Focus & Yapıştırma)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Rakam yazıldıkça otomatik olarak sonraki kutuya geçer; panodan yapıştırıldığında ("Ctrl+V" veya SMS Autofill) tüm kutulara sırayla dağıtılır.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">&lt;panoptes-otp length="6"&gt;</span>
+        </div>
+
+        <div class="p-8 flex flex-col items-center justify-center space-y-4">
+            <div class="text-center max-w-sm">
+                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-2 shadow-xs">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                </div>
+                <h3 class="text-sm font-bold text-slate-800">Telefonunuza Gelen Kodu Girin</h3>
+                <p class="text-xs text-slate-400 mt-0.5">+90 (532) *** ** 42 numaralı telefonunuza 6 haneli güvenlik kodu gönderildi.</p>
+            </div>
+
+            <panoptes-otp id="smsOtpDemo" length="6" on-complete="handleOtpComplete" />
+
+            <div class="flex items-center gap-2 text-xs text-slate-400">
+                <span>Kod gelmedi mi?</span>
+                <button type="button" class="font-bold text-blue-600 hover:text-blue-700 transition">Tekrar Gönder (54s)</button>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu (1. Resimdeki Standart Kapalı Details) -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>Kopyala</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-otp id=&quot;smsOtpDemo&quot; 
+              length=&quot;6&quot; 
+              on-complete=&quot;handleOtpComplete&quot; /&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 2: 4 Haneli Maskeli Banka PIN Doğrulaması (Mask: true) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                    2. 4 Haneli Maskeli Banka Kartı & İşlem PIN Kodu (Mask: true)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Girilen rakamlar güvenlik amacıyla gizlenir (password mask); PIN doğrulaması tamamlandığında otomatik tetiklenir.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">&lt;panoptes-otp length="4" mask="true"&gt;</span>
+        </div>
+
+        <div class="p-8 flex flex-col items-center justify-center space-y-4">
+            <div class="text-center max-w-sm">
+                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-2 shadow-xs">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                </div>
+                <h3 class="text-sm font-bold text-slate-800">4 Haneli Kart Şifrenizi Girin</h3>
+                <p class="text-xs text-slate-400 mt-0.5">Hesap güvenliğiniz için PIN kodunuz maskelenerek işlenir.</p>
+            </div>
+
+            <panoptes-otp id="bankPinDemo" length="4" mask="true" on-complete="handleOtpComplete" />
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>Kopyala</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-otp id=&quot;bankPinDemo&quot; 
+              length=&quot;4&quot; 
+              mask=&quot;true&quot; 
+              on-complete=&quot;handleOtpComplete&quot; /&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 3: Programatik JavaScript API ve Canlı Doğrulama Olay Günlüğü -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-cyan-600 inline-block"></span>
+                    3. Programatik JavaScript API ve Canlı Olay Günlüğü (Event Log)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Kutulara programatik kod atayın (`setValue`), içeriği temizleyin (`clear`) veya tamamlandığında onay mesajı alın.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-cyan-50 text-cyan-700 px-2 py-1 rounded font-medium border border-cyan-100">window.panoptesOtp.getInstance()</span>
+        </div>
+
+        <div class="p-6 space-y-4">
+            <div class="flex flex-wrap items-center gap-2 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                <button type="button" onclick="fillTestCode('958312')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-xs shadow-xs transition flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                    Test Kodu Doldur (958312)
+                </button>
+                <button type="button" onclick="clearOtpInputs()" class="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg font-medium text-xs shadow-xs transition">
+                    Kutuları Temizle (clear)
+                </button>
+                <button type="button" onclick="clearOtpLogs()" class="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-600 border border-slate-300 rounded-lg font-medium text-xs shadow-xs transition ml-auto">
+                    Günlüğü Temizle
+                </button>
+            </div>
+
+            <!-- Canlı Olay Günlüğü -->
+            <div class="bg-slate-900 text-slate-200 p-4 rounded-xl font-mono text-xs h-28 overflow-y-auto space-y-1" id="otpEventLog">
+                <div class="text-slate-500">// Canlı OTP olay günlüğü hazır. Yukarıdaki kutulara rakam yazın veya test butonunu kullanın...</div>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>Kopyala</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>var otp = window.panoptesOtp.getInstance('smsOtpDemo');
+
+// Değer atama
+otp.setValue('482915');
+
+// Kutuları temizleme ve ilk kutuya odaklanma
+otp.clear();
+
+// Mevcut tam değeri alma
+var currentCode = otp.getValue();</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- TagHelper Referans Tablosu -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+            <h2 class="text-base font-bold text-slate-800">TagHelper Parametre ve Nitelik Referansı</h2>
+            <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-otp&gt; bileşeninin desteklediği tüm C# nitelikleri ve veri tipleri.</p>
+        </div>
+        <div class="p-6 overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-200 text-slate-500 font-semibold bg-slate-50">
+                        <th class="py-2.5 px-4">Nitelik Adı</th>
+                        <th class="py-2.5 px-4">Veri Tipi</th>
+                        <th class="py-2.5 px-4">Varsayılan</th>
+                        <th class="py-2.5 px-4">Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-600">
+                    <tr>
+                        <td class="py-2.5 px-4 font-mono font-bold text-blue-600">id</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-500">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">otomatik guid</td>
+                        <td class="py-2.5 px-4">Bileşenin benzersiz HTML kimliği ve form input adı.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-mono font-bold text-blue-600">length</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-500">int</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">6</td>
+                        <td class="py-2.5 px-4">Oluşturulacak kutu sayısı (örn: 4 veya 6).</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-mono font-bold text-blue-600">type</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-500">OtpInputType</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">Number</td>
+                        <td class="py-2.5 px-4">Kabul edilecek karakter türü: Number (sadece rakam) veya Text (harf ve rakam).</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-mono font-bold text-blue-600">mask</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-500">bool</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">false</td>
+                        <td class="py-2.5 px-4">Kutucuklardaki karakterlerin şifreli/noktalı (password mask) gösterimi.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-mono font-bold text-blue-600">auto-focus</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-500">bool</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">false</td>
+                        <td class="py-2.5 px-4">Sayfa yüklendiğinde ilk kutucuğa otomatik odaklanma.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-mono font-bold text-blue-600">on-complete</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-500">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Tüm kutucuklar eksiksiz doldurulduğunda otomatik çalışacak JavaScript fonksiyonunun adı.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-otp.js" asp-append-version="true"></script>
+    
+}
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">TagHelper Özellikleri & Parametreleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-otp&gt; bileşeninin desteklediği tüm C# ve HTML nitelikleri.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesOtpTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-4">Varsayılan</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşen kimliği.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">length</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">int</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">6</td>
+                            <td class="py-3 px-6 text-slate-700">Gereken karakter sayısı (genellikle 4 veya 6).</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">type</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"number"</td>
+                            <td class="py-3 px-6 text-slate-700">İzin verilen karakter tipi: "number" veya "text".</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">auto-focus</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">Yüklendiğinde ilk kutuya otomatik odaklanma.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">mask</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                            <td class="py-3 px-6 text-slate-700">Girilen karakterleri parola noktası olarak gizler.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Klavye Erişilebilirliği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes OtpInput bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Nitelikleri</div>
+                    <div class="text-slate-600">
+                        Standart <code>role="group (one-time-code)"</code> rolünü taşır. Duruma göre <code>aria-disabled</code>, <code>aria-expanded</code>, <code>aria-selected</code> ve <code>aria-label</code> nitelikleri dinamik olarak güncellenir.
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Odak Yönetimi (Focus Management)</div>
+                    <div class="text-slate-600">
+                        Sekme sırasını doğal akışında korur (<code>tabIndex="0"</code>). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları (Keyboard Shortcuts)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev (Function)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Rakam Tuşları</kbd></td>
+                                <td class="py-2.5 px-4">Rakamı girer ve bir sonraki kutuya otomatik odaklanır.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Backspace</kbd></td>
+                                <td class="py-2.5 px-4">Mevcut kutuyu siler ve bir önceki kutuya döner.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Ctrl+V / Cmd+V</kbd></td>
+                                <td class="py-2.5 px-4">Panodaki tüm kodu kutulara sırayla dağıtır.</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function logOtp(msg) {
+            var logEl = document.getElementById('otpEventLog');
+            if (!logEl) return;
+            var time = new Date().toLocaleTimeString('tr-TR');
+            var line = document.createElement('div');
+            line.innerHTML = '<span class="text-slate-500">[' + time + ']</span> ' + msg;
+            logEl.appendChild(line);
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function clearOtpLogs() {
+            var logEl = document.getElementById('otpEventLog');
+            if (logEl) logEl.innerHTML = '<div class="text-slate-500">// Günlük temizlendi. Yeni olaylar bekleniyor...</div>';
+        }
+
+        function handleOtpComplete(code) {
+            logOtp('<span class="text-emerald-400 font-bold">Kod Tamamlandı (onComplete):</span> ' + code + ' <span class="text-emerald-500">✓ Onaylandı</span>');
+        }
+
+        function fillTestCode(testCode) {
+            var otp = window.panoptesOtp.getInstance('smsOtpDemo');
+            if (otp) {
+                otp.setValue(testCode);
+            }
+        }
+
+        function clearOtpInputs() {
+            var otp = window.panoptesOtp.getInstance('smsOtpDemo');
+            if (otp) {
+                otp.clear();
+                logOtp('<span class="text-amber-400">Kutucuklar temizlendi.</span>');
+            }
+        }
+</script>

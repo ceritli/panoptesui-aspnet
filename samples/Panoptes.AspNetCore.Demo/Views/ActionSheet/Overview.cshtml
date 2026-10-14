@@ -1,0 +1,307 @@
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "ActionSheet (Bottom Action Menu) - Panoptes Corporate UI" : "ActionSheet (Alt Eylem Menüsü) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/ActionSheet/Overview" class="hover:text-blue-600 transition">@(isEn ? "Navigation & Layout" : "Navigasyon & Düzen")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">ActionSheet</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">ActionSheet @(isEn ? "(Bottom Action Menu)" : "(Alt Eylem Menüsü)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-actionsheet&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "Touch-friendly bottom sheet action and option menu designed for mobile and modern web apps." : "Mobil ve modern masaüstü için ekranın altından kayarak açılan dokunmatik dostu eylem ve seçenek listesi paneli.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Features & Demos" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">1</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">3</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+
+    <!-- Live Interactive Demo Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-6">
+        <div>
+            <h2 class="text-lg font-bold text-slate-800">Canlı ActionSheet Gösterimi</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Aşağıdaki butonlara tıklayarak farklı kullanım senaryolarına göre hazırlanmış eylem sayfalarını açabilirsiniz.</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+            <button type="button" onclick="window.Panoptes.ActionSheet.open('shareSheet')" class="px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-sm flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+                <span>Paylaşım Menüsünü Aç (Share Sheet)</span>
+            </button>
+
+            <button type="button" onclick="window.Panoptes.ActionSheet.open('accountSheet')" class="px-4 py-2.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition shadow-sm flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                <span>Hesap & Profil Seçenekleri</span>
+            </button>
+
+            <button type="button" onclick="window.Panoptes.ActionSheet.open('fileSheet')" class="px-4 py-2.5 rounded-2xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold transition shadow-sm flex items-center gap-2">
+                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span>Dosya & Belge İşlemleri</span>
+            </button>
+        </div>
+
+        <div id="selectionStatus" class="p-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-xs text-slate-600 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+            <span>Son Seçilen Eylem: <b id="lastSelectedAction" class="text-indigo-600 font-semibold">Henüz seçim yapılmadı</b></span>
+        </div>
+    </div>
+
+    <!-- ActionSheet 1: Paylaşım Menüsü -->
+    <panoptes-actionsheet id="shareSheet" title="Bu Raporu Paylaş" subtitle="Bağlantıyı kopyalayabilir veya doğrudan uygulamalara aktarabilirsiniz." on-select="handleOverviewSelect">
+        <panoptes-actionsheet-item id="share-link" text="Bağlantıyı Kopyala" description="Doğrudan panoya kopyalanır" theme-color="primary">
+            <span class="panoptes-actionsheet-item-icon shrink-0 w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+            </span>
+        </panoptes-actionsheet-item>
+
+        <panoptes-actionsheet-item id="share-email" text="E-Posta ile Gönder" description="PDF eki ile birlikte iletilir">
+            <span class="panoptes-actionsheet-item-icon shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </span>
+        </panoptes-actionsheet-item>
+
+        <panoptes-actionsheet-item id="share-teams" text="Microsoft Teams Kanalı" description="Ekip kanalında paylaşılır">
+            <span class="panoptes-actionsheet-item-icon shrink-0 w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            </span>
+        </panoptes-actionsheet-item>
+    </panoptes-actionsheet>
+
+    <!-- ActionSheet 2: Hesap Menüsü -->
+    <panoptes-actionsheet id="accountSheet" title="Hesap Yönetimi" subtitle="Oturum açmış kullanıcı: Fatih Ceritli (Admin)" on-select="handleOverviewSelect">
+        <panoptes-actionsheet-item id="acc-profile" text="Profil Bilgilerimi Düzenle" description="Ad, soyad, unvan ve avatar ayarları">
+            <span class="panoptes-actionsheet-item-icon shrink-0 w-8 h-8 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+            </span>
+        </panoptes-actionsheet-item>
+
+        <panoptes-actionsheet-item id="acc-security" text="Güvenlik & 2FA Ayarları" description="Şifre ve iki adımlı doğrulama">
+            <span class="panoptes-actionsheet-item-icon shrink-0 w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </span>
+        </panoptes-actionsheet-item>
+
+        <panoptes-actionsheet-item id="acc-logout" text="Oturumu Kapat" description="Sistemden güvenli çıkış yapılır" theme-color="danger">
+            <span class="panoptes-actionsheet-item-icon shrink-0 w-8 h-8 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            </span>
+        </panoptes-actionsheet-item>
+    </panoptes-actionsheet>
+
+    <!-- ActionSheet 3: Dosya İşlemleri -->
+    <panoptes-actionsheet id="fileSheet" title="Belge İşlemleri" subtitle="Mali_Tablolar_Q1.xlsx" on-select="handleOverviewSelect">
+        <panoptes-actionsheet-item id="file-download" text="İndir (Excel)" description="Yerel bilgisayarınıza kaydedin">
+            <span class="panoptes-actionsheet-item-icon shrink-0 w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            </span>
+        </panoptes-actionsheet-item>
+
+        <panoptes-actionsheet-item id="file-print" text="Yazdır" description="Sistem yazdırma diyaloğu açılır">
+            <span class="panoptes-actionsheet-item-icon shrink-0 w-8 h-8 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+            </span>
+        </panoptes-actionsheet-item>
+
+        <panoptes-actionsheet-item id="file-delete" text="Belgeyi Sil" description="Çöp kutusuna taşınır" theme-color="danger">
+            <span class="panoptes-actionsheet-item-icon shrink-0 w-8 h-8 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </span>
+        </panoptes-actionsheet-item>
+    </panoptes-actionsheet>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;!-- Tetikleyici Buton --&gt;
+&lt;button type=&quot;button&quot; onclick=&quot;window.Panoptes.ActionSheet.open('shareSheet')&quot;&gt;
+    Paylaşım Menüsünü Aç
+&lt;/button&gt;
+
+&lt;!-- ActionSheet Bileşeni --&gt;
+&lt;panoptes-actionsheet id=&quot;shareSheet&quot; title=&quot;Bu Raporu Paylaş&quot; subtitle=&quot;Bağlantıyı kopyalayın veya paylaşın&quot;&gt;
+    &lt;panoptes-actionsheet-item id=&quot;share-link&quot; text=&quot;Bağlantıyı Kopyala&quot; description=&quot;Panoya kopyalanır&quot; theme-color=&quot;primary&quot;&gt;
+        &lt;!-- İsteğe bağlı özel ikon veya SVG --&gt;
+    &lt;/panoptes-actionsheet-item&gt;
+
+    &lt;panoptes-actionsheet-item id=&quot;share-email&quot; text=&quot;E-Posta ile Gönder&quot;&gt;
+    &lt;/panoptes-actionsheet-item&gt;
+
+    &lt;panoptes-actionsheet-item id=&quot;share-delete&quot; text=&quot;Kaldır&quot; theme-color=&quot;danger&quot;&gt;
+    &lt;/panoptes-actionsheet-item&gt;
+&lt;/panoptes-actionsheet&gt;</code></pre>
+        </div>
+    </div>
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">TagHelper Özellikleri & Parametreleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-actionsheet&gt; bileşeninin desteklediği tüm C# ve HTML nitelikleri.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesActionsheetTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-4">Varsayılan</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşen kimliği.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">title</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">Panel başlığı.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">modal</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">Arka planı karartarak modal modda açılma.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Klavye Erişilebilirliği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes ActionSheet bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Nitelikleri</div>
+                    <div class="text-slate-600">
+                        Standart <code>role="dialog / menu"</code> rolünü taşır. Duruma göre <code>aria-disabled</code>, <code>aria-expanded</code>, <code>aria-selected</code> ve <code>aria-label</code> nitelikleri dinamik olarak güncellenir.
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Odak Yönetimi (Focus Management)</div>
+                    <div class="text-slate-600">
+                        Sekme sırasını doğal akışında korur (<code>tabIndex="0"</code>). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları (Keyboard Shortcuts)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev (Function)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Escape</kbd></td>
+                                <td class="py-2.5 px-4">Eylem menüsünü kapatır.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Yukarı / Aşağı Ok</kbd></td>
+                                <td class="py-2.5 px-4">Eylemler arasında gezinir.</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        function handleOverviewSelect(e) {
+            const lastEl = document.getElementById('lastSelectedAction');
+            if (lastEl) {
+                lastEl.textContent = `${e.text} (ID: ${e.itemId})`;
+            }
+        }
+    </script>
+}

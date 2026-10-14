@@ -1,0 +1,766 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "AutoComplete - Panoptes Enterprise UI" : "AutoComplete (Otomatik Tamamlama) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Components/AutoComplete" : "/Components/AutoComplete")" class="hover:text-blue-600 transition">@(isEn ? "Form Components" : "Form Bileşenleri")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">AutoComplete</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">AutoComplete @(isEn ? "" : "(Otomatik Tamamlama)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                    &lt;panoptes-autocomplete&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Suggests matching values as the user types with keyboard accessibility (WAI-ARIA Combobox), multi-value token support, remote API searching, rich templates, and comprehensive client JS API." 
+                    : "Kullanıcı klavyeden yazdıkça anlık eşleşen önerileri sunan, klavye navigasyonu (WAI-ARIA Combobox), çoklu değer desteği (separator), sunucu araması (REST API), zengin şablonlar ve kapsamlı JavaScript API'si sunan kurumsal giriş bileşeni.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>Örnekler (Features)</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">6</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>API Referansı (Props & Events)</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>Erişilebilirlik (WAI-ARIA)</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        
+        <!-- 1. Temel Kullanım (Basic AutoComplete) -->
+        <div class="panoptes-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="border-b border-slate-100 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                        1. Temel Kullanım (Basic AutoComplete)
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">En az 1 karakter yazıldığında eşleşen ülkeler açılır, aranan harfler sarı ile vurgulanır.</p>
+                </div>
+                <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2.5 py-1 rounded font-medium border border-blue-100 self-start sm:self-auto">
+                    min-length="1" filter="startswith"
+                </span>
+            </div>
+
+            <!-- Canlı Önizleme Alanı -->
+            <div class="p-8 bg-white flex flex-col items-center justify-center">
+                <div class="w-full max-w-md space-y-1.5">
+                    <label for="ac_basic-input" class="block text-xs font-bold text-slate-700">Ülke Seçin</label>
+                    <panoptes-autocomplete id="ac_basic"
+                                          min-length="1"
+                                          filter="startswith"
+                                          options="Türkiye, Almanya, Amerika Birleşik Devletleri, Fransa, İngiltere, İtalya, İspanya, Hollanda, Belçika, Avusturya, İsviçre, Japonya, Kanada"
+                                          placeholder="Ülke adı yazmaya başlayın (örn: T, A, F)..." />
+                    <span class="text-[11px] text-slate-400">İpucu: "t", "a" veya "i" tuşlayarak açılır listeyi deneyebilirsiniz.</span>
+                </div>
+            </div>
+
+            <!-- Tabbed Light Code Block (Resimdeki gibi) -->
+            <div class="panoptes-code-block border-t border-slate-200 bg-white">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex gap-1.5">
+                        <button type="button" onclick="switchCodeTab(this, 'ac_basic_razor')" class="tab-btn px-3 py-1 rounded-md text-xs font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs">Razor TagHelper</button>
+                        <button type="button" onclick="switchCodeTab(this, 'ac_basic_html')" class="tab-btn px-3 py-1 rounded-md text-xs font-medium text-slate-600 hover:text-slate-900 transition">HTML Çıktısı</button>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>Kopyala</span>
+                    </button>
+                </div>
+                <div id="ac_basic_razor" class="tab-pane panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-autocomplete id="ac_basic"
+                       min-length="1"
+                       filter="startswith"
+                       options="Türkiye, Almanya, Fransa, İngiltere, İtalya, İspanya, Hollanda"
+                       placeholder="Ülke adı yazmaya başlayın..." /&gt;</code></pre>
+                </div>
+                <div id="ac_basic_html" class="tab-pane panoptes-code-viewer hidden">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;div id="ac_basic" class="panoptes-autocomplete-wrapper relative inline-block w-full"&gt;
+  &lt;div class="panoptes-input-group relative flex items-center"&gt;
+    &lt;input type="text" id="ac_basic-input" name="ac_basic" autocomplete="off"
+           role="combobox" aria-autocomplete="list" aria-expanded="false"
+           placeholder="Ülke adı yazmaya başlayın..."
+           class="panoptes-autocomplete-input w-full pl-3 pr-8 py-2 text-sm rounded-lg border border-slate-300" /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Çoklu Seçim & Ayraç (Multiple with Separator) -->
+        <div class="panoptes-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="border-b border-slate-100 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block"></span>
+                        2. Çoklu Seçim & Ayraç Desteği (Multiple / Separator)
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Virgül (,) ile ayrılmış birden fazla etiketi veya teknolojiyi aynı metin kutusunda arka arkaya tamamlayın.</p>
+                </div>
+                <span class="text-xs font-mono bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded font-medium border border-indigo-100 self-start sm:self-auto">
+                    separator="," filter="contains"
+                </span>
+            </div>
+
+            <div class="p-8 bg-white flex flex-col items-center justify-center">
+                <div class="w-full max-w-md space-y-1.5">
+                    <label for="ac_separator-input" class="block text-xs font-bold text-slate-700">Teknoloji Yığını (Virgülle ayırarak yazın)</label>
+                    <panoptes-autocomplete id="ac_separator"
+                                          separator=","
+                                          min-length="1"
+                                          filter="contains"
+                                          options="C#, .NET, ASP.NET Core, JavaScript, TypeScript, TailwindCSS, React, Vue, Docker, Kubernetes, PostgreSQL, Redis"
+                                          placeholder="Örn: C#, Docker, TailwindCSS..." />
+                    <span class="text-[11px] text-slate-400">Bir etiket seçtiğinizde otomatik virgül eklenir ve yazmaya devam edebilirsiniz.</span>
+                </div>
+            </div>
+
+            <div class="panoptes-code-block border-t border-slate-200 bg-white">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <span class="text-xs font-semibold text-slate-700">Razor TagHelper</span>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>Kopyala</span>
+                    </button>
+                </div>
+                <div class="tab-pane panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-autocomplete id="ac_separator"
+                       separator=","
+                       min-length="1"
+                       filter="contains"
+                       options="C#, .NET, ASP.NET Core, JavaScript, TypeScript, TailwindCSS, React, Vue"
+                       placeholder="Örn: C#, Docker, TailwindCSS..." /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Zengin Görsel Şablonlar (Custom Item Template) -->
+        <div class="panoptes-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="border-b border-slate-100 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                        3. Zengin Görsel Şablonlar & Rozetler (Custom Item Templates)
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Avatar, açıklama metni ve yetki rozetleri içeren özelleştirilmiş öneri listesi.</p>
+                </div>
+                <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded font-medium border border-emerald-100 self-start sm:self-auto">
+                    JSON Array / Obje Formatı
+                </span>
+            </div>
+
+            <div class="p-8 bg-white flex flex-col items-center justify-center">
+                <div class="w-full max-w-md space-y-1.5">
+                    <label for="ac_rich-input" class="block text-xs font-bold text-slate-700">Kullanıcı veya Hesap Arama</label>
+                    <panoptes-autocomplete id="ac_rich"
+                                          min-length="1"
+                                          filter="contains"
+                                          placeholder="Kullanıcı veya e-posta arayın..."
+                                          options='[
+                                              {"text":"Ahmet Yılmaz","value":"ahmet@panoptes.dev","icon":"👨‍💼","desc":"Kıdemli Sistem Mimarı","badge":"Admin"},
+                                              {"text":"Ayşe Demir","value":"ayse@panoptes.dev","icon":"👩‍💻","desc":"Frontend Takım Lideri","badge":"Yönetici"},
+                                              {"text":"Mehmet Kaya","value":"mehmet@panoptes.dev","icon":"👨‍🔧","desc":"DevOps & Bulut Uzmanı","badge":"Mühendislik"},
+                                              {"text":"Zeynep Çelik","value":"zeynep@panoptes.dev","icon":"👩‍🎨","desc":"Baş Tasarımcı (UI/UX)","badge":"Tasarım"}
+                                          ]' />
+                    <span class="text-[11px] text-slate-400">"Ahmet" veya "Demir" yazarak zengin şablonu inceleyin.</span>
+                </div>
+            </div>
+
+            <div class="panoptes-code-block border-t border-slate-200 bg-white">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <span class="text-xs font-semibold text-slate-700">Razor TagHelper</span>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>Kopyala</span>
+                    </button>
+                </div>
+                <div class="tab-pane panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-autocomplete id="ac_rich"
+                       min-length="1"
+                       filter="contains"
+                       placeholder="Kullanıcı arayınız..."
+                       options='[
+                           {"text":"Ahmet Yılmaz","value":"ahmet@panoptes.dev","icon":"👨‍💼","desc":"Sistem Mimarı","badge":"Admin"},
+                           {"text":"Ayşe Demir","value":"ayse@panoptes.dev","icon":"👩‍💻","desc":"Frontend Lideri","badge":"Yönetici"}
+                       ]' /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Boyutlar (Sizes: sm, md, lg) -->
+        <div class="panoptes-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="border-b border-slate-100 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-purple-600 inline-block"></span>
+                        4. Farklı Boyut Seçenekleri (Sizes)
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Küçük (sm), Standart (md) ve Büyük (lg) boyut varyantları.</p>
+                </div>
+                <span class="text-xs font-mono bg-purple-50 text-purple-700 px-2.5 py-1 rounded font-medium border border-purple-100 self-start sm:self-auto">
+                    size="sm | md | lg"
+                </span>
+            </div>
+
+            <div class="p-8 bg-white grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Küçük Boyut (sm)</label>
+                    <panoptes-autocomplete id="ac_size_sm" size="sm" options="İstanbul, Ankara, İzmir, Bursa, Antalya" placeholder="Küçük (sm)..." />
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Standart Boyut (md)</label>
+                    <panoptes-autocomplete id="ac_size_md" size="md" options="İstanbul, Ankara, İzmir, Bursa, Antalya" placeholder="Standart (md)..." />
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Büyük Boyut (lg)</label>
+                    <panoptes-autocomplete id="ac_size_lg" size="lg" options="İstanbul, Ankara, İzmir, Bursa, Antalya" placeholder="Büyük (lg)..." />
+                </div>
+            </div>
+
+            <div class="panoptes-code-block border-t border-slate-200 bg-white">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <span class="text-xs font-semibold text-slate-700">Razor TagHelper</span>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>Kopyala</span>
+                    </button>
+                </div>
+                <div class="tab-pane panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-autocomplete id="ac_sm" size="sm" options="İstanbul, Ankara, İzmir" /&gt;
+&lt;panoptes-autocomplete id="ac_md" size="md" options="İstanbul, Ankara, İzmir" /&gt;
+&lt;panoptes-autocomplete id="ac_lg" size="lg" options="İstanbul, Ankara, İzmir" /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Durumlar: Devre Dışı & Salt Okunur (Disabled & Readonly) -->
+        <div class="panoptes-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="border-b border-slate-100 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-slate-600 inline-block"></span>
+                        5. Devre Dışı & Salt Okunur Durumlar (Disabled & Readonly)
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Kullanıcı etkileşimini kısıtlama ve salt okunur sunum durumları.</p>
+                </div>
+                <span class="text-xs font-mono bg-slate-100 text-slate-700 px-2.5 py-1 rounded font-medium border border-slate-200 self-start sm:self-auto">
+                    disabled="true" | readonly="true"
+                </span>
+            </div>
+
+            <div class="p-8 bg-white grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Devre Dışı (Disabled)</label>
+                    <panoptes-autocomplete id="ac_disabled" disabled="true" value="Türkiye (Kilitli)" options="Türkiye, Almanya" />
+                    <span class="text-[11px] text-slate-400">Tıklanamaz, odaklanamaz ve veri değiştirilemez.</span>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Salt Okunur (Readonly)</label>
+                    <panoptes-autocomplete id="ac_readonly" readonly="true" value="Salt Okunur Değer" options="Türkiye, Almanya" />
+                    <span class="text-[11px] text-slate-400">Odaklanabilir ve kopyalanabilir ancak açılır liste tetiklenmez.</span>
+                </div>
+            </div>
+
+            <div class="panoptes-code-block border-t border-slate-200 bg-white">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <span class="text-xs font-semibold text-slate-700">Razor TagHelper</span>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>Kopyala</span>
+                    </button>
+                </div>
+                <div class="tab-pane panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-autocomplete id="ac_dis" disabled="true" value="Türkiye" /&gt;
+&lt;panoptes-autocomplete id="ac_ro" readonly="true" value="Salt Okunur" /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. İstemci JavaScript API & Etkileşimli Olay Konsolu -->
+        <div class="panoptes-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="border-b border-slate-100 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+                        6. İstemci JavaScript API & Etkileşimli Olay Konsolu
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">JavaScript API metodlarını tetikleyin ve tetiklenen tüm olayları gerçek zamanlı konsoldan izleyin.</p>
+                </div>
+                <span class="text-xs font-mono bg-amber-50 text-amber-700 px-2.5 py-1 rounded font-medium border border-amber-100 self-start sm:self-auto">
+                    window.Panoptes.AutoComplete
+                </span>
+            </div>
+
+            <div class="p-8 bg-white grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div class="space-y-4">
+                    <div>
+                        <label for="ac_api_demo-input" class="block text-xs font-bold text-slate-700 mb-1.5">Hedef Test AutoComplete</label>
+                        <panoptes-autocomplete id="ac_api_demo"
+                                              options="Türkiye, Almanya, Fransa, İngiltere, İtalya, İspanya, Hollanda"
+                                              placeholder="API ile yönetin..." />
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <button type="button" onclick="acDemoSetValue('Türkiye')" class="px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 rounded-lg text-xs font-semibold transition">
+                            Değer Ata: "Türkiye"
+                        </button>
+                        <button type="button" onclick="acDemoSearch('Alm')" class="px-3 py-1.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 rounded-lg text-xs font-semibold transition">
+                            Programatik Ara: "Alm"
+                        </button>
+                        <button type="button" onclick="acDemoClear()" class="px-3 py-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 rounded-lg text-xs font-semibold transition">
+                            Temizle
+                        </button>
+                        <button type="button" onclick="acDemoToggleEnable()" id="btnAcToggle" class="px-3 py-1.5 bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 rounded-lg text-xs font-semibold transition">
+                            Kilitle / Aç
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Event Log Console -->
+                <div class="bg-slate-950 p-4 rounded-xl text-xs font-mono text-slate-300 border border-slate-800 shadow-inner">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
+                        <span class="font-bold text-slate-400 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Etkileşimli Olay Konsolu (Live Events)
+                        </span>
+                        <button type="button" onclick="document.getElementById('eventLogAc').innerHTML=''" class="text-[11px] text-slate-400 hover:text-slate-200 transition">Temizle</button>
+                    </div>
+                    <div id="eventLogAc" class="space-y-1 max-h-40 overflow-y-auto font-mono text-[11px]">
+                        <div class="text-slate-500">[Hazır] Olaylar dinleniyor (select, change, open, close)...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panoptes-code-block border-t border-slate-200 bg-white">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <span class="text-xs font-semibold text-slate-700">JavaScript API Kullanım Kodu</span>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>Kopyala</span>
+                    </button>
+                </div>
+                <div class="tab-pane panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>// İstemci Örneğine Erişme
+const ac = window.Panoptes.AutoComplete.instances.get("ac_api_demo");
+
+ac.setValue("Türkiye");         // Değer atar
+ac.search("Alm");              // Arama popup'ını açar
+ac.close();                    // Popup'ı kapatır
+ac.enable(false);              // Kilitler (disable)
+ac.enable(true);               // Kilidi açar (enable)</code></pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PANEL 2: API REFERENCE -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        
+        <!-- Properties / TagHelper Attributes Table -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h2 class="text-sm font-bold text-slate-900">TagHelper Özellikleri (Attributes / Properties)</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-autocomplete&gt; etiketine verilebilecek tüm parametreler</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">AutoCompleteTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-4">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (Type)</th>
+                            <th class="py-3 px-4">Varsayılan (Default)</th>
+                            <th class="py-3 px-4">Açıklama (Description)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">id</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">auto-guid</td><td>Bileşenin benzersiz DOM kimliği.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">name</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">id ile aynı</td><td>Form submit edildiğinde gönderilecek input adı.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">value</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td>Giriş kutusunun başlangıçtaki metin değeri.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">options</td><td class="py-3 px-4 font-mono text-purple-600">string | array</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td>Virgülle ayrılmış dizi ya da JSON formatında obje listesi.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">url</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td>Uzak veri kaynağı REST API endpoint adresi.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">min-length</td><td class="py-3 px-4 font-mono text-purple-600">int</td><td class="py-3 px-4 font-mono text-emerald-600">1</td><td>Açılır listenin tetiklenmesi için gereken en az karakter sayısı.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">filter</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-emerald-600">"startswith"</td><td>Filtreleme türü: <code>"startswith"</code> veya <code>"contains"</code>.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">separator</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td>Çoklu seçim ayracı (örn: ","). Belirtildiğinde birden çok değer seçilebilir.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">size</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-emerald-600">"md"</td><td>Bileşen boyutu: <code>"sm"</code>, <code>"md"</code>, <code>"lg"</code>.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">rounded</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-emerald-600">"md"</td><td>Köşe yuvarlama stili: <code>"none"</code>, <code>"sm"</code>, <code>"md"</code>, <code>"lg"</code>, <code>"full"</code>.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">clearable</td><td class="py-3 px-4 font-mono text-purple-600">bool</td><td class="py-3 px-4 font-mono text-emerald-600">true</td><td>Giriş kutusu sağında tek tıkla temizleme (X) butonu gösterimi.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">disabled</td><td class="py-3 px-4 font-mono text-purple-600">bool</td><td class="py-3 px-4 font-mono text-emerald-600">false</td><td>Bileşeni kilitler ve kullanıcı etkileşimini engeller.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-blue-600 font-bold">readonly</td><td class="py-3 px-4 font-mono text-purple-600">bool</td><td class="py-3 px-4 font-mono text-emerald-600">false</td><td>Salt okunur yapar; veri kopyalanabilir ancak açılamaz.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Events Table -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70">
+                <h2 class="text-sm font-bold text-slate-900">Bileşen Olayları (Events)</h2>
+                <p class="text-xs text-slate-500 mt-0.5">JavaScript tarafında dinlenebilen özel DOM olayları</p>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-4">Olay Adı (Event)</th>
+                            <th class="py-3 px-4">Parametreler (detail)</th>
+                            <th class="py-3 px-4">Açıklama (Description)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr><td class="py-3 px-4 font-mono text-emerald-600 font-bold">change</td><td class="py-3 px-4 font-mono text-slate-600">{ value: string }</td><td>Metin alanı değeri değiştiğinde ve onaylandığında tetiklenir.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-emerald-600 font-bold">panoptes:select</td><td class="py-3 px-4 font-mono text-slate-600">{ dataItem: object, text: string }</td><td>Açılır listeden bir öğe tıklandığında veya Enter ile seçildiğinde tetiklenir.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-emerald-600 font-bold">panoptes:open</td><td class="py-3 px-4 font-mono text-slate-600">{ sender: AutoCompleteInstance }</td><td>Öneri listesi ekranda açıldığında tetiklenir.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-emerald-600 font-bold">panoptes:close</td><td class="py-3 px-4 font-mono text-slate-600">{ sender: AutoCompleteInstance }</td><td>Öneri listesi kapandığında tetiklenir.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- JS Methods Table -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70">
+                <h2 class="text-sm font-bold text-slate-900">İstemci Metodları (JavaScript API Methods)</h2>
+                <p class="text-xs text-slate-500 mt-0.5"><code>window.Panoptes.AutoComplete.instances.get(id)</code> üzerinden çağrılabilen fonksiyonlar</p>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-4">Metod</th>
+                            <th class="py-3 px-4">Parametreler</th>
+                            <th class="py-3 px-4">Dönüş Tipi</th>
+                            <th class="py-3 px-4">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr><td class="py-3 px-4 font-mono text-indigo-600 font-bold">setValue(val)</td><td class="py-3 px-4 font-mono">val: string</td><td class="py-3 px-4 font-mono text-slate-400">void</td><td>Giriş kutusuna programatik değer atar.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-indigo-600 font-bold">getValue()</td><td class="py-3 px-4 font-mono">-</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td>Giriş kutusundaki mevcut metni döner.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-indigo-600 font-bold">search(term)</td><td class="py-3 px-4 font-mono">term: string</td><td class="py-3 px-4 font-mono text-slate-400">void</td><td>Belirtilen arama terimiyle popup listeyi anında açar.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-indigo-600 font-bold">close()</td><td class="py-3 px-4 font-mono">-</td><td class="py-3 px-4 font-mono text-slate-400">void</td><td>Açık olan öneri listesini kapatır.</td></tr>
+                        <tr><td class="py-3 px-4 font-mono text-indigo-600 font-bold">enable(state)</td><td class="py-3 px-4 font-mono">state: boolean</td><td class="py-3 px-4 font-mono text-slate-400">void</td><td>Bileşenin kilitli (disabled) durumunu dinamik değiştirir.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Ekran Okuyucu Desteği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes AutoComplete bileşeni, W3C WAI-ARIA 1.2 <strong>Combobox Pattern</strong> spesifikasyonuna tam uyumlu olarak geliştirilmiştir. Görme engelli kullanıcılar ve ekran okuyucu yazılımlar (NVDA, JAWS, VoiceOver) için tüm rol ve durum nitelikleri dinamik yönetilir.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">role="combobox"</div>
+                    <div class="text-slate-600">Giriş kutusunun açılır bir liste kontrol ettiğini ekran okuyucuya bildirir.</div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">aria-autocomplete="list"</div>
+                    <div class="text-slate-600">Yazma esnasında liste halinde öneriler sunulduğunu belirtir.</div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">aria-expanded="true | false"</div>
+                    <div class="text-slate-600">Öneri listesinin o anda açık mı yoksa kapalı mı olduğunu gerçek zamanlı aktarır.</div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">aria-activedescendant</div>
+                    <div class="text-slate-600">Yön tuşlarıyla gezinilen aktif öneri elemanının benzersiz kimliğini işaret eder.</div>
+                </div>
+            </div>
+
+            <!-- Keyboard Navigation Table -->
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları ve Etkileşimler (Keyboard Navigation)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev (Function)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Down Arrow (↓)</kbd></td>
+                                <td class="py-2.5 px-4">Açılır liste kapalıysa açar; açıksa sıradaki öneri öğesine odaklanır.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Up Arrow (↑)</kbd></td>
+                                <td class="py-2.5 px-4">Açık listede önceki öneri öğesine odaklanır; ilk öğedeyse metin alanına döner.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter</kbd></td>
+                                <td class="py-2.5 px-4">Üzerinde bulunulan aktif öneriyi seçer, giriş alanına yazar ve listeyi kapatır.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Escape</kbd></td>
+                                <td class="py-2.5 px-4">Seçim yapmadan açık olan öneri listesini kapatır.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Tab</kbd></td>
+                                <td class="py-2.5 px-4">Öneri listesini kapatır ve sayfadaki bir sonraki odaklanabilir form elemanına geçer.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Tabbed Top Navigation Switcher
+    function switchMainDocTab(tabName) {
+        document.querySelectorAll('.main-doc-tab').forEach(b => {
+            b.classList.remove('text-blue-600', 'border-blue-600', 'font-bold', 'bg-blue-50/40');
+            b.classList.add('text-slate-600', 'hover:text-slate-900', 'border-transparent');
+        });
+        const activeBtn = document.getElementById('tab-btn-' + tabName);
+        if (activeBtn) {
+            activeBtn.classList.add('text-blue-600', 'border-blue-600', 'font-bold', 'bg-blue-50/40');
+            activeBtn.classList.remove('text-slate-600', 'hover:text-slate-900', 'border-transparent');
+        }
+        document.querySelectorAll('.main-doc-panel').forEach(p => p.classList.add('hidden'));
+        const targetPanel = document.getElementById('panel-' + tabName);
+        if (targetPanel) {
+            targetPanel.classList.remove('hidden');
+            initPanoptesLightCodeBlocks();
+        }
+    }
+
+    // Code Snippet Sub-tab Switcher
+    function switchCodeTab(btn, tabId) {
+        const parent = btn.closest('.panoptes-code-block');
+        parent.querySelectorAll('.tab-btn').forEach(b => {
+            b.classList.remove('text-blue-600', 'bg-white', 'border', 'border-slate-200', 'shadow-2xs', 'font-semibold');
+            b.classList.add('text-slate-600', 'font-medium');
+        });
+        btn.classList.add('text-blue-600', 'bg-white', 'border', 'border-slate-200', 'shadow-2xs', 'font-semibold');
+        btn.classList.remove('text-slate-600', 'font-medium');
+
+        parent.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+        const target = parent.querySelector('#' + tabId);
+        if (target) {
+            target.classList.remove('hidden');
+            initPanoptesLightCodeBlocks();
+        }
+    }
+
+    // Tokenizer & Syntax Highlighter for Light-themed Code Display
+    function tokenizeLine(line) {
+        if (!line) return '';
+        let s = line;
+        const tokens = [];
+        let i = 0;
+        while (i < s.length) {
+            const commentMatch = s.slice(i).match(/^(\/\/.*|<!--.*?-->)/);
+            if (commentMatch) {
+                tokens.push({ type: 'comment', text: commentMatch[0] });
+                i += commentMatch[0].length;
+                continue;
+            }
+            const strMatch = s.slice(i).match(/^("[^"]*"|'[^']*')/);
+            if (strMatch) {
+                tokens.push({ type: 'string', text: strMatch[0] });
+                i += strMatch[0].length;
+                continue;
+            }
+            const tagMatch = s.slice(i).match(/^<\/?[a-zA-Z0-9_\-]+/);
+            if (tagMatch) {
+                tokens.push({ type: 'tag', text: tagMatch[0] });
+                i += tagMatch[0].length;
+                continue;
+            }
+            const closeMatch = s.slice(i).match(/^\/?>/);
+            if (closeMatch) {
+                tokens.push({ type: 'tag', text: closeMatch[0] });
+                i += closeMatch[0].length;
+                continue;
+            }
+            const attrMatch = s.slice(i).match(/^([a-zA-Z0-9_\-:]+)(?=\=)/);
+            if (attrMatch) {
+                tokens.push({ type: 'attr', text: attrMatch[0] });
+                i += attrMatch[0].length;
+                continue;
+            }
+            const kwMatch = s.slice(i).match(/^(import|from|const|let|var|function|return|true|false|new|public|void|string|bool|class)\b/);
+            if (kwMatch) {
+                tokens.push({ type: 'kw', text: kwMatch[0] });
+                i += kwMatch[0].length;
+                continue;
+            }
+            tokens.push({ type: 'plain', text: s[i] });
+            i++;
+        }
+        return tokens.map(t => {
+            const esc = t.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            if (t.type === 'tag') return `<span class="text-emerald-600 font-medium">${esc}</span>`;
+            if (t.type === 'attr') return `<span class="text-purple-600">${esc}</span>`;
+            if (t.type === 'string') return `<span class="text-sky-700">${esc}</span>`;
+            if (t.type === 'kw') return `<span class="text-rose-600 font-semibold">${esc}</span>`;
+            if (t.type === 'comment') return `<span class="text-slate-400 italic">${esc}</span>`;
+            return esc;
+        }).join('');
+    }
+
+    // Light Code Block Initializer with Line Numbers
+    function initPanoptesLightCodeBlocks() {
+        document.querySelectorAll('.panoptes-code-viewer').forEach(container => {
+            if (container.dataset.initialized) return;
+            container.dataset.initialized = 'true';
+            
+            const rawPre = container.querySelector('.panoptes-raw-code code');
+            if (!rawPre) return;
+            
+            const rawText = rawPre.textContent.replace(/^\n+|\n+$/g, '');
+            const lines = rawText.split('\n');
+            
+            let tableHtml = '<div class="overflow-x-auto"><table class="w-full border-collapse font-mono text-xs leading-relaxed select-text">';
+            tableHtml += '<tbody>';
+            
+            lines.forEach((line, index) => {
+                const lineNum = index + 1;
+                const highlighted = tokenizeLine(line);
+                tableHtml += `
+                    <tr class="hover:bg-slate-50/70 transition-colors">
+                        <td class="w-10 select-none text-right pr-4 text-slate-400 font-mono text-xs align-top py-0.5">${lineNum}</td>
+                        <td class="font-mono text-xs text-slate-800 whitespace-pre align-top py-0.5">${highlighted || '&nbsp;'}</td>
+                    </tr>`;
+            });
+            
+            tableHtml += '</tbody></table></div>';
+            
+            const displayDiv = document.createElement('div');
+            displayDiv.className = 'panoptes-code-display p-4 bg-white';
+            displayDiv.innerHTML = tableHtml;
+            container.appendChild(displayDiv);
+        });
+    }
+
+    // Copy Code Helper with Visual Feedback
+    function copyPanoptesCode(btn) {
+        const block = btn.closest('.panoptes-code-block');
+        const activePane = block.querySelector('.tab-pane:not(.hidden)');
+        const rawCode = activePane ? activePane.querySelector('.panoptes-raw-code code') : null;
+        const textToCopy = rawCode ? rawCode.innerText.trim() : (activePane ? activePane.innerText.trim() : '');
+        if (!textToCopy) return;
+        
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = `<svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span class="text-emerald-600 font-bold">Kopyalandı!</span>`;
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+            }, 2000);
+        });
+    }
+
+    // Live Event Logger & API Demo
+    function logAcEvent(msg) {
+        const log = document.getElementById('eventLogAc');
+        if (!log) return;
+        const time = new Date().toLocaleTimeString();
+        const div = document.createElement('div');
+        div.innerHTML = `<span class="text-slate-600">[${time}]</span> ${msg}`;
+        log.prepend(div);
+    }
+
+    function acDemoSetValue(val) {
+        const inst = window.Panoptes?.AutoComplete?.instances?.get('ac_api_demo');
+        if (inst) {
+            inst.setValue(val);
+            logAcEvent(`API: <strong class="text-indigo-600">setValue("${val}")</strong> çağrıldı`);
+        }
+    }
+
+    function acDemoSearch(val) {
+        const inst = window.Panoptes?.AutoComplete?.instances?.get('ac_api_demo');
+        if (inst) {
+            inst.setValue(val);
+            inst.search(val);
+            logAcEvent(`API: <strong class="text-indigo-600">search("${val}")</strong> çağrıldı`);
+        }
+    }
+
+    function acDemoClear() {
+        const inst = window.Panoptes?.AutoComplete?.instances?.get('ac_api_demo');
+        if (inst) {
+            inst.setValue('');
+            logAcEvent(`API: <strong class="text-slate-500">Temizlendi</strong>`);
+        }
+    }
+
+    let acEnabled = true;
+    function acDemoToggleEnable() {
+        const inst = window.Panoptes?.AutoComplete?.instances?.get('ac_api_demo');
+        if (inst) {
+            acEnabled = !acEnabled;
+            inst.enable(acEnabled);
+            logAcEvent(`Durum: <span class="font-bold ${acEnabled ? 'text-emerald-600' : 'text-amber-600'}">${acEnabled ? 'Aktif' : 'Kilitli'}</span>`);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initPanoptesLightCodeBlocks();
+        const demoEl = document.getElementById('ac_api_demo');
+        if (demoEl) {
+            demoEl.addEventListener('change', function(e) {
+                logAcEvent(`Olay: <strong class="text-blue-600">change</strong> -> Değer: <span class="text-emerald-600 font-bold">${e.detail?.value || e.target?.value}</span>`);
+            });
+        }
+    });
+</script>

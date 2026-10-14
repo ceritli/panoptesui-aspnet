@@ -1,0 +1,29 @@
+@model Panoptes.AspNetCore.Demo.Controllers.SpreadsheetPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <div class="flex flex-wrap gap-2">
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().setValue('B2', '99')">B2 = 99 yaz (API)</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().format('A1:D1', { bold: true })">A1:D1 kalın yap</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().insertRow(3)">Satır ekle (3)</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssListenAll()">Tüm olayları dinle: on('*')</button>
+        </div>
+        <panoptes-spreadsheet id="sheet" sheets="@Model.Sheets" height="460" on-event="pssOnEvent" />
+        <p class="text-xs text-slate-500 leading-relaxed">Hücre değerlerini değiştirin, aralık seçin, kopyalayıp yapıştırın, sıralayın, satır ekleyin, sayfa sekmesi ekleyin… tüm olaylar günlüğe düşer.</p>
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+    <script>
+        function pssListenAll() {
+            pssSheet().on('*', function (e) { if (e.type === 'zoom') pssLog("on('*') ile yakalandı: zoom = " + e.zoom, 'text-emerald-400'); });
+            pssLog("on('*') dinleyicisi eklendi - Görünüm sekmesinden yakınlaştırmayı değiştirin.", 'text-emerald-400');
+        }
+    </script>
+}

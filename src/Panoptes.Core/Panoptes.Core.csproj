@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>Panoptes.Core</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Fatih Ceritli, Panoptes UI</Authors>
+    <Company>Panoptes UI</Company>
+    <Product>Panoptes Core Data Engine</Product>
+    <Description>Panoptes UI Core Query Engine. Provides dynamic sorting, filtering, paging, grouping, and EF Core LINQ extensions (ToDataSourceResultAsync) for ASP.NET Core &amp; Web APIs.</Description>
+    <PackageTags>panoptes;grid;datagrid;efcore;linq;filtering;sorting;pagination;enterprise-ui</PackageTags>
+    <PackageProjectUrl>https://panoptesui.com</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ceritli/panoptesui-aspnet</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.7.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

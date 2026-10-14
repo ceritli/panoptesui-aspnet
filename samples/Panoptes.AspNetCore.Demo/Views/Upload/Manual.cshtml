@@ -1,0 +1,90 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Manual Upload (Sync) - Panoptes Enterprise UI" : "Manuel Yükleme (Sync) - Upload - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Upload" : "/Upload")" class="hover:text-blue-600 transition">Upload</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">@(isEn ? "Manual Upload (Sync)" : "Manuel Yükleme")</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Upload - @(isEn ? "Manual Upload (Sync)" : "Manuel Yükleme (Sync)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200 font-mono">
+                    auto-upload="false"
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "Batch Queue" : "Toplu Onay Kuyruğu")
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Files queue up without immediate transmission, allowing users to review and delete items before initiating batch upload." 
+                    : "Kullanıcının dosyaları seçtikten sonra manuel olarak incelemesi ve ardından toplu yüklemeyi başlatması.")
+            </p>
+        </div>
+    </div>
+
+    <!-- DEMO: Manuel Onaylı Yükleme -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-600 inline-block"></span>
+                    @(isEn ? "Manual Batch Upload (Upload All Button)" : "Manuel Onaylı Yükleme (Toplu \"Tümünü Yükle\" Butonu)")
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    @(isEn 
+                        ? "Selected documents remain in queue until the user clicks the upload button." 
+                        : "Dosyalar hemen yüklenmez; kullanıcı listeyi inceler, istediği dosyaları silebilir ve hazır olduğunda \"Tümünü Yükle\" butonuna basarak toplu gönderimi başlatır.")
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-amber-50 text-amber-700 px-2.5 py-1 rounded font-medium border border-amber-100">auto-upload="false"</span>
+        </div>
+
+        <div class="p-8 max-w-2xl mx-auto space-y-4">
+            <panoptes-upload id="manualUploadDemo" 
+                            name="batchFiles" 
+                            multiple="true" 
+                            auto-upload="false" 
+                            allowed-extensions=".pdf,.zip,.rar,.docx" 
+                            save-url="/Upload/Save"
+                            drop-zone-text="@(isEn ? "Add batch archive or document packages" : "Toplu arşiv veya evrak paketlerini ekleyin")" />
+        </div>
+
+        <!-- Tabbed Light Code Block (Prime standard) -->
+        <div class="panoptes-code-block border-t border-slate-200 bg-white overflow-hidden">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                </div>
+                <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    <span>@(isEn ? "Copy" : "Kopyala")</span>
+                </button>
+            </div>
+            <div class="panoptes-code-viewer">
+                <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-upload id="manualUploadDemo" 
+                 name="batchFiles" 
+                 multiple="true" 
+                 auto-upload="false" 
+                 allowed-extensions=".pdf,.zip,.rar,.docx" 
+                 save-url="/Upload/Save"
+                 drop-zone-text="@(isEn ? "Add batch archive or document packages" : "Toplu arşiv veya evrak paketlerini ekleyin")" /&gt;</code></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-upload.js"></script>
+}

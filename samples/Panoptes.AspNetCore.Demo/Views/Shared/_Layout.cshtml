@@ -1,0 +1,824 @@
+@using Panoptes.Core.Localization
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    var langPrefix = DemoTranslations.Prefix(isEn);
+    var groups = DemoTranslations.GetNavGroups(isEn);
+
+    var rawPath = (Context.Request.Path.Value ?? "/").TrimEnd('/').ToLowerInvariant();
+    if (rawPath == "") { rawPath = "/"; }
+    var path = rawPath;
+    if (isEn && !path.StartsWith("/en"))
+    {
+        path = "/en" + (path == "/" ? "" : path);
+    }
+
+    DemoNavItem? active = null;
+    foreach (var g in groups)
+    {
+        foreach (var it in g.Items)
+        {
+            if (string.Equals(it.Href, path, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(it.Href, rawPath, StringComparison.OrdinalIgnoreCase))
+            {
+                active = it;
+            }
+        }
+    }
+    if (active == null)
+    {
+        var bestLen = 0;
+        foreach (var g in groups)
+        {
+            foreach (var it in g.Items)
+            {
+                var h = it.Href.ToLowerInvariant();
+                if ((path.StartsWith(h + "/") || rawPath.StartsWith(h + "/")) && h.Length > bestLen)
+                {
+                    bestLen = h.Length;
+                    active = it;
+                }
+            }
+        }
+    }
+    var totalComponents = groups.Sum(g => g.Items.Count(i => !i.Sub));
+    var currentLocale = PanoptesLocales.Get(isEn ? "en-US" : System.Globalization.CultureInfo.CurrentUICulture.Name);
+}
+<!DOCTYPE html>
+<html lang="@currentLocale.Code" dir="@currentLocale.Direction">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - @(isEn ? "Panoptes Enterprise UI" : "Panoptes Kurumsal UI")</title>
+    <script>
+        window.panoptes = window.panoptes || {};
+        window.panoptes.currentLocale = '@currentLocale.Code';
+        window.panoptes.direction = '@currentLocale.Direction';
+    </script>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="~/_content/Panoptes.AspNetCore/panoptes/panoptes.css" />
+    <link rel="stylesheet" href="~/_content/Panoptes.AspNetCore/panoptes/panoptes-scheduler.css" />
+    <link rel="stylesheet" href="~/panoptes/leaflet/leaflet.css" asp-append-version="true" />
+    <style>
+        pre code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        /* ===== Global Light Theme Code Viewer Standard (Prime & Panoptes Standard) ===== */
+        .panoptes-code-snippet,
+        .panoptes-code-viewer {
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 0.75rem !important;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03) !important;
+        }
+        .panoptes-code-snippet pre,
+        .panoptes-code-viewer pre {
+            background-color: transparent !important;
+            color: #1e293b !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow-x: auto !important;
+        }
+        .panoptes-code-snippet code,
+        .panoptes-code-viewer code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+            font-size: 0.8125rem !important;
+            line-height: 1.625 !important;
+            color: #1e293b !important;
+            background: transparent !important;
+        }
+        .panoptes-code-snippet button,
+        .panoptes-code-viewer button {
+            background-color: #ffffff !important;
+            color: #475569 !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02) !important;
+            cursor: pointer !important;
+        }
+        .panoptes-code-snippet button:hover,
+        .panoptes-code-viewer button:hover {
+            background-color: #f8fafc !important;
+            color: #0f172a !important;
+        }
+
+        /* ===== Sol Menü ===== */
+        .sidebar-scroll { scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; }
+        .sidebar-scroll::-webkit-scrollbar { width: 6px; }
+        .sidebar-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+
+        .sidebar-link {
+            color: #475569;
+            transition: background-color .15s ease, color .15s ease, transform .15s ease;
+        }
+        .sidebar-link:hover { background-color: #f1f5f9; color: #0f172a; }
+        .sidebar-link.active {
+            background: linear-gradient(90deg, #eff6ff 0%, #eef2ff 100%);
+            color: #1d4ed8;
+            font-weight: 700;
+            box-shadow: inset 3px 0 0 #2563eb;
+        }
+
+        .sidebar-group > summary { list-style: none; cursor: pointer; }
+        .sidebar-group > summary::-webkit-details-marker { display: none; }
+        .sidebar-group .chev { transition: transform .2s ease; }
+        .sidebar-group[open] .chev { transform: rotate(90deg); }
+
+        .sidebar-sub { margin-left: 1.15rem; padding-left: .5rem; border-left: 1px dashed #cbd5e1; }
+        .sidebar-sub .sidebar-link.active { box-shadow: inset 3px 0 0 #2563eb; border-radius: .5rem; }
+
+        
+        @@keyframes fadeSlide { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+        .sidebar-group[open] > nav { animation: fadeSlide .18s ease; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans antialiased">
+    <!-- Top Header Navbar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+        <div class="max-w-[1700px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <a href="@(langPrefix + "/")" class="flex items-center space-x-3 group">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-700 to-indigo-500 flex items-center justify-center text-white font-black text-xl shadow-md group-hover:scale-105 transition">
+                        P
+                    </div>
+                    <div>
+                        <div class="font-extrabold text-lg tracking-tight text-slate-900 leading-none">Panoptes <span class="text-blue-600 font-bold">UI</span></div>
+                        <div class="text-[10px] text-slate-400 font-semibold tracking-wider uppercase mt-0.5">Enterprise Components</div>
+                    </div>
+                </a>
+                <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "Enterprise UI v1.0" : "Kurumsal UI v1.0")
+                </span>
+            </div>
+
+            <!-- Primary Navigation Links (Clean & Focused) -->
+            <div class="flex items-center space-x-2 text-sm">
+                <a href="@(langPrefix + "/")" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-blue-600 hover:bg-slate-100 font-medium transition flex items-center gap-1.5">
+                    <span>@DemoTranslations.T("TopNav.Showcase", isEn)</span>
+                </a>
+                <a href="@(langPrefix + "/Grid")" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-blue-600 hover:bg-slate-100 font-medium transition flex items-center gap-1.5">
+                    <span>@DemoTranslations.T("TopNav.DataGrid", isEn)</span>
+                </a>
+                <a href="@(langPrefix + "/Home/ComponentCatalog")" class="px-3 py-1.5 rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 font-semibold transition flex items-center gap-1.5 border border-blue-200">
+                    <span>@DemoTranslations.T("TopNav.Catalog", isEn)</span>
+                </a>
+                <span class="w-px h-5 bg-slate-200 mx-1"></span>
+
+                <!-- Language Selector (18 Languages) -->
+                <form id="panoptesLangForm" action="/Home/SetLanguage" method="post" class="inline-flex items-center">
+                    <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+                    <div class="relative inline-flex items-center">
+                        <select name="culture" onchange="document.getElementById('panoptesLangForm').submit()"
+                                aria-label="@(isEn ? "Language selection" : "Dil seçimi")"
+                                class="appearance-none bg-white border border-slate-200 text-slate-700 text-xs rounded-xl px-2.5 py-1.5 pr-7 font-bold hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer shadow-2xs transition">
+                            @foreach (var loc in PanoptesLocales.All)
+                            {
+                                var isSel = isEn ? loc.Code.Equals("en", StringComparison.OrdinalIgnoreCase) : loc.Code.Equals(currentLocale.Code, StringComparison.OrdinalIgnoreCase);
+                                if (isSel)
+                                {
+                                    <option value="@loc.Culture" selected="selected">@loc.Flag @loc.NativeName (@loc.Code.ToUpper())</option>
+                                }
+                                else
+                                {
+                                    <option value="@loc.Culture">@loc.Flag @loc.NativeName (@loc.Code.ToUpper())</option>
+                                }
+                            }
+                        </select>
+                        <span class="pointer-events-none absolute right-2 text-slate-400 text-[10px]">▼</span>
+                    </div>
+                </form>
+
+                <span class="w-px h-5 bg-slate-200 mx-1"></span>
+                <span class="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md border border-slate-200 hidden lg:inline-flex">
+                    @DemoTranslations.T("TopNav.ZeroDep", isEn)
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container with Sticky Sidebar -->
+    <div class="max-w-[1700px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 flex gap-8">
+        <!-- Sidebar Navigation -->
+        <aside class="w-72 shrink-0 hidden md:block">
+            <div class="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto sidebar-scroll pr-2 pb-8 space-y-4">
+
+                <!-- Search -->
+                <div>
+                    <div class="relative">
+                        <input type="text"
+                               id="sidebarSearch"
+                               autocomplete="off"
+                               placeholder="@DemoTranslations.T("TopNav.SearchPlaceholder", isEn, totalComponents)"
+                               class="w-full px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm" />
+                    </div>
+                                    </div>
+
+                <!-- Featured: Component Catalog Matrix -->
+                <a href="@(langPrefix + "/Home/ComponentCatalog")"
+                   class="block relative overflow-hidden rounded-2xl p-3.5 bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-200 hover:shadow-xl hover:-translate-y-0.5 transition">
+                    <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-white/10"></div>
+                    <div class="absolute -right-2 -bottom-8 w-20 h-20 rounded-full bg-white/10"></div>
+                    <div class="relative flex items-center justify-between">
+                        <div>
+                            <div class="text-[10px] font-bold uppercase tracking-widest text-blue-100">@DemoTranslations.T("Sidebar.CatalogBadge", isEn)</div>
+                            <div class="text-sm font-black mt-0.5">@DemoTranslations.T("Sidebar.CatalogTitle", isEn)</div>
+                            <div class="text-[11px] text-blue-100 mt-0.5">@DemoTranslations.T("Sidebar.CatalogDesc", isEn)</div>
+                        </div>
+                        <span class="bg-white/20 backdrop-blur text-white text-[10px] font-black px-2 py-1 rounded-full">@totalComponents+</span>
+                    </div>
+                </a>
+
+                <!-- Gruplar -->
+                <div class="space-y-2" id="sidebarGroups">
+                    @foreach (var group in groups)
+                    {
+                        var hasActive = active != null && group.Items.Any(i => i == active);
+                        var count = group.Items.Count(i => !i.Sub);
+                        <details class="sidebar-group bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden" data-open="@(hasActive ? "1" : "0")" @(hasActive ? "open" : "")>
+                            <summary class="flex items-center justify-between gap-2 px-3 py-2.5 hover:bg-slate-50 transition select-none">
+                                <span class="flex items-center gap-2.5 min-w-0">
+                                    <span class="text-[11px] font-black tracking-wider text-slate-700 uppercase truncate">@group.Title</span>
+                                </span>
+                                <span class="flex items-center gap-2 shrink-0">
+                                    <span class="text-[10px] bg-slate-100 text-slate-600 font-bold px-1.5 py-0.5 rounded-full">@count</span>
+                                    <svg class="chev w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                                </span>
+                            </summary>
+                            <nav class="px-2 pb-2 pt-0.5 space-y-0.5 text-xs border-t border-slate-100">
+                                @foreach (var item in group.Items)
+                                {
+                                    var isActive = item == active;
+                                    <div class="sidebar-item group relative flex items-center @(item.Sub ? "sidebar-sub" : "")">
+                                        <a href="@item.Href"
+                                           class="sidebar-link @(isActive ? "active" : "") flex-1 min-w-0 flex items-center gap-2.5 rounded-lg @(item.Sub ? "px-2 py-1.5 text-[11px]" : "px-2 py-1.5 font-semibold")">
+                                            <span class="truncate">@item.Label</span>
+                                        </a>
+                                    </div>
+                                }
+                            </nav>
+                        </details>
+                    }
+                    <div id="sidebarEmpty" class="hidden text-center text-xs text-slate-400 py-6">@DemoTranslations.T("TopNav.SearchEmpty", isEn)</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace Area -->
+        <main class="flex-1 min-w-0">
+            @if (active != null)
+            {
+                <div id="panoptesRef" class="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-blue-200 bg-gradient-to-r from-blue-50/80 via-white to-indigo-50/80 px-4 py-3 shadow-sm">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center font-black shadow-sm shrink-0">P</span>
+                        <div class="min-w-0">
+                            <div class="text-[10px] font-bold uppercase tracking-widest text-blue-700">@DemoTranslations.T("Ref.SuiteTitle", isEn)</div>
+                            <div class="text-sm font-bold text-slate-800 truncate">@active.Label &mdash; @DemoTranslations.T("Ref.SuiteSubtitle", isEn)</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <a href="@(langPrefix + "/Home/ComponentCatalog")"
+                           class="inline-flex items-center px-3 py-1.5 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold transition">
+                            @DemoTranslations.T("Ref.CatalogButton", isEn)
+                        </a>
+                    </div>
+                </div>
+            }
+            @RenderBody()
+            
+            <!-- Tech Stack Footer -->
+            <footer class="mt-20 mb-4 border-t border-slate-200 pt-6 px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 bg-transparent">
+                <div>
+                    <span class="font-bold text-slate-800">Panoptes UI</span> &copy; @DateTime.Now.Year &mdash; @DemoTranslations.T("Footer.Subtitle", isEn)
+                </div>
+                <div class="flex flex-wrap justify-center items-center gap-6">
+                    <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 hover:text-sky-600 transition" title="Styled with Tailwind CSS">
+                        <svg class="w-4 h-4 text-sky-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"></path></svg>
+                        <span class="font-medium text-slate-600">Tailwind CSS</span>
+                    </a>
+                    <a href="https://heroicons.com" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 hover:text-indigo-600 transition" title="Icons by Heroicons">
+                        <svg class="w-4 h-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" /></svg>
+                        <span class="font-medium text-slate-600">Heroicons</span>
+                    </a>
+                    <a href="https://dotnet.microsoft.com" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 hover:text-purple-700 transition" title="Powered by ASP.NET Core">
+                        <span class="font-black text-purple-600">.NET</span>
+                        <span class="font-medium text-slate-600">ASP.NET Core 8</span>
+                    </a>
+                </div>
+                <div class="text-[10px]">
+                    Built with <span class="text-red-500 text-sm">♥️</span> for modern web
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/_content/Panoptes.AspNetCore/panoptes/panoptes-grid.js" asp-append-version="true"></script>
+    <script src="~/_content/Panoptes.AspNetCore/panoptes/panoptes-components.js" asp-append-version="true"></script>
+    <script src="~/_content/Panoptes.AspNetCore/panoptes/panoptes-listview.js" asp-append-version="true"></script>
+    <script src="~/_content/Panoptes.AspNetCore/panoptes/panoptes-menu.js" asp-append-version="true"></script>
+    <script src="~/_content/Panoptes.AspNetCore/panoptes/panoptes-tabstrip.js" asp-append-version="true"></script>
+    <script src="~/_content/Panoptes.AspNetCore/panoptes/panoptes-panelbar.js" asp-append-version="true"></script>
+    <script src="~/_content/Panoptes.AspNetCore/panoptes/panoptes-drawer.js" asp-append-version="true"></script>
+    <script src="~/_content/Panoptes.AspNetCore/panoptes/panoptes-treeview.js" asp-append-version="true"></script>
+    <script src="~/_content/Panoptes.AspNetCore/panoptes/panoptes-stepper.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-toolbar.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-splitter.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-notification.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-dialog.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-window.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-taskboard.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-tilelayout.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-actionsheet.js" asp-append-version="true"></script>
+    <script src="~/_content/Panoptes.AspNetCore/panoptes/panoptes-scrollview.js" asp-append-version="true"></script>
+    <script src="~/_content/Panoptes.AspNetCore/panoptes/panoptes-lightbox.js" asp-append-version="true"></script>
+    <script src="~/_content/Panoptes.AspNetCore/panoptes/panoptes-hovergallery.js" asp-append-version="true"></script>
+    <script src="~/_content/Panoptes.AspNetCore/panoptes/panoptes-filemanager.js" asp-append-version="true"></script>
+    <script src="~/_content/Panoptes.AspNetCore/panoptes/panoptes-scheduler-core.js" asp-append-version="true"></script>
+    <script src="~/_content/Panoptes.AspNetCore/panoptes/panoptes-scheduler.js" asp-append-version="true"></script>
+    <script src="~/_content/Panoptes.AspNetCore/panoptes/panoptes-scheduler-editing.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-gantt.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-chart.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-stockchart.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-gauge.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-barcode.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-rating.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-otp.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-filter.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-treelist.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-pivotgrid.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-spreadsheet.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-diagram.js" asp-append-version="true"></script>
+    <script src="~/panoptes/leaflet/leaflet.js" asp-append-version="true"></script>
+    <script src="~/panoptes/panoptes-map.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Aktif menü öğesini görünür alana kaydır
+            const activeLink = document.querySelector('.sidebar-link.active');
+            if (activeLink) {
+                activeLink.scrollIntoView({ block: 'nearest' });
+            }
+
+            // Sidebar search filter & hide empty groups
+            const searchInput = document.getElementById('sidebarSearch');
+            const emptyMsg = document.getElementById('sidebarEmpty');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const q = e.target.value.toLowerCase().trim();
+                    let totalVisible = 0;
+                    document.querySelectorAll('.sidebar-group').forEach(group => {
+                        let visibleCount = 0;
+                        group.querySelectorAll('.sidebar-item').forEach(row => {
+                            const link = row.querySelector('.sidebar-link');
+                            const match = !q || link.textContent.toLowerCase().includes(q);
+                            row.style.display = match ? '' : 'none';
+                            if (match) visibleCount++;
+                        });
+                        totalVisible += visibleCount;
+                        group.style.display = (visibleCount > 0 || !q) ? '' : 'none';
+                        if (q) {
+                            group.open = visibleCount > 0;
+                        } else {
+                            group.open = group.dataset.open === '1';
+                        }
+                    });
+                    if (emptyMsg) emptyMsg.classList.toggle('hidden', !q || totalVisible > 0);
+                });
+            }
+        });
+
+        // ===== Panoptes Global Light Code Viewer Standard =====
+        function escapeHtml(str) {
+            return (str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function tokenizePanoptesLine(line) {
+            if (!line) return '';
+            let s = line;
+            let out = '';
+            let i = 0;
+            while (i < s.length) {
+                // Comments
+                const commentMatch = s.slice(i).match(/^(\/\/.*|\/\*[\s\S]*?\*\/|<!--.*?-->)/);
+                if (commentMatch) {
+                    out += '<span class="text-slate-400 italic">' + escapeHtml(commentMatch[0]) + '</span>';
+                    i += commentMatch[0].length;
+                    continue;
+                }
+                // Strings
+                const strMatch = s.slice(i).match(/^("[^"]*"|'[^']*'|`[^`]*`)/);
+                if (strMatch) {
+                    out += '<span class="text-sky-700 font-medium">' + escapeHtml(strMatch[0]) + '</span>';
+                    i += strMatch[0].length;
+                    continue;
+                }
+                // Tag Open
+                const tagMatch = s.slice(i).match(/^<\/?[a-zA-Z0-9_\-:]+/);
+                if (tagMatch) {
+                    out += '<span class="text-emerald-600 font-semibold">' + escapeHtml(tagMatch[0]) + '</span>';
+                    i += tagMatch[0].length;
+                    continue;
+                }
+                // Tag Close
+                const closeMatch = s.slice(i).match(/^\/?>/);
+                if (closeMatch) {
+                    out += '<span class="text-emerald-600 font-semibold">' + escapeHtml(closeMatch[0]) + '</span>';
+                    i += closeMatch[0].length;
+                    continue;
+                }
+                // Attribute name followed by =
+                const attrMatch = s.slice(i).match(/^([a-zA-Z0-9_\-:]+)(?=\=)/);
+                if (attrMatch) {
+                    out += '<span class="text-purple-600">' + escapeHtml(attrMatch[0]) + '</span>';
+                    i += attrMatch[0].length;
+                    continue;
+                }
+                // Keywords
+                const kwMatch = s.slice(i).match(/^(var|let|const|function|return|if|else|public|private|class|void|string|int|bool|true|false|new|import|export)\b/);
+                if (kwMatch) {
+                    out += '<span class="text-rose-600 font-semibold">' + escapeHtml(kwMatch[0]) + '</span>';
+                    i += kwMatch[0].length;
+                    continue;
+                }
+                out += escapeHtml(s[i]);
+                i++;
+            }
+            return out;
+        }
+
+        function formatPanoptesCodeBlocks() {
+            const blocks = document.querySelectorAll('.panoptes-code-snippet, .panoptes-code-viewer');
+            blocks.forEach(block => {
+                if (block.dataset.panoptesFormatted === '1') return;
+
+                const codeEl = block.querySelector('code') || block.querySelector('pre');
+                if (!codeEl) return;
+
+                // Extract raw text before clearing (textContent works even when details is closed)
+                let rawCode = codeEl.textContent || codeEl.innerText || '';
+                rawCode = rawCode.replace(/^\s*\n/, '').replace(/\s*$/, '');
+                if (!rawCode) return;
+
+                block.dataset.panoptesFormatted = '1';
+                block.dataset.rawCode = rawCode;
+
+                // Clean dark background classes
+                block.classList.remove('bg-slate-900', 'text-slate-200', 'border-slate-800', 'bg-[#0f172a]', 'shadow-inner');
+                block.classList.add('bg-white', 'text-slate-800', 'border', 'border-slate-200', 'rounded-xl', 'shadow-xs', 'overflow-hidden');
+
+                // Determine badge text
+                const isTagHelper = rawCode.includes('<panoptes-') || rawCode.includes('<Panoptes');
+                const badgeLabel = isTagHelper ? 'Razor TagHelper' : 'C# / HTML';
+                const copyBtnLabel = '@(isEn ? "Copy Code" : "Kodu Kopyala")';
+
+                const lines = rawCode.split('\n');
+                let lineNumsHtml = '';
+                let codeLinesHtml = '';
+
+                lines.forEach((line, idx) => {
+                    lineNumsHtml += `<div class="select-none leading-relaxed">${idx + 1}</div>`;
+                    const highlighted = tokenizePanoptesLine(line);
+                    codeLinesHtml += `<div class="leading-relaxed whitespace-pre">${highlighted || '&nbsp;'}</div>`;
+                });
+
+                block.innerHTML = `
+                    <div class="flex justify-between items-center px-4 py-2 bg-slate-50/80 border-b border-slate-200 text-xs text-slate-500 font-sans">
+                        <span class="font-semibold text-slate-700 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <span>${badgeLabel}</span>
+                        </span>
+                        <button type="button" 
+                                onclick="copyCode(this)" 
+                                class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>${copyBtnLabel}</span>
+                        </button>
+                    </div>
+                    <div class="p-4 font-mono text-xs flex overflow-x-auto bg-white">
+                        <div class="text-right pr-4 border-r border-slate-200 text-slate-400 select-none mr-4 font-mono text-xs">
+                            ${lineNumsHtml}
+                        </div>
+                        <div class="flex-1 font-mono text-xs text-slate-800">
+                            ${codeLinesHtml}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Global Copy Code Helper (Copies clean code without line numbers)
+        function copyCode(btn, codeId) {
+            let text = '';
+            if (codeId) {
+                const el = document.getElementById(codeId);
+                if (el) text = el.getAttribute('data-raw-code') || el.innerText;
+            }
+            if (!text) {
+                const container = btn.closest('.panoptes-code-snippet, .panoptes-code-viewer') || btn.parentElement;
+                if (container) {
+                    text = container.getAttribute('data-raw-code');
+                    if (!text) {
+                        const codeEl = container.querySelector('code');
+                        if (codeEl) text = codeEl.getAttribute('data-raw-code') || codeEl.innerText;
+                    }
+                }
+            }
+            if (!text) return;
+
+            navigator.clipboard.writeText(text.trim()).then(() => {
+                const orig = btn.innerHTML;
+                const copiedLabel = '@(isEn ? "✓ Copied!" : "✓ Kopyalandı!")';
+                btn.innerHTML = `<span class="text-emerald-600 font-bold flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>${copiedLabel}</span>`;
+                btn.classList.add('border-emerald-300', 'bg-emerald-50');
+                setTimeout(() => {
+                    btn.innerHTML = orig;
+                    btn.classList.remove('border-emerald-300', 'bg-emerald-50');
+                }, 2000);
+            });
+        }
+
+        window.formatPanoptesCodeBlocks = formatPanoptesCodeBlocks;
+        document.addEventListener('DOMContentLoaded', formatPanoptesCodeBlocks);
+        document.addEventListener('toggle', (e) => {
+            setTimeout(formatPanoptesCodeBlocks, 20);
+        }, true);
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('summary')) {
+                setTimeout(formatPanoptesCodeBlocks, 50);
+            }
+        });
+    </script>
+
+    @if (isEn)
+    {
+        <script>
+            (function() {
+                'use strict';
+
+                // Dictionary for universal site-wide translations
+                const exactDict = {
+                    // Common Navigation & Breadcrumb
+                    "Ana Sayfa": "Home",
+                    "Form Bileşenleri": "Form Components",
+                    "Veri Yönetimi": "Data Management",
+                    "Navigasyon Bileşenleri": "Navigation Components",
+                    "Pencereler & Bildirimler": "Windows & Notifications",
+                    "Planlama & Proje": "Scheduling & Project",
+                    "Grafik & Görsel": "Charts & Visuals",
+                    "Medya & Doküman": "Media & Documents",
+                    "Bileşen Kataloğu": "Component Catalog",
+                    "Bileşen Vitrini": "Component Showcase",
+                    "Kurumsal UI v1.0": "Enterprise UI v1.0",
+                    "Sıfır Dış Bağımlılık": "Zero External Dependencies",
+
+                    // Badges & Statuses
+                    "Kurumsal UI Bileşeni": "Enterprise UI Component",
+                    "Data Grid Özelliği": "Data Grid Feature",
+                    "✓ Tam Sürüm Hazır": "✓ Production Ready",
+                    "v1.0.0 Hazır": "v1.0.0 Ready",
+                    "✓ Akıllı Tamamlama": "✓ Smart Completion",
+                    "Hazır": "Ready",
+                    "Tamamlandı": "Completed",
+                    "Aktif": "Active",
+                    "Pasif": "Inactive",
+                    "Taslak": "Draft",
+
+                    // Demo Headers & Descriptions
+                    "📦 Canlı Grid Demosu": "📦 Live Grid Demo",
+                    "Canlı Grid Demosu": "Live Grid Demo",
+                    "Canlı Demo": "Live Demo",
+                    "Veriler In-Memory Entity Framework üzerinden asenkron yüklenmektedir": "Data loaded asynchronously via In-Memory Entity Framework",
+                    "Öne Çıkan Yetenekler": "Key Capabilities",
+                    "Temel Özellikler": "Core Features",
+                    "Gelişmiş Seçenekler": "Advanced Options",
+                    "Kullanım Senaryoları": "Usage Scenarios",
+                    "Canlı Önizleme": "Live Preview",
+                    "Demoyu Aç": "Open Demo",
+                    "İncele": "Explore",
+                    "Kaynak Kodu Görüntüle": "View Source Code",
+                    "Razor Grid TagHelper Kodu": "Razor Grid TagHelper Code",
+                    "ASP.NET Core Razor TagHelper Kod Örneği": "ASP.NET Core Razor TagHelper Code Example",
+                    "Kodu Kopyala": "Copy Code",
+                    "Kopyala": "Copy",
+                    "Yenile": "Refresh",
+                    "Filtrele": "Filter",
+                    "Temizle": "Clear",
+                    "Kaydet": "Save",
+                    "İptal": "Cancel",
+                    "Düzenle": "Edit",
+                    "Sil": "Delete",
+                    "Yeni Ekle": "Add New",
+                    "Yeni Kayıt Ekle": "Add New Record",
+
+                    // Columns & Form Labels
+                    "Ürün Adı": "Product Name",
+                    "Kategori": "Category",
+                    "Fiyat": "Price",
+                    "Birim Fiyat": "Unit Price",
+                    "Stok": "Stock",
+                    "Stok Durumu": "Stock Status",
+                    "Kayıt Tarihi": "Registration Date",
+                    "Tarih": "Date",
+                    "Tedarikçi": "Supplier",
+                    "Durum": "Status",
+                    "Değerlendirme": "Rating",
+                    "Müşteri Puanı": "Customer Rating",
+                    "Toplam Ciro": "Total Revenue",
+                    "Toplam Satış": "Total Sales",
+                    "Hedef Gerçekleşme": "Target Sales",
+                    "Hedef Satış": "Target Sales",
+                    "Menşei Ülke": "Country of Origin",
+                    "Ülke": "Country",
+                    "Şehir": "City",
+                    "Ad Soyad": "Full Name",
+                    "Departman": "Department",
+                    "Pozisyon": "Position",
+                    "Unvan": "Title",
+                    "Maaş": "Salary",
+                    "İşe Başlama Tarihi": "Hire Date",
+                    "Telefon": "Phone",
+                    "E-Posta": "Email",
+                    "Miktar": "Quantity",
+                    "Hareket Türü": "Movement Type",
+                    "Depo": "Warehouse",
+                    "Referans No": "Ref No",
+                    "Açıklama": "Description",
+                    "Eylemler": "Actions",
+                    "İşlemler": "Actions",
+
+                    // Grid Feature Page Titles & Highlights
+                    "Sayfalama (Paging)": "Paging (Pagination)",
+                    "Sıralama (Sorting & Multi-Sort)": "Sorting (Multi-Column Sort)",
+                    "Filtreleme (Filter Row & Filter Popover)": "Filtering (Filter Row & Menu)",
+                    "Gruplama & Özet Satırları (Grouping & Aggregates)": "Grouping & Aggregates",
+                    "Hiyerarşik Alt Tablo (Master-Detail Hierarchy)": "Hierarchical Master-Detail Grid",
+                    "Satır İçi Düzenleme (In-Line Editing)": "In-Line Editing",
+                    "Hücre İçi Toplu Düzenleme (In-Cell Batch Editing)": "In-Cell Batch Editing",
+                    "Açılır Pencere Düzenleme (PopUp Modal Editing)": "PopUp Modal Editing",
+                    "Satır Seçimi (Single & Multi Selection)": "Row Selection (Single & Multi)",
+                    "Sütun Yönetimi & Boyutlandırma (Column Menu & Resizing)": "Column Menu & Resizing",
+                    "Excel ve PDF Dışa Aktarma (Export Engine)": "Excel & PDF Export Engine",
+                    "Razor TagHelper Mimarisi": "Razor TagHelper Architecture",
+                    "Grup & Alt Toplamlar (Aggregates)": "Group & Footer Aggregates",
+                    "Canlı Arama Paneli (Search Panel)": "Live Search Panel",
+                    "İstemci Olayları (Client Events)": "Client Events",
+                    "İstemci API & Metotları (Client API)": "Client API & Methods",
+                    "Özelleştirilebilir Sayfa Boyutları": "Customizable Page Sizes",
+                    "Sunucu Taraflı Veri Ayrıştırma": "Server-Side Data Splitting",
+                    "Akıllı Pager Navigasyonu": "Smart Pager Navigation",
+
+                    // TreeList & Other Main Components
+                    "Hiyerarşik Ağaç Tablosu / TreeGrid": "Hierarchical Tree Table (TreeGrid)",
+                    "Hesap Tablosu (Excel Benzeri)": "Spreadsheet (Excel-like Workbook)",
+                    "Çok Boyutlu Çapraz Tablo": "PivotGrid (Multi-Dimensional Cross Table)",
+                    "Otomatik Tamamlama": "AutoComplete",
+                    "Gelişmiş Açılır Liste": "Select / DropDownList",
+                    "Çoklu Seçim": "MultiSelect",
+                    "Tarih Seçici": "DatePicker",
+                    "Tarih Aralığı Seçici": "DateRangePicker",
+                    "Saat Seçici": "TimePicker",
+                    "Tarih ve Saat Seçici": "DateTimePicker",
+                    "Sayısal Metin Kutusu": "NumericTextBox",
+                    "Maskeli Metin Kutusu": "MaskedTextBox",
+                    "Renk Seçici": "ColorPicker",
+                    "Anahtar (Switch)": "Switch / Toggle",
+                    "Onay Kutusu": "CheckBox",
+                    "Radyo Buton Grubu": "RadioGroup",
+                    "Metin Alanı": "TextArea",
+                    "Tek Satır Metin Kutusu": "TextBox",
+                    "İki Faktörlü Doğrulama Kodu Girişi": "OTP Input (SMS / 2FA)",
+                    "Dokunmatik İmza": "Touch Signature",
+                    "Yıldız Derecelendirme": "Star Rating",
+                    "Aralık Kaydırıcı": "Slider & Range",
+                    "Dosya Yükleme": "Upload (File Upload)",
+                    "Zengin Metin Editörü": "Rich Text Editor (WYSIWYG)",
+                    "Görsel Düzenleyici": "ImageEditor",
+                    "Hiyerarşik Açılır Menü": "Menu & ContextMenu",
+                    "Çok Seviyeli Akordiyon": "PanelBar (Accordion)",
+                    "Sekmeli Gezinme": "TabStrip",
+                    "Yan Çekmece": "Drawer",
+                    "Klasör Ağacı": "TreeView",
+                    "Ağaç Yapılı Açılır Liste": "DropDownTree",
+                    "Çok Sütunlu Açılır Liste": "MultiColumnComboBox",
+                    "Çok Adımlı Sihirbaz": "Stepper & Wizard",
+                    "Sayfa İçi Yol Çubuğu": "Breadcrumb",
+                    "Araç Çubuğu": "ToolBar",
+                    "Bölünmüş Panel Düzeni": "Splitter",
+                    "2D Izgara Panel Düzeni": "TileLayout Dashboard",
+                    "Açılır Bildirimler": "Notification (Toast)",
+                    "İletişim & Onay Pencereleri": "Dialog (Alert/Confirm)",
+                    "Serbest Hareketli Pencere": "Window (Modal/Draggable)",
+                    "Alttan Açılan Eylem Sayfası": "ActionSheet",
+                    "Takvim & Randevu Planlayıcı": "Scheduler",
+                    "Proje Çizelgesi & İş Planı": "Gantt Chart",
+                    "HTML5 Sürükle-Bırak Görev Panosu": "TaskBoard (Kanban)",
+                    "Vektörel Grafik Çizimi": "Charts",
+                    "Finansal Borsa Grafiği": "StockChart",
+                    "Kadran ve Termometre Göstergeleri": "Gauges",
+                    "Barkod ve Karekod Üretici": "Barcode & QRCode",
+                    "Akış ve Organizasyon Şeması": "Diagram & OrgChart",
+                    "İnteraktif Coğrafi Harita": "Map (Geo Map)",
+                    "Bulut Dosya Gezgini": "FileManager",
+                    "Gelişmiş Filtre Oluşturucu": "Filter (Query Builder)",
+                    "Gömülü PDF Okuyucu": "PDF Viewer",
+                    "Medya ve Video Oynatıcı": "MediaPlayer"
+                };
+
+                const placeholderDict = {
+                    "Ülke adı yazmaya başlayın...": "Start typing country name...",
+                    "Bileşen veya yetenek ara...": "Search components or capabilities...",
+                    "Tabloda ara...": "Search in table...",
+                    "Hızlı ara...": "Quick search...",
+                    "Tarih seçin...": "Select date...",
+                    "Değer yazın...": "Enter value...",
+                    "Seçiniz...": "Select..."
+                };
+
+                function translateText(text) {
+                    if (!text) return text;
+                    const trimmed = text.trim();
+                    if (exactDict[trimmed]) {
+                        return text.replace(trimmed, exactDict[trimmed]);
+                    }
+
+                    // Patterns & Suffixes
+                    let res = text;
+                    if (res.includes("Panoptes Kurumsal UI")) {
+                        res = res.replace("Panoptes Kurumsal UI", "Panoptes Enterprise UI");
+                    }
+                    if (res.includes("Kurumsal UI Bileşen Paketi")) {
+                        res = res.replace("Kurumsal UI Bileşen Paketi", "Enterprise UI Component Suite");
+                    }
+                    if (res.includes("Son 30 günlük giriş / çıkış logları")) {
+                        res = res.replace("Son 30 günlük giriş / çıkış logları", "Last 30 days in/out logs");
+                    }
+                    return res;
+                }
+
+                function walk(node) {
+                    if (!node) return;
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        const original = node.nodeValue;
+                        const translated = translateText(original);
+                        if (translated !== original) {
+                            node.nodeValue = translated;
+                        }
+                    } else if (node.nodeType === Node.ELEMENT_NODE) {
+                        const tag = node.tagName.toLowerCase();
+                        if (tag === 'script' || tag === 'style' || tag === 'pre' || tag === 'code') return;
+
+                        // Placeholders & Titles
+                        if (node.placeholder && placeholderDict[node.placeholder]) {
+                            node.placeholder = placeholderDict[node.placeholder];
+                        }
+                        if (node.title && exactDict[node.title]) {
+                            node.title = exactDict[node.title];
+                        }
+
+                        for (let child = node.firstChild; child; child = child.nextSibling) {
+                            walk(child);
+                        }
+                    }
+                }
+
+                function applyTranslations() {
+                    // Update Title
+                    if (document.title) {
+                        document.title = translateText(document.title);
+                    }
+
+                    // Update Main Content
+                    const main = document.querySelector('main') || document.body;
+                    walk(main);
+                }
+
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', applyTranslations);
+                } else {
+                    applyTranslations();
+                }
+
+                // Also observe dynamic DOM changes (e.g., grids rendering client-side)
+                const observer = new MutationObserver((mutations) => {
+                    for (const m of mutations) {
+                        for (const node of m.addedNodes) {
+                            if (node.nodeType === Node.ELEMENT_NODE) {
+                                walk(node);
+                            }
+                        }
+                    }
+                });
+                observer.observe(document.body, { childList: true, subtree: true });
+            })();
+        </script>
+    }
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,733 @@
+@model IEnumerable<Panoptes.AspNetCore.Demo.Controllers.MenuController.DemoProduct>
+
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Menu & ContextMenu - Panoptes UI" : "Menu & ContextMenu (Açılır Menü Sistemi) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/Menu" class="hover:text-blue-600 transition">@(isEn ? "Navigation & Layout" : "Navigasyon & Düzen")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Menu & ContextMenu</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Menu & ContextMenu @(isEn ? "(Dropdown Menu System)" : "(Açılır Menü Sistemi)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-menu&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "Multi-level hierarchical dropdown menus, horizontal or vertical layout, right-click context menu (ContextMenu), icons, and keyboard navigation." : "Çok seviyeli hiyerarşik açılır menü, yatay veya dikey yerleşim, sağ tık bağlam menüsü (ContextMenu), ikonlar ve klavye gezinimi.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Examples (Features)" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">5</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">3</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+<div class="flex items-center gap-2 shrink-0">
+            <a href="/ListView" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 transition flex items-center gap-1.5 shadow-2xs">
+                <span>🎴 ListView</span>
+            </a>
+        </div>
+
+    <!-- Quick Feature Highlights -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+            <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm mb-2">📑</div>
+            <div class="font-bold text-sm text-slate-800">Sınırsız Çok Seviye</div>
+            <div class="text-xs text-slate-500 mt-0.5">Alt alta ve yana açılan zengin hiyerarşi</div>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+            <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-sm mb-2">🖱️</div>
+            <div class="font-bold text-sm text-slate-800">Sağ Tık ContextMenu</div>
+            <div class="text-xs text-slate-500 mt-0.5">Hedefe duyarlı akıllı sağ tık menüsü</div>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+            <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm mb-2">📐</div>
+            <div class="font-bold text-sm text-slate-800">Akıllı Viewport</div>
+            <div class="text-xs text-slate-500 mt-0.5">Ekran kenarına çarpınca ters yöne açılma</div>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+            <div class="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-sm mb-2">⌨️</div>
+            <div class="font-bold text-sm text-slate-800">Kısayol & Rozetler</div>
+            <div class="text-xs text-slate-500 mt-0.5">Ctrl+S kısayolları ve renkli rozetler</div>
+        </div>
+    </div>
+
+    <!-- Demo Section 1: Yatay Çok Seviyeli Menü -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-visible">
+        <div class="p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+                    <span>1. Yatay Çok Seviyeli Menü (&lt;panoptes-menu&gt;)</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Masaüstü yazılım tarzı zengin üst menü çubuğu. Fareyle üzerine gelindiğinde veya tıklandığında alt seviyeler akıcı animasyonla açılır.
+                </p>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-mono font-medium">
+                    orientation="horizontal"
+                </span>
+            </div>
+        </div>
+
+        <div class="p-6 bg-slate-50/50">
+            <!-- Yatay Menü TagHelper -->
+            <panoptes-menu id="mainAppMenu" orientation="horizontal" on-select="onMenuItemSelect">
+                <!-- Dosya Menüsü -->
+                <panoptes-menu-item text="Dosya" icon="folder">
+                    <panoptes-menu-item text="Yeni Proje..." icon="plus" shortcut="Ctrl+N" badge="Popüler" badge-color="blue" url="#action-new" />
+                    <panoptes-menu-item text="Dosya Aç..." icon="folder" shortcut="Ctrl+O" url="#action-open" />
+                    <panoptes-menu-item text="Son Kullanılanlar" icon="clock">
+                        <panoptes-menu-item text="Mali_Tablo_2026_Q3.xlsx" icon="file" url="#recent-1" />
+                        <panoptes-menu-item text="Panoptes_Teknik_Mimari.pdf" icon="file" url="#recent-2" />
+                        <panoptes-menu-item text="Kullanici_Analiz_Raporu.docx" icon="file" url="#recent-3" />
+                        <panoptes-menu-separator />
+                        <panoptes-menu-item text="Geçmişi Temizle" icon="trash" url="#recent-clear" />
+                    </panoptes-menu-item>
+                    <panoptes-menu-separator />
+                    <panoptes-menu-item text="Kaydet" icon="save" shortcut="Ctrl+S" url="#action-save" />
+                    <panoptes-menu-item text="Farklı Kaydet..." icon="copy" shortcut="Ctrl+Shift+S" url="#action-save-as" />
+                    <panoptes-menu-item text="Dışa Aktar" icon="download">
+                        <panoptes-menu-item text="Excel (.xlsx) Olarak" icon="file" url="#export-excel" />
+                        <panoptes-menu-item text="PDF Belgesi (.pdf) Olarak" icon="file" url="#export-pdf" />
+                        <panoptes-menu-item text="JSON Verisi (.json)" icon="code" url="#export-json" />
+                    </panoptes-menu-item>
+                    <panoptes-menu-separator />
+                    <panoptes-menu-item text="Yazdır" icon="printer" shortcut="Ctrl+P" disabled="true" />
+                    <panoptes-menu-item text="Kapat & Çıkış" icon="logout" shortcut="Alt+F4" url="#action-exit" />
+                </panoptes-menu-item>
+
+                <!-- Düzenle Menüsü -->
+                <panoptes-menu-item text="Düzenle" icon="edit">
+                    <panoptes-menu-item text="Geri Al" icon="undo" shortcut="Ctrl+Z" url="#action-undo" />
+                    <panoptes-menu-item text="Yinele" icon="redo" shortcut="Ctrl+Y" url="#action-redo" />
+                    <panoptes-menu-separator />
+                    <panoptes-menu-item text="Kes" icon="scissors" shortcut="Ctrl+X" url="#action-cut" />
+                    <panoptes-menu-item text="Kopyala" icon="copy" shortcut="Ctrl+C" url="#action-copy" />
+                    <panoptes-menu-item text="Yapıştır" icon="clipboard" shortcut="Ctrl+V" disabled="true" />
+                    <panoptes-menu-separator />
+                    <panoptes-menu-item text="Tümünü Seç" shortcut="Ctrl+A" url="#action-select-all" />
+                    <panoptes-menu-item text="Arama & Değiştir" icon="search" shortcut="Ctrl+F" url="#action-find" />
+                </panoptes-menu-item>
+
+                <!-- Görünüm Menüsü -->
+                <panoptes-menu-item text="Görünüm" icon="eye">
+                    <panoptes-menu-item text="Sol Menüyü Gizle/Göster" icon="menu" shortcut="Ctrl+B" url="#toggle-sidebar" />
+                    <panoptes-menu-item text="Durum Çubuğu" url="#toggle-statusbar" />
+                    <panoptes-menu-separator />
+                    <panoptes-menu-item text="Tema Seçimi" icon="palette">
+                        <panoptes-menu-item text="Açık Tema (Panoptes Light)" icon="check" url="#theme-light" />
+                        <panoptes-menu-item text="Koyu Tema (Slate Dark)" url="#theme-dark" />
+                        <panoptes-menu-item text="Sistem Varsayılanı" url="#theme-auto" />
+                    </panoptes-menu-item>
+                    <panoptes-menu-item text="Tam Ekran Modu" icon="maximize" shortcut="F11" url="#toggle-fullscreen" />
+                </panoptes-menu-item>
+
+                <!-- Raporlar Menüsü -->
+                <panoptes-menu-item text="Raporlar" icon="chart">
+                    <panoptes-menu-item text="Satış Özeti" icon="chart" badge="Canlı" badge-color="emerald" url="#report-sales" />
+                    <panoptes-menu-item text="Stok & Envanter Durumu" icon="archive" url="#report-stock" />
+                    <panoptes-menu-item text="Müşteri Segmentasyonu" icon="users" url="#report-customers" />
+                    <panoptes-menu-separator />
+                    <panoptes-menu-item text="Finansal Bilanço (Q3)" icon="dollar" badge="2026" badge-color="purple" url="#report-finance" />
+                </panoptes-menu-item>
+
+                <!-- Ayarlar & Yardım -->
+                <panoptes-menu-item text="Yardım" icon="help">
+                    <panoptes-menu-item text="Kullanım Dokümantasyonu" icon="book" url="https://github.com" target="_blank" />
+                    <panoptes-menu-item text="Klavye Kısayolları" icon="command" url="#help-shortcuts" />
+                    <panoptes-menu-separator />
+                    <panoptes-menu-item text="Güncellemeleri Denetle" icon="refresh" badge="v1.0 Güncel" badge-color="blue" url="#help-updates" />
+                    <panoptes-menu-item text="Panoptes UI Hakkında" icon="info" url="#help-about" />
+                </panoptes-menu-item>
+            </panoptes-menu>
+        </div>
+
+        <!-- Collapsible Code Snippet (Standart Tıklayınca Açılan) -->
+        <div class="px-6 pb-4">
+            <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-menu id=&quot;mainAppMenu&quot; orientation=&quot;horizontal&quot; on-select=&quot;onMenuItemSelect&quot;&gt;
+    &lt;panoptes-menu-item text=&quot;Dosya&quot; icon=&quot;folder&quot;&gt;
+        &lt;panoptes-menu-item text=&quot;Yeni Proje...&quot; icon=&quot;plus&quot; shortcut=&quot;Ctrl+N&quot; badge=&quot;Popüler&quot; badge-color=&quot;blue&quot; url=&quot;#new&quot; /&gt;
+        &lt;panoptes-menu-item text=&quot;Dosya Aç...&quot; icon=&quot;folder&quot; shortcut=&quot;Ctrl+O&quot; url=&quot;#open&quot; /&gt;
+        &lt;panoptes-menu-item text=&quot;Son Kullanılanlar&quot; icon=&quot;clock&quot;&gt;
+            &lt;panoptes-menu-item text=&quot;Mali_Tablo_2026.xlsx&quot; icon=&quot;file&quot; /&gt;
+            &lt;panoptes-menu-item text=&quot;Panoptes_Mimari.pdf&quot; icon=&quot;file&quot; /&gt;
+        &lt;/panoptes-menu-item&gt;
+        &lt;panoptes-menu-separator /&gt;
+        &lt;panoptes-menu-item text=&quot;Kaydet&quot; icon=&quot;save&quot; shortcut=&quot;Ctrl+S&quot; /&gt;
+    &lt;/panoptes-menu-item&gt;
+    &lt;panoptes-menu-item text=&quot;Düzenle&quot; icon=&quot;edit&quot;&gt;
+        &lt;panoptes-menu-item text=&quot;Geri Al&quot; icon=&quot;undo&quot; shortcut=&quot;Ctrl+Z&quot; /&gt;
+        &lt;panoptes-menu-item text=&quot;Kes&quot; icon=&quot;scissors&quot; shortcut=&quot;Ctrl+X&quot; /&gt;
+        &lt;panoptes-menu-item text=&quot;Kopyala&quot; icon=&quot;copy&quot; shortcut=&quot;Ctrl+C&quot; /&gt;
+    &lt;/panoptes-menu-item&gt;
+    &lt;panoptes-menu-item text=&quot;Görünüm&quot; icon=&quot;eye&quot; /&gt;
+    &lt;panoptes-menu-item text=&quot;Raporlar&quot; icon=&quot;chart&quot; /&gt;
+&lt;/panoptes-menu&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- Demo Section 2: Dikey Menü (Tek Başına Tam Genişlik) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-visible p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 border-b border-slate-100 pb-4">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+                    <span>2. Dikey Menü (&lt;panoptes-menu orientation="vertical"&gt;)</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Kenar çubuğu (Sidebar) veya yönetim menüleri için sağa açılan çok seviyeli akıcı menü yapısı.
+                </p>
+            </div>
+            <span class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-mono font-medium self-start sm:self-auto">
+                orientation="vertical"
+            </span>
+        </div>
+
+        <div class="p-6 bg-slate-50/50 rounded-xl border border-slate-100">
+            <div class="max-w-xs">
+                <panoptes-menu id="sidebarMenu" orientation="vertical" on-select="onMenuItemSelect">
+                    <panoptes-menu-item text="Yönetim Konsolu" icon="home" url="#dashboard" />
+                    
+                    <panoptes-menu-item text="Ürün & Stok Yönetimi" icon="archive">
+                        <panoptes-menu-item text="Tüm Ürünler" icon="list" badge="1.420" badge-color="blue" url="#products-all" />
+                        <panoptes-menu-item text="Kategori Ağacı" icon="folder" url="#categories" />
+                        <panoptes-menu-item text="Kritik Stok Uyarıları" icon="bell" badge="14" badge-color="red" url="#stock-alerts" />
+                        <panoptes-menu-separator />
+                        <panoptes-menu-item text="Toplu Fiyat Güncelle" icon="edit" url="#batch-pricing" />
+                    </panoptes-menu-item>
+
+                    <panoptes-menu-item text="Siparişler & Faturalar" icon="dollar">
+                        <panoptes-menu-item text="Yeni Siparişler" icon="shopping-bag" badge="8 Bekleyen" badge-color="emerald" url="#orders-new" />
+                        <panoptes-menu-item text="Hazırlanan Kargolar" icon="truck" url="#orders-shipping" />
+                        <panoptes-menu-item text="İadeler & İptaller" icon="undo" url="#orders-returns" />
+                    </panoptes-menu-item>
+
+                    <panoptes-menu-item text="Kullanıcı & Yetkilendirme" icon="users">
+                        <panoptes-menu-item text="Yöneticiler" icon="shield" url="#users-admins" />
+                        <panoptes-menu-item text="Müşteriler" icon="user" url="#users-customers" />
+                        <panoptes-menu-item text="Rol ve İzin Matrisi" icon="lock" url="#users-roles" />
+                    </panoptes-menu-item>
+
+                    <panoptes-menu-separator />
+
+                    <panoptes-menu-item text="Sistem Yapılandırması" icon="settings">
+                        <panoptes-menu-item text="Genel Ayarlar" icon="sliders" url="#settings-general" />
+                        <panoptes-menu-item text="E-Posta & Bildirimler" icon="mail" url="#settings-mail" />
+                        <panoptes-menu-item text="Sistem Logları" icon="terminal" url="#settings-logs" />
+                    </panoptes-menu-item>
+                </panoptes-menu>
+            </div>
+        </div>
+
+        <!-- Collapsible Code Snippet (Standart Tıklayınca Açılan) -->
+        <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-menu id=&quot;sidebarMenu&quot; orientation=&quot;vertical&quot; on-select=&quot;onMenuItemSelect&quot;&gt;
+    &lt;panoptes-menu-item text=&quot;Yönetim Konsolu&quot; icon=&quot;home&quot; url=&quot;#dashboard&quot; /&gt;
+    &lt;panoptes-menu-item text=&quot;Ürün & Stok Yönetimi&quot; icon=&quot;archive&quot;&gt;
+        &lt;panoptes-menu-item text=&quot;Tüm Ürünler&quot; icon=&quot;list&quot; badge=&quot;1.420&quot; badge-color=&quot;blue&quot; /&gt;
+        &lt;panoptes-menu-item text=&quot;Kategori Ağacı&quot; icon=&quot;folder&quot; /&gt;
+        &lt;panoptes-menu-item text=&quot;Kritik Stok Uyarıları&quot; icon=&quot;bell&quot; badge=&quot;14&quot; badge-color=&quot;red&quot; /&gt;
+    &lt;/panoptes-menu-item&gt;
+    &lt;panoptes-menu-item text=&quot;Siparişler&quot; icon=&quot;dollar&quot; /&gt;
+    &lt;panoptes-menu-item text=&quot;Kullanıcılar&quot; icon=&quot;users&quot; /&gt;
+&lt;/panoptes-menu&gt;</code></pre>
+        </div>
+    </div>
+    </div>
+
+    <!-- Demo Section 3: Akıllı Sağ Tık ContextMenu (Tek Başına Tam Genişlik) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 border-b border-slate-100 pb-4">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                    <span>3. Akıllı Sağ Tık ContextMenu (&lt;panoptes-context-menu&gt;)</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Aşağıdaki tablodaki <strong>herhangi bir satıra sağ tıklayın</strong>. Menü tıklanan satırın <code class="text-blue-600 font-mono">data-*</code> niteliklerini otomatik okur ve akıllı koordinasyonda açılır.
+                </p>
+            </div>
+            <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 bg-amber-50 text-amber-800 border border-amber-200 rounded-lg self-start sm:self-auto">
+                <span>🖱️</span>
+                <span>Satıra Sağ Tıkla</span>
+            </span>
+        </div>
+
+        <!-- Ürün Tablosu (Hedef: .product-row) -->
+        <div class="overflow-x-auto border border-slate-200 rounded-xl">
+            <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                    <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold">
+                        <th class="p-3 w-16">ID</th>
+                        <th class="p-3">Kod</th>
+                        <th class="p-3">Ürün Adı</th>
+                        <th class="p-3">Kategori</th>
+                        <th class="p-3 text-right">Fiyat</th>
+                        <th class="p-3 text-center">Stok</th>
+                        <th class="p-3">Durum</th>
+                        <th class="p-3 text-center">İşlem</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @foreach (var p in Model)
+                    {
+                        <tr class="product-row hover:bg-blue-50/50 cursor-context-menu transition select-none"
+                            data-id="@p.Id"
+                            data-code="@p.Code"
+                            data-name="@p.Name"
+                            data-category="@p.Category"
+                            data-price="@p.Price.ToString("N2")"
+                            data-status="@p.Status">
+                            <td class="p-3 font-mono font-bold text-slate-400">#@p.Id</td>
+                            <td class="p-3 font-mono font-semibold text-slate-700">@p.Code</td>
+                            <td class="p-3 font-bold text-slate-900 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full @(p.Stock > 10 ? "bg-emerald-500" : p.Stock > 0 ? "bg-amber-500" : "bg-red-500")"></span>
+                                <span>@p.Name</span>
+                            </td>
+                            <td class="p-3 text-slate-600">@p.Category</td>
+                            <td class="p-3 text-right font-mono font-bold text-slate-900">₺@p.Price.ToString("N2")</td>
+                            <td class="p-3 text-center font-mono">@p.Stock Adet</td>
+                            <td class="p-3">
+                                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold @(p.Status == "Aktif" ? "bg-emerald-100 text-emerald-800" : p.Status == "Kritik Stok" ? "bg-amber-100 text-amber-800" : "bg-red-100 text-red-800")">
+                                    @p.Status
+                                </span>
+                            </td>
+                            <td class="p-3 text-center">
+                                <button type="button" class="text-slate-400 hover:text-blue-600 p-1 rounded hover:bg-slate-100 transition" onclick="triggerContextMenuDirectly(event, @p.Id)">
+                                    ⋮
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ContextMenu TagHelper Tanımı -->
+        <panoptes-context-menu id="productContextMenu" target=".product-row" on-select="onContextMenuSelect">
+            <panoptes-menu-item text="Ürün Detayını Aç" icon="eye" shortcut="Enter" url="#view" />
+            <panoptes-menu-item text="Fiyat & Bilgi Düzenle" icon="edit" shortcut="E" url="#edit" />
+            <panoptes-menu-item text="Ürün Kodunu Kopyala" icon="copy" shortcut="Ctrl+C" url="#copy-code" />
+            
+            <panoptes-menu-separator />
+
+            <panoptes-menu-item text="Stok & Tedarik" icon="archive">
+                <panoptes-menu-item text="Depodan Sayım Talep Et" icon="clipboard" url="#stock-count" />
+                <panoptes-menu-item text="Tedarikçiye Sipariş Geç" icon="truck" url="#stock-order" />
+                <panoptes-menu-item text="Kritik Eşik Seviyesi Ata" icon="sliders" url="#stock-threshold" />
+            </panoptes-menu-item>
+
+            <panoptes-menu-item text="Dışa Aktar & Paylaş" icon="share">
+                <panoptes-menu-item text="Barkod / QR Etiketi Yazdır" icon="printer" url="#print-barcode" />
+                <panoptes-menu-item text="JSON Olarak Dışa Aktar" icon="code" url="#export-single-json" />
+            </panoptes-menu-item>
+
+            <panoptes-menu-separator />
+
+            <panoptes-menu-item text="Satışı Durdur (Pasife Al)" icon="lock" url="#disable" />
+            <panoptes-menu-item text="Ürünü Kalıcı Olarak Sil" icon="trash" shortcut="Del" url="#delete" />
+        </panoptes-context-menu>
+
+        <div class="mt-4 p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-500 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Hedef Seçici: <code class="text-blue-700 font-mono font-bold">target=".product-row"</code></span>
+            </div>
+            <span>Ekranın en sağına veya altına sağ tıklandığında menü otomatik olarak içe katlanır.</span>
+        </div>
+
+        <!-- Collapsible Code Snippet (Standart Tıklayınca Açılan - Tüm Kod Detayları) -->
+        <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;!-- Hedef Tablo Satırları (data-* nitelikleriyle dinamik veri taşıma) --&gt;
+&lt;tr class=&quot;product-row&quot; data-id=&quot;101&quot; data-code=&quot;PRD-001&quot; data-name=&quot;MacBook Pro&quot; data-price=&quot;124999.00&quot;&gt;
+    &lt;td&gt;PRD-001&lt;/td&gt;
+    &lt;td&gt;MacBook Pro M3 Max&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;!-- Akıllı Sağ Tık ContextMenu Bileşeni --&gt;
+&lt;panoptes-context-menu id=&quot;productContextMenu&quot; target=&quot;.product-row&quot; on-select=&quot;onContextMenuSelect&quot;&gt;
+    &lt;panoptes-menu-item text=&quot;Ürün Detayını Aç&quot; icon=&quot;eye&quot; shortcut=&quot;Enter&quot; url=&quot;#view&quot; /&gt;
+    &lt;panoptes-menu-item text=&quot;Fiyat &amp; Bilgi Düzenle&quot; icon=&quot;edit&quot; shortcut=&quot;E&quot; url=&quot;#edit&quot; /&gt;
+    &lt;panoptes-menu-item text=&quot;Ürün Kodunu Kopyala&quot; icon=&quot;copy&quot; shortcut=&quot;Ctrl+C&quot; url=&quot;#copy-code&quot; /&gt;
+    &lt;panoptes-menu-separator /&gt;
+    &lt;panoptes-menu-item text=&quot;Stok &amp; Tedarik&quot; icon=&quot;archive&quot;&gt;
+        &lt;panoptes-menu-item text=&quot;Depodan Sayım Talep Et&quot; icon=&quot;clipboard&quot; url=&quot;#stock-count&quot; /&gt;
+        &lt;panoptes-menu-item text=&quot;Tedarikçiye Sipariş Geç&quot; icon=&quot;truck&quot; url=&quot;#stock-order&quot; /&gt;
+    &lt;/panoptes-menu-item&gt;
+    &lt;panoptes-menu-separator /&gt;
+    &lt;panoptes-menu-item text=&quot;Ürünü Kalıcı Olarak Sil&quot; icon=&quot;trash&quot; shortcut=&quot;Del&quot; url=&quot;#delete&quot; /&gt;
+&lt;/panoptes-context-menu&gt;</code></pre>
+        </div>
+    </div>
+    </div>
+
+    <!-- Canlı Olay Konsolu (Live Event Log - Tek Başına Tam Genişlik) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
+        <div class="p-4 border-b border-slate-200 bg-slate-50/80 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Canlı Menü Etkileşim Günlüğü (Event Log)</h3>
+            </div>
+            <button type="button" onclick="clearEventLog()" class="text-xs text-slate-500 hover:text-slate-800 px-2 py-0.5 rounded hover:bg-slate-200 transition">
+                Günlüğü Temizle
+            </button>
+        </div>
+        <div id="eventConsole" class="p-4 bg-slate-950 font-mono text-xs text-emerald-400 h-44 overflow-y-auto space-y-1.5">
+            <div class="text-slate-500">// Menü öğelerine veya tablodaki satırlara sağ tıklayarak aksiyon seçin...</div>
+        </div>
+    </div>
+
+    <!-- TagHelper Parametre ve Nitelik Referansı (API Referans Tablosu) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
+        <div class="p-5 border-b border-slate-200 bg-slate-50/70">
+            <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <span>📚</span>
+                <span>TagHelper Nitelik &amp; Parametre Referansı (API Dokümantasyonu)</span>
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">
+                &lt;panoptes-menu&gt;, &lt;panoptes-context-menu&gt; ve &lt;panoptes-menu-item&gt; bileşenlerinin tüm yapılandırma nitelikleri.
+            </p>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold">
+                        <th class="p-3 w-44">Nitelik (Attribute)</th>
+                        <th class="p-3 w-32">Tip</th>
+                        <th class="p-3 w-32">Varsayılan</th>
+                        <th class="p-3">Açıklama &amp; Desteklenen Değerler</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="p-3 font-mono font-bold text-blue-700">orientation</td>
+                        <td class="p-3 font-mono text-slate-600">string</td>
+                        <td class="p-3 font-mono text-slate-500">"horizontal"</td>
+                        <td class="p-3 text-slate-700">Menü yönü: <code class="text-blue-700">horizontal</code> (üst menü çubuğu), <code class="text-blue-700">vertical</code> (kenar çubuğu / dikey yönetim menüsü).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="p-3 font-mono font-bold text-blue-700">target</td>
+                        <td class="p-3 font-mono text-slate-600">string</td>
+                        <td class="p-3 font-mono text-slate-500">null</td>
+                        <td class="p-3 text-slate-700">(&lt;panoptes-context-menu&gt; için) Sağ tıklandığında menünün açılacağı hedef CSS seçicisi (Örn: <code class="text-blue-700">.product-row</code>, <code class="text-blue-700">#myTable tr</code>).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="p-3 font-mono font-bold text-blue-700">text</td>
+                        <td class="p-3 font-mono text-slate-600">string</td>
+                        <td class="p-3 font-mono text-slate-500">""</td>
+                        <td class="p-3 text-slate-700">(&lt;panoptes-menu-item&gt; için) Menü öğesinin üzerinde görüntülenecek başlık metni.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="p-3 font-mono font-bold text-blue-700">icon</td>
+                        <td class="p-3 font-mono text-slate-600">string</td>
+                        <td class="p-3 font-mono text-slate-500">null</td>
+                        <td class="p-3 text-slate-700">Menü öğesinin solunda yer alacak SVG ikon adı (<code class="text-blue-700">folder</code>, <code class="text-blue-700">save</code>, <code class="text-blue-700">copy</code>, <code class="text-blue-700">trash</code>, <code class="text-blue-700">eye</code> vb.).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="p-3 font-mono font-bold text-blue-700">shortcut</td>
+                        <td class="p-3 font-mono text-slate-600">string</td>
+                        <td class="p-3 font-mono text-slate-500">null</td>
+                        <td class="p-3 text-slate-700">Menü öğesinin sağında gösterilecek klavye kısayol etiketi (Örn: <code class="text-blue-700">Ctrl+S</code>, <code class="text-blue-700">Alt+F4</code>, <code class="text-blue-700">Del</code>).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="p-3 font-mono font-bold text-blue-700">badge / badge-color</td>
+                        <td class="p-3 font-mono text-slate-600">string</td>
+                        <td class="p-3 font-mono text-slate-500">null / "blue"</td>
+                        <td class="p-3 text-slate-700">Menü öğesinde gösterilecek renkli bildirim rozeti metni ve rengi (<code class="text-blue-700">blue</code>, <code class="text-emerald-700">emerald</code>, <code class="text-amber-700">amber</code>, <code class="text-red-700">red</code>).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="p-3 font-mono font-bold text-blue-700">disabled</td>
+                        <td class="p-3 font-mono text-slate-600">bool</td>
+                        <td class="p-3 font-mono text-slate-500">false</td>
+                        <td class="p-3 text-slate-700">Menü öğesini pasif hale getirir; tıklamayı ve alt menü açılmasını engeller, soluk renkle gösterilir.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="p-3 font-mono font-bold text-blue-700">on-select</td>
+                        <td class="p-3 font-mono text-slate-600">string</td>
+                        <td class="p-3 font-mono text-slate-500">null</td>
+                        <td class="p-3 text-slate-700">Menü veya ContextMenu öğesi tıklandığında çalışan JavaScript fonksiyonu. ContextMenu için <code class="text-blue-700">e.targetData</code> nesnesi sağlar.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">TagHelper Özellikleri & Parametreleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-menu&gt; bileşeninin desteklediği tüm C# ve HTML nitelikleri.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesMenuTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-4">Varsayılan</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşen kimliği.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">orientation</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"horizontal"</td>
+                            <td class="py-3 px-6 text-slate-700">Yön: "horizontal" veya "vertical".</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">open-on</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"hover"</td>
+                            <td class="py-3 px-6 text-slate-700">Açılma tetikleyicisi: "hover" veya "click".</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Klavye Erişilebilirliği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes Menu & ContextMenu bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Nitelikleri</div>
+                    <div class="text-slate-600">
+                        Standart <code>role="menubar / menu"</code> rolünü taşır. Duruma göre <code>aria-disabled</code>, <code>aria-expanded</code>, <code>aria-selected</code> ve <code>aria-label</code> nitelikleri dinamik olarak güncellenir.
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Odak Yönetimi (Focus Management)</div>
+                    <div class="text-slate-600">
+                        Sekme sırasını doğal akışında korur (<code>tabIndex="0"</code>). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları (Keyboard Shortcuts)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev (Function)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Sağ / Sol Ok</kbd></td>
+                                <td class="py-2.5 px-4">Üst düzey menü öğeleri arasında gezinir.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Aşağı / Yukarı Ok</kbd></td>
+                                <td class="py-2.5 px-4">Açılan alt menü öğeleri arasında gezinir.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter / Space</kbd></td>
+                                <td class="py-2.5 px-4">Menü öğesini tıklar / çalıştırır.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Escape</kbd></td>
+                                <td class="py-2.5 px-4">Açık olan alt menüyü kapatır.</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+// Olay Konsoluna Yazma
+        function logEvent(type, title, details) {
+            const consoleEl = document.getElementById('eventConsole');
+            if (!consoleEl) return;
+
+            const time = new Date().toLocaleTimeString('tr-TR');
+            const row = document.createElement('div');
+            row.className = 'flex items-start gap-2 py-0.5 border-b border-slate-900/60';
+            
+            const badgeColor = type === 'context' ? 'text-amber-400 bg-amber-950/60 border-amber-800' : 'text-blue-400 bg-blue-950/60 border-blue-800';
+            
+            row.innerHTML = `
+                <span class="text-slate-500 shrink-0 font-mono text-[10px]">[${time}]</span>
+                <span class="px-1.5 py-0.2 rounded border text-[10px] font-bold shrink-0 ${badgeColor}">${type === 'context' ? 'CONTEXT' : 'MENU'}</span>
+                <div class="flex-1">
+                    <strong class="text-slate-200">${title}</strong>
+                    <div class="text-[11px] text-slate-400 mt-0.5">${details}</div>
+                </div>
+            `;
+
+            consoleEl.appendChild(row);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        function clearEventLog() {
+            const consoleEl = document.getElementById('eventConsole');
+            if (consoleEl) {
+                consoleEl.innerHTML = '<div class="text-slate-500">// Günlük temizlendi.</div>';
+            }
+        }
+
+        // Yatay/Dikey Menü Seçim Olayı
+        function onMenuItemSelect(e) {
+            const item = e.item;
+            const details = `URL/Hash: <span class="text-amber-300">${item.url || '-'}</span> | Kısayol: <span class="text-blue-300">${item.shortcut || '-'}</span> | Rozet: <span class="text-purple-300">${item.badge || '-'}</span>`;
+            logEvent('menu', `"${item.text}" Menü Öğesi Seçildi`, details);
+
+            // Özel aksiyonlar
+            if (item.url === '#theme-light' || item.url === '#theme-dark') {
+                alert(`Tema değiştirildi: ${item.text}`);
+            }
+        }
+
+        // Sağ Tık ContextMenu Seçim Olayı
+        function onContextMenuSelect(e) {
+            const item = e.item;
+            const targetData = e.targetData || {};
+            const productDesc = targetData.name ? `${targetData.code} - ${targetData.name} (₺${targetData.price})` : 'Hedef veri bulunamadı';
+            
+            const details = `Seçilen Aksiyon: <span class="text-amber-300">${item.text}</span> [${item.url}]<br/>Hedef Satır Verisi: <span class="text-emerald-300">${productDesc}</span>`;
+            logEvent('context', `Bağlam Menüsü: ${item.text}`, details);
+
+            if (item.url === '#delete') {
+                if (confirm(`'${targetData.name}' isimli ürünü silmek istediğinize emin misiniz?`)) {
+                    logEvent('context', 'Silme İşlemi Onaylandı', `Ürün ID: ${targetData.id} veritabanından kaldırılmak üzere tetiklendi.`);
+                }
+            } else if (item.url === '#copy-code') {
+                if (targetData.code) {
+                    navigator.clipboard.writeText(targetData.code).then(() => {
+                        logEvent('context', 'Pano Kopyalama Başarılı', `Kopyalanan Kod: ${targetData.code}`);
+                    });
+                }
+            }
+        }
+
+        // Tablodaki üç nokta butonuna tıklanınca ContextMenu tetikleme
+        function triggerContextMenuDirectly(event, productId) {
+            event.stopPropagation();
+            const row = document.querySelector(`.product-row[data-id="${productId}"]`);
+            if (row && window.Panoptes && window.Panoptes.ContextMenu) {
+                const instance = window.Panoptes.ContextMenu.get('productContextMenu');
+                if (instance) {
+                    const rect = event.target.getBoundingClientRect();
+                    instance.openAt(rect.right, rect.bottom, row);
+                }
+            }
+        }
+</script>
+}

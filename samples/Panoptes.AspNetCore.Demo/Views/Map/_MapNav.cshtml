@@ -1,0 +1,39 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    var langPrefix = DemoTranslations.Prefix(isEn);
+    var activeTab = (string)(ViewData["ActiveTab"] ?? "Overview");
+    var navLinks = new[]
+    {
+        new { Key = "Overview", Title = isEn ? "1. Overview" : "1. Genel Bakış", Url = langPrefix + "/Map/Overview" },
+        new { Key = "TagHelper", Title = isEn ? "2. TagHelper" : "2. TagHelper", Url = langPrefix + "/Map/TagHelper" },
+        new { Key = "TileLayers", Title = isEn ? "3. Tile Layers" : "3. Karo Katmanları (Tile)", Url = langPrefix + "/Map/TileLayers" },
+        new { Key = "BubbleLayer", Title = isEn ? "4. Bubble Layer" : "4. Kabarcık Katmanı (Bubble)", Url = langPrefix + "/Map/BubbleLayer" },
+        new { Key = "GeoJson", Title = isEn ? "5. GeoJSON & Vector" : "5. GeoJSON & Vektör", Url = langPrefix + "/Map/GeoJson" },
+        new { Key = "Markers", Title = isEn ? "6. Markers & Popups" : "6. İşaretçiler (Markers)", Url = langPrefix + "/Map/Markers" },
+        new { Key = "Export", Title = isEn ? "7. Export" : "7. Dışa Aktarma (Export)", Url = langPrefix + "/Map/Export" },
+        new { Key = "Events", Title = isEn ? "8. Events" : "8. Olaylar (Events)", Url = langPrefix + "/Map/Events" },
+        new { Key = "Api", Title = isEn ? "9. Client API" : "9. İstemci API", Url = langPrefix + "/Map/Api" }
+    };
+}
+
+<div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm overflow-x-auto mb-6">
+    <div class="flex items-center gap-1.5 min-w-max">
+        @foreach (var tab in navLinks)
+        {
+            var isActive = tab.Key.Equals(activeTab, System.StringComparison.OrdinalIgnoreCase);
+            if (isActive)
+            {
+                <span class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm flex items-center gap-1.5 cursor-default">
+                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                    <span>@tab.Title</span>
+                </span>
+            }
+            else
+            {
+                <a href="@tab.Url" class="px-3.5 py-1.5 rounded-xl text-xs font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-100 transition">
+                    @tab.Title
+                </a>
+            }
+        }
+    </div>
+</div>

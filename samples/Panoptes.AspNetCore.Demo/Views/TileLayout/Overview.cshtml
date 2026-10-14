@@ -1,0 +1,357 @@
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "TileLayout (Dashboard Grid) - Panoptes Corporate UI" : "TileLayout (Dashboard Izgarası) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/TileLayout/Overview" class="hover:text-blue-600 transition">@(isEn ? "Navigation & Layout" : "Navigasyon & Düzen")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">TileLayout</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">TileLayout @(isEn ? "(Dashboard Grid)" : "(Dashboard Izgarası)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-tilelayout&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "Draggable, 2D resizable enterprise dashboard grid component with dynamic tile add/remove capabilities." : "Sürüklenebilir, 2D boyutlandırılabilir ve dinamik kart ekleme/çıkarma yetenekli kurumsal gösterge paneli (dashboard) bileşeni.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Features & Demos" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">1</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">4</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+
+    <!-- Live Interactive Dashboard Demo -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+            <div>
+                <h2 class="text-lg font-bold text-slate-800">Canlı Dashboard Pano Gösterimi</h2>
+                <p class="text-xs text-slate-500">Kartların sol üstündeki taşıma tutamacından sürükleyip sıralayabilir, sağ alttaki köşeden boyutlandırabilirsiniz.</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <button type="button" onclick="resetOverviewDashboard()" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    <span>Varsayılan Düzene Dön</span>
+                </button>
+            </div>
+        </div>
+
+        <panoptes-tilelayout id="dashboardLayout" columns="3" row-height="170px" gap="16px" reorderable="true" resizable="true">
+            <!-- Kart 1: Gelir Metriği -->
+            <panoptes-tilelayout-item id="tile-revenue" header-text="Toplam Gelir (Bu Ay)" col-span="1" row-span="1">
+                <div class="flex flex-col justify-between h-full">
+                    <div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight">₺1.428.500</div>
+                        <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-emerald-600">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                            <span>Geçen aya göre +%18.4</span>
+                        </div>
+                    </div>
+                    <div class="h-10 w-full flex items-end gap-1 pt-2">
+                        <div class="w-1/6 bg-indigo-200 rounded-t h-4"></div>
+                        <div class="w-1/6 bg-indigo-300 rounded-t h-6"></div>
+                        <div class="w-1/6 bg-indigo-400 rounded-t h-8"></div>
+                        <div class="w-1/6 bg-indigo-300 rounded-t h-5"></div>
+                        <div class="w-1/6 bg-indigo-500 rounded-t h-9"></div>
+                        <div class="w-1/6 bg-indigo-600 rounded-t h-10"></div>
+                    </div>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <!-- Kart 2: Aktif Kullanıcılar -->
+            <panoptes-tilelayout-item id="tile-users" header-text="Aktif Ziyaretçiler" col-span="1" row-span="1">
+                <div class="flex flex-col justify-between h-full">
+                    <div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight">24.890</div>
+                        <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-indigo-600">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                            <span>Canlıda 412 kişi aktif</span>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs text-slate-500">
+                            <span>Hedeflenen: 30.000</span>
+                            <span class="font-bold text-slate-700">%83</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                            <div class="bg-indigo-600 h-2 rounded-full" style="width: 83%"></div>
+                        </div>
+                    </div>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <!-- Kart 3: Sipariş Dönüşüm Oranı -->
+            <panoptes-tilelayout-item id="tile-conversion" header-text="Dönüşüm Oranı" col-span="1" row-span="1">
+                <div class="flex flex-col justify-between h-full">
+                    <div>
+                        <div class="text-2xl font-black text-slate-900 tracking-tight">%4.65</div>
+                        <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-rose-500">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6"/></svg>
+                            <span>-%0.3 düşüş</span>
+                        </div>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 flex items-center justify-between">
+                        <span>Tamamlanan Sipariş</span>
+                        <span class="font-bold text-slate-800">1.842 adet</span>
+                    </div>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <!-- Kart 4: Satış Grafiği (Büyük Alan) -->
+            <panoptes-tilelayout-item id="tile-sales-chart" header-text="Aylık Satış & Ciro Trendi" col-span="2" row-span="2">
+                <div class="flex flex-col h-full justify-between">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="text-xs text-slate-500">2026 Yılı Satış Verileri (Bin ₺)</div>
+                        <div class="flex items-center gap-3 text-xs font-medium">
+                            <span class="flex items-center gap-1 text-indigo-600"><span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span> Gerçekleşen</span>
+                            <span class="flex items-center gap-1 text-slate-400"><span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span> Hedef</span>
+                        </div>
+                    </div>
+                    <!-- Mock SVG Line Chart -->
+                    <div class="h-44 w-full relative">
+                        <svg class="w-full h-full" viewBox="0 0 500 150" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="gradSales" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#6366f1" stop-opacity="0.3" />
+                                    <stop offset="100%" stop-color="#6366f1" stop-opacity="0.0" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M0,120 Q80,90 150,60 T300,40 T450,20 L450,150 L0,150 Z" fill="url(#gradSales)" />
+                            <path d="M0,120 Q80,90 150,60 T300,40 T450,20" fill="none" stroke="#6366f1" stroke-width="3" />
+                            <circle cx="150" cy="60" r="4" fill="#ffffff" stroke="#6366f1" stroke-width="2"/>
+                            <circle cx="300" cy="40" r="4" fill="#ffffff" stroke="#6366f1" stroke-width="2"/>
+                            <circle cx="450" cy="20" r="4" fill="#ffffff" stroke="#6366f1" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="grid grid-cols-4 gap-2 pt-2 border-t border-slate-100 text-center">
+                        <div><div class="text-xs text-slate-400">Ocak</div><div class="text-xs font-bold text-slate-700">₺240K</div></div>
+                        <div><div class="text-xs text-slate-400">Şubat</div><div class="text-xs font-bold text-slate-700">₺310K</div></div>
+                        <div><div class="text-xs text-slate-400">Mart</div><div class="text-xs font-bold text-slate-700">₺420K</div></div>
+                        <div><div class="text-xs text-slate-400">Nisan</div><div class="text-xs font-bold text-indigo-600">₺550K</div></div>
+                    </div>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <!-- Kart 5: Canlı Sistem Aktiviteleri -->
+            <panoptes-tilelayout-item id="tile-activities" header-text="Son Sistem Hareketleri" col-span="1" row-span="2">
+                <div class="space-y-3 overflow-y-auto max-h-full pr-1">
+                    <div class="flex items-start gap-2.5 pb-2 border-b border-slate-100">
+                        <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 text-xs font-bold">✓</div>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold text-slate-800 truncate">Yeni sipariş #58210 onaylandı</p>
+                            <p class="text-[11px] text-slate-400">2 dakika önce • ₺4.850</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2.5 pb-2 border-b border-slate-100">
+                        <div class="w-7 h-7 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 text-xs font-bold">👤</div>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold text-slate-800 truncate">Ahmet Yılmaz sisteme kaydoldu</p>
+                            <p class="text-[11px] text-slate-400">14 dakika önce • Bireysel Müşteri</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2.5 pb-2 border-b border-slate-100">
+                        <div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center shrink-0 text-xs font-bold">⚡</div>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold text-slate-800 truncate">Veritabanı optimizasyonu tamamlandı</p>
+                            <p class="text-[11px] text-slate-400">45 dakika önce • Otomatik Görev</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-2.5">
+                        <div class="w-7 h-7 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center shrink-0 text-xs font-bold">📦</div>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold text-slate-800 truncate">Stok güncellemesi yapıldı (124 ürün)</p>
+                            <p class="text-[11px] text-slate-400">1 saat önce • Depo Servisi</p>
+                        </div>
+                    </div>
+                </div>
+            </panoptes-tilelayout-item>
+        </panoptes-tilelayout>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-tilelayout id=&quot;dashboardLayout&quot; columns=&quot;3&quot; row-height=&quot;170px&quot; gap=&quot;16px&quot; reorderable=&quot;true&quot; resizable=&quot;true&quot;&gt;
+    &lt;panoptes-tilelayout-item id=&quot;tile-revenue&quot; header-text=&quot;Toplam Gelir (Bu Ay)&quot; col-span=&quot;1&quot; row-span=&quot;1&quot;&gt;
+        &lt;div class=&quot;text-2xl font-black text-slate-900&quot;&gt;₺1.428.500&lt;/div&gt;
+    &lt;/panoptes-tilelayout-item&gt;
+
+    &lt;panoptes-tilelayout-item id=&quot;tile-users&quot; header-text=&quot;Aktif Ziyaretçiler&quot; col-span=&quot;1&quot; row-span=&quot;1&quot;&gt;
+        &lt;div class=&quot;text-2xl font-black text-slate-900&quot;&gt;24.890&lt;/div&gt;
+    &lt;/panoptes-tilelayout-item&gt;
+
+    &lt;panoptes-tilelayout-item id=&quot;tile-sales-chart&quot; header-text=&quot;Aylık Satış Trendi&quot; col-span=&quot;2&quot; row-span=&quot;2&quot;&gt;
+        &lt;!-- Grafikler veya Grid bileşenleri --&gt;
+    &lt;/panoptes-tilelayout-item&gt;
+&lt;/panoptes-tilelayout&gt;</code></pre>
+        </div>
+    </div>
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">TagHelper Özellikleri & Parametreleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-tilelayout&gt; bileşeninin desteklediği tüm C# ve HTML nitelikleri.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesTilelayoutTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-4">Varsayılan</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşen kimliği.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">columns</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">int</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">3</td>
+                            <td class="py-3 px-6 text-slate-700">Varsayılan ızgara sütun adedi.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">reorderable</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">Kartların sürüklenerek yer değiştirmesi.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">resizable</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">Kart boyutlandırma izni.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Klavye Erişilebilirliği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes TileLayout bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Nitelikleri</div>
+                    <div class="text-slate-600">
+                        Standart <code>role="grid / region"</code> rolünü taşır. Duruma göre <code>aria-disabled</code>, <code>aria-expanded</code>, <code>aria-selected</code> ve <code>aria-label</code> nitelikleri dinamik olarak güncellenir.
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Odak Yönetimi (Focus Management)</div>
+                    <div class="text-slate-600">
+                        Sekme sırasını doğal akışında korur (<code>tabIndex="0"</code>). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları (Keyboard Shortcuts)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev (Function)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Tab</kbd></td>
+                                <td class="py-2.5 px-4">Dashboard kartları arasında gezinir.</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        function resetOverviewDashboard() {
+            const tl = window.Panoptes.TileLayout.get('dashboardLayout');
+            if (tl) tl.reset();
+        }
+    </script>
+}

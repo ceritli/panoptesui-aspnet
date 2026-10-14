@@ -1,0 +1,285 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Map - Client JavaScript API" : "Map - İstemci API (Client API)";
+    ViewData["ActiveTab"] = "Api";
+}
+
+<div class="space-y-6">
+    <partial name="_MapNav" />
+
+    <!-- Hero Header -->
+    <div class="bg-gradient-to-r from-cyan-800 via-blue-700 to-indigo-800 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
+        <div class="relative z-10 max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold text-white mb-4">
+                <span>@(isEn ? "Programmatic Map Control" : "Programatik Harita Kontrolü")</span>
+            </div>
+            <h1 class="text-3xl font-extrabold tracking-tight mb-3">@(isEn ? "Client JavaScript API (Client API)" : "İstemci JavaScript API (Client API)")</h1>
+            <p class="text-cyan-100 text-sm sm:text-base leading-relaxed">
+                @(isEn ? "Access all programmatic methods via Panoptes.Map.getInstance(id) to pan center, configure zoom levels, dynamically add/remove markers and inspect bounds." : "Panoptes.Map.getInstance(id) üzerinden harita merkezini kaydırma, yakınlaştırma seviyesini belirleme, dinamik işaretçi (marker) ekleyip çıkarma ve sınırları okuma gibi tüm metotlara erişebilirsiniz.")
+            </p>
+        </div>
+        <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+    </div>
+
+    <!-- API Control Panel Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Sol Kontrol Paneli -->
+        <div class="lg:col-span-1 bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-6">
+            <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-3">@(isEn ? "API Control Console" : "API Kontrol Konsolu")</h3>
+
+            <!-- 1. Konum & Zoom -->
+            <div class="space-y-3">
+                <label class="text-xs font-bold text-slate-700 block uppercase tracking-wider">@(isEn ? "Go to Center (center)" : "Merkeze Git (center)")</label>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <button type="button" onclick="apiGoTo(41.0082, 28.9784, 11)" class="p-2 rounded-xl bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 font-semibold transition text-left cursor-pointer">
+                        📍 İstanbul
+                    </button>
+                    <button type="button" onclick="apiGoTo(39.9334, 32.8597, 11)" class="p-2 rounded-xl bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 font-semibold transition text-left cursor-pointer">
+                        📍 Ankara
+                    </button>
+                    <button type="button" onclick="apiGoTo(51.5074, -0.1278, 11)" class="p-2 rounded-xl bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 font-semibold transition text-left cursor-pointer">
+                        🌍 @(isEn ? "London" : "Londra")
+                    </button>
+                    <button type="button" onclick="apiGoTo(35.6762, 139.6503, 11)" class="p-2 rounded-xl bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 font-semibold transition text-left cursor-pointer">
+                        🌏 Tokyo
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. Yakınlaştırma Seviyesi -->
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <label class="text-xs font-bold text-slate-700 block uppercase tracking-wider">@(isEn ? "Zoom Level (zoom)" : "Yakınlaştırma (zoom)")</label>
+                    <span id="apiZoomVal" class="text-xs font-mono font-bold text-indigo-600">Zoom: 6</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="apiZoomDelta(-1)" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold transition cursor-pointer">
+                        @(isEn ? "- Out" : "- Uzaklaş")
+                    </button>
+                    <input id="apiZoomSlider" type="range" min="2" max="18" value="6" oninput="apiSetZoom(this.value)" class="w-full accent-indigo-600 cursor-pointer">
+                    <button type="button" onclick="apiZoomDelta(1)" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold transition cursor-pointer">
+                        @(isEn ? "+ In" : "+ Yakınlaş")
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3. Dinamik Marker Ekleme Formu -->
+            <div class="space-y-3 pt-3 border-t border-slate-100">
+                <label class="text-xs font-bold text-slate-700 block uppercase tracking-wider">@(isEn ? "Add Dynamic Marker (addMarker)" : "Dinamik İşaretçi Ekle (addMarker)")</label>
+                
+                <div class="space-y-2 text-xs">
+                    <div>
+                        <span class="text-slate-500 block text-[11px] mb-1">@(isEn ? "Marker Title" : "İşaretçi Başlığı")</span>
+                        <input id="newMarkerTitle" type="text" value='@(isEn ? "New Branch Office" : "Yeni Şube Noktası")' class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <span class="text-slate-500 block text-[11px] mb-1">@(isEn ? "Latitude (Lat)" : "Enlem (Lat)")</span>
+                            <input id="newMarkerLat" type="number" step="0.0001" value="40.1885" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500 font-mono">
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block text-[11px] mb-1">@(isEn ? "Longitude (Lng)" : "Boylam (Lng)")</span>
+                            <input id="newMarkerLng" type="number" step="0.0001" value="29.0610" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500 font-mono">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <span class="text-slate-500 block text-[11px] mb-1">@(isEn ? "Color" : "Renk")</span>
+                            <select id="newMarkerColor" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-indigo-500">
+                                <option value="#ef4444">@(isEn ? "Red" : "Kırmızı")</option>
+                                <option value="#6366f1" selected>@(isEn ? "Indigo" : "İndigo")</option>
+                                <option value="#10b981">@(isEn ? "Green" : "Yeşil")</option>
+                                <option value="#f59e0b">@(isEn ? "Amber" : "Kehribar")</option>
+                                <option value="#8b5cf6">@(isEn ? "Purple" : "Mor")</option>
+                            </select>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block text-[11px] mb-1">@(isEn ? "Icon" : "İkon")</span>
+                            <select id="newMarkerIcon" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-indigo-500">
+                                <option value="pin">@(isEn ? "Pin" : "İğne (Pin)")</option>
+                                <option value="building">@(isEn ? "Building" : "Bina")</option>
+                                <option value="store">@(isEn ? "Store" : "Mağaza")</option>
+                                <option value="star">@(isEn ? "Star" : "Yıldız")</option>
+                                <option value="airport">@(isEn ? "Airport" : "Havalimanı")</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 flex items-center gap-2">
+                        <button type="button" onclick="apiAddNewMarker()" class="w-full py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition shadow-sm cursor-pointer">
+                            @(isEn ? "Add Marker" : "İşaretçi Ekle")
+                        </button>
+                        <button type="button" onclick="apiClearMarkers()" class="py-2 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold transition whitespace-nowrap cursor-pointer">
+                            @(isEn ? "Clear" : "Temizle")
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Bilgi Alma (getBounds) -->
+            <div class="pt-3 border-t border-slate-100">
+                <button type="button" onclick="apiGetBounds()" class="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition cursor-pointer">
+                    @(isEn ? "Read Map Bounds (getBounds)" : "Harita Sınırlarını Oku (getBounds)")
+                </button>
+                <div id="boundsResult" class="hidden mt-2 p-2.5 rounded-xl bg-slate-50 text-[10px] font-mono text-slate-600 break-all"></div>
+            </div>
+        </div>
+
+        <!-- Sağ Taraf: Harita -->
+        <div class="lg:col-span-2 bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+            <panoptes-map id="apiMap" center="39.9334, 32.8597" zoom="6" height="580px" controls="true" on-click="onMapClickCoords">
+                <panoptes-map-layer type="tile" title="OpenStreetMap" 
+                                    url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png" 
+                                    attribution="&copy; OpenStreetMap" />
+
+                <panoptes-map-marker lat="39.9334" lng="32.8597" title='@(isEn ? "Ankara Center" : "Ankara Merkez")' color="#ef4444" icon="star" tooltip='@(isEn ? "Ankara Capital" : "Ankara Başkent")' />
+            </panoptes-map>
+            <div class="text-[11px] text-slate-400 mt-2 text-right">
+                @(isEn ? "Tip: Clicking anywhere on the map automatically populates the form coordinates." : "İpucu: Haritada boş bir yere tıkladığınızda enlem ve boylam değerleri otomatik forma yazılır.")
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>// 1. Harita Örneğini Elde Etme
+const map = window.Panoptes.Map.getInstance('apiMap');
+
+// 2. Merkeze ve Zoom Düzeyine Gitme
+map.center(41.0082, 28.9784); // İstanbul
+map.zoom(12);
+
+// 3. Yakınlaştırma ve Uzaklaştırma
+map.zoomIn();
+map.zoomOut();
+
+// 4. Programatik Olarak Dinamik İşaretçi Ekleme
+map.addMarker({
+    lat: 40.1885,
+    lng: 29.0610,
+    title: 'Bursa Fabrikası',
+    tooltip: 'Otomotiv Tesisi',
+    color: '#10b981',
+    icon: 'building'
+});
+
+// 5. Tüm İşaretçileri Temizleme
+map.clearMarkers();
+
+// 6. Mevcut Coğrafi Sınırları Alma
+const bounds = map.getBounds();
+console.log('Kuzeydoğu:', bounds.getNorthEast(), 'Güneybatı:', bounds.getSouthWest());</code></pre>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const isEnApi = @(isEn ? "true" : "false");
+
+    function getMap() {
+        return window.Panoptes?.Map?.getInstance('apiMap');
+    }
+
+    function apiGoTo(lat, lng, zoom) {
+        const map = getMap();
+        if (map) {
+            map.center(lat, lng, zoom);
+            updateZoomLabel(zoom);
+        }
+    }
+
+    function apiSetZoom(val) {
+        const map = getMap();
+        if (map) {
+            map.zoom(parseInt(val));
+            updateZoomLabel(val);
+        }
+    }
+
+    function apiZoomDelta(delta) {
+        const map = getMap();
+        if (map) {
+            if (delta > 0) map.zoomIn();
+            else map.zoomOut();
+            setTimeout(() => {
+                const z = map.zoom();
+                updateZoomLabel(z);
+            }, 100);
+        }
+    }
+
+    function updateZoomLabel(val) {
+        document.getElementById('apiZoomVal').textContent = 'Zoom: ' + val;
+        document.getElementById('apiZoomSlider').value = val;
+    }
+
+    function apiAddNewMarker() {
+        const map = getMap();
+        if (!map) return;
+
+        const title = document.getElementById('newMarkerTitle').value;
+        const lat = parseFloat(document.getElementById('newMarkerLat').value);
+        const lng = parseFloat(document.getElementById('newMarkerLng').value);
+        const color = document.getElementById('newMarkerColor').value;
+        const icon = document.getElementById('newMarkerIcon').value;
+
+        if (isNaN(lat) || isNaN(lng)) {
+            alert(isEnApi ? 'Please enter valid latitude and longitude coordinates.' : 'Lütfen geçerli enlem ve boylam koordinatı giriniz.');
+            return;
+        }
+
+        map.addMarker({
+            lat: lat,
+            lng: lng,
+            title: title,
+            tooltip: title + ` (${lat.toFixed(3)}, ${lng.toFixed(3)})`,
+            color: color,
+            icon: icon
+        });
+
+        // Yeni eklenen konuma yumuşak pan
+        map.center(lat, lng);
+    }
+
+    function apiClearMarkers() {
+        const map = getMap();
+        if (map) {
+            map.clearMarkers();
+        }
+    }
+
+    function apiGetBounds() {
+        const map = getMap();
+        if (!map) return;
+        const bounds = map.getBounds();
+        const box = document.getElementById('boundsResult');
+        if (bounds && box) {
+            box.classList.remove('hidden');
+            box.textContent = JSON.stringify({
+                north: bounds.getNorth().toFixed(4),
+                south: bounds.getSouth().toFixed(4),
+                east: bounds.getEast().toFixed(4),
+                west: bounds.getWest().toFixed(4)
+            }, null, 2);
+        }
+    }
+
+    function onMapClickCoords(e) {
+        document.getElementById('newMarkerLat').value = e.lat.toFixed(4);
+        document.getElementById('newMarkerLng').value = e.lng.toFixed(4);
+    }
+</script>
+}

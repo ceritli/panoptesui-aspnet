@@ -1,0 +1,251 @@
+@model List<Panoptes.AspNetCore.Models.DropDownTreeItemModel>
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "DropDownTree - Client JavaScript API" : "DropDownTree - İstemci JavaScript API - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/DropDownTree" : "/DropDownTree")" class="hover:text-blue-600 transition">DropDownTree</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">@(isEn ? "JavaScript API" : "İstemci API")</span>
+    </nav>
+
+    <!-- Top Navigation Bar between 15 examples -->
+    @await Html.PartialAsync("_DropDownTreeNav")
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "Client JavaScript API & Methods" : "DropDownTree: İstemci JavaScript API Metotları")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                    Client-Side API
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Control the DropDownTree component programmatically via `window.Panoptes.DropDownTree.instances.get(\"id\")`. Access methods like `value()`, `text()`, `dataItem()`, `enable()`, `expandAll()`, `collapseAll()`, and `clear()`."
+                    : "DropDownTree JavaScript istemci API'si: `window.Panoptes.DropDownTree.instances.get(\"id\")` üzerinden erişip bileşene dinamik olarak değer atayabilir (`value()`), metnini okuyabilir (`text()`), veri nesnesini çekebilir (`dataItem()`), kilitleyip açabilir (`enable()`) veya tüm dalları tek komutla açıp kapatabilirsiniz (`expandAll()` / `collapseAll()`).")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ @(isEn ? "Programmatic Control" : "Programatik Kontrol")
+            </span>
+        </div>
+    </div>
+
+    <!-- Live Showcase Card -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "13. Interactive API Control Playground" : "13. Etkileşimli API Test Paneli")</h2>
+            <p class="text-xs text-slate-500 mt-1">
+                @(isEn 
+                    ? "Click the buttons below to interact with the DropDownTree programmatically and observe instant state changes."
+                    : "Aşağıdaki butonlara tıklayarak DropDownTree bileşenini programatik olarak yönetin ve sonuçları anında izleyin.")
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div class="space-y-4">
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">@(isEn ? "Target API DropDownTree" : "Hedef API DropDownTree")</label>
+                    <panoptes-dropdowntree id="ddt_api_target"
+                                          items="@Model"
+                                          placeholder="@(isEn ? "Controlled via API..." : "API ile kontrol edilecek...")"
+                                          dropdown-width="400px">
+                    </panoptes-dropdowntree>
+                </div>
+
+                <div class="flex flex-wrap gap-2 pt-2">
+                    <button type="button" onclick="apiSelectSoftware()" class="px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 rounded-lg text-xs font-semibold transition cursor-pointer">
+                        @(isEn ? "Set Value: \"software\"" : "Değer Ata: \"software\"")
+                    </button>
+                    <button type="button" onclick="apiSelectAi()" class="px-3 py-1.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 rounded-lg text-xs font-semibold transition cursor-pointer">
+                        @(isEn ? "Set Value: \"ai\"" : "Değer Ata: \"ai\"")
+                    </button>
+                    <button type="button" onclick="apiReadSelected()" class="px-3 py-1.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 rounded-lg text-xs font-semibold transition cursor-pointer">
+                        @(isEn ? "Read Selected (dataItem)" : "Seçiliyi Oku (dataItem)")
+                    </button>
+                    <button type="button" onclick="apiToggleDropdown()" class="px-3 py-1.5 bg-cyan-50 text-cyan-700 hover:bg-cyan-100 border border-cyan-200 rounded-lg text-xs font-semibold transition cursor-pointer">
+                        @(isEn ? "Toggle Popup" : "Aç / Kapat (Toggle)")
+                    </button>
+                    <button type="button" onclick="apiExpandAll()" class="px-3 py-1.5 bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200 rounded-lg text-xs font-semibold transition cursor-pointer">
+                        @(isEn ? "Expand All Nodes" : "Tüm Dalları Aç")
+                    </button>
+                    <button type="button" onclick="apiCollapseAll()" class="px-3 py-1.5 bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 rounded-lg text-xs font-semibold transition cursor-pointer">
+                        @(isEn ? "Collapse All Nodes" : "Tüm Dalları Kapat")
+                    </button>
+                    <button type="button" onclick="apiToggleEnable()" id="btnApiToggleEnable" class="px-3 py-1.5 bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 rounded-lg text-xs font-semibold transition cursor-pointer">
+                        @(isEn ? "Enable / Disable" : "Kilitle / Aç")
+                    </button>
+                    <button type="button" onclick="apiClear()" class="px-3 py-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 rounded-lg text-xs font-semibold transition cursor-pointer">
+                        @(isEn ? "Clear Selection" : "Temizle (Clear)")
+                    </button>
+                </div>
+            </div>
+
+            <!-- Result Box -->
+            <div class="bg-slate-950 p-4 rounded-xl text-xs font-mono text-slate-300 border border-slate-800 shadow-inner">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
+                    <span class="font-bold text-slate-400 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+                        @(isEn ? "API Console Output" : "API Konsolu Çıktısı")
+                    </span>
+                    <button type="button" onclick="document.getElementById('apiResultLog').innerHTML=''" class="text-[11px] text-slate-400 hover:text-slate-200 transition cursor-pointer">
+                        @(isEn ? "Clear" : "Temizle")
+                    </button>
+                </div>
+                <div id="apiResultLog" class="space-y-1.5 max-h-48 overflow-y-auto font-mono text-[11px]">
+                    <div class="text-slate-500">[Ready] @(isEn ? "Click buttons to invoke API methods..." : "Butonlara tıklayarak API komutlarını çalıştırın...")</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature Description Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+                <span>@(isEn ? "Direct Instance Access" : "Doğrudan Nesne Erişimi")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Instances are registered in the global Panoptes registry by element id for clean decoupled interactions."
+                    : "Tüm DropDownTree örnekleri element id ile global Panoptes kütüphanesine kaydedilir; harici formlardan veya scriptlerden kolayca yönetilir.")
+            </div>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+                <span>@(isEn ? "Full Hierarchy State Synchronization" : "Hiyerarşik Durum Senkronizasyonu")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Calling expandAll(), collapseAll(), or value() automatically recalculates DOM states and selected badges."
+                    : "expandAll(), collapseAll() veya value() metotları çağrıldığında ağaç DOM ağacı ve rozet durumları otomatik senkronize edilir.")
+            </div>
+        </div>
+    </div>
+
+    <!-- Light Code Viewer Standard Snippet -->
+    <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                    JavaScript API
+                </span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>// DropDownTree örneğine erişim:
+const tree = window.Panoptes.DropDownTree.instances.get("ddt_api_target");
+
+tree.value("software");       // Değere göre seç
+const val = tree.value();     // Seçili değeri oku
+const txt = tree.text();      // Görüntülenen metni oku
+const item = tree.dataItem(); // Düğüm verisini oku
+
+tree.expandAll();             // Tüm dalları genişlet
+tree.collapseAll();           // Tüm dalları kapat
+tree.enable(false);           // Kilitler (Disable)
+tree.enable(true);            // Aktif hale getirir (Enable)
+tree.clear();                 // Seçimi temizler</code></pre>
+        </div>
+    </div>
+</div>
+
+<script>
+    function logApi(msg) {
+        const log = document.getElementById('apiResultLog');
+        if (!log) return;
+        const time = new Date().toLocaleTimeString();
+        const div = document.createElement('div');
+        div.innerHTML = `<span class="text-slate-600">[${time}]</span> ${msg}`;
+        log.prepend(div);
+    }
+
+    function getTree() {
+        return window.Panoptes?.DropDownTree?.instances?.get('ddt_api_target');
+    }
+
+    function apiSelectSoftware() {
+        const t = getTree();
+        if (t) {
+            t.value('software');
+            logApi('tree.value("software") çağrıldı -> Seçilen: <strong class="text-blue-400">Yazılım Geliştirme</strong>');
+        }
+    }
+
+    function apiSelectAi() {
+        const t = getTree();
+        if (t) {
+            t.value('ai');
+            logApi('tree.value("ai") çağrıldı -> Seçilen: <strong class="text-indigo-400">Yapay Zeka & Veri Bilimi</strong>');
+        }
+    }
+
+    function apiReadSelected() {
+        const t = getTree();
+        if (t) {
+            const data = t.dataItem();
+            if (data) {
+                logApi(`tree.dataItem() -> <span class="text-emerald-400 font-bold">${data.text}</span> (Değer: ${data.value})`);
+            } else {
+                logApi(`tree.dataItem() -> <span class="text-slate-500">Hiçbir öğe seçili değil.</span>`);
+            }
+        }
+    }
+
+    function apiToggleDropdown() {
+        const t = getTree();
+        if (t) {
+            t.toggle();
+            logApi(`tree.toggle() çağrıldı -> Durum: <strong class="text-cyan-400">${t.isOpen ? 'Açık' : 'Kapalı'}</strong>`);
+        }
+    }
+
+    function apiExpandAll() {
+        const t = getTree();
+        if (t) {
+            t.expandAll();
+            logApi('tree.expandAll() çağrıldı -> Tüm klasörler açıldı.');
+        }
+    }
+
+    function apiCollapseAll() {
+        const t = getTree();
+        if (t) {
+            t.collapseAll();
+            logApi('tree.collapseAll() çağrıldı -> Tüm klasörler daraltıldı.');
+        }
+    }
+
+    let isEnabled = true;
+    function apiToggleEnable() {
+        const t = getTree();
+        if (t) {
+            isEnabled = !isEnabled;
+            t.enable(isEnabled);
+            logApi(`tree.enable(${isEnabled}) -> Durum: <strong class="text-rose-400">${isEnabled ? 'Aktif' : 'Kilitli'}</strong>`);
+        }
+    }
+
+    function apiClear() {
+        const t = getTree();
+        if (t) {
+            t.clear();
+            logApi('tree.clear() çağrıldı -> Seçim sıfırlandı.');
+        }
+    }
+</script>

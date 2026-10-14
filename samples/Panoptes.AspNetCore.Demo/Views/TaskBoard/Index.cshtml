@@ -1,0 +1,497 @@
+@model List<Panoptes.AspNetCore.Models.TaskBoardColumnModel>
+
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "TaskBoard (Kanban Board) - Panoptes Corporate UI" : "TaskBoard (Kanban Görev Panosu) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/TaskBoard" class="hover:text-blue-600 transition">@(isEn ? "Scheduling & Project" : "Planlama & Çizelge")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">TaskBoard</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">TaskBoard @(isEn ? "(Kanban Board)" : "(Kanban Görev Panosu)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-taskboard&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "Seamless drag-and-drop card movements between To Do, In Progress and Done columns with search filtering and custom templates." : "Yapılacak, Devam Eden ve Tamamlanan sütunları arasında kartların pürüzsüz sürükle-bırak taşınması ve filtreleme yetenekleri.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Features & Demos" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">3</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">2</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        <!-- DEMO 1: C# Model Binding ile Yazılım Kanban Panosu -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                        @(isEn ? "1. Software Development Kanban Board via C# Model Binding" : "1. C# Model Binding ile Yazılım Geliştirme Kanban Panosu")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Rendered automatically from the controller column and card collection with draggable task cards." : "Controller'dan gelen sütun ve kart koleksiyonu ile otomatik render edilen, sürüklenebilir kartlar.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">&lt;panoptes-taskboard columns="@@Model"&gt;</span>
+            </div>
+
+            <div class="p-6">
+                <panoptes-taskboard id="taskboardDev" columns="@Model" on-card-moved="handleCardMoved" />
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Model Binding</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;!-- Razor TagHelper --&gt;
+&lt;panoptes-taskboard id="taskboardDev" columns="@@Model" on-card-moved="handleCardMoved" /&gt;
+
+// C# Controller
+public class TaskBoardController : Controller
+{
+    public IActionResult Index()
+    {
+        var model = new List&lt;TaskBoardColumnModel&gt;
+        {
+            new TaskBoardColumnModel { Id = "col_todo", Title = "Yapılacaklar", Cards = ... },
+            new TaskBoardColumnModel { Id = "col_progress", Title = "Devam Edenler", Cards = ... }
+        };
+        return View(model);
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 2: Declarative Razor TagHelper ile Satış Boru Hattı (Sales Pipeline) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                        @(isEn ? "2. Sales Pipeline with Declarative Razor TagHelpers" : "2. Declarative Razor TagHelper ile Satış Boru Hattı (Pipeline)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Directly declared in Razor template via <panoptes-taskboard-column> and <panoptes-taskboard-card> child tags." : "Model olmadan, doğrudan Razor şablonunda <panoptes-taskboard-column> ve <panoptes-taskboard-card> etiketleriyle deklaratif tanımlama.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">Declarative TagHelpers</span>
+            </div>
+
+            <div class="p-6">
+                <panoptes-taskboard id="taskboardSales" on-card-moved="handleCardMoved">
+                    <panoptes-taskboard-column id="col_lead" title="@(isEn ? "Prospective Lead" : "Potansiyel Müşteri (Lead)")" badge-color="bg-purple-500">
+                        <panoptes-taskboard-card id="lead_1" title="@(isEn ? "Atlas Holding Enterprise License" : "Atlas Holding Kurumsal Lisans")" description="@(isEn ? "500 users enterprise tier consultation requested." : "500 kullanıcı için yıllık Enterprise plan görüşmesi talep edildi.")" priority="High" category="ENTERPRISE" assignee="Murat A." due-date="@DateTime.Now.AddDays(3)" />
+                        <panoptes-taskboard-card id="lead_2" title="@(isEn ? "Nova Tech Pilot Project" : "Nova Teknoloji Pilot Proje")" description="@(isEn ? "Cloud infrastructure live demo presentation." : "Bulut altyapısı demo sunumu yapılacak.")" priority="Medium" category="B2B" assignee="Seda E." due-date="@DateTime.Now.AddDays(7)" />
+                    </panoptes-taskboard-column>
+
+                    <panoptes-taskboard-column id="col_proposal" title="@(isEn ? "Proposal Submitted" : "Teklif Sunuldu")" badge-color="bg-amber-500">
+                        <panoptes-taskboard-card id="lead_3" title="@(isEn ? "Grup Textile E-Transformation" : "Grup Tekstil E-Dönüşüm")" description="@(isEn ? "3-year maintenance agreement proposal sent." : "3 yıllık bakım anlaşması teklif dokümanı gönderildi.")" priority="Urgent" category="TEKLİF" assignee="Murat A." due-date="@DateTime.Now.AddDays(1)" />
+                    </panoptes-taskboard-column>
+
+                    <panoptes-taskboard-column id="col_contract" title="@(isEn ? "Contract & Signature" : "Sözleşme & İmza")" badge-color="bg-blue-500">
+                        <panoptes-taskboard-card id="lead_4" title="@(isEn ? "North Logistics ERP Integration" : "Kuzey Lojistik ERP Entegrasyonu")" description="@(isEn ? "Legal department contract review in progress." : "Hukuk departmanı sözleşme onayında.")" priority="High" category="SÖZLEŞME" assignee="Seda E." due-date="@DateTime.Now.AddDays(2)" />
+                    </panoptes-taskboard-column>
+
+                    <panoptes-taskboard-column id="col_won" title="@(isEn ? "Won (Deal Closed)" : "Kazanıldı (Satış Yapıldı)")" badge-color="bg-emerald-500">
+                        <panoptes-taskboard-card id="lead_5" title="@(isEn ? "Marmara Distribution Renewal" : "Marmara Dağıtım Lisans Yenileme")" description="@(isEn ? "Contract signed, payment received." : "Sözleşme imzalandı, ödeme alındı.")" priority="Low" category="BAŞARILI" assignee="Murat A." due-date="@DateTime.Now.AddDays(-2)" />
+                    </panoptes-taskboard-column>
+                </panoptes-taskboard>
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Declarative Razor</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-taskboard id="taskboardSales"&gt;
+    &lt;panoptes-taskboard-column id="col_lead" title="Potansiyel Müşteri" badge-color="bg-purple-500"&gt;
+        &lt;panoptes-taskboard-card id="lead_1" title="Atlas Holding Lisans" priority="High" assignee="Murat A." /&gt;
+    &lt;/panoptes-taskboard-column&gt;
+    &lt;panoptes-taskboard-column id="col_won" title="Kazanıldı" badge-color="bg-emerald-500"&gt;
+        &lt;panoptes-taskboard-card id="lead_5" title="Marmara Dağıtım" priority="Low" /&gt;
+    &lt;/panoptes-taskboard-column&gt;
+&lt;/panoptes-taskboard&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 3: Programatik JavaScript API & Canlı Olay Günlüğü (Event Log) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+                        @(isEn ? "3. Programmatic JavaScript API & Live Movement Log (Event Log)" : "3. Programatik JavaScript API ve Canlı Taşıma Günlüğü (Event Log)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "on-card-moved fires when cards are dragged; API also allows adding or moving cards programmatically." : "Kart sürüklendiğinde on-card-moved olayı tetiklenir; ayrıca API üzerinden programatik kart ekleyebilir veya sütunlar arasında taşıyabilirsiniz.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-amber-50 text-amber-700 px-2 py-1 rounded font-medium border border-amber-100">Event Logging</span>
+            </div>
+
+            <div class="p-6 space-y-4">
+                <div class="flex flex-wrap items-center gap-2">
+                    <button type="button" onclick="addNewCardDemo()" class="px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        @(isEn ? "Add Card Programmatically (To Do)" : "Programatik Yeni Kart Ekle (Yapılacaklar)")
+                    </button>
+                    <button type="button" onclick="moveCardDemo()" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+                        @(isEn ? "Move Card to 'Done' (moveCard)" : "Kartı 'Tamamlandı' Sütununa Taşı (moveCard)")
+                    </button>
+                    <button type="button" onclick="clearTaskBoardLog()" class="px-3 py-1.5 text-xs font-medium text-rose-600 hover:bg-rose-50 rounded-lg transition ml-auto cursor-pointer">
+                        @(isEn ? "Clear Log" : "Günlüğü Temizle")
+                    </button>
+                </div>
+
+                <div class="border border-slate-200 rounded-xl overflow-hidden">
+                    <div class="bg-slate-50 px-4 py-2 border-b border-slate-200 text-xs font-bold text-slate-700 flex items-center justify-between">
+                        <span>@(isEn ? "Live Drag-and-Drop Event Stream" : "Canlı Sürükle-Bırak Olay Kayıtları")</span>
+                        <span class="text-[10px] text-slate-500 font-mono">HTML5 Drag & Drop</span>
+                    </div>
+                    <div id="tbEventLogs" class="bg-slate-900 text-slate-200 font-mono text-[11px] p-3 h-36 overflow-y-auto space-y-1">
+                        <div class="text-slate-500 italic">// @(isEn ? "Drag cards across columns to observe live events..." : "Kartları tutup başka sütunlara sürükleyip bırakın...")</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript API</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>function handleCardMoved(e) {
+    console.log(`Kart ${e.cardTitle} (${e.cardId}), ${e.oldColumnId} sütunundan ${e.newColumnId} sütununa taşındı.`);
+}
+
+// Programatik Kart Ekleme
+const tb = Panoptes.TaskBoard.getInstance('taskboardDev');
+tb.addCard('col_todo', {
+    title: 'Yeni Özellik Geliştir',
+    priority: 'Yüksek',
+    category: 'FEATURE'
+});</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TagHelper Parametre & Nitelik Referans Tablosu -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    @(isEn ? "TagHelper Parameter & Attribute Reference" : "TagHelper Parametre ve Nitelik Referansı")
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    @(isEn ? "Razor TagHelper attributes supported by TaskBoard, columns and cards." : "TaskBoard bileşeni ve alt sütun/kart etiketleri tarafından desteklenen Razor TagHelper nitelikleri.")
+                </p>
+            </div>
+            <div class="p-6">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border border-slate-200 rounded-lg">
+                        <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">@(isEn ? "Tag / Attribute" : "Etiket / Nitelik")</th>
+                                <th class="p-3">@(isEn ? "Type" : "Tip")</th>
+                                <th class="p-3">@(isEn ? "Default" : "Varsayılan")</th>
+                                <th class="p-3">@(isEn ? "Description" : "Açıklama")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-600">
+                            <tr>
+                                <td class="p-3 font-mono font-bold text-blue-600">&lt;panoptes-taskboard&gt;</td>
+                                <td class="p-3 font-mono text-slate-500">TagHelper</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">@(isEn ? "Kanban board main container." : "Kanban panosu ana kapsayıcısı.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">columns</td>
+                                <td class="p-3 font-mono text-slate-500">List&lt;TaskBoardColumnModel&gt;</td>
+                                <td class="p-3 font-mono">null</td>
+                                <td class="p-3">@(isEn ? "Columns and cards data via C# Model Binding." : "C# Model Binding ile sütun ve kartların aktarılması.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">on-card-moved</td>
+                                <td class="p-3 font-mono text-slate-500">string</td>
+                                <td class="p-3 font-mono">null</td>
+                                <td class="p-3">@(isEn ? "JS handler triggered when a card is dropped into a column." : "Kart bir sütundan diğerine bırakıldığında tetiklenecek JS fonksiyon adı.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono font-bold text-indigo-600">&lt;panoptes-taskboard-column&gt;</td>
+                                <td class="p-3 font-mono text-slate-500">TagHelper</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">@(isEn ? "Vertical column container in the board." : "Panodaki her bir dikey sütun (column).")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-indigo-600 pl-6">title</td>
+                                <td class="p-3 font-mono text-slate-500">string</td>
+                                <td class="p-3 font-mono">"Sütun"</td>
+                                <td class="p-3">@(isEn ? "Column header title text." : "Sütun başlığı metni.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-indigo-600 pl-6">badge-color</td>
+                                <td class="p-3 font-mono text-slate-500">string</td>
+                                <td class="p-3 font-mono">"bg-blue-500"</td>
+                                <td class="p-3">@(isEn ? "Color dot badge in column header (Tailwind bg-*)." : "Sütun başlığındaki nokta renk rozeti (Tailwind bg-* sınıfı).")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono font-bold text-emerald-600">&lt;panoptes-taskboard-card&gt;</td>
+                                <td class="p-3 font-mono text-slate-500">TagHelper</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">@(isEn ? "Individual draggable card inside a column." : "Sütun içindeki tekil sürüklenebilir görev kartı.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-emerald-600 pl-6">title</td>
+                                <td class="p-3 font-mono text-slate-500">string</td>
+                                <td class="p-3 font-mono">""</td>
+                                <td class="p-3">@(isEn ? "Card main task title." : "Kartın ana görev başlığı.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-emerald-600 pl-6">priority</td>
+                                <td class="p-3 font-mono text-slate-500">TaskPriority</td>
+                                <td class="p-3 font-mono">Medium</td>
+                                <td class="p-3">@(isEn ? "Priority level: Low, Medium, High, Urgent." : "Öncelik derecesi: Low, Medium, High, Urgent.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-emerald-600 pl-6">assignee</td>
+                                <td class="p-3 font-mono text-slate-500">string</td>
+                                <td class="p-3 font-mono">null</td>
+                                <td class="p-3">@(isEn ? "Assigned user name (initials avatar derived automatically)." : "Görevin atandığı kullanıcı adı (otomatik avatar baş harfleri türetilir).")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "TagHelper Properties & Parameters" : "TagHelper Özellikleri & Parametreleri")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-taskboard&gt; @(isEn ? "all supported C# and HTML attributes." : "bileşeninin desteklediği tüm C# ve HTML nitelikleri.")</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesTaskboardTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">@(isEn ? "Attribute" : "Özellik (Attribute)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Type (C#)" : "Tip (C#)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-6">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">@(isEn ? "Automatic" : "Otomatik")</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Component identifier." : "Bileşen kimliği.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">reorderable</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Allows drag and drop reordering between cards and columns." : "Sütunlar ve kartlar arası sürükleme izni.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Standards & Keyboard Accessibility" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    @(isEn ? "Panoptes TaskBoard is built to W3C WAI-ARIA standards for assistive technology and full keyboard navigation." : "Panoptes TaskBoard bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "WAI-ARIA Attributes" : "WAI-ARIA Nitelikleri")</div>
+                    <div class="text-slate-600">
+                        @(isEn ? "Carries standard role=\"region\" / role=\"list\". Card status dynamically maintains aria-grabbed and aria-dropeffect." : "Standart role=\"region / kanban\" rolünü taşır. Duruma göre aria-disabled, aria-expanded, aria-selected ve aria-label nitelikleri dinamik olarak güncellenir.")
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "Focus Management" : "Odak Yönetimi (Focus Management)")</div>
+                    <div class="text-slate-600">
+                        @(isEn ? "Maintains intuitive tab order through task cards with high-contrast visible focus rings." : "Sekme sırasını doğal akışında korur (tabIndex=\"0\"). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.")
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları (Keyboard Shortcuts)")</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">@(isEn ? "Key" : "Tuş (Key)")</th>
+                                <th class="py-2.5 px-4">@(isEn ? "Function" : "İşlev (Function)")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Tab</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Navigates between interactive task cards." : "Görev kartları arasında ilerler.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Opens task card details." : "Kart detaylarını açar.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-taskboard.js"></script>
+    <script>
+        const isEnTaskBoard = @(isEn ? "true" : "false");
+
+        function logTaskBoardEvent(msg) {
+            const container = document.getElementById('tbEventLogs');
+            if (!container) return;
+            const row = document.createElement('div');
+            const time = new Date().toLocaleTimeString(isEnTaskBoard ? 'en-US' : 'tr-TR');
+            row.innerHTML = `<span class="text-slate-500">[${time}]</span> ${msg}`;
+            container.appendChild(row);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function handleCardMoved(e) {
+            if (isEnTaskBoard) {
+                logTaskBoardEvent(`<span class="text-emerald-400">onCardMoved:</span> Card <strong>'${e.cardTitle}'</strong> (${e.cardId}) moved to column <strong>${e.newColumnId}</strong>.`);
+            } else {
+                logTaskBoardEvent(`<span class="text-emerald-400">onCardMoved:</span> Kart <strong>'${e.cardTitle}'</strong> (${e.cardId}) sütunu <strong>${e.newColumnId}</strong> olarak güncellendi.`);
+            }
+        }
+
+        function addNewCardDemo() {
+            const tb = Panoptes.TaskBoard.getInstance('taskboardDev');
+            if (tb) {
+                const id = 'card_dyn_' + Date.now();
+                tb.addCard('col_todo', {
+                    id: id,
+                    title: (isEnTaskBoard ? 'Complete UI Test Suite #' : 'Yeni UI Testlerini Tamamla #') + Math.floor(Math.random() * 100),
+                    description: isEnTaskBoard ? 'Write unit and e2e tests for kanban board.' : 'Kanban panosu için birim ve e2e testleri yazılacak.',
+                    priority: isEnTaskBoard ? 'High' : 'Yüksek',
+                    category: 'QA TEST',
+                    dueDate: isEnTaskBoard ? 'Tomorrow' : 'Yarın',
+                    assignee: 'Fatih C.'
+                });
+                logTaskBoardEvent(`<span class="text-blue-400">addCard:</span> ` + (isEnTaskBoard ? `New card added to 'col_todo' column.` : `Yeni kart 'col_todo' sütununa eklendi.`));
+            }
+        }
+
+        function moveCardDemo() {
+            const tb = Panoptes.TaskBoard.getInstance('taskboardDev');
+            if (tb) {
+                tb.moveCard('card_3', 'col_done');
+                logTaskBoardEvent(`<span class="text-amber-400">moveCard:</span> ` + (isEnTaskBoard ? `'card_3' programmatically moved to 'col_done' column.` : `'card_3' kartı programatik olarak 'col_done' sütununa taşındı.`));
+            }
+        }
+
+        function clearTaskBoardLog() {
+            const container = document.getElementById('tbEventLogs');
+            if (container) {
+                container.innerHTML = '<div class="text-slate-500 italic">// ' + (isEnTaskBoard ? 'Cleared. Waiting for new events...' : 'Temizlendi. Yeni olaylar bekleniyor...') + '</div>';
+            }
+        }
+    </script>
+}

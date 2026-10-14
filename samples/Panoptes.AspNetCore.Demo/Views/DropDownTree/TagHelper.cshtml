@@ -1,0 +1,141 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "DropDownTree - Declarative TagHelper" : "DropDownTree - TagHelper Bildirimsel Kullanım";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/DropDownTree" : "/DropDownTree")" class="hover:text-blue-600 transition">DropDownTree</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">TagHelper</span>
+    </nav>
+
+    <!-- Top Navigation Bar between 15 examples -->
+    @await Html.PartialAsync("_DropDownTreeNav")
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "Declarative TagHelper Hierarchy" : "TagHelper ile Bildirimsel Hiyerarşi")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                    Declarative TagHelper Mode
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Declare rich tree structures directly in Razor markup using nested <panoptes-dropdowntree-item> tags without pre-building C# view models."
+                    : "Herhangi bir C# model nesnesi veya veri kaynağı hazırlamadan, doğrudan Razor görünümü içerisinde <panoptes-dropdowntree-item> çocuk etiketlerini iç içe yuvalayarak (nested) zengin ağaç yapıları tanımlayabilirsiniz.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ @(isEn ? "Declarative Nesting" : "Bildirimsel Yuvalama")
+            </span>
+        </div>
+    </div>
+
+    <!-- Live Showcase Card -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "2. Project Solution Tree (TagHelper Child Items)" : "2. Proje Dosya / Modül Ağacı (TagHelper Çocuk Etiketleri)")</h2>
+            <p class="text-xs text-slate-500 mt-1">
+                @(isEn 
+                    ? "The dropdown tree below is built entirely with declarative Razor tags. Nodes configure expanded states, icons, and badges."
+                    : "Aşağıdaki açılır ağaç tamamen Razor etiketleri ile hiyerarşik olarak oluşturulmuştur. Düğümlerde expanded, icon ve badge nitelikleri kullanılmıştır.")
+            </p>
+        </div>
+
+        <div class="max-w-md space-y-2">
+            <label class="block text-xs font-bold text-slate-700">@(isEn ? "Select Target File / Module" : "Hedef Dosya / Modül Seçiniz")</label>
+            <panoptes-dropdowntree id="ddt_taghelper_demo"
+                                  placeholder="@(isEn ? "Select project file..." : "Proje dosyasını seçiniz...")"
+                                  dropdown-width="400px"
+                                  value="file_appsettings">
+                <panoptes-dropdowntree-item value="root_project" text="Panoptes Enterprise Solution" icon="folder" expanded="true">
+                    <panoptes-dropdowntree-item value="folder_src" text="src (Kaynak Kodlar)" icon="folder" expanded="true">
+                        <panoptes-dropdowntree-item value="proj_core" text="Panoptes.Core (.NET 8)" icon="folder" expanded="true">
+                            <panoptes-dropdowntree-item value="file_models" text="Entities.cs" icon="code" badge="Model" badge-color="blue" />
+                            <panoptes-dropdowntree-item value="file_interfaces" text="IRepository.cs" icon="code" />
+                        </panoptes-dropdowntree-item>
+                        <panoptes-dropdowntree-item value="proj_web" text="Panoptes.Web.UI" icon="folder">
+                            <panoptes-dropdowntree-item value="file_program" text="Program.cs" icon="code" />
+                            <panoptes-dropdowntree-item value="file_appsettings" text="appsettings.json" icon="file" badge="Config" badge-color="amber" />
+                        </panoptes-dropdowntree-item>
+                    </panoptes-dropdowntree-item>
+                    <panoptes-dropdowntree-item value="folder_docs" text="docs (Kılavuzlar)" icon="folder">
+                        <panoptes-dropdowntree-item value="file_readme" text="README.md" icon="file" />
+                        <panoptes-dropdowntree-item value="file_license" text="LICENSE" icon="file" />
+                    </panoptes-dropdowntree-item>
+                </panoptes-dropdowntree-item>
+            </panoptes-dropdowntree>
+            <span class="text-[11px] text-slate-400">
+                @(isEn ? "Default selected item: appsettings.json." : "Seçili başlangıç değeri: appsettings.json.")
+            </span>
+        </div>
+    </div>
+
+    <!-- Feature Description Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Zero Code-Behind" : "Sıfır C# Kodu")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Build static navigation or site maps without creating C# models, collections, or API endpoints."
+                    : "C# modelleri, listeler veya API uç noktaları oluşturmaya gerek kalmadan statik gezinme yapılarını tanımlayın.")
+            </div>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Rich Tag Attributes" : "Zengin Etiket Nitelikleri")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Control item expansion, icons, badges, badge colors, and disabled states per node."
+                    : "Her düğüm için genişleme durumu, ikon, rozet, rozet rengi ve pasiflik durumunu bağımsız olarak belirleyin.")
+            </div>
+        </div>
+    </div>
+
+    <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+    <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                    @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                </span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-dropdowntree id="ddt_taghelper_demo"
+                      placeholder="Proje dosyasını seçiniz..."
+                      dropdown-width="400px"
+                      value="file_appsettings"&gt;
+    &lt;panoptes-dropdowntree-item value="root_project" text="Panoptes Enterprise Solution" icon="folder" expanded="true"&gt;
+        &lt;panoptes-dropdowntree-item value="folder_src" text="src (Kaynak Kodlar)" icon="folder" expanded="true"&gt;
+            &lt;panoptes-dropdowntree-item value="proj_core" text="Panoptes.Core (.NET 8)" icon="folder" expanded="true"&gt;
+                &lt;panoptes-dropdowntree-item value="file_models" text="Entities.cs" icon="code" badge="Model" badge-color="blue" /&gt;
+                &lt;panoptes-dropdowntree-item value="file_interfaces" text="IRepository.cs" icon="code" /&gt;
+            &lt;/panoptes-dropdowntree-item&gt;
+            &lt;panoptes-dropdowntree-item value="proj_web" text="Panoptes.Web.UI" icon="folder"&gt;
+                &lt;panoptes-dropdowntree-item value="file_program" text="Program.cs" icon="code" /&gt;
+                &lt;panoptes-dropdowntree-item value="file_appsettings" text="appsettings.json" icon="file" badge="Config" badge-color="amber" /&gt;
+            &lt;/panoptes-dropdowntree-item&gt;
+        &lt;/panoptes-dropdowntree-item&gt;
+    &lt;/panoptes-dropdowntree-item&gt;
+&lt;/panoptes-dropdowntree&gt;</code></pre>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "ActionSheet - Keyboard Navigation & Accessibility (A11y)" : "ActionSheet - Klavye Gezintisi & Erişilebilirlik (A11y)";
+    ViewData["ActiveTab"] = "KeyboardNavigation";
+}
+
+<div class="space-y-6">
+    <partial name="_ActionSheetNav" />
+
+    <!-- Info Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight mb-2">@(isEn ? "Keyboard Navigation & WCAG Accessibility (A11y)" : "Klavye Gezintisi & WCAG Erişilebilirliği (Accessibility)")</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            @(isEn ? "Panoptes ActionSheet is fully compliant with WCAG 2.1 and WAI-ARIA dialog standards. When opened, focus is automatically moved to the first active button; navigate between buttons using arrow keys, and dismiss with Escape." : "Panoptes ActionSheet, WCAG 2.1 ve WAI-ARIA diyalog standartlarıyla tam uyumludur. Açıldığında odak otomatik olarak ilk etkin butona verilir; yön tuşlarıyla butonlar arasında dolaşılabilir ve Escape tuşu ile sayfa kapatılabilir.")
+        </p>
+    </div>
+
+    <!-- Live Test Area -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+        <div class="flex items-center justify-between p-3.5 bg-indigo-50 border border-indigo-100 rounded-2xl text-xs">
+            <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 animate-pulse"></span>
+                <span class="font-bold text-indigo-900">@(isEn ? "Keyboard Test:" : "Klavye Testi:")</span>
+                <span class="text-indigo-700">@(isEn ? "Click the button below to open, then test navigation using your keyboard." : "Aşağıdaki butona basarak açtıktan sonra klavyenizle gezinmeyi test edin.")</span>
+            </div>
+        </div>
+
+        <button type="button" onclick="window.Panoptes.ActionSheet.open('a11ySheet')" class="px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-sm flex items-center gap-2 cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+            <span>@(isEn ? "Open Keyboard Accessible ActionSheet" : "Klavye Uyumlu ActionSheet'i Aç")</span>
+        </button>
+
+        <panoptes-actionsheet id="a11ySheet" title='@(isEn ? "Accessible Action List" : "Erişilebilir Eylem Listesi")' subtitle='@(isEn ? "You can test arrow keys, Enter and Escape" : "Yön tuşları, Enter ve Escape tuşlarını test edebilirsiniz")'>
+            <panoptes-actionsheet-item id="a11y-opt-1" text='@(isEn ? "Option 1: View Details" : "1. Seçenek: Detayları Gör")' description='@(isEn ? "Press Down Arrow to move next" : "Aşağı oka basarak diğerine geçin")' theme-color="primary"></panoptes-actionsheet-item>
+            <panoptes-actionsheet-item id="a11y-opt-2" text='@(isEn ? "Option 2: Edit Mode" : "2. Seçenek: Düzenleme Modu")' description='@(isEn ? "Triggered with Enter key" : "Enter tuşu ile tetiklenir")'></panoptes-actionsheet-item>
+            <panoptes-actionsheet-item id="a11y-opt-3" text='@(isEn ? "Option 3: Locked Item" : "3. Seçenek: Kilitli Öğe")' description='@(isEn ? "Keyboard focus skips disabled items" : "Klavye odağı bu pasif öğeyi atlar")' disabled="true"></panoptes-actionsheet-item>
+            <panoptes-actionsheet-item id="a11y-opt-4" text='@(isEn ? "Option 4: Send to Archive" : "4. Seçenek: Arşive Gönder")' description='@(isEn ? "Use Up Arrow to move back" : "Yukarı ok ile geri dönebilirsiniz")' theme-color="warning"></panoptes-actionsheet-item>
+        </panoptes-actionsheet>
+    </div>
+
+    <!-- Keyboard Shortcuts Guide Table -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm overflow-hidden">
+        <h2 class="text-base font-bold text-slate-800 mb-4">@(isEn ? "Supported Keyboard Shortcuts" : "Desteklenen Klavye Kısayolları (Keyboard Shortcuts)")</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-600 border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-200 bg-slate-50 font-bold text-slate-800">
+                        <th class="p-3">@(isEn ? "Key" : "Tuş")</th>
+                        <th class="p-3">@(isEn ? "Function" : "İşlev")</th>
+                        <th class="p-3">@(isEn ? "Description" : "Açıklama")</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">@(isEn ? "Down Arrow (ArrowDown)" : "Aşağı Ok (ArrowDown)")</td>
+                        <td class="p-3 font-semibold text-slate-800">@(isEn ? "Navigate to Next Item" : "Sonraki Öğeye Geç")</td>
+                        <td class="p-3">@(isEn ? "Moves focus to the next active button. Loops back to first item when reaching the end." : "Odaklamayı bir sonraki aktif butona taşır. Listenin sonuna gelindiğinde başa döner.")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">@(isEn ? "Up Arrow (ArrowUp)" : "Yukarı Ok (ArrowUp)")</td>
+                        <td class="p-3 font-semibold text-slate-800">@(isEn ? "Navigate to Previous Item" : "Önceki Öğeye Geç")</td>
+                        <td class="p-3">@(isEn ? "Moves focus to the previous active button." : "Odaklamayı bir önceki aktif butona taşır.")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">@(isEn ? "Enter / Space" : "Enter / Boşluk (Space)")</td>
+                        <td class="p-3 font-semibold text-slate-800">@(isEn ? "Select & Trigger Item" : "Öğeyi Seç & Tetikle")</td>
+                        <td class="p-3">@(isEn ? "Clicks focused action item and closes the sheet." : "Odaklanmış olan eylem butonuna tıklar ve sayfayı kapatır.")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">@(isEn ? "Escape (Esc)" : "Escape (Esc)")</td>
+                        <td class="p-3 font-semibold text-slate-800">@(isEn ? "Close" : "Kapat")</td>
+                        <td class="p-3">@(isEn ? "Closes the ActionSheet without selecting any option." : "ActionSheet'i hiçbir işlem yapmadan kapatır.")</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;!-- ARIA role=&quot;dialog&quot; ve aria-modal=&quot;true&quot; otomatik olarak atanır --&gt;
+&lt;panoptes-actionsheet id=&quot;a11ySheet&quot; title=&quot;Erişilebilir Menü&quot;&gt;
+    &lt;panoptes-actionsheet-item text=&quot;Detaylar&quot; /&gt;
+    &lt;panoptes-actionsheet-item text=&quot;Pasif Buton&quot; disabled=&quot;true&quot; /&gt;
+&lt;/panoptes-actionsheet&gt;</code></pre>
+        </div>
+    </div>
+</div>

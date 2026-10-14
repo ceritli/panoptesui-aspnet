@@ -1,0 +1,165 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Select - Client API Methods" : "Select - API (Metotlar)";
+}
+
+<div class="space-y-8">
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Select" : "/Select")" class="hover:text-blue-600 transition">Select</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">@(isEn ? "API & Methods" : "API (Metotlar)")</span>
+    </nav>
+
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "JavaScript API & Client Methods" : "JavaScript API & İstemci Metotları")</h1>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Control the component programmatically using client-side JavaScript methods: open, close, setValue, getValue, and enable/disable."
+                    : "İstemci tarafı JavaScript koduyla bileşeni programatik olarak açıp kapatabilir, değerini okuyup değiştirebilir ve etkileşimi kilitleyebilirsiniz.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ Production Ready
+            </span>
+        </div>
+    </div>
+
+    <!-- Client API Demo -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "Interactive API Console & Controls" : "İstemci JavaScript API Testi & Butonlar")</h2>
+            <p class="text-xs text-slate-500 mt-1">@(isEn ? "Click the buttons below to trigger client-side methods on the component instance." : "Aşağıdaki butonlara tıklayarak bileşen örneği üzerinde JavaScript metotlarını çalıştırın.")</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div class="space-y-4">
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">@(isEn ? "Target Select Component" : "API Test Dropdown'ı")</label>
+                    <panoptes-select id="sel_api_demo"
+                                     value="Python"
+                                     placeholder="@(isEn ? "Select programming language..." : "Programlama dili seçin...")"
+                                     options="C#, Python, TypeScript, Go, Rust, Java, Kotlin, Swift" />
+                </div>
+
+                <!-- API Buttons -->
+                <div class="space-y-2 pt-2">
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">@(isEn ? "Call Instance Methods" : "Örnek Metotlarını Çağır")</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="window.Panoptes?.Select?.instances?.get('sel_api_demo')?.open(); logEvent('API: .open() called');" class="px-3 py-1.5 text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg shadow-2xs transition cursor-pointer">
+                            .open()
+                        </button>
+                        <button type="button" onclick="window.Panoptes?.Select?.instances?.get('sel_api_demo')?.close(); logEvent('API: .close() called');" class="px-3 py-1.5 text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg shadow-2xs transition cursor-pointer">
+                            .close()
+                        </button>
+                        <button type="button" onclick="window.Panoptes?.Select?.instances?.get('sel_api_demo')?.setValue('TypeScript'); logEvent('API: .setValue(\'TypeScript\') called');" class="px-3 py-1.5 text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg shadow-2xs transition cursor-pointer">
+                            .setValue('TypeScript')
+                        </button>
+                        <button type="button" onclick="const v = window.Panoptes?.Select?.instances?.get('sel_api_demo')?.getValue(); logEvent('API: .getValue() -> ' + v);" class="px-3 py-1.5 text-xs font-semibold bg-blue-50 border border-blue-200 hover:bg-blue-100 text-blue-700 rounded-lg shadow-2xs transition cursor-pointer">
+                            .getValue()
+                        </button>
+                        <button type="button" onclick="toggleSelectEnable()" id="btnToggleEnable" class="px-3 py-1.5 text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg shadow-2xs transition cursor-pointer">
+                            .enable(false)
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-slate-900 rounded-xl p-4 text-xs font-mono text-slate-300 shadow-sm">
+                <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
+                    <span class="font-bold text-slate-400">@(isEn ? "Live Action Log" : "Canlı Eylem Günlüğü (Action Log)")</span>
+                    <button type="button" onclick="document.getElementById('eventLog').innerHTML = ''" class="text-[11px] text-slate-500 hover:text-slate-300 transition cursor-pointer">
+                        @(isEn ? "Clear" : "Temizle")
+                    </button>
+                </div>
+                <div id="eventLog" class="h-44 overflow-y-auto space-y-1 text-[11px] text-slate-400">
+                    <div class="text-emerald-400">> @(isEn ? "API test panel ready..." : "API test paneli hazır...")</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature Description Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Registry Access" : "Global Kayıt Erişimi")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Access any active select component on the page via window.Panoptes.Select.instances.get(id)."
+                    : "Sayfadaki herhangi bir aktif select bileşenine window.Panoptes.Select.instances.get(id) ile doğrudan erişebilirsiniz.")
+            </div>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "State Mutability" : "Durum Değiştirilebilirliği")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Synchronize UI state with reactive frameworks or background fetch responses without page reloads."
+                    : "Sayfa yenilemeye gerek kalmadan reaktif kütüphaneler veya arka plan istekleriyle bileşen durumunu senkronize edin.")
+            </div>
+        </div>
+    </div>
+
+    <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+    <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                    @(isEn ? "JavaScript API Usage" : "JavaScript API Kullanımı")
+                </span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>// Bileşen örneğini al
+const select = window.Panoptes.Select.instances.get('sel_api_demo');
+
+// Açılır listeyi programatik aç / kapat
+select.open();
+select.close();
+
+// Yeni değer ata veya mevcut değeri oku
+select.setValue('TypeScript');
+const currentValue = select.getValue();
+
+// Bileşeni pasif / aktif yap
+select.enable(false); // devre dışı bırak
+select.enable(true);  // yeniden etkinleştir</code></pre>
+        </div>
+    </div>
+</div>
+
+<script>
+    let isSelectEnabled = true;
+    function toggleSelectEnable() {
+        const inst = window.Panoptes?.Select?.instances?.get('sel_api_demo');
+        if (!inst) return;
+        isSelectEnabled = !isSelectEnabled;
+        inst.enable(isSelectEnabled);
+        document.getElementById('btnToggleEnable').textContent = isSelectEnabled ? '.enable(false)' : '.enable(true)';
+        logEvent('API: .enable(' + isSelectEnabled + ') çağrıldı');
+    }
+
+    function logEvent(msg) {
+        const log = document.getElementById('eventLog');
+        if (!log) return;
+        const time = new Date().toLocaleTimeString();
+        const div = document.createElement('div');
+        div.innerHTML = `<span class="text-slate-600">[${time}]</span> ${msg}`;
+        log.prepend(div);
+    }
+</script>

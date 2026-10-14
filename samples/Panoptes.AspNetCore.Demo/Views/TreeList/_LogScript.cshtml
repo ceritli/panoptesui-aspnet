@@ -1,0 +1,37 @@
+<script>
+    function ptlLog(msg, cls) {
+        const el = document.getElementById('ptlLog');
+        if (!el) return;
+        if (el.firstElementChild && el.firstElementChild.classList.contains('text-slate-500') && el.children.length === 1) el.innerHTML = '';
+        const row = document.createElement('div');
+        const t = document.createElement('span');
+        t.className = 'text-slate-500';
+        t.textContent = '[' + new Date().toLocaleTimeString('tr-TR') + '] ';
+        const m = document.createElement('span');
+        m.className = cls || 'text-emerald-400';
+        m.textContent = msg;
+        row.appendChild(t);
+        row.appendChild(m);
+        el.appendChild(row);
+        el.scrollTop = el.scrollHeight;
+    }
+    function ptlLogClear() {
+        const el = document.getElementById('ptlLog');
+        if (el) el.innerHTML = '<div class="text-slate-500">// Günlük temizlendi...</div>';
+    }
+    function ptlOnEvent(e) {
+        const type = e.type;
+        const rest = {};
+        Object.keys(e).forEach(function (k) {
+            if (k === 'type' || k === 'element') return;
+            const v = e[k];
+            if (v && typeof v === 'object' && !Array.isArray(v) && k === 'values') { rest[k] = v; return; }
+            rest[k] = v;
+        });
+        let txt = '';
+        try { txt = JSON.stringify(rest); } catch (err) { txt = '(serileştirilemedi)'; }
+        if (txt.length > 220) txt = txt.slice(0, 220) + '…';
+        ptlLog(type + '  ' + txt, type === 'dataBound' ? 'text-sky-400' : 'text-emerald-400');
+    }
+</script>
+<script src="~/panoptes/panoptes-treelist.js"></script>

@@ -1,0 +1,517 @@
+@using Panoptes.AspNetCore.Models
+@{
+    var playlist = ViewBag.SamplePlaylist as List<PlaylistItem>;
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "MediaPlayer (Video / Audio Player Engine) - Panoptes Corporate UI" : "MediaPlayer (Video / Ses Oynatıcı) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/MediaPlayer" class="hover:text-blue-600 transition">@(isEn ? "Media & Documents" : "Medya & Doküman")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">MediaPlayer</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">MediaPlayer @(isEn ? "(Video & Audio Player Engine)" : "(Video / Ses Oynatıcı)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-mediaplayer&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Modern HTML5 video & audio player featuring custom dark controls, volume sliders, full-screen playback mode, playlist manager and programmatic JavaScript API." 
+                    : "HTML5 ve YouTube video oynatımı, özel şık kontrol çubuğu, ses seviyesi, tam ekran modu ve oynatma listesi (playlist) desteği.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Features & Demos" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">4</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">2</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        <!-- DEMO 1: Standart Özel Kontrollü HD Video Oynatıcı -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                        @(isEn ? "1. Standard Custom Controlled HD Video Player (Play/Pause, Duration & Volume)" : "1. Standart Özel Kontrollü HD Video Oynatıcı (Play/Pause, Süre & Ses)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn 
+                            ? "Sleek dark Tailwind controls instead of bulky browser defaults with large center play button, scrubber bar and full-screen trigger." 
+                            : "Tarayıcının hantal varsayılan video kontrolleri yerine şık Tailwind koyu tema, merkezde büyük oynatma butonu, interaktif süre çubuğu ve tam ekran düğmesi.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">&lt;panoptes-mediaplayer type="video"&gt;</span>
+            </div>
+
+            <div class="p-8 max-w-3xl mx-auto space-y-4">
+                <panoptes-mediaplayer id="standardVideoDemo" 
+                                     type="video" 
+                                     title="Big Buck Bunny - HD Tanıtım" 
+                                     src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" 
+                                     poster="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop" />
+            </div>
+
+            <!-- Standart Kod Kutusu -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-mediaplayer id="standardVideoDemo" 
+                     type="video" 
+                     title="Big Buck Bunny - HD Tanıtım" 
+                     src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" 
+                     poster="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800" /&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 2: Podcast & Ses Oynatıcı (Audio Mode) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block"></span>
+                        @(isEn ? "2. Podcast & Audio Player (Audio Mode & Compact Track Deck)" : "2. Podcast & Ses Oynatıcı (Audio Player & Gradyanlı Müzik Arayüzü)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn 
+                            ? "Compact audio player for podcasts, interviews and music tracks without screen overhead." 
+                            : "Ses kayıtları, röportajlar ve podcast yayınları için video ekranı olmaksızın kompakt dalga ve parça bilgi başlığı sunan ses kipi.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-indigo-50 text-indigo-700 px-2 py-1 rounded font-medium border border-indigo-100">type="audio"</span>
+            </div>
+
+            <div class="p-8 max-w-3xl mx-auto space-y-4">
+                <panoptes-mediaplayer id="audioPodcastDemo" 
+                                     type="audio" 
+                                     title="Panoptes Tech Talks - Bölüm 08: Modern Web Bileşenleri" 
+                                     src="https://actions.google.com/sounds/v1/ambiences/coffee_shop.ogg" />
+            </div>
+
+            <!-- Standart Kod Kutusu -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-mediaplayer id="audioPodcastDemo" 
+                     type="audio" 
+                     title="Panoptes Tech Talks - Bölüm 08: Modern Web Bileşenleri" 
+                     src="https://actions.google.com/sounds/v1/ambiences/coffee_shop.ogg" /&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 3: Çalma Listeli (Playlist) Çoklu Video Oynatıcı -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-600 inline-block"></span>
+                        @(isEn ? "3. Playlist Multi-Video & Training Course Player" : "3. Çalma Listeli (Playlist) Çoklu Video ve Eğitim Serisi Oynatıcı")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn 
+                            ? "Integrated bottom playlist deck allowing instant track/chapter switching for tutorials and media archives." 
+                            : "Eğitim videoları veya çoklu medya kütüphaneleri için alt panelde listelenen ve tıklandığında anında video değiştiren entegre çalma listesi.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-amber-50 text-amber-700 px-2 py-1 rounded font-medium border border-amber-100">playlist="@@playlist"</span>
+            </div>
+
+            <div class="p-8 max-w-3xl mx-auto space-y-4">
+                <panoptes-mediaplayer id="playlistVideoDemo" 
+                                     type="video" 
+                                     title="Big Buck Bunny - Doğal Yaşam Tanıtımı" 
+                                     src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" 
+                                     playlist="@playlist" />
+            </div>
+
+            <!-- Standart Kod Kutusu -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-mediaplayer id="playlistVideoDemo" 
+                     type="video" 
+                     title="Big Buck Bunny - Doğal Yaşam Tanıtımı" 
+                     src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" 
+                     playlist="@@playlist" /&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 4: Programatik JavaScript API ve Canlı Olay Günlüğü -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                        @(isEn ? "4. Programmatic JavaScript API & Live Event Log" : "4. Programatik JavaScript API ve Canlı Olay Günlüğü (Event Log)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn 
+                            ? "Control playback via play(), pause(), seek(sec), setVolume(0..1) with on-play / on-pause / on-ended callbacks." 
+                            : "play(), pause(), seek(saniye), setVolume(0..1) fonksiyonları ile harici kontrol ve on-play / on-pause / on-ended canlı geri çağırma dinleyicileri.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">Panoptes.MediaPlayer API</span>
+            </div>
+
+            <div class="p-8 max-w-3xl mx-auto space-y-6">
+                <panoptes-mediaplayer id="apiPlayerDemo" 
+                                     type="video" 
+                                     title="For Bigger Blazes - Hızlı Fragman" 
+                                     src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" 
+                                     on-play="onApiPlayerPlay" 
+                                     on-pause="onApiPlayerPause" 
+                                     on-ended="onApiPlayerEnded" />
+
+                <!-- API Kontrol Butonları -->
+                <div class="flex flex-wrap items-center gap-2 pt-2">
+                    <button type="button" onclick="playMedia()" class="px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition active:scale-95 shadow-xs cursor-pointer">
+                        @(isEn ? "Play" : "Başlat (play)")
+                    </button>
+                    <button type="button" onclick="pauseMedia()" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition active:scale-95 border border-slate-200 cursor-pointer">
+                        @(isEn ? "Pause" : "Duraklat (pause)")
+                    </button>
+                    <button type="button" onclick="seekMedia(5)" class="px-3 py-1.5 text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition active:scale-95 border border-indigo-200 cursor-pointer">
+                        @(isEn ? "Seek to 5s" : "5. Saniyeye Git (seek 5)")
+                    </button>
+                    <button type="button" onclick="setMediaVol(0.3)" class="px-3 py-1.5 text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-lg transition active:scale-95 border border-amber-200 cursor-pointer">
+                        @(isEn ? "Volume 30%" : "Ses %30 Yap")
+                    </button>
+                    <button type="button" onclick="setMediaVol(1.0)" class="px-3 py-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition active:scale-95 border border-emerald-200 cursor-pointer">
+                        @(isEn ? "Volume 100%" : "Ses %100 Yap")
+                    </button>
+                    <button type="button" onclick="clearPlayerLog()" class="ml-auto px-3 py-1.5 text-xs font-medium text-slate-500 hover:text-slate-800 transition cursor-pointer">
+                        @(isEn ? "Clear Log" : "Günlüğü Temizle")
+                    </button>
+                </div>
+
+                <!-- Canlı Olay Günlüğü Terminali -->
+                <div class="space-y-1">
+                    <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">@(isEn ? "Live Media Event Log:" : "Canlı Medya Olay Günlüğü:")</div>
+                    <div id="playerEventLog" class="h-28 bg-slate-950 text-slate-200 p-3 rounded-xl font-mono text-[11px] overflow-y-auto space-y-1 border border-slate-800 shadow-inner">
+                        <div class="text-slate-500">@(isEn ? "// Player events will be logged here..." : "// Oynatıcı olayları burada canlı listelenecektir...")</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Standart Kod Kutusu -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-mediaplayer id="apiPlayerDemo" 
+                     type="video" 
+                     title="For Bigger Blazes - Hızlı Fragman" 
+                     src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" 
+                     on-play="onApiPlayerPlay" 
+                     on-pause="onApiPlayerPause" 
+                     on-ended="onApiPlayerEnded" /&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parametre & Nitelik Referans Tablosu -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+                <h2 class="text-base font-bold text-slate-800">@(isEn ? "TagHelper Parameter & Attribute Reference" : "TagHelper Parametre & Nitelik Referansı")</h2>
+                <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "Attributes supported by <panoptes-mediaplayer>." : "<panoptes-mediaplayer> bileşeninin desteklediği tüm nitelikler")</p>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-600">
+                    <thead class="bg-slate-50 text-slate-800 font-bold border-b border-slate-200">
+                        <tr>
+                            <th class="px-6 py-3">@(isEn ? "Attribute" : "Nitelik (Attribute)")</th>
+                            <th class="px-6 py-3">@(isEn ? "Type" : "Tür (Type)")</th>
+                            <th class="px-6 py-3">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="px-6 py-3">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="px-6 py-3 font-mono font-semibold text-blue-600">id</td>
+                            <td class="px-6 py-3 font-mono text-slate-500">string</td>
+                            <td class="px-6 py-3 font-mono text-slate-400">GUID</td>
+                            <td class="px-6 py-3">@(isEn ? "Unique DOM identifier and JavaScript API instance handle." : "Bileşenin benzersiz DOM kimliği ve JavaScript API referansı.")</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-mono font-semibold text-blue-600">src</td>
+                            <td class="px-6 py-3 font-mono text-slate-500">string</td>
+                            <td class="px-6 py-3 font-mono text-slate-400">null</td>
+                            <td class="px-6 py-3">@(isEn ? "Direct media stream URL (.mp4, .webm, .mp3, .ogg)." : "Oynatılacak video (.mp4, .webm) veya ses (.mp3, .ogg) dosyasının web adresi.")</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-mono font-semibold text-blue-600">type</td>
+                            <td class="px-6 py-3 font-mono text-slate-500">string</td>
+                            <td class="px-6 py-3 font-mono text-slate-400">"video"</td>
+                            <td class="px-6 py-3">@(isEn ? "Media mode: \"video\" (screen) or \"audio\" (compact track card)." : "Medya türü: \"video\" (ekranlı) veya \"audio\" (kompakt ses dalga kipi).")</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-mono font-semibold text-blue-600">title</td>
+                            <td class="px-6 py-3 font-mono text-slate-500">string</td>
+                            <td class="px-6 py-3 font-mono text-slate-400">null</td>
+                            <td class="px-6 py-3">@(isEn ? "Title banner text displayed over media deck." : "Video üstünde veya ses kutusunda görüntülenen medya başlığı.")</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-mono font-semibold text-blue-600">poster</td>
+                            <td class="px-6 py-3 font-mono text-slate-500">string</td>
+                            <td class="px-6 py-3 font-mono text-slate-400">null</td>
+                            <td class="px-6 py-3">@(isEn ? "Cover poster image URL before playback." : "Video başlamadan önce gösterilen kapak görseli URL'si.")</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-mono font-semibold text-blue-600">playlist</td>
+                            <td class="px-6 py-3 font-mono text-slate-500">List&lt;PlaylistItem&gt;</td>
+                            <td class="px-6 py-3 font-mono text-slate-400">null</td>
+                            <td class="px-6 py-3">@(isEn ? "Sequential playlist items collection." : "Alt kısımda listelenen ardışık çalma listesi öğeleri koleksiyonu.")</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-mono font-semibold text-blue-600">on-play / on-pause / on-ended</td>
+                            <td class="px-6 py-3 font-mono text-slate-500">string</td>
+                            <td class="px-6 py-3 font-mono text-slate-400">null</td>
+                            <td class="px-6 py-3">@(isEn ? "Event handler function names triggered on playback states." : "Oynatma başladığında, duraklatıldığında veya bittiğinde çağrılan JS fonksiyonu.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "TagHelper Attributes & Parameters" : "TagHelper Özellikleri & Parametreleri")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "Configuration parameters supported by <panoptes-mediaplayer>." : "<panoptes-mediaplayer> bileşeninin desteklediği tüm C# ve HTML nitelikleri.")</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesMediaplayerTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">@(isEn ? "Attribute" : "Özellik (Attribute)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Type" : "Tip (C#)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-6">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Element identifier." : "Bileşen kimliği.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">source</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Media file URL." : "Medya dosyası veya akış URL'si.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Standards & Keyboard Accessibility" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    @(isEn 
+                        ? "Panoptes MediaPlayer is engineered in compliance with W3C WAI-ARIA standards for screen readers and keyboard accessibility." 
+                        : "Panoptes MediaPlayer bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "WAI-ARIA Roles" : "WAI-ARIA Nitelikleri")</div>
+                    <div class="text-slate-600">
+                        @(isEn 
+                            ? "Standard role=\"region\" role with aria-label describing media player state and volume." 
+                            : "Standart role=\"region (media)\" rolünü taşır. Duruma göre aria-disabled, aria-expanded, aria-selected ve aria-label nitelikleri dinamik olarak güncellenir.")
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "Focus Management" : "Odak Yönetimi (Focus Management)")</div>
+                    <div class="text-slate-600">
+                        @(isEn 
+                            ? "Maintains tab sequence natively (tabIndex=\"0\"). High-contrast focus rings." 
+                            : "Sekme sırasını doğal akışında korur (tabIndex=\"0\"). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.")
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları (Keyboard Shortcuts)")</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">@(isEn ? "Key" : "Tuş (Key)")</th>
+                                <th class="py-2.5 px-4">@(isEn ? "Function" : "İşlev (Function)")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Space / K</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Play / Pause." : "Oynat / Duraklat.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">M</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Mute audio." : "Sessize al.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">F</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Toggle full-screen mode." : "Tam ekran moduna geç.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-mediaplayer.js"></script>
+    <script>
+        function playMedia() {
+            Panoptes.MediaPlayer.play('apiPlayerDemo');
+            logPlayerEvent(`Panoptes.MediaPlayer.play('apiPlayerDemo') çağrıldı.`);
+        }
+
+        function pauseMedia() {
+            Panoptes.MediaPlayer.pause('apiPlayerDemo');
+            logPlayerEvent(`Panoptes.MediaPlayer.pause('apiPlayerDemo') çağrıldı.`);
+        }
+
+        function seekMedia(sec) {
+            Panoptes.MediaPlayer.seek('apiPlayerDemo', sec);
+            logPlayerEvent(`Panoptes.MediaPlayer.seek('apiPlayerDemo', ${sec}) çağrıldı.`);
+        }
+
+        function setMediaVol(v) {
+            Panoptes.MediaPlayer.setVolume('apiPlayerDemo', v);
+            logPlayerEvent(`Panoptes.MediaPlayer.setVolume('apiPlayerDemo', ${v}) çağrıldı.`);
+        }
+
+        function onApiPlayerPlay(inst) {
+            logPlayerEvent(`[on-play]: Video oynatılmaya başlandı.`);
+        }
+
+        function onApiPlayerPause(inst) {
+            logPlayerEvent(`[on-pause]: Video duraklatıldı.`);
+        }
+
+        function onApiPlayerEnded(inst) {
+            logPlayerEvent(`[on-ended]: Video sonuna ulaştı.`);
+        }
+
+        function logPlayerEvent(msg) {
+            const logBox = document.getElementById('playerEventLog');
+            if (!logBox) return;
+            const time = new Date().toLocaleTimeString('tr-TR');
+            const row = document.createElement('div');
+            row.innerHTML = `<span class="text-emerald-400 font-mono">[${time}]</span> <span class="text-slate-200">${msg}</span>`;
+            logBox.appendChild(row);
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        function clearPlayerLog() {
+            const logBox = document.getElementById('playerEventLog');
+            if (logBox) logBox.innerHTML = '<div class="text-slate-500">// Günlük temizlendi...</div>';
+        }
+    </script>
+}

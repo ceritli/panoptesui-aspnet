@@ -1,0 +1,413 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "PDFViewer (PDF Document Reader Engine) - Panoptes Corporate UI" : "PDFViewer (PDF Belge Okuyucu) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/PdfViewer" class="hover:text-blue-600 transition">@(isEn ? "Media & Documents" : "Medya & Doküman")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">PDFViewer</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">PDFViewer @(isEn ? "(PDF Document Reader Engine)" : "(PDF Belge Okuyucu)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-pdfviewer&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "In-browser paginated PDF document viewer featuring full-text search, zoom scaling, page navigation and native print/download toolbar." 
+                    : "Sayfa sayfa PDF görüntüleme, sayfa içi arama, yakınlaştırma (zoom), sayfa atlama ve doğrudan yazdırma/indirme araç çubuğu.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Features & Demos" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">2</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">2</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        <!-- DEMO 1: Standart Kurumsal PDF Sözleşme Okuyucu -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                        @(isEn ? "1. Enterprise PDF Contract Reader (Page Navigation, Zoom & Toolbar)" : "1. Standart Kurumsal PDF Sözleşme Okuyucu (Sayfa Gezintisi, Zoom & Araç Çubuğu)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn 
+                            ? "Navigate pages with arrow keys or page number inputs, scale document with +/- buttons or fit to width." 
+                            : "Sayfalar arasında ok tuşları veya sayfa no kutucuğuyla gezinebilir, +/- butonlarıyla belgeyi yakınlaştırıp uzaklaştırabilir veya genişliğe sığdırabilirsiniz.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">&lt;panoptes-pdfviewer total-pages="3"&gt;</span>
+            </div>
+
+            <div class="p-8 max-w-4xl mx-auto space-y-4">
+                <panoptes-pdfviewer id="contractPdfDemo" 
+                                   title="Panoptes Lisans ve Hizmet Sözleşmesi (Resmi Döküman)" 
+                                   total-pages="3" 
+                                   height="600" 
+                                   enable-download="true" 
+                                   enable-print="true" />
+            </div>
+
+            <!-- Standart Kod Kutusu -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-pdfviewer id="contractPdfDemo" 
+                    title="Panoptes Lisans ve Hizmet Sözleşmesi" 
+                    total-pages="3" 
+                    height="600" 
+                    enable-download="true" 
+                    enable-print="true" /&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 2: Programatik JavaScript API ve Canlı Sayfa Günlüğü -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                        @(isEn ? "2. Programmatic JavaScript API & Live Page Change Event Log" : "2. Programatik JavaScript API ve Canlı Sayfa Değişim Günlüğü (Event Log)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn 
+                            ? "Control reader via nextPage(), prevPage(), goToPage(n), setZoom(scale) and listen to on-page-change events." 
+                            : "nextPage(), prevPage(), goToPage(n), setZoom(scale) fonksiyonları ile harici butonlardan döküman denetimi ve on-page-change geri çağırma dinleyicisi.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">Panoptes.PDFViewer API</span>
+            </div>
+
+            <div class="p-8 max-w-4xl mx-auto space-y-6">
+                <panoptes-pdfviewer id="apiPdfDemo" 
+                                   title="Finansal Performans ve Yatırım Raporu" 
+                                   total-pages="3" 
+                                   height="500" 
+                                   on-page-change="onApiPdfPageChange" />
+
+                <!-- API Kontrol Butonları -->
+                <div class="flex flex-wrap items-center gap-2 pt-2">
+                    <button type="button" onclick="pdfPrev()" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition active:scale-95 border border-slate-200 cursor-pointer">
+                        @(isEn ? "Previous Page" : "Önceki Sayfa (prevPage)")
+                    </button>
+                    <button type="button" onclick="pdfNext()" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition active:scale-95 border border-slate-200 cursor-pointer">
+                        @(isEn ? "Next Page" : "Sonraki Sayfa (nextPage)")
+                    </button>
+                    <button type="button" onclick="pdfGoTo(3)" class="px-3 py-1.5 text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition active:scale-95 border border-indigo-200 cursor-pointer">
+                        @(isEn ? "Go to Page 3 (Signatures)" : "3. Sayfaya Git (İmza Alanı)")
+                    </button>
+                    <button type="button" onclick="pdfZoom(1.3)" class="px-3 py-1.5 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition active:scale-95 border border-blue-200 cursor-pointer">
+                        @(isEn ? "Zoom 130%" : "%130 Yakınlaştır (setZoom)")
+                    </button>
+                    <button type="button" onclick="pdfZoom(1.0)" class="px-3 py-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition active:scale-95 border border-emerald-200 cursor-pointer">
+                        @(isEn ? "Zoom 100% (Normal)" : "%100 Normal Boyut")
+                    </button>
+                    <button type="button" onclick="clearPdfLog()" class="ml-auto px-3 py-1.5 text-xs font-medium text-slate-500 hover:text-slate-800 transition cursor-pointer">
+                        @(isEn ? "Clear Log" : "Günlüğü Temizle")
+                    </button>
+                </div>
+
+                <!-- Canlı Olay Günlüğü Terminali -->
+                <div class="space-y-1">
+                    <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">@(isEn ? "Live Page Event Log:" : "Canlı Sayfa Olay Günlüğü:")</div>
+                    <div id="pdfEventLog" class="h-28 bg-slate-950 text-slate-200 p-3 rounded-xl font-mono text-[11px] overflow-y-auto space-y-1 border border-slate-800 shadow-inner">
+                        <div class="text-slate-500">@(isEn ? "// Page changes and API calls will be logged here..." : "// Sayfa değişimleri ve API çağrıları burada canlı listelenecektir...")</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Standart Kod Kutusu -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-pdfviewer id="apiPdfDemo" 
+                    title="Finansal Performans Raporu" 
+                    total-pages="3" 
+                    height="500" 
+                    on-page-change="onApiPdfPageChange" /&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parametre & Nitelik Referans Tablosu -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+                <h2 class="text-base font-bold text-slate-800">@(isEn ? "TagHelper Parameter & Attribute Reference" : "TagHelper Parametre & Nitelik Referansı")</h2>
+                <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "Attributes supported by <panoptes-pdfviewer>." : "<panoptes-pdfviewer> bileşeninin desteklediği tüm nitelikler")</p>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-600">
+                    <thead class="bg-slate-50 text-slate-800 font-bold border-b border-slate-200">
+                        <tr>
+                            <th class="px-6 py-3">@(isEn ? "Attribute" : "Nitelik (Attribute)")</th>
+                            <th class="px-6 py-3">@(isEn ? "Type" : "Tür (Type)")</th>
+                            <th class="px-6 py-3">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="px-6 py-3">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="px-6 py-3 font-mono font-semibold text-blue-600">id</td>
+                            <td class="px-6 py-3 font-mono text-slate-500">string</td>
+                            <td class="px-6 py-3 font-mono text-slate-400">GUID</td>
+                            <td class="px-6 py-3">@(isEn ? "Unique DOM identifier and JavaScript API instance handle." : "Bileşenin benzersiz DOM kimliği ve JavaScript API referansı.")</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-mono font-semibold text-blue-600">src</td>
+                            <td class="px-6 py-3 font-mono text-slate-500">string</td>
+                            <td class="px-6 py-3 font-mono text-slate-400">null</td>
+                            <td class="px-6 py-3">@(isEn ? "PDF file URL path." : "Görüntülenecek PDF dosyasının sunucu veya web URL adresi.")</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-mono font-semibold text-blue-600">title</td>
+                            <td class="px-6 py-3 font-mono text-slate-500">string</td>
+                            <td class="px-6 py-3 font-mono text-slate-400">"Döküman Önizleme"</td>
+                            <td class="px-6 py-3">@(isEn ? "File title displayed on left side of toolbar." : "Araç çubuğunun solunda görüntülenen dosya başlığı.")</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-mono font-semibold text-blue-600">total-pages</td>
+                            <td class="px-6 py-3 font-mono text-slate-500">int</td>
+                            <td class="px-6 py-3 font-mono text-slate-400">3</td>
+                            <td class="px-6 py-3">@(isEn ? "Total page count of document." : "Dökümandaki toplam sayfa sayısı sınırı.")</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-mono font-semibold text-blue-600">height</td>
+                            <td class="px-6 py-3 font-mono text-slate-500">int</td>
+                            <td class="px-6 py-3 font-mono text-slate-400">650</td>
+                            <td class="px-6 py-3">@(isEn ? "Viewport canvas height in pixels." : "Okuma alanı piksel yüksekliği.")</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-mono font-semibold text-blue-600">enable-download</td>
+                            <td class="px-6 py-3 font-mono text-slate-500">bool</td>
+                            <td class="px-6 py-3 font-mono text-slate-400">true</td>
+                            <td class="px-6 py-3">@(isEn ? "Enables Download button in toolbar." : "Araç çubuğunda PDF İndir butonunu etkinleştirir.")</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-mono font-semibold text-blue-600">enable-print</td>
+                            <td class="px-6 py-3 font-mono text-slate-500">bool</td>
+                            <td class="px-6 py-3 font-mono text-slate-400">true</td>
+                            <td class="px-6 py-3">@(isEn ? "Enables Print button in toolbar." : "Araç çubuğunda Yazdır butonunu etkinleştirir.")</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-3 font-mono font-semibold text-blue-600">on-page-change</td>
+                            <td class="px-6 py-3 font-mono text-slate-500">string</td>
+                            <td class="px-6 py-3 font-mono text-slate-400">null</td>
+                            <td class="px-6 py-3">@(isEn ? "JavaScript function name called on page transitions." : "Sayfa değiştiğinde çağrılan JavaScript fonksiyon adı.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "TagHelper Attributes & Parameters" : "TagHelper Özellikleri & Parametreleri")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "Configuration parameters supported by <panoptes-pdfviewer>." : "<panoptes-pdfviewer> bileşeninin desteklediği tüm C# ve HTML nitelikleri.")</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesPdfviewerTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">@(isEn ? "Attribute" : "Özellik (Attribute)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Type" : "Tip (C#)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-6">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Element identifier." : "Bileşen kimliği.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">file-url</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Target document URL." : "Görüntülenecek PDF belgesinin URL yolu.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Standards & Keyboard Accessibility" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    @(isEn 
+                        ? "Panoptes PDFViewer is engineered in compliance with W3C WAI-ARIA standards for screen readers and keyboard navigation." 
+                        : "Panoptes PDFViewer bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "WAI-ARIA Roles" : "WAI-ARIA Nitelikleri")</div>
+                    <div class="text-slate-600">
+                        @(isEn 
+                            ? "Standard role=\"document\" role with aria-label, aria-valuenow and aria-valuemax for page tracking." 
+                            : "Standart role=\"document / application\" rolünü taşır. Duruma göre aria-disabled, aria-expanded, aria-selected ve aria-label nitelikleri dinamik olarak güncellenir.")
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "Focus Management" : "Odak Yönetimi (Focus Management)")</div>
+                    <div class="text-slate-600">
+                        @(isEn 
+                            ? "Maintains tab sequence natively (tabIndex=\"0\"). High-contrast focus rings." 
+                            : "Sekme sırasını doğal akışında korur (tabIndex=\"0\"). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.")
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları (Keyboard Shortcuts)")</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">@(isEn ? "Key" : "Tuş (Key)")</th>
+                                <th class="py-2.5 px-4">@(isEn ? "Function" : "İşlev (Function)")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Page Up / Page Down</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Go to previous / next page." : "Önceki / sonraki sayfaya geçer.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Ctrl+F / Cmd+F</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Opens document text search." : "Belge içi metin aramasını açar.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-pdfviewer.js"></script>
+    <script>
+        function pdfPrev() {
+            Panoptes.PDFViewer.prevPage('apiPdfDemo');
+            logPdfEvent(`Panoptes.PDFViewer.prevPage('apiPdfDemo') çağrıldı.`);
+        }
+
+        function pdfNext() {
+            Panoptes.PDFViewer.nextPage('apiPdfDemo');
+            logPdfEvent(`Panoptes.PDFViewer.nextPage('apiPdfDemo') çağrıldı.`);
+        }
+
+        function pdfGoTo(n) {
+            Panoptes.PDFViewer.goToPage('apiPdfDemo', n);
+            logPdfEvent(`Panoptes.PDFViewer.goToPage('apiPdfDemo', ${n}) çağrıldı.`);
+        }
+
+        function pdfZoom(z) {
+            Panoptes.PDFViewer.setZoom('apiPdfDemo', z);
+            logPdfEvent(`Panoptes.PDFViewer.setZoom('apiPdfDemo', ${z}) çağrıldı.`);
+        }
+
+        function onApiPdfPageChange(pageNum, inst) {
+            logPdfEvent(`[on-page-change]: Sayfa değişti -> ${pageNum} / ${inst.totalPages}`);
+        }
+
+        function logPdfEvent(msg) {
+            const logBox = document.getElementById('pdfEventLog');
+            if (!logBox) return;
+            const time = new Date().toLocaleTimeString('tr-TR');
+            const row = document.createElement('div');
+            row.innerHTML = `<span class="text-emerald-400 font-mono">[${time}]</span> <span class="text-slate-200">${msg}</span>`;
+            logBox.appendChild(row);
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        function clearPdfLog() {
+            const logBox = document.getElementById('pdfEventLog');
+            if (logBox) logBox.innerHTML = '<div class="text-slate-500">// Günlük temizlendi...</div>';
+        }
+    </script>
+}

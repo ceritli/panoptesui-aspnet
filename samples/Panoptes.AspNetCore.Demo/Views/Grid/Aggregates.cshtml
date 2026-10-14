@@ -1,0 +1,135 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    string p = DemoTranslations.Prefix(isEn);
+    ViewData["Title"] = "Data Grid - Toplamlar ve İstatistikler (Aggregates)";
+    ViewData["ActiveTab"] = "Aggregates";
+}
+
+<div class="space-y-6">
+    <partial name="_GridNav" />
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Toplamlar & İstatistikler (Aggregates)</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                    Grup & Dip Toplamlar
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                Gelişmiş ASP.NET Core Grid Aggregates mimarisiyle; grup başlıklarında, grup altlarında (Group Footer) ve genel tablo tabanında (Grid Footer) otomatik <strong>Sum (Toplam)</strong>, <strong>Average (Ortalama)</strong>, <strong>Min</strong>, <strong>Max</strong> ve <strong>Count (Adet)</strong> hesaplamaları.
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold">
+                @(isEn ? "✓ Production Ready" : "✓ Tam Sürüm Hazır")
+            </span>
+        </div>
+    </div>
+
+    <!-- Live Grid Preview with Aggregates -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span>📊 Kategori Bazlı Gruplama & Otomatik Ara Toplamlar</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">Sütun başlıklarını sürükleyip yukarı bırakarak dinamik gruplama yapabilir ve anlık ara toplamları inceleyebilirsiniz.</p>
+            </div>
+            <span class="text-xs text-slate-400 font-mono bg-slate-50 px-2 py-1 rounded border border-slate-200">group="Category"</span>
+        </div>
+
+        <panoptes-grid id="grid_aggregates"
+                       page-size="10"
+                       page-sizes="5,10,25,50"
+                       sortable="true"
+                       filterable="true"
+                       groupable="true"
+                       class="shadow-xs">
+            <panoptes-grid-datasource url="/api/products"
+                                      create-url="/api/products/create"
+                                      update-url="/api/products/update"
+                                      delete-url="/api/products/delete" />
+            <panoptes-grid-columns>
+                <panoptes-grid-column field="Id" title="#" width="60px" editable="false" />
+                <panoptes-grid-column field="Name" title="@(isEn ? "Product Name" : "Ürün Adı")" width="220px" editor-type="text" />
+                <panoptes-grid-column field="Category" title="@(isEn ? "Category" : "Kategori")" width="140px" editor-type="select" editor-options="Elektronik, Giyim, Kitap, Kozmetik, Aksesuar, Spor" />
+                <panoptes-grid-column field="Price" title="Birim Fiyat" width="140px" format="currency" aggregates="sum,avg,min,max" editor-type="number" />
+                <panoptes-grid-column field="Stock" title="Mevcut Stok" width="130px" aggregates="sum,avg" editor-type="number" />
+                <panoptes-grid-column field="TotalSales" title="Toplam Hasılat" width="150px" format="currency" aggregates="sum" editor-type="number" />
+                <panoptes-grid-column field="CustomerRating" title="Müşteri Puanı" width="130px" format="stars" aggregates="avg" />
+            </panoptes-grid-columns>
+        </panoptes-grid>
+    </div>
+
+    <!-- Aggregate Types Card -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm">∑</div>
+            <div>
+                <div class="text-xs font-semibold text-slate-500">Sum (Toplam)</div>
+                <div class="text-sm font-bold text-slate-800">Sayısal & Para Birimi</div>
+            </div>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">µ</div>
+            <div>
+                <div class="text-xs font-semibold text-slate-500">Average (Ortalama)</div>
+                <div class="text-sm font-bold text-slate-800">Fiyat & Puan Ortalaması</div>
+            </div>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm">↕</div>
+            <div>
+                <div class="text-xs font-semibold text-slate-500">Min / Max</div>
+                <div class="text-sm font-bold text-slate-800">En Düşük / En Yüksek</div>
+            </div>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-sm">#</div>
+            <div>
+                <div class="text-xs font-semibold text-slate-500">Count (Adet)</div>
+                <div class="text-sm font-bold text-slate-800">Grup Başına Kayıt Sayısı</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+    <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                    @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                </span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-grid id="grid_aggregates"
+               page-size="10"
+               page-sizes="5,10,25,50"
+               sortable="true"
+               filterable="true"
+               groupable="true"&gt;
+    &lt;panoptes-grid-datasource url="/api/products"
+                              create-url="/api/products/create"
+                              update-url="/api/products/update"
+                              delete-url="/api/products/delete" /&gt;
+    &lt;panoptes-grid-columns&gt;
+        &lt;panoptes-grid-column field="Id" title="#" width="60px" editable="false" /&gt;
+        &lt;panoptes-grid-column field="Name" title="@(isEn ? "Product Name" : "Ürün Adı")" width="220px" /&gt;
+        &lt;panoptes-grid-column field="Category" title="@(isEn ? "Category" : "Kategori")" width="140px" /&gt;
+        &lt;panoptes-grid-column field="Price" title="Birim Fiyat" width="140px" format="currency" aggregates="sum,avg,min,max" /&gt;
+        &lt;panoptes-grid-column field="Stock" title="Mevcut Stok" width="130px" aggregates="sum,avg" /&gt;
+        &lt;panoptes-grid-column field="TotalSales" title="Toplam Hasılat" width="150px" format="currency" aggregates="sum" /&gt;
+        &lt;panoptes-grid-column field="CustomerRating" title="Müşteri Puanı" width="130px" format="stars" aggregates="avg" /&gt;
+    &lt;/panoptes-grid-columns&gt;
+&lt;/panoptes-grid&gt;</code></pre>
+        </div>
+    </div>
+</div>

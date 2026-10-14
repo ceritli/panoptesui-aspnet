@@ -1,0 +1,163 @@
+@model Panoptes.AspNetCore.Demo.Controllers.SpreadsheetPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <panoptes-spreadsheet id="sheet" sheets="@Model.Sheets" title="Satış Tablosu" height="380"
+                              toolbar="home,insert,data,view,file" file-name="Satis" on-event="pssOnEvent" />
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-3 bg-slate-50/50"><h2 class="text-sm font-bold text-slate-800">TagHelper öznitelikleri</h2></div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead><tr class="bg-slate-50 border-b border-slate-200 text-slate-600"><th class="py-2.5 px-4 font-semibold">Öznitelik</th><th class="py-2.5 px-4 font-semibold">Tür</th><th class="py-2.5 px-4 font-semibold">Varsayılan</th><th class="py-2.5 px-4 font-semibold">Açıklama</th></tr></thead>
+                    <tbody class="divide-y divide-slate-100 font-mono text-[11px] text-slate-700">
+                    <tr>
+                        <td class="py-2.5 px-4 font-bold text-sky-700">id</td>
+                        <td class="py-2.5 px-4 text-slate-500">string</td>
+                        <td class="py-2.5 px-4 text-slate-400">Otomatik</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600">Bileşenin DOM kimliği; Panoptes.Spreadsheet.getInstance(id) ile API'ye erişilir.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-bold text-sky-700">title</td>
+                        <td class="py-2.5 px-4 text-slate-500">string</td>
+                        <td class="py-2.5 px-4 text-slate-400">—</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600">Tablonun üst başlığı.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-bold text-sky-700">sheets</td>
+                        <td class="py-2.5 px-4 text-slate-500">List&lt;SpreadsheetSheet&gt;</td>
+                        <td class="py-2.5 px-4 text-slate-400">1 boş sayfa</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600">Çalışma sayfaları: hücreler, biçimler, birleştirmeler, doğrulamalar, düzenleyiciler, resimler, DataSource.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-bold text-sky-700">height</td>
+                        <td class="py-2.5 px-4 text-slate-500">int</td>
+                        <td class="py-2.5 px-4 text-slate-400">520</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600">Bileşenin piksel yüksekliği.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-bold text-sky-700">toolbar</td>
+                        <td class="py-2.5 px-4 text-slate-500">string</td>
+                        <td class="py-2.5 px-4 text-slate-400">true</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600">true / false veya virgülle ayrılmış sekmeler: home, insert, data, view, file.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-bold text-sky-700">formula-bar</td>
+                        <td class="py-2.5 px-4 text-slate-500">bool</td>
+                        <td class="py-2.5 px-4 text-slate-400">true</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600">Formül çubuğunu gösterir.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-bold text-sky-700">sheets-bar</td>
+                        <td class="py-2.5 px-4 text-slate-500">bool</td>
+                        <td class="py-2.5 px-4 text-slate-400">true</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600">Alttaki sayfa sekmelerini gösterir.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-bold text-sky-700">editable</td>
+                        <td class="py-2.5 px-4 text-slate-500">bool</td>
+                        <td class="py-2.5 px-4 text-slate-400">true</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600">false ise tablo salt okunur olur.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-bold text-sky-700">resizable</td>
+                        <td class="py-2.5 px-4 text-slate-500">bool</td>
+                        <td class="py-2.5 px-4 text-slate-400">false</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600">Bileşen sağ alt köşeden yeniden boyutlandırılabilir.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-bold text-sky-700">show-grid-lines</td>
+                        <td class="py-2.5 px-4 text-slate-500">bool</td>
+                        <td class="py-2.5 px-4 text-slate-400">true</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600">Izgara çizgilerini gösterir.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-bold text-sky-700">export-url</td>
+                        <td class="py-2.5 px-4 text-slate-500">string</td>
+                        <td class="py-2.5 px-4 text-slate-400">—</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600">Excel (.xlsx) dışa aktarma ucu (POST, JSON gövde).</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-bold text-sky-700">import-url</td>
+                        <td class="py-2.5 px-4 text-slate-500">string</td>
+                        <td class="py-2.5 px-4 text-slate-400">—</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600">Excel (.xlsx) içe aktarma ucu (POST, multipart "file").</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-bold text-sky-700">file-name</td>
+                        <td class="py-2.5 px-4 text-slate-500">string</td>
+                        <td class="py-2.5 px-4 text-slate-400">Panoptes</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600">İndirilen dosyaların ön adı.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-bold text-sky-700">on-event</td>
+                        <td class="py-2.5 px-4 text-slate-500">string</td>
+                        <td class="py-2.5 px-4 text-slate-400">—</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600">Tüm olaylar için global JS fonksiyonu adı: fn({ type, sender, ... }).</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-bold text-sky-700">on-cell-change</td>
+                        <td class="py-2.5 px-4 text-slate-500">string</td>
+                        <td class="py-2.5 px-4 text-slate-400">—</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600">Hücre değerinde değişiklik olunca çağrılır: fn({ row, col, ref, value }).</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-bold text-sky-700">class</td>
+                        <td class="py-2.5 px-4 text-slate-500">string</td>
+                        <td class="py-2.5 px-4 text-slate-400">—</td>
+                        <td class="py-2.5 px-4 font-sans text-slate-600">Kök elemente ek CSS sınıfı.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-3 bg-slate-50/50"><h2 class="text-sm font-bold text-slate-800">SpreadsheetCell özellikleri</h2></div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead><tr class="bg-slate-50 border-b border-slate-200 text-slate-600"><th class="py-2.5 px-4 font-semibold">Özellik</th><th class="py-2.5 px-4 font-semibold">Tür</th><th class="py-2.5 px-4 font-semibold">Açıklama</th></tr></thead>
+                    <tbody class="divide-y divide-slate-100 font-mono text-[11px] text-slate-700">
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">Row / Col</td><td class="py-2.5 px-4 text-slate-500">int</td><td class="py-2.5 px-4 font-sans text-slate-600">1 tabanlı satır ve sütun.</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">Value / Formula</td><td class="py-2.5 px-4 text-slate-500">string</td><td class="py-2.5 px-4 font-sans text-slate-600">Değer (sayılar invariant metin) veya "=SUM(A1:A5)" biçiminde formül.</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">Bold / Italic / Underline / Strike</td><td class="py-2.5 px-4 text-slate-500">bool</td><td class="py-2.5 px-4 font-sans text-slate-600">Yazı biçimi.</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">Color / Background</td><td class="py-2.5 px-4 text-slate-500">string</td><td class="py-2.5 px-4 font-sans text-slate-600">Yazı ve dolgu rengi (#rrggbb).</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">Align / VAlign</td><td class="py-2.5 px-4 text-slate-500">string</td><td class="py-2.5 px-4 font-sans text-slate-600">left|center|right ve top|middle|bottom.</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">Format</td><td class="py-2.5 px-4 text-slate-500">string</td><td class="py-2.5 px-4 font-sans text-slate-600">general, number, integer, currency, percent, date, datetime, time, text veya özel kalıp (#,##0.00 ₺, dd.MM.yyyy).</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">FontSize / Wrap / Border</td><td class="py-2.5 px-4 text-slate-500">int / bool / string</td><td class="py-2.5 px-4 font-sans text-slate-600">Yazı boyutu, metni kaydır, kenarlık (t,b,l,r bayrakları).</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">Enabled</td><td class="py-2.5 px-4 text-slate-500">bool</td><td class="py-2.5 px-4 font-sans text-slate-600">false ise hücre kilitlidir.</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">Comment</td><td class="py-2.5 px-4 text-slate-500">string</td><td class="py-2.5 px-4 font-sans text-slate-600">Hücre yorumu.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-3 bg-slate-50/50"><h2 class="text-sm font-bold text-slate-800">SpreadsheetSheet özellikleri</h2></div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead><tr class="bg-slate-50 border-b border-slate-200 text-slate-600"><th class="py-2.5 px-4 font-semibold">Özellik</th><th class="py-2.5 px-4 font-semibold">Açıklama</th></tr></thead>
+                    <tbody class="divide-y divide-slate-100 font-mono text-[11px] text-slate-700">
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">Name / Rows / Cols</td><td class="py-2.5 px-4 font-sans text-slate-600">Sayfa adı ve boyutu.</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">Cells</td><td class="py-2.5 px-4 font-sans text-slate-600">SpreadsheetCell listesi.</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">ColumnWidths / RowHeights</td><td class="py-2.5 px-4 font-sans text-slate-600">1 tabanlı dizin → piksel sözlüğü.</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">MergedCells</td><td class="py-2.5 px-4 font-sans text-slate-600">["A1:C1", ...] birleştirilmiş aralıklar.</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">FrozenRows / FrozenCols</td><td class="py-2.5 px-4 font-sans text-slate-600">Dondurulmuş satır/sütun sayısı.</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">Validations</td><td class="py-2.5 px-4 font-sans text-slate-600">Veri doğrulama kuralları.</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">Editors</td><td class="py-2.5 px-4 font-sans text-slate-600">Aralığa özel hücre düzenleyicileri.</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">DisabledRanges</td><td class="py-2.5 px-4 font-sans text-slate-600">Kilitli aralıklar.</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">Images</td><td class="py-2.5 px-4 font-sans text-slate-600">Hücreye sabitli resimler.</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">Filter</td><td class="py-2.5 px-4 font-sans text-slate-600">Filtre aralığı, örn. "A1:F20".</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">ShowGridLines</td><td class="py-2.5 px-4 font-sans text-slate-600">Sayfa için ızgara görünürlüğü.</td></tr>
+                    <tr><td class="py-2.5 px-4 font-bold text-sky-700">DataSource</td><td class="py-2.5 px-4 font-sans text-slate-600">Sütun tanımları + kayıtlar ile veri bağlama.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+}

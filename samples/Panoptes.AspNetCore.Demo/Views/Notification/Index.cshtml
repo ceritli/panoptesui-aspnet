@@ -1,0 +1,587 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Notification (Toast Notifications) - Panoptes Corporate UI" : "Notification (Toast Bildirimleri) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/Notification" class="hover:text-blue-600 transition">@(isEn ? "Popups & Overlays" : "Açılır Pencereler")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Notification</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Notification @(isEn ? "(Toast Notifications)" : "(Toast Bildirimleri)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-notification&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "Notification engine displaying success, warning, error and informational messages with auto-dismissing smooth animations at viewport corners." : "Başarılı, uyarı, hata ve bilgi mesajlarını ekranın köşelerinde otomatik kapanan pürüzsüz animasyonlarla gösteren bildirim motoru.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Features & Demos" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">4</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">3</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        <!-- DEMO 1: Standart Bildirim Türleri -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                        @(isEn ? "1. Standard Notification Types (Success, Error, Warning, Info)" : "1. Standart Bildirim Türleri (Success, Error, Warning, Info)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Dedicated color palette, symbolic icons and countdown progress bar for distinct semantic states." : "Farklı semantik durumlar için özel renk paleti, sembolik ikonlar ve geri sayım çizgisi.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">&lt;panoptes-notification&gt;</span>
+            </div>
+
+            <div class="p-6">
+                <div class="flex flex-wrap items-center gap-3">
+                    <button type="button" onclick="showNotif('success')" class="px-4 py-2 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        @(isEn ? "Success Notification" : "Başarılı (Success) Bildirimi")
+                    </button>
+                    <button type="button" onclick="showNotif('error')" class="px-4 py-2 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        @(isEn ? "Error Notification" : "Hata (Error) Bildirimi")
+                    </button>
+                    <button type="button" onclick="showNotif('warning')" class="px-4 py-2 text-xs font-semibold text-white bg-amber-600 hover:bg-amber-700 rounded-lg transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        @(isEn ? "Warning Notification" : "Uyarı (Warning) Bildirimi")
+                    </button>
+                    <button type="button" onclick="showNotif('info')" class="px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        @(isEn ? "Info Notification" : "Bilgi (Info) Bildirimi")
+                    </button>
+                </div>
+            </div>
+
+            <!-- Prime LightCodeViewer 1 -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor & JavaScript</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;!-- Razor TagHelper --&gt;
+&lt;panoptes-notification type="success" title="Kayıt Başarılı" message="Müşteri bilgileri kaydedildi." auto-hide-after="5000" position="top-right" /&gt;
+
+// JavaScript API
+Panoptes.notify.success('Değişiklikler kaydedildi.', 'İşlem Başarılı');
+Panoptes.notify.error('Sunucu ile bağlantı kurulamadı.', 'Hata Oluştu');
+Panoptes.notify.warning('Oturum süreniz 5 dakika içinde dolacak.', 'Uyarı');
+Panoptes.notify.info('Yeni sistem güncellemesi hazır.', 'Bilgi');</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 2: Çoklu Ekran Pozisyonları (Positions) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block"></span>
+                        @(isEn ? "2. Multiple Screen Positions (Positions)" : "2. Çoklu Ekran Pozisyonları (Positions)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Six distinct screen corner and edge positions: Top-Left, Top-Center, Top-Right, Bottom-Left, Bottom-Center, Bottom-Right." : "6 farklı ekran köşesi ve kenar konumu: Sol Üst, Üst Orta, Sağ Üst, Sol Alt, Alt Orta, Sağ Alt.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-indigo-50 text-indigo-700 px-2 py-1 rounded font-medium border border-indigo-100">position: top | bottom</span>
+            </div>
+
+            <div class="p-6">
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <button type="button" onclick="showAtPos('top-left')" class="p-3 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 border border-slate-200 rounded-xl transition text-center cursor-pointer">
+                        ↖ @(isEn ? "Top Left (top-left)" : "Sol Üst (top-left)")
+                    </button>
+                    <button type="button" onclick="showAtPos('top-center')" class="p-3 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 border border-slate-200 rounded-xl transition text-center cursor-pointer">
+                        ⬆ @(isEn ? "Top Center (top-center)" : "Üst Orta (top-center)")
+                    </button>
+                    <button type="button" onclick="showAtPos('top-right')" class="p-3 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 border border-slate-200 rounded-xl transition text-center cursor-pointer">
+                        ↗ @(isEn ? "Top Right (top-right)" : "Sağ Üst (top-right)")
+                    </button>
+                    <button type="button" onclick="showAtPos('bottom-left')" class="p-3 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 border border-slate-200 rounded-xl transition text-center cursor-pointer">
+                        ↙ @(isEn ? "Bottom Left (bottom-left)" : "Sol Alt (bottom-left)")
+                    </button>
+                    <button type="button" onclick="showAtPos('bottom-center')" class="p-3 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 border border-slate-200 rounded-xl transition text-center cursor-pointer">
+                        ⬇ @(isEn ? "Bottom Center (bottom-center)" : "Alt Orta (bottom-center)")
+                    </button>
+                    <button type="button" onclick="showAtPos('bottom-right')" class="p-3 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 border border-slate-200 rounded-xl transition text-center cursor-pointer">
+                        ↘ @(isEn ? "Bottom Right (bottom-right)" : "Sağ Alt (bottom-right)")
+                    </button>
+                </div>
+            </div>
+
+            <!-- Prime LightCodeViewer 2 -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>Panoptes.notify.show({
+    title: 'Konum Bildirimi',
+    message: 'Bu bildirim sol alt köşede görüntülendi.',
+    type: 'info',
+    position: 'bottom-left',
+    duration: 4000
+});</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 3: Kalıcı (Persistent) & Özel Süreli Bildirimler -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                        @(isEn ? "3. Persistent & Custom Duration Notifications" : "3. Kalıcı (Persistent) & Özel Süreli Bildirimler")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Critical notifications that do not dismiss automatically (duration: 0) and remain on screen until user dismisses." : "Otomatik kapanmayan (duration: 0), kullanıcı kapatma butonuna basana kadar ekranda kalan kritik bildirimler.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">duration: 0 @(isEn ? "(Persistent)" : "(Kalıcı)")</span>
+            </div>
+
+            <div class="p-6">
+                <div class="flex flex-wrap items-center gap-3">
+                    <button type="button" onclick="showPersistentNotif()" class="px-4 py-2 text-xs font-semibold text-white bg-slate-800 hover:bg-slate-900 rounded-lg transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-8a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        @(isEn ? "Persistent Security Alert (Sticky)" : "Kalıcı Güvenlik Uyarısı (Otomatik Kapanmaz)")
+                    </button>
+                    <button type="button" onclick="showFastNotif()" class="px-4 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg transition shadow-xs cursor-pointer">
+                        @(isEn ? "Fast Notification (2 Seconds)" : "Hızlı Bildirim (2 Saniye)")
+                    </button>
+                </div>
+            </div>
+
+            <!-- Prime LightCodeViewer 3 -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>Panoptes.notify.show({
+    title: 'Kritik Sistem Uyarısı',
+    message: 'Veritabanı bakımı 15 dakika içinde başlayacaktır. Lütfen çalışmalarınızı kaydedin.',
+    type: 'warning',
+    position: 'top-right',
+    duration: 0,
+    closable: true
+});</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 4: Canlı Özel Bildirim Oluşturucu (Interactive Playground) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-violet-600 inline-block"></span>
+                    @(isEn ? "4. Interactive Custom Notification Playground" : "4. Canlı Özel Bildirim Oluşturucu (Interactive Playground)")
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    @(isEn ? "Configure custom title, message, semantic type, position and timeout in real-time." : "Özel başlık, mesaj, tür, konum ve süre belirleyerek canlı bildirim tetikleyin.")
+                </p>
+            </div>
+
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">@(isEn ? "Title" : "Başlık")</label>
+                            <input type="text" id="custTitle" value='@(isEn ? "Custom Notification" : "Özel Bildirim")' class="w-full text-xs px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-blue-500" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">@(isEn ? "Message Content" : "Mesaj İçeriği")</label>
+                            <input type="text" id="custMessage" value='@(isEn ? "Playground custom notification message." : "Oluşturucu üzerinden tetiklenen dinamik mesaj.")' class="w-full text-xs px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-blue-500" />
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">@(isEn ? "Type" : "Tür")</label>
+                            <select id="custType" class="w-full text-xs px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-blue-500">
+                                <option value="success">Success</option>
+                                <option value="error">Error</option>
+                                <option value="warning">Warning</option>
+                                <option value="info" selected>Info</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">@(isEn ? "Position" : "Konum")</label>
+                            <select id="custPos" class="w-full text-xs px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-blue-500">
+                                <option value="top-right" selected>top-right</option>
+                                <option value="top-left">top-left</option>
+                                <option value="top-center">top-center</option>
+                                <option value="bottom-right">bottom-right</option>
+                                <option value="bottom-left">bottom-left</option>
+                                <option value="bottom-center">bottom-center</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">@(isEn ? "Duration (ms - 0=Sticky)" : "Süre (Milisaniye - 0=Kalıcı)")</label>
+                            <input type="number" id="custDuration" value="5000" step="500" class="w-full text-xs px-3 py-2 bg-white border border-slate-300 rounded-lg focus:outline-blue-500" />
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="button" onclick="triggerCustomNotification()" class="w-full py-2.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            @(isEn ? "Show Custom Notification" : "Özel Bildirimi Göster")
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prime LightCodeViewer 4 -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>Panoptes.notify.show({
+    title: document.getElementById('custTitle').value,
+    message: document.getElementById('custMessage').value,
+    type: document.getElementById('custType').value,
+    position: document.getElementById('custPos').value,
+    duration: parseInt(document.getElementById('custDuration').value, 10)
+});</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TagHelper Parametre & Nitelik Referans Tablosu -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    @(isEn ? "TagHelper Parameter & Attribute Reference" : "TagHelper Parametre ve Nitelik Referansı")
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    @(isEn ? "Razor TagHelper attributes and API methods supported by Notification component." : "Notification bileşeni tarafından desteklenen Razor TagHelper nitelikleri ve API metotları.")
+                </p>
+            </div>
+            <div class="p-6">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border border-slate-200 rounded-lg">
+                        <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">@(isEn ? "Tag / Attribute" : "Etiket / Nitelik")</th>
+                                <th class="p-3">@(isEn ? "Type" : "Tip")</th>
+                                <th class="p-3">@(isEn ? "Default" : "Varsayılan")</th>
+                                <th class="p-3">@(isEn ? "Description" : "Açıklama")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-600">
+                            <tr>
+                                <td class="p-3 font-mono font-bold text-blue-600">&lt;panoptes-notification&gt;</td>
+                                <td class="p-3 font-mono text-slate-500">TagHelper</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">@(isEn ? "Toast notification root descriptor." : "Toast bildirim tanımlayıcısı.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">title</td>
+                                <td class="p-3 font-mono text-slate-500">string</td>
+                                <td class="p-3 font-mono">null</td>
+                                <td class="p-3">@(isEn ? "Notification bold header title." : "Bildirim kartının üst kalın başlığı.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">message</td>
+                                <td class="p-3 font-mono text-slate-500">string</td>
+                                <td class="p-3 font-mono">""</td>
+                                <td class="p-3">@(isEn ? "Notification text body." : "Bildirim mesaj metni.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">type</td>
+                                <td class="p-3 font-mono text-slate-500">string</td>
+                                <td class="p-3 font-mono">"info"</td>
+                                <td class="p-3">@(isEn ? "Semantic type: \"success\", \"error\", \"warning\", \"info\"." : "Bildirim türü: \"success\", \"error\", \"warning\", \"info\".")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">position</td>
+                                <td class="p-3 font-mono text-slate-500">string</td>
+                                <td class="p-3 font-mono">"top-right"</td>
+                                <td class="p-3">@(isEn ? "Screen anchor: \"top-right\", \"top-left\", \"top-center\", \"bottom-right\", \"bottom-left\", \"bottom-center\"." : "Ekran konumu: \"top-right\", \"top-left\", \"top-center\", \"bottom-right\", \"bottom-left\", \"bottom-center\".")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">auto-hide-after</td>
+                                <td class="p-3 font-mono text-slate-500">int</td>
+                                <td class="p-3 font-mono">5000</td>
+                                <td class="p-3">@(isEn ? "Auto-dismiss timeout in milliseconds. Set 0 for sticky." : "Milisaniye cinsinden otomatik gizlenme süresi. 0 verilirse kalıcı kalır.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">closable</td>
+                                <td class="p-3 font-mono text-slate-500">bool</td>
+                                <td class="p-3 font-mono">true</td>
+                                <td class="p-3">@(isEn ? "Whether dismiss close button is visible." : "Kapatma (çarpı) butonunun gösterilip gösterilmeyeceği.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">show-icon</td>
+                                <td class="p-3 font-mono text-slate-500">bool</td>
+                                <td class="p-3 font-mono">true</td>
+                                <td class="p-3">@(isEn ? "Whether semantic icon is displayed." : "Tür ikonunun gösterilip gösterilmeyeceği.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "TagHelper Properties & Parameters" : "TagHelper Özellikleri & Parametreleri")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "All C# and HTML attributes supported by <panoptes-notification> component." : "<panoptes-notification> bileşeninin desteklediği tüm C# ve HTML nitelikleri.")</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesNotificationTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">@(isEn ? "Attribute" : "Özellik (Attribute)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Type (C#)" : "Tip (C#)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-6">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">@(isEn ? "Auto" : "Otomatik")</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Component identifier." : "Bileşen kimliği.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">position</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"top-right"</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Position: top-right, top-left, bottom-right, bottom-left." : "Konum: \"top-right\", \"top-left\", \"bottom-right\", \"bottom-left\".")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">auto-hide</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">int</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">4000</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Auto-dismiss timeout (milliseconds)." : "Otomatik kapanma süresi (milisaniye).")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Standards & Keyboard Accessibility" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    @(isEn ? "Panoptes Notification component is designed in accordance with W3C WAI-ARIA standards for screen readers and keyboard navigation." : "Panoptes Notification bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "WAI-ARIA Attributes" : "WAI-ARIA Nitelikleri")</div>
+                    <div class="text-slate-600">
+                        @(isEn ? "Carries standard role=\"alert / status\". Dynamic aria-live=\"polite / assertive\" announcements." : "Standart role=\"alert / status\" rolünü taşır. Duruma göre aria-disabled, aria-expanded, aria-selected ve aria-label nitelikleri dinamik olarak güncellenir.")
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "Focus Management" : "Odak Yönetimi (Focus Management)")</div>
+                    <div class="text-slate-600">
+                        @(isEn ? "Preserves focus without interrupting user active input flow. Close buttons are tab-accessible." : "Sekme sırasını doğal akışında korur (tabIndex=\"0\"). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.")
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları (Keyboard Shortcuts)")</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">@(isEn ? "Key" : "Tuş (Key)")</th>
+                                <th class="py-2.5 px-4">@(isEn ? "Function" : "İşlev (Function)")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Escape</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Dismiss current active notification." : "Mevcut açık bildirimi kapatır.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-notification.js"></script>
+    <script>
+        const isEnNotif = @(isEn ? "true" : "false");
+
+        function showNotif(type) {
+            if (type === 'success') {
+                Panoptes.notify.success(
+                    isEnNotif ? 'New record has been successfully added to the system.' : 'Yeni kayıt başarıyla sisteme eklendi.', 
+                    isEnNotif ? 'Operation Successful' : 'İşlem Başarılı'
+                );
+            } else if (type === 'error') {
+                Panoptes.notify.error(
+                    isEnNotif ? 'An unexpected error occurred during operation.' : 'İşlem sırasında beklenmeyen bir hata meydana geldi.', 
+                    isEnNotif ? 'Server Error (500)' : 'Sunucu Hatası (500)'
+                );
+            } else if (type === 'warning') {
+                Panoptes.notify.warning(
+                    isEnNotif ? 'This action is irreversible, please proceed with caution.' : 'Bu eylem geri alınamaz, lütfen dikkat edin.', 
+                    isEnNotif ? 'Critical Action Warning' : 'Kritik İşlem Uyarısı'
+                );
+            } else {
+                Panoptes.notify.info(
+                    isEnNotif ? 'System backup scheduled for 02:00 AM.' : 'Sistem yedekleme işlemi saat 02:00\'de başlatılacaktır.', 
+                    isEnNotif ? 'System Information' : 'Sistem Bilgilendirmesi'
+                );
+            }
+        }
+
+        function showAtPos(pos) {
+            Panoptes.notify.show({
+                title: (isEnNotif ? 'Position: ' : 'Konum: ') + pos,
+                message: isEnNotif ? `This notification appeared at '${pos}'.` : `Bu bildirim '${pos}' pozisyonunda açıldı.`,
+                type: 'info',
+                position: pos,
+                duration: 4000
+            });
+        }
+
+        function showPersistentNotif() {
+            Panoptes.notify.show({
+                title: isEnNotif ? 'Persistent Security Warning' : 'Kalıcı Güvenlik Uyarısı',
+                message: isEnNotif ? 'Security certificate is about to expire. Please contact your admin.' : 'Güvenlik sertifikanızın süresi dolmak üzere. Güncellemek için sistem yöneticisine başvurun.',
+                type: 'warning',
+                position: 'top-right',
+                duration: 0,
+                closable: true
+            });
+        }
+
+        function showFastNotif() {
+            Panoptes.notify.show({
+                title: isEnNotif ? 'Fast Notification' : 'Hızlı Bildirim',
+                message: isEnNotif ? 'This message auto-dismisses after 2 seconds.' : 'Bu mesaj 2 saniye sonra otomatik kaybolur.',
+                type: 'success',
+                position: 'top-right',
+                duration: 2000
+            });
+        }
+
+        function triggerCustomNotification() {
+            const title = document.getElementById('custTitle').value;
+            const message = document.getElementById('custMessage').value;
+            const type = document.getElementById('custType').value;
+            const position = document.getElementById('custPos').value;
+            const duration = parseInt(document.getElementById('custDuration').value, 10) || 0;
+
+            Panoptes.notify.show({
+                title: title,
+                message: message,
+                type: type,
+                position: position,
+                duration: duration,
+                closable: true
+            });
+        }
+    </script>
+}

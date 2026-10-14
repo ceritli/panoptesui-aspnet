@@ -1,0 +1,188 @@
+@model Panoptes.AspNetCore.Demo.Controllers.TreeListPageModel
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    var p = DemoTranslations.Prefix(isEn);
+}
+
+<div id="treelist-nav-container" class="space-y-6 mb-6">
+    <!-- Breadcrumb & Header Title -->
+    <div class="border-b border-slate-200 pb-5">
+        <div class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+            <a href="@(p + "/TreeList")" class="hover:text-emerald-600 transition">TreeList</a>
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
+            <span class="text-slate-600 font-semibold">@Model.Title</span>
+        </div>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-800">@Model.Title</h1>
+                <p class="text-sm text-slate-500 mt-1 max-w-4xl leading-relaxed">@Model.Description</p>
+            </div>
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold shrink-0 self-start md:self-auto">
+                @(isEn ? "✓ Production Ready" : "✓ Tam Sürüm Hazır")
+            </span>
+        </div>
+        @if (Model.Highlights.Length > 0)
+        {
+            <div class="flex flex-wrap gap-1.5 mt-3">
+                @foreach (var h in Model.Highlights)
+                {
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100 font-mono">@h</span>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="treelist-main-tab-btn-features" 
+                    onclick="switchTreeListDocTab('features')"
+                    class="treelist-main-tab-btn inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Demo & Features" : "Demo & Özellikler")</span>
+            </button>
+
+            <button type="button" 
+                    id="treelist-main-tab-btn-api" 
+                    onclick="switchTreeListDocTab('api')"
+                    class="treelist-main-tab-btn inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">12</span>
+            </button>
+
+            <button type="button" 
+                    id="treelist-main-tab-btn-a11y" 
+                    onclick="switchTreeListDocTab('a11y')"
+                    class="treelist-main-tab-btn inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- TAB 2: API & TagHelper Props Reference Panel -->
+    <div id="treelist-doc-panel-api" class="treelist-doc-panel hidden space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "PanoptesTreeList TagHelper & Props Reference" : "PanoptesTreeList TagHelper & Nitelik Referansı")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "Supported attributes and client parameters by <panoptes-treelist>." : "<panoptes-treelist> tarafından desteklenen tüm nitelikler ve istemci parametreleri.")</p>
+                </div>
+                <span class="px-2.5 py-1 rounded text-[11px] font-mono bg-blue-100 text-blue-800">&lt;panoptes-treelist&gt;</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Nitelik / Prop</th>
+                            <th class="py-3 px-4">Tip (C# / TS)</th>
+                            <th class="py-3 px-4">Varsayılan</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-3 px-6 font-mono font-bold text-indigo-600">id</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">zorunlu</td><td class="py-3 px-6">Bileşenin benzersiz DOM kimliği ve JavaScript API referansı.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-3 px-6 font-mono font-bold text-indigo-600">title</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td class="py-3 px-6">Üst araç çubuğunda gösterilecek tablo başlığı.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-3 px-6 font-mono font-bold text-indigo-600">columns</td><td class="py-3 px-4 font-mono text-purple-600">List&lt;TreeListColumn&gt;</td><td class="py-3 px-4 font-mono text-slate-400">[]</td><td class="py-3 px-6">Sütun tanımları: Field, Title, Width, Align, Format, IsTreeColumn.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-3 px-6 font-mono font-bold text-indigo-600">items</td><td class="py-3 px-4 font-mono text-purple-600">List&lt;TreeListItem&gt;</td><td class="py-3 px-4 font-mono text-slate-400">[]</td><td class="py-3 px-6">Hiyerarşik veri satırları (Id, ParentId, Expanded, Values sözlüğü).</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-3 px-6 font-mono font-bold text-indigo-600">height</td><td class="py-3 px-4 font-mono text-purple-600">string / int</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td class="py-3 px-6">Tablonun maksimum yüksekliği (piksel). Aşarsa dikey kaydırma çubuğu devreye girer.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-3 px-6 font-mono font-bold text-indigo-600">show-search</td><td class="py-3 px-4 font-mono text-purple-600">bool</td><td class="py-3 px-4 font-mono text-slate-400">true</td><td class="py-3 px-6">Araç çubuğunda canlı hiyerarşik arama kutusunun gösterilip gösterilmeyeceği.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-3 px-6 font-mono font-bold text-indigo-600">show-toolbar</td><td class="py-3 px-4 font-mono text-purple-600">bool</td><td class="py-3 px-4 font-mono text-slate-400">true</td><td class="py-3 px-6">Tümünü Aç / Kapat ve araç çubuğu alanını etkinleştirir.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-3 px-6 font-mono font-bold text-indigo-600">editable</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td class="py-3 px-6">Düzenleme modu: "inline", "incell" veya "popup".</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-3 px-6 font-mono font-bold text-indigo-600">aggregates</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td class="py-3 px-6">Toplamlar satırı modu: "root", "sub" veya "both".</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-3 px-6 font-mono font-bold text-indigo-600">on-select</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td class="py-3 px-6">Satır tıklandığında çalışan JavaScript geri çağırma fonksiyonu.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-3 px-6 font-mono font-bold text-indigo-600">on-expand / on-collapse</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td class="py-3 px-6">Düğüm açıldığında veya daraltıldığında çalışan JavaScript fonksiyonu.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-3 px-6 font-mono font-bold text-indigo-600">on-event</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td class="py-3 px-6">Tüm TreeList olaylarını dinleyen genel olay yöneticisi fonksiyonu.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: Accessibility (WAI-ARIA) Reference Panel -->
+    <div id="treelist-doc-panel-a11y" class="treelist-doc-panel hidden space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Standards & Keyboard Navigation" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h3>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                    @(isEn ? "Panoptes TreeList component follows W3C WAI-ARIA treegrid guidelines for screen readers and keyboard accessibility." : "Panoptes TreeList bileşeni, W3C WAI-ARIA treegrid yönergelerine tam uyumlu olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.")
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Nitelikleri</div>
+                    <div class="text-slate-600"><code>role="treegrid / row / gridcell"</code>, <code>aria-expanded</code>, <code>aria-level</code>, <code>aria-selected</code>.</div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Odak Yönetimi</div>
+                    <div class="text-slate-600"><code>tabindex="0"</code> ile hiyerarşik düğümler ve hücreler arasında doğal sekme ve ok tuşu odağı.</div>
+                </div>
+            </div>
+            <div class="pt-4 border-t border-slate-100">
+                <h4 class="text-xs font-bold text-slate-800 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları")</h4>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr><td class="py-2.5 px-4 font-mono"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Ok Tuşları (← ↑ → ↓)</kbd></td><td class="py-2.5 px-4">Hücreler ve düğümler arasında serbest gezinme.</td></tr>
+                            <tr><td class="py-2.5 px-4 font-mono"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Sağ Ok (→) / Sol Ok (←)</kbd></td><td class="py-2.5 px-4">Kapalı düğümü açar (expand) / açık düğümü daraltır (collapse).</td></tr>
+                            <tr><td class="py-2.5 px-4 font-mono"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter / Boşluk (Space)</kbd></td><td class="py-2.5 px-4">Satırı seçer veya hücre düzenleme modunu başlatır.</td></tr>
+                            <tr><td class="py-2.5 px-4 font-mono"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Home / End</kbd></td><td class="py-2.5 px-4">Satırın ilk veya son hücresine hızlı geçiş.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchTreeListDocTab(tabName) {
+        // Update tab buttons
+        document.querySelectorAll('.treelist-main-tab-btn').forEach(btn => {
+            btn.classList.remove('font-bold', 'text-blue-600', 'border-blue-600', 'bg-blue-50/40');
+            btn.classList.add('font-semibold', 'text-slate-600', 'border-transparent');
+        });
+        const activeBtn = document.getElementById('treelist-main-tab-btn-' + tabName);
+        if (activeBtn) {
+            activeBtn.classList.remove('font-semibold', 'text-slate-600', 'border-transparent');
+            activeBtn.classList.add('font-bold', 'text-blue-600', 'border-blue-600', 'bg-blue-50/40');
+        }
+
+        // Show/hide panels inside #treelist-nav-container
+        document.querySelectorAll('.treelist-doc-panel').forEach(p => p.classList.add('hidden'));
+        const activePanel = document.getElementById('treelist-doc-panel-' + tabName);
+        if (activePanel) {
+            activePanel.classList.remove('hidden');
+        }
+
+        // Hide/show page body content (siblings of treelist-nav-container)
+        const navContainer = document.getElementById('treelist-nav-container');
+        if (navContainer && navContainer.parentElement) {
+            Array.from(navContainer.parentElement.children).forEach(child => {
+                if (child !== navContainer) {
+                    if (tabName === 'features') {
+                        child.style.display = '';
+                    } else {
+                        child.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        if (typeof initPanoptesLightCodeBlocks === 'function') {
+            initPanoptesLightCodeBlocks();
+        }
+    }
+</script>

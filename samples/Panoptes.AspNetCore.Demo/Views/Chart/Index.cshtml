@@ -1,0 +1,510 @@
+@{
+    var months = ViewBag.Months as List<string> ?? new List<string>();
+    var financialSeries = ViewBag.FinancialSeries as List<Panoptes.AspNetCore.Models.ChartSeries> ?? new List<Panoptes.AspNetCore.Models.ChartSeries>();
+
+    var trafficDays = ViewBag.TrafficDays as List<string> ?? new List<string>();
+    var trafficSeries = ViewBag.TrafficSeries as List<Panoptes.AspNetCore.Models.ChartSeries> ?? new List<Panoptes.AspNetCore.Models.ChartSeries>();
+
+    var marketSharePoints = ViewBag.MarketSharePoints as List<Panoptes.AspNetCore.Models.ChartDataPoint> ?? new List<Panoptes.AspNetCore.Models.ChartDataPoint>();
+
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Charts (Business Intelligence & Visuals Engine) - Panoptes Corporate UI" : "Charts (İş Zekası & Grafik Motoru) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/Chart" class="hover:text-blue-600 transition">@(isEn ? "Charts & Visuals" : "Grafikler & Görselleştirme")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Charts</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Charts @(isEn ? "(Business Intelligence & Charts Engine)" : "(İş Zekası & Grafik Motoru)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-chart&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "SVG-based interactive charts engine rendering Column, Bar, Line, Pie, Donut and Area visualizations with smooth animations and interactive tooltips." : "Sütun (Bar/Column), Çizgi (Line), Pasta (Pie), Halka (Donut) ve Alan (Area) grafiklerini SVG tabanlı, canlı animasyonlu ve etkileşimli tooltip ile çizen grafik motoru.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Features & Demos" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">4</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">4</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        <!-- DEMO 1: Dikey Sütun Grafiği (Column Chart - Finansal Gelir & Gider) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                        @(isEn ? "1. Vertical Column Chart (Monthly Revenue & Expense)" : "1. Dikey Sütun Grafiği (Aylık Finansal Gelir & Gider Analizi)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Compares multiple series (Revenue & Expense) side-by-side with currency formatted tooltips." : "Çoklu serileri (Gelir & Gider) aylara göre yan yana sütunlar halinde karşılaştırır; sütun üzerine gelindiğinde detaylı para birimi tooltip'i açılır.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">&lt;panoptes-chart type="Column"&gt;</span>
+            </div>
+
+            <div class="p-6">
+                <panoptes-chart id="columnFinancialChart" 
+                                type="Column" 
+                                title="@(isEn ? "2026 H1 Financial Performance" : "2026 İlk Yarı Mali Performans")" 
+                                subtitle="@(isEn ? "Consolidated Revenue vs Operating Expenses" : "Konsolide Gelir ve Faaliyet Giderleri Karşılaştırması")" 
+                                categories="@months" 
+                                series="@financialSeries" 
+                                value-prefix="₺" 
+                                value-suffix=" TL" 
+                                height="340" />
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-chart id="columnFinancialChart" 
+                type="Column" 
+                title="2026 İlk Yarı Mali Performans" 
+                subtitle="Konsolide Gelir ve Faaliyet Giderleri" 
+                categories="@@months" 
+                series="@@financialSeries" 
+                value-prefix="₺" 
+                value-suffix=" TL" 
+                height="340" /&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 2: Alan & Trend Grafiği (Area Chart - Ziyaretçi & Trafik Analizi) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                        @(isEn ? "2. Smooth Area Chart (Weekly Users & Page Views Trend)" : "2. Yumuşak Alan Grafiği (Haftalık Kullanıcı & Sayfa Görüntüleme Trendi)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Visualizes volumetric data trends with SVG gradients and interactive circular point hover cursors." : "Yumuşak degrade SVG gradyanları ile hacimsel eğilimleri görselleştirir; veri noktaları interaktif dairesel imleçlerle vurgulanır.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">&lt;panoptes-chart type="Area"&gt;</span>
+            </div>
+
+            <div class="p-6">
+                <panoptes-chart id="areaTrafficChart" 
+                                type="Area" 
+                                title="@(isEn ? "Weekly User Engagement Trend" : "Haftalık Kullanıcı Etkileşim Trendi")" 
+                                subtitle="@(isEn ? "Unique Visitors vs Total Pageviews" : "Tekil Ziyaret ve Toplam Sayfa Trafik Akışı")" 
+                                categories="@trafficDays" 
+                                series="@trafficSeries" 
+                                value-suffix="@(isEn ? " Visits" : " Ziyaret")" 
+                                height="340" />
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-chart id="areaTrafficChart" 
+                type="Area" 
+                title="Haftalık Kullanıcı Etkileşim Trendi" 
+                categories="@@trafficDays" 
+                series="@@trafficSeries" 
+                value-suffix=" Ziyaret" 
+                height="340" /&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 3: Halka Grafiği (Donut Chart - Portföy ve Pazar Dağılımı) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block"></span>
+                        @(isEn ? "3. Donut Chart (Segment Portfolio & Market Share)" : "3. Halka Grafiği (Donut Chart - İş Kolu ve Pazar Payı Dağılımı)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Displays category segmentation with centered total values and proportion percentages." : "Toplam iş kolu dağılımını merkezde gösterilen genel toplam değeri ve oran yüzdeleri ile halka dilimleri halinde sunar.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-indigo-50 text-indigo-700 px-2 py-1 rounded font-medium border border-indigo-100">&lt;panoptes-chart type="Donut"&gt;</span>
+            </div>
+
+            <div class="p-6">
+                <panoptes-chart id="donutMarketChart" 
+                                type="Donut" 
+                                title="@(isEn ? "Portfolio Distribution by Segment" : "İş Koluna Göre Portföy Dağılımı")" 
+                                subtitle="@(isEn ? "Total Assets and Revenue Share (%)" : "Toplam Varlık ve Gelir Segmentasyonu (%)")" 
+                                points="@marketSharePoints" 
+                                value-suffix="@(isEn ? " Units" : " Birim")" 
+                                height="340" />
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-chart id="donutMarketChart" 
+                type="Donut" 
+                title="İş Koluna Göre Portföy Dağılımı" 
+                points="@@marketSharePoints" 
+                value-suffix=" Birim" 
+                height="340" /&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 4: Programatik JavaScript API ve Dinamik Veri Güncelleme -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-600 inline-block"></span>
+                        @(isEn ? "4. Programmatic JavaScript API & Live Data Updates (updateData)" : "4. Programatik JavaScript API ve Canlı Veri Yenileme (updateData)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Update chart datasets dynamically without page reload or inject simulated live streaming data." : "Sayfayı yeniden yüklemeden grafik verilerini dinamik olarak değiştirin veya simüle edilmiş canlı verileri yükleyin.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-cyan-50 text-cyan-700 px-2 py-1 rounded font-medium border border-cyan-100">window.panoptesChart.getInstance()</span>
+            </div>
+
+            <div class="p-6 space-y-4">
+                <div class="flex flex-wrap items-center gap-2 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                    <button type="button" onclick="randomizeFinancialData()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-xs shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        @(isEn ? "Randomize Revenue & Expense" : "Gelir & Gideri Rastgele Güncelle")
+                    </button>
+                    <button type="button" onclick="resetFinancialData()" class="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg font-medium text-xs shadow-xs transition cursor-pointer">
+                        @(isEn ? "Reset to Original Data" : "Orijinal Verilere Dön")
+                    </button>
+                </div>
+
+                <!-- Canlı Olay Günlüğü -->
+                <div class="bg-slate-900 text-slate-200 p-4 rounded-xl font-mono text-xs h-28 overflow-y-auto space-y-1" id="chartEventLog">
+                    <div class="text-slate-500">// @(isEn ? "Live chart control console ready. Use buttons above to update data..." : "Canlı grafik kontrol paneli hazır. Yukarıdaki butonlarla verileri güncelleyebilirsiniz...")</div>
+                </div>
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript API</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>var chart = window.panoptesChart.getInstance('columnFinancialChart');
+
+// Yeni serileri aktarma ve yeniden çizme
+chart.updateData([
+    { name: "Gelir", color: "#2563eb", values: [150000, 175000, 220000, 260000, 290000, 310000] },
+    { name: "Gider", color: "#e11d48", values: [90000, 95000, 105000, 120000, 130000, 145000] }
+]);</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TagHelper Referans Tablosu -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+                <h2 class="text-base font-bold text-slate-800">@(isEn ? "TagHelper Parameter & Attribute Reference" : "TagHelper Parametre ve Nitelik Referansı")</h2>
+                <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-chart&gt; @(isEn ? "all supported C# attributes and data types." : "bileşeninin desteklediği tüm C# nitelikleri ve veri tipleri.")</p>
+            </div>
+            <div class="p-6 overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 text-slate-500 font-semibold bg-slate-50">
+                            <th class="py-2.5 px-4">@(isEn ? "Attribute Name" : "Nitelik Adı")</th>
+                            <th class="py-2.5 px-4">@(isEn ? "Data Type" : "Veri Tipi")</th>
+                            <th class="py-2.5 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-2.5 px-4">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-600">
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">string</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">guid</td>
+                            <td class="py-2.5 px-4">@(isEn ? "Unique chart DOM identifier." : "Grafik kartının benzersiz HTML kimliği.")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">type</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">ChartType</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">Column</td>
+                            <td class="py-2.5 px-4">@(isEn ? "Chart type: Column, Bar, Line, Area, Pie, Donut." : "Grafik türü: Column, Bar, Line, Area, Pie, Donut.")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">title</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">string</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-2.5 px-4">@(isEn ? "Chart main title text." : "Kart başlığı metni.")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">categories</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">List&lt;string&gt;</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">empty</td>
+                            <td class="py-2.5 px-4">@(isEn ? "X-axis category labels (months, days, etc.)." : "X ekseninde listelenecek kategori etiketleri (aylar, günler vb.).")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">series</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">List&lt;ChartSeries&gt;</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">empty</td>
+                            <td class="py-2.5 px-4">@(isEn ? "Multi-series data (name, color, numeric values list)." : "Çoklu seri verileri (isim, renk ve sayısal değer listesi).")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">points</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">List&lt;ChartDataPoint&gt;</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">empty</td>
+                            <td class="py-2.5 px-4">@(isEn ? "Single points collection for Pie and Donut chart types." : "Pie ve Donut türü grafikler için tekil dilim veri noktaları.")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">height</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">int</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">320</td>
+                            <td class="py-2.5 px-4">@(isEn ? "Chart height in pixels." : "Grafiğin piksel cinsinden yüksekliği.")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">value-prefix / suffix</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">string</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">""</td>
+                            <td class="py-2.5 px-4">@(isEn ? "Value prefix or suffix units (₺, $, %, etc.)." : "Tooltip ve etiketlerdeki değerlerin başına veya sonuna eklenecek birim (₺, $, %, TL vb.).")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "TagHelper Properties & Parameters" : "TagHelper Özellikleri & Parametreleri")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-chart&gt; @(isEn ? "all supported C# and HTML attributes." : "bileşeninin desteklediği tüm C# ve HTML nitelikleri.")</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesChartTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">@(isEn ? "Attribute" : "Özellik (Attribute)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Type (C#)" : "Tip (C#)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-6">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">@(isEn ? "Automatic" : "Otomatik")</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Chart DOM element ID." : "Grafik DOM kimliği.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">type</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"column"</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Chart type: column, line, pie, donut, area." : "Grafik türü: column, line, pie, donut, area.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">title</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Chart main header title." : "Grafik ana başlığı.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">series</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Data series and value points collection." : "Veri serileri ve değerler koleksiyonu.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Standards & Keyboard Accessibility" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    @(isEn ? "Panoptes Charts component conforms to W3C WAI-ARIA guidelines for screen reader accessibility and keyboard traversal." : "Panoptes Charts bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "WAI-ARIA Attributes" : "WAI-ARIA Nitelikleri")</div>
+                    <div class="text-slate-600">
+                        @(isEn ? "Carries standard role=\"img\" or role=\"figure\". Descriptive aria-label attributes inform assistive tech of values." : "Standart role=\"img / figure\" rolünü taşır. Duruma göre aria-disabled, aria-expanded, aria-selected ve aria-label nitelikleri dinamik olarak güncellenir.")
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "Focus Management" : "Odak Yönetimi (Focus Management)")</div>
+                    <div class="text-slate-600">
+                        @(isEn ? "Maintains logical tab sequence through legend items and chart controls with visible focus rings." : "Sekme sırasını doğal akışında korur (tabIndex=\"0\"). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.")
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları (Keyboard Shortcuts)")</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">@(isEn ? "Key" : "Tuş (Key)")</th>
+                                <th class="py-2.5 px-4">@(isEn ? "Function" : "İşlev (Function)")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Tab</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Navigates between chart elements, data points, and legends." : "Grafik öğeleri ve lejant arasında gezinir.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-chart.js" asp-append-version="true"></script>
+    <script>
+        const isEnChart = @(isEn ? "true" : "false");
+
+        function logChart(msg) {
+            var logEl = document.getElementById('chartEventLog');
+            if (!logEl) return;
+            var time = new Date().toLocaleTimeString(isEnChart ? 'en-US' : 'tr-TR');
+            var line = document.createElement('div');
+            line.innerHTML = '<span class="text-slate-500">[' + time + ']</span> ' + msg;
+            logEl.appendChild(line);
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function randomizeFinancialData() {
+            var chart = window.panoptesChart.getInstance('columnFinancialChart');
+            if (!chart) return;
+
+            var newIncome = [];
+            var newExpense = [];
+            for (var i = 0; i < 6; i++) {
+                newIncome.push(Math.round(150000 + Math.random() * 150000));
+                newExpense.push(Math.round(80000 + Math.random() * 80000));
+            }
+
+            chart.updateData([
+                { name: isEnChart ? "Revenue" : "Gelir", color: "#2563eb", values: newIncome },
+                { name: isEnChart ? "Expense" : "Gider", color: "#e11d48", values: newExpense }
+            ]);
+
+            logChart('<span class="text-emerald-400 font-bold">' + (isEnChart ? 'Data Updated: ' : 'Veriler Güncellendi: ') + '</span> ' + (isEnChart ? 'Randomized 6-month revenue and expense series loaded.' : 'Rastgele yeni 6 aylık gelir ve gider serisi yüklendi.'));
+        }
+
+        function resetFinancialData() {
+            var chart = window.panoptesChart.getInstance('columnFinancialChart');
+            if (!chart) return;
+
+            chart.updateData([
+                { name: isEnChart ? "Revenue" : "Gelir", color: "#2563eb", values: [125000, 142000, 189000, 210000, 235000, 280000] },
+                { name: isEnChart ? "Expense" : "Gider", color: "#e11d48", values: [85000, 92000, 110000, 125000, 140000, 155000] }
+            ]);
+
+            logChart('<span class="text-blue-400 font-bold">' + (isEnChart ? 'Original Data: ' : 'Orijinal Veriler: ') + '</span> ' + (isEnChart ? 'Initial financial series restored.' : 'İlk başlangıç finansal serileri geri yüklendi.'));
+        }
+    </script>
+}

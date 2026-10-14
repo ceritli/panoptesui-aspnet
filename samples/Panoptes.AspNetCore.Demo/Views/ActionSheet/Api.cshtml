@@ -1,0 +1,154 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "ActionSheet - Client JavaScript API Methods" : "ActionSheet - İstemci JavaScript API Metotları";
+    ViewData["ActiveTab"] = "Api";
+}
+
+<div class="space-y-6">
+    <partial name="_ActionSheetNav" />
+
+    <!-- Info Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight mb-2">@(isEn ? "Client JavaScript API Methods" : "İstemci JavaScript API Metotları (Client API)")</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            @(isEn ? "The ActionSheet component can be controlled programmatically via the window.Panoptes.ActionSheet API to open, close, toggle, switch to fullscreen mode, and dynamically enable/disable buttons at runtime." : "ActionSheet bileşeni, window.Panoptes.ActionSheet API'si üzerinden programatik olarak açılıp kapatılabilir, tam ekran moduna geçirilebilir ve butonları çalışma anında pasif/aktif hale getirilebilir.")
+        </p>
+    </div>
+
+    <!-- API Test Controls -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <!-- 1. Aç / Kapat / Değiştir -->
+            <div class="space-y-2">
+                <span class="text-xs font-bold text-slate-700 block">open(), close(), toggle()</span>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="window.Panoptes.ActionSheet.open('apiSheet')" class="flex-1 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-sm cursor-pointer">@(isEn ? "Open (open)" : "Aç (open)")</button>
+                    <button type="button" onclick="window.Panoptes.ActionSheet.close('apiSheet')" class="flex-1 px-3 py-1.5 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-bold transition shadow-sm cursor-pointer">@(isEn ? "Close (close)" : "Kapat (close)")</button>
+                </div>
+            </div>
+
+            <!-- 2. Tam Ekran Modu -->
+            <div class="space-y-2">
+                <span class="text-xs font-bold text-slate-700 block">fullscreen(enable)</span>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="setSheetFullscreen(true)" class="flex-1 px-3 py-1.5 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-bold transition shadow-sm cursor-pointer">@(isEn ? "Open Fullscreen" : "Tam Ekran Aç")</button>
+                    <button type="button" onclick="setSheetFullscreen(false)" class="flex-1 px-3 py-1.5 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-bold transition shadow-sm cursor-pointer">@(isEn ? "Normal Mode" : "Normal Mod")</button>
+                </div>
+            </div>
+
+            <!-- 3. Buton Pasifleştir / Etkinleştir -->
+            <div class="space-y-2">
+                <span class="text-xs font-bold text-slate-700 block">enableItem() & disableItem()</span>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="toggleApiItemDisabled(true)" class="flex-1 px-3 py-1.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold hover:bg-rose-100 transition shadow-sm cursor-pointer">@(isEn ? "Lock Delete" : "Sil Butonunu Kilitle")</button>
+                    <button type="button" onclick="toggleApiItemDisabled(false)" class="flex-1 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold hover:bg-emerald-100 transition shadow-sm cursor-pointer">@(isEn ? "Unlock" : "Kilidi Aç")</button>
+                </div>
+            </div>
+        </div>
+
+        <panoptes-actionsheet id="apiSheet" title='@(isEn ? "API Test Action Sheet" : "API Test Eylem Sayfası")' subtitle='@(isEn ? "Example controlled by programmatic methods" : "Programatik metotlarla kontrol edilen örnek")'>
+            <panoptes-actionsheet-item id="api-opt-1" text='@(isEn ? "Export Data" : "Verileri Dışa Aktar (Export)")' description='@(isEn ? "Export in JSON or CSV format" : "JSON veya CSV formatında aktarım")' theme-color="primary"></panoptes-actionsheet-item>
+            <panoptes-actionsheet-item id="api-opt-2" text='@(isEn ? "Email Report" : "Raporu E-Postala")' description='@(isEn ? "Send as PDF attachment" : "PDF eki olarak gönderim")'></panoptes-actionsheet-item>
+            <panoptes-actionsheet-item id="api-opt-delete" text='@(isEn ? "Delete Records" : "Kayıtları Sil")' description='@(isEn ? "Irreversible action" : "Geri alınamaz işlem")' theme-color="danger"></panoptes-actionsheet-item>
+        </panoptes-actionsheet>
+    </div>
+
+    <!-- API Reference Table -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm overflow-hidden">
+        <h2 class="text-base font-bold text-slate-800 mb-4">@(isEn ? "JavaScript Method Reference" : "JavaScript Metot Referansı")</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-600 border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-200 bg-slate-50 font-bold text-slate-800">
+                        <th class="p-3">@(isEn ? "Method" : "Metot")</th>
+                        <th class="p-3">@(isEn ? "Parameters" : "Parametreler")</th>
+                        <th class="p-3">@(isEn ? "Description" : "Açıklama")</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">open()</td>
+                        <td class="p-3 font-mono">-</td>
+                        <td class="p-3">@(isEn ? "Opens the ActionSheet with slide animation." : "ActionSheet'i animasyonla ekranda açar.")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">close()</td>
+                        <td class="p-3 font-mono">-</td>
+                        <td class="p-3">@(isEn ? "Closes the ActionSheet with animation." : "ActionSheet'i animasyonla kapatır.")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">toggle()</td>
+                        <td class="p-3 font-mono">-</td>
+                        <td class="p-3">@(isEn ? "Toggles sheet visibility." : "Açıksa kapatır, kapalıysa açar.")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">fullscreen(enable)</td>
+                        <td class="p-3 font-mono">boolean</td>
+                        <td class="p-3">@(isEn ? "Enables or disables fullscreen modal mode." : "Tam ekran modunu açar veya kapatır.")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">disableItem(id)</td>
+                        <td class="p-3 font-mono">string | HTMLElement</td>
+                        <td class="p-3">@(isEn ? "Disables the specified button (makes it unclickable)." : "Belirtilen butonu pasif (tıklanamaz) hale getirir.")</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">enableItem(id)</td>
+                        <td class="p-3 font-mono">string | HTMLElement</td>
+                        <td class="p-3">@(isEn ? "Enables the specified button." : "Belirtilen butonu aktif hale getirir.")</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>// 1. Örneğe doğrudan erişim
+const sheet = window.Panoptes.ActionSheet.get('apiSheet');
+
+// 2. Açma ve Kapatma
+sheet.open();
+sheet.close();
+
+// 3. Tam Ekran Modu
+sheet.fullscreen(true);
+
+// 4. Buton Durumunu Değiştirme
+sheet.disableItem('api-opt-delete');
+sheet.enableItem('api-opt-delete');</code></pre>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    function setSheetFullscreen(enable) {
+        const sheet = window.Panoptes.ActionSheet.get('apiSheet');
+        if (sheet) {
+            sheet.fullscreen(enable);
+            sheet.open();
+        }
+    }
+
+    function toggleApiItemDisabled(disable) {
+        const sheet = window.Panoptes.ActionSheet.get('apiSheet');
+        if (!sheet) return;
+        if (disable) {
+            sheet.disableItem('api-opt-delete');
+        } else {
+            sheet.enableItem('api-opt-delete');
+        }
+    }
+</script>
+}
+

@@ -1,0 +1,148 @@
+@model List<Panoptes.AspNetCore.Models.DropDownTreeItemModel>
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "DropDownTree - Keyboard Navigation & Accessibility" : "DropDownTree - Klavye Gezintisi & Erişilebilirlik - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/DropDownTree" : "/DropDownTree")" class="hover:text-blue-600 transition">DropDownTree</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">@(isEn ? "Keyboard Navigation" : "Klavye Gezintisi")</span>
+    </nav>
+
+    <!-- Top Navigation Bar between 15 examples -->
+    @await Html.PartialAsync("_DropDownTreeNav")
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "Keyboard Navigation & Accessibility (WAI-ARIA)" : "DropDownTree: Klavye Gezintisi & Erişilebilirlik")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                    WAI-ARIA Accessibility
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Full keyboard support adhering to WAI-ARIA guidelines: Open the dropdown, traverse nodes, expand/collapse folders, toggle checkboxes, and select items completely hands-free."
+                    : "DropDownTree Klavye Gezintisi desteği: Fare kullanmaya gerek kalmadan sadece klavye tuşlarıyla açılır ağaç açılabilir, düğümler arasında gezilebilir, klasörler açılıp kapatılabilir ve seçim yapılabilir.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ WAI-ARIA & @(isEn ? "Shortcuts" : "Kısayollar")
+            </span>
+        </div>
+    </div>
+
+    <!-- Live Showcase Card -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "15. Interactive Keyboard Testing Arena" : "15. Klavyeyle Etkileşimli Test Alanı")</h2>
+            <p class="text-xs text-slate-500 mt-1">
+                @(isEn 
+                    ? "Focus the input field with Tab, then press Alt + ↓ or Enter to reveal the tree popup."
+                    : "Aşağıdaki girdi alanına Tab ile odaklanın, ardından Alt + ↓ veya Enter tuşuna basarak ağacı açın.")
+            </p>
+        </div>
+
+        <div class="max-w-md space-y-2">
+            <label class="block text-xs font-bold text-slate-700">@(isEn ? "Try Navigating by Keyboard" : "Klavyeyle Gezinmeyi Deneyin")</label>
+            <panoptes-dropdowntree id="ddt_keyboard_demo"
+                                  items="@Model"
+                                  placeholder="@(isEn ? "Focus with Tab and press Alt+Down..." : "Tab ile odaklanıp Alt+Aşağı tuşlayın...")"
+                                  dropdown-width="400px">
+            </panoptes-dropdowntree>
+            <span class="text-[11px] text-slate-400">
+                @(isEn ? "Key combos: Arrow keys, Space, Enter, Escape." : "Tuş Kombinasyonları: Yön tuşları, Space, Enter, Escape.")
+            </span>
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Reference Table -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70">
+            <h3 class="text-sm font-bold text-slate-800">@(isEn ? "Supported Keyboard Shortcuts" : "Desteklenen Klavye Kısayolları (Keyboard Shortcuts)")</h3>
+        </div>
+        <div class="p-6 overflow-x-auto">
+            <table class="w-full text-xs text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-200 text-slate-500 font-semibold">
+                        <th class="py-2.5 px-3">@(isEn ? "Shortcut Key" : "Tuş Kısayolu")</th>
+                        <th class="py-2.5 px-3">@(isEn ? "Context" : "Bağlam")</th>
+                        <th class="py-2.5 px-3">@(isEn ? "Action / Behavior" : "Açıklama / İşlem")</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-700">
+                    <tr>
+                        <td class="py-2.5 px-3 font-mono text-blue-600 font-bold"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded">Alt + ↓</kbd> @(isEn ? "or" : "veya") <kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded">Enter</kbd></td>
+                        <td class="py-2.5 px-3 text-slate-500">@(isEn ? "When trigger is focused" : "Tetikleyici Odaklıyken")</td>
+                        <td>@(isEn ? "Expands the popup tree container." : "Açılır ağaç listesini açar.")</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-3 font-mono text-blue-600 font-bold"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded">↓ (Down Arrow)</kbd></td>
+                        <td class="py-2.5 px-3 text-slate-500">@(isEn ? "Open popup" : "Açık Liste")</td>
+                        <td>@(isEn ? "Moves focus to the next visible tree node." : "Bir sonraki görünür düğüme odaklanır.")</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-3 font-mono text-blue-600 font-bold"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded">↑ (Up Arrow)</kbd></td>
+                        <td class="py-2.5 px-3 text-slate-500">@(isEn ? "Open popup" : "Açık Liste")</td>
+                        <td>@(isEn ? "Moves focus to the previous visible tree node." : "Bir önceki görünür düğüme odaklanır.")</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-3 font-mono text-blue-600 font-bold"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded">→ (Right Arrow)</kbd></td>
+                        <td class="py-2.5 px-3 text-slate-500">@(isEn ? "Focused collapsed folder" : "Düğüm Üzerinde")</td>
+                        <td>@(isEn ? "Expands the focused node's sub-tree branch." : "Kapalı klasör/düğüm ise dalı açar (Expand).")</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-3 font-mono text-blue-600 font-bold"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded">← (Left Arrow)</kbd></td>
+                        <td class="py-2.5 px-3 text-slate-500">@(isEn ? "Focused expanded folder" : "Düğüm Üzerinde")</td>
+                        <td>@(isEn ? "Collapses the branch; if already collapsed, navigates to parent." : "Açık klasör ise dalı kapatır (Collapse); zaten kapalıysa ebeveyn düğüme zıplar.")</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-3 font-mono text-blue-600 font-bold"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded">Space</kbd></td>
+                        <td class="py-2.5 px-3 text-slate-500">@(isEn ? "Checkboxes mode" : "Checkboxes Modu")</td>
+                        <td>@(isEn ? "Toggles checkbox status of the focused node." : "Odaktaki düğümün onay kutusunu işaretler veya işareti kaldırır.")</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-3 font-mono text-blue-600 font-bold"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded">Enter</kbd></td>
+                        <td class="py-2.5 px-3 text-slate-500">@(isEn ? "Focused node" : "Düğüm Üzerinde")</td>
+                        <td>@(isEn ? "Selects item and closes dropdown in single-select mode." : "Odaktaki öğeyi seçer ve tekil seçimdeyse açılır paneli kapatır.")</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-3 font-mono text-blue-600 font-bold"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded">Escape</kbd></td>
+                        <td class="py-2.5 px-3 text-slate-500">@(isEn ? "Any time" : "Herhangi Bir Anda")</td>
+                        <td>@(isEn ? "Dismisses popup without changing value and returns focus." : "Açılır listeyi seçimi değiştirmeden kapatır ve odağı ana kutuya iade eder.")</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+    <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                    Razor TagHelper
+                </span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-dropdowntree id="ddt_keyboard_demo"
+                       items="@@Model"
+                       placeholder="Tab ile odaklanıp Alt+Aşağı tuşlayın..."
+                       dropdown-width="400px"&gt;
+&lt;/panoptes-dropdowntree&gt;</code></pre>
+        </div>
+    </div>
+</div>

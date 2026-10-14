@@ -1,0 +1,696 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Splitter - Panoptes UI" : "Splitter (Panel Bölücü) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/Splitter" class="hover:text-blue-600 transition">@(isEn ? "Navigation & Layout" : "Navigasyon & Düzen")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Splitter</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Splitter @(isEn ? "(Resizable Splitter Panels)" : "(Panel Bölücü)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-splitter&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "Divide layouts into horizontally or vertically resizable and collapsible panes, nested panels, and programmatic JavaScript API." : "Ekranı dikey veya yatay olarak yeniden boyutlandırılabilir panellere ayıran bölücü bileşeni (IDE ve çift pencereli arayüzler).")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Examples (Features)" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">5</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">3</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+<!-- DEMO 1: Yatay İki Bölmeli Splitter (Dosya Gezgini & İçerik) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                    1. Yatay Bölmeli Splitter (Dosya Gezgini & Önizleme)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Sol panel başlangıçta 280px genişliğinde, minimum 160px ve maksimum 450px arasında sürüklenebilir.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">&lt;panoptes-splitter orientation="horizontal"&gt;</span>
+        </div>
+
+        <div class="p-6">
+            <div class="h-80 w-full border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
+                <panoptes-splitter id="demoSplitter1" orientation="horizontal" class="h-full">
+                    <panoptes-splitter-pane id="paneNav1" size="280px" min-size="160px" max-size="450px" class="bg-slate-50 p-4">
+                        <div class="text-xs font-bold uppercase text-slate-400 tracking-wider mb-3">Proje Belgeleri</div>
+                        <ul class="space-y-1.5 text-xs text-slate-600 font-medium">
+                            <li class="p-2 rounded-lg bg-blue-50 text-blue-700 flex items-center gap-2 cursor-pointer">
+                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                <span>Mimari_Tasarim_v2.docx</span>
+                            </li>
+                            <li class="p-2 rounded-lg hover:bg-white flex items-center gap-2 cursor-pointer transition">
+                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                <span>Veri_Modelleri_Spec.pdf</span>
+                            </li>
+                            <li class="p-2 rounded-lg hover:bg-white flex items-center gap-2 cursor-pointer transition">
+                                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                <span>API_Sozlesmesi_2026.json</span>
+                            </li>
+                        </ul>
+                    </panoptes-splitter-pane>
+
+                    <panoptes-splitter-pane id="paneContent1" class="bg-white p-6">
+                        <div class="max-w-2xl">
+                            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+                                <h3 class="text-sm font-bold text-slate-800">Mimari Tasarım Belgesi v2.4</h3>
+                                <span class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">Güncel Sürüm</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                                Panoptes mimarisinde ASP.NET Core Razor Class Library (RCL) ve Tailwind CSS altyapısı tercih edilmiştir. Tüm bileşenler hafif (lightweight), bağımsız JavaScript motorları ile desteklenmekte ve modern web standartlarına tam uyumlu çalışmaktadır.
+                            </p>
+                            <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 text-xs text-amber-800">
+                                <strong>Bilgi:</strong> İki panel arasındaki gri ayırıcı çubuğu fare veya dokunmatik ekran ile tutup sağa-sola sürükleyerek genişliği anlık değiştirebilirsiniz.
+                            </div>
+                        </div>
+                    </panoptes-splitter-pane>
+                </panoptes-splitter>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu (1. Resimdeki Standart Kapalı Details) -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-splitter id="demoSplitter1" orientation="horizontal" class="h-80"&gt;
+    &lt;panoptes-splitter-pane id="paneNav1" size="280px" min-size="160px" max-size="450px"&gt;
+        &lt;!-- Sol Liste İçeriği --&gt;
+    &lt;/panoptes-splitter-pane&gt;
+
+    &lt;panoptes-splitter-pane id="paneContent1"&gt;
+        &lt;!-- Sağ Detay İçeriği --&gt;
+    &lt;/panoptes-splitter-pane&gt;
+&lt;/panoptes-splitter&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 2: Dikey Bölmeli Splitter (SQL Editörü & Sonuç Konsolu) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block"></span>
+                    2. Dikey Bölmeli Splitter (SQL Editörü & Çıktı Konsolu)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    `orientation="vertical"` ile paneller alt alta konumlanır, ayırıcı çubuk yukarı ve aşağı sürüklenerek boyutlandırılır.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-indigo-50 text-indigo-700 px-2 py-1 rounded font-medium border border-indigo-100">&lt;panoptes-splitter orientation="vertical"&gt;</span>
+        </div>
+
+        <div class="p-6">
+            <div class="h-96 w-full border border-slate-200 rounded-xl overflow-hidden bg-slate-900 shadow-inner">
+                <panoptes-splitter id="demoSplitterVertical" orientation="vertical" class="h-full">
+                    <panoptes-splitter-pane id="paneSqlEditor" size="180px" min-size="100px" max-size="280px" class="bg-slate-950 p-4 font-mono text-xs text-slate-200">
+                        <div class="flex items-center justify-between text-slate-400 pb-2 mb-2 border-b border-slate-800 font-sans text-xs">
+                            <span class="font-semibold text-slate-300">Sorgu Editörü (Query.sql)</span>
+                            <span class="text-[10px] bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded border border-indigo-700">PostgreSQL</span>
+                        </div>
+                        <div class="text-emerald-400">SELECT</div>
+                        <div class="pl-4 text-slate-300">u.id, u.username, u.email, COUNT(o.id) AS total_orders</div>
+                        <div class="text-emerald-400">FROM</div>
+                        <div class="pl-4 text-slate-300">users u</div>
+                        <div class="text-emerald-400">LEFT JOIN</div>
+                        <div class="pl-4 text-slate-300">orders o ON o.user_id = u.id</div>
+                        <div class="text-emerald-400">WHERE</div>
+                        <div class="pl-4 text-slate-300">u.status = 'ACTIVE'</div>
+                        <div class="text-emerald-400">GROUP BY</div>
+                        <div class="pl-4 text-slate-300">u.id, u.username, u.email;</div>
+                    </panoptes-splitter-pane>
+
+                    <panoptes-splitter-pane id="paneSqlResult" class="bg-slate-900 p-4 font-mono text-xs text-slate-300">
+                        <div class="flex items-center justify-between text-slate-400 pb-2 mb-3 border-b border-slate-800 font-sans text-xs">
+                            <span class="font-semibold text-emerald-400 flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                Sorgu Sonucu (3 Satır Döndü - 18ms)
+                            </span>
+                            <span class="text-[11px] text-slate-500">2026-10-10 13:40:02</span>
+                        </div>
+                        <table class="w-full text-left border-collapse text-[11px]">
+                            <thead>
+                                <tr class="text-slate-400 border-b border-slate-800 bg-slate-800/40">
+                                    <th class="p-1.5">ID</th>
+                                    <th class="p-1.5">Kullanıcı Adı</th>
+                                    <th class="p-1.5">E-posta</th>
+                                    <th class="p-1.5">Sipariş Sayısı</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800 text-slate-300">
+                                <tr>
+                                    <td class="p-1.5 text-slate-500">101</td>
+                                    <td class="p-1.5 text-blue-400 font-semibold">fatihceritli</td>
+                                    <td class="p-1.5">fatih&#64;example.com</td>
+                                    <td class="p-1.5 font-bold text-amber-400">42</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-1.5 text-slate-500">102</td>
+                                    <td class="p-1.5 text-blue-400 font-semibold">ahmet_yilmaz</td>
+                                    <td class="p-1.5">ahmet&#64;example.com</td>
+                                    <td class="p-1.5 font-bold text-amber-400">15</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-1.5 text-slate-500">103</td>
+                                    <td class="p-1.5 text-blue-400 font-semibold">zeynep_kaya</td>
+                                    <td class="p-1.5">zeynep&#64;example.com</td>
+                                    <td class="p-1.5 font-bold text-amber-400">28</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </panoptes-splitter-pane>
+                </panoptes-splitter>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu (1. Resimdeki Standart Kapalı Details) -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-splitter id="demoSplitterVertical" orientation="vertical" class="h-96"&gt;
+    &lt;panoptes-splitter-pane id="paneSqlEditor" size="180px" min-size="100px" max-size="280px"&gt;
+        &lt;!-- Üst SQL Editör Paneli --&gt;
+    &lt;/panoptes-splitter-pane&gt;
+
+    &lt;panoptes-splitter-pane id="paneSqlResult"&gt;
+        &lt;!-- Alt Çıktı ve Sonuç Paneli --&gt;
+    &lt;/panoptes-splitter-pane&gt;
+&lt;/panoptes-splitter&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 3: İç İçe Yuvalanmış Splitter (Nested Splitter - IDE Yapısı) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                    3. İç İçe Yuvalanmış Splitter (Nested Splitter - IDE Arayüzü)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Yatay splitter içine dikey splitter gömülerek çok boyutlu modern bir geliştirici arayüzü (Sidebar + Kod + Terminal).
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">İç İçe Splitter</span>
+        </div>
+
+        <div class="p-6">
+            <div class="h-96 w-full border border-slate-200 rounded-xl overflow-hidden bg-slate-100">
+                <panoptes-splitter id="splitterNestedOuter" orientation="horizontal" class="h-full">
+                    <!-- Sol Bölme: Ağaç Görünümü / Gezgin -->
+                    <panoptes-splitter-pane id="paneTree" size="220px" min-size="140px" max-size="350px" class="bg-white p-4">
+                        <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Çözüm Gezgini</div>
+                        <div class="space-y-1 text-xs text-slate-700">
+                            <div class="flex items-center gap-1.5 font-semibold text-slate-800">
+                                <span>📁</span> Panoptes.Core
+                            </div>
+                            <div class="pl-4 space-y-1 text-slate-600">
+                                <div class="flex items-center gap-1.5"><span>📄</span> Splitter.cs</div>
+                                <div class="flex items-center gap-1.5"><span>📄</span> TabStrip.cs</div>
+                                <div class="flex items-center gap-1.5"><span>📄</span> ListView.cs</div>
+                            </div>
+                            <div class="flex items-center gap-1.5 font-semibold text-slate-800 pt-2">
+                                <span>📁</span> Panoptes.Demo
+                            </div>
+                            <div class="pl-4 space-y-1 text-slate-600">
+                                <div class="flex items-center gap-1.5 text-blue-600 font-medium"><span>📄</span> Index.cshtml</div>
+                            </div>
+                        </div>
+                    </panoptes-splitter-pane>
+
+                    <!-- Sağ Bölme: İç Dikey Splitter (Editör + Terminal) -->
+                    <panoptes-splitter-pane id="paneInnerContainer" class="p-0 overflow-hidden bg-white">
+                        <panoptes-splitter id="splitterNestedInner" orientation="vertical" class="h-full border-0 rounded-none">
+                            <panoptes-splitter-pane id="paneInnerCode" size="200px" min-size="120px" class="bg-white p-5 font-mono text-xs">
+                                <div class="text-slate-400 mb-2 font-sans font-semibold text-[11px] flex items-center justify-between">
+                                    <span>C# Kod Editörü - TabStripTagHelper.cs</span>
+                                    <span class="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded font-mono text-[10px]">Ready</span>
+                                </div>
+                                <p class="text-blue-600">namespace <span class="text-amber-600">Panoptes.AspNetCore.TagHelpers</span>;</p>
+                                <p class="text-blue-600 mt-1">public class <span class="text-emerald-600">TabStripTagHelper</span> : TagHelper</p>
+                                <p class="text-slate-700 pl-4">{</p>
+                                <p class="text-slate-700 pl-8">public override async Task ProcessAsync(...)</p>
+                                <p class="text-slate-700 pl-4">}</p>
+                            </panoptes-splitter-pane>
+
+                            <panoptes-splitter-pane id="paneInnerTerminal" class="bg-slate-900 p-4 font-mono text-xs text-slate-200">
+                                <div class="text-[11px] text-slate-400 font-sans font-semibold pb-1 mb-2 border-b border-slate-800 flex items-center justify-between">
+                                    <span>Dahili Terminal (zsh)</span>
+                                    <span class="text-emerald-400">● 5085 Port Aktif</span>
+                                </div>
+                                <div class="text-emerald-400 font-semibold">$ dotnet run --project Panoptes.AspNetCore.Demo</div>
+                                <div class="text-slate-400 text-[11px] mt-1">Building...</div>
+                                <div class="text-slate-300 text-[11px]">info: Microsoft.Hosting.Lifetime[14]</div>
+                                <div class="text-slate-300 text-[11px]">      Now listening on: http://localhost:5085</div>
+                            </panoptes-splitter-pane>
+                        </panoptes-splitter>
+                    </panoptes-splitter-pane>
+                </panoptes-splitter>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu (1. Resimdeki Standart Kapalı Details) -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-splitter id="outer" orientation="horizontal" class="h-96"&gt;
+    &lt;panoptes-splitter-pane size="220px" min-size="140px"&gt;
+        &lt;!-- Gezgin Paneli --&gt;
+    &lt;/panoptes-splitter-pane&gt;
+
+    &lt;panoptes-splitter-pane&gt;
+        &lt;panoptes-splitter id="inner" orientation="vertical" class="h-full border-0"&gt;
+            &lt;panoptes-splitter-pane size="200px"&gt;
+                &lt;!-- Kod Editörü --&gt;
+            &lt;/panoptes-splitter-pane&gt;
+            &lt;panoptes-splitter-pane&gt;
+                &lt;!-- Terminal Konsolu --&gt;
+            &lt;/panoptes-splitter-pane&gt;
+        &lt;/panoptes-splitter&gt;
+    &lt;/panoptes-splitter-pane&gt;
+&lt;/panoptes-splitter&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 4: Programatik JavaScript API ve Canlı Olay Günlüğü (Event Log) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+                    4. Programatik JavaScript API ve Canlı Olay Günlüğü (Event Log)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Panelleri JavaScript API (`collapse`, `expand`, `size`, `toggle`) ile uzaktan yönetin ve boyutlandırma olaylarını izleyin.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-amber-50 text-amber-700 px-2 py-1 rounded font-medium border border-amber-100">Programmatic API</span>
+        </div>
+
+        <div class="p-6 space-y-4">
+            <!-- Eylem Butonları -->
+            <div class="flex flex-wrap items-center gap-2">
+                <button type="button" onclick="toggleLeftPane()" class="px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition shadow-xs">
+                    Sol Paneli Aç / Kapat (Toggle)
+                </button>
+                <button type="button" onclick="collapseLeftPane()" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg transition shadow-xs">
+                    Sol Paneli Kapat (collapse)
+                </button>
+                <button type="button" onclick="expandLeftPane()" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg transition shadow-xs">
+                    Sol Paneli Aç (expand)
+                </button>
+                <button type="button" onclick="setLeftPaneSize('350px')" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg transition shadow-xs">
+                    Boyutu 350px Yap (size)
+                </button>
+                <button type="button" onclick="clearSplitterLog()" class="px-3 py-1.5 text-xs font-medium text-rose-600 hover:bg-rose-50 rounded-lg transition ml-auto">
+                    Günlüğü Temizle
+                </button>
+            </div>
+
+            <!-- Splitter & Canlı Log -->
+            <div class="h-64 w-full border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
+                <panoptes-splitter id="demoSplitterApi" orientation="horizontal" on-resize="handleSplitterResize" class="h-full">
+                    <panoptes-splitter-pane id="paneApiLeft" size="240px" min-size="120px" max-size="400px" class="bg-indigo-50/60 p-4">
+                        <div class="text-xs font-bold text-indigo-900 mb-2">Kontrol Paneli (Sol)</div>
+                        <p class="text-xs text-indigo-700 leading-relaxed">
+                            Bu panel API komutları veya fare sürüklemesi ile boyutlandırıldığında sağdaki canlı log paneline anlık olay kaydı düşecektir.
+                        </p>
+                    </panoptes-splitter-pane>
+
+                    <panoptes-splitter-pane id="paneApiRight" class="bg-white p-4">
+                        <div class="text-xs font-bold text-slate-700 mb-2 flex items-center justify-between">
+                            <span>Canlı Olay Günlüğü (Event Log)</span>
+                            <span id="paneSizeBadge" class="text-[11px] font-mono bg-slate-100 text-slate-600 px-2 py-0.5 rounded">Sol Genişlik: 240px</span>
+                        </div>
+                        <div id="splitterEventLogs" class="bg-slate-900 text-slate-200 font-mono text-[11px] p-3 rounded-lg h-44 overflow-y-auto space-y-1">
+                            <div class="text-slate-500 italic">// Paneli sürükleyin veya yukarıdaki butonlara tıklayın...</div>
+                        </div>
+                    </panoptes-splitter-pane>
+                </panoptes-splitter>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu (1. Resimdeki Standart Kapalı Details) -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-splitter id="demoSplitterApi" orientation="horizontal" on-resize="handleSplitterResize" class="h-64"&gt;
+    &lt;panoptes-splitter-pane id="paneApiLeft" size="240px" min-size="120px" max-size="400px"&gt;
+        &lt;!-- Sol Panel --&gt;
+    &lt;/panoptes-splitter-pane&gt;
+
+    &lt;panoptes-splitter-pane id="paneApiRight"&gt;
+        &lt;!-- Sağ Panel --&gt;
+    &lt;/panoptes-splitter-pane&gt;
+&lt;/panoptes-splitter&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- TagHelper Parametre & Nitelik Referans Tablosu -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+            <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                TagHelper Parametre ve Nitelik Referansı
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">
+                Splitter bileşeni ve alt panelleri tarafından desteklenen Razor TagHelper nitelikleri.
+            </p>
+        </div>
+        <div class="p-6">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border border-slate-200 rounded-lg">
+                    <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                        <tr>
+                            <th class="p-3">Etiket / Nitelik</th>
+                            <th class="p-3">Tip</th>
+                            <th class="p-3">Varsayılan</th>
+                            <th class="p-3">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-600">
+                        <tr>
+                            <td class="p-3 font-mono font-bold text-blue-600">&lt;panoptes-splitter&gt;</td>
+                            <td class="p-3 font-mono text-slate-500">TagHelper</td>
+                            <td class="p-3">-</td>
+                            <td class="p-3">Ana bölücü taşıyıcı kapsayıcısı.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-blue-600 pl-6">orientation</td>
+                            <td class="p-3 font-mono text-slate-500">string</td>
+                            <td class="p-3 font-mono">"horizontal"</td>
+                            <td class="p-3">Bölme yönelimi. `"horizontal"` (yatay) veya `"vertical"` (dikey).</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-blue-600 pl-6">on-resize</td>
+                            <td class="p-3 font-mono text-slate-500">string</td>
+                            <td class="p-3 font-mono">null</td>
+                            <td class="p-3">Paneller boyutlandırıldığında tetiklenecek JS fonksiyon adı.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono font-bold text-indigo-600">&lt;panoptes-splitter-pane&gt;</td>
+                            <td class="p-3 font-mono text-slate-500">TagHelper</td>
+                            <td class="p-3">-</td>
+                            <td class="p-3">Splitter içindeki her bir bağımsız bölme (pane).</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-indigo-600 pl-6">size</td>
+                            <td class="p-3 font-mono text-slate-500">string</td>
+                            <td class="p-3 font-mono">"auto"</td>
+                            <td class="p-3">Başlangıç boyutu (örn: `"280px"`, `"%30"`). Verilmezse kalan boşluğu doldurur (`flex: 1`).</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-indigo-600 pl-6">min-size / max-size</td>
+                            <td class="p-3 font-mono text-slate-500">string</td>
+                            <td class="p-3 font-mono">null</td>
+                            <td class="p-3">Sürükleme anında izin verilen minimum ve maksimum boyut sınırları.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-indigo-600 pl-6">resizable</td>
+                            <td class="p-3 font-mono text-slate-500">bool</td>
+                            <td class="p-3 font-mono">true</td>
+                            <td class="p-3">Panelin kullanıcı tarafından boyutlandırılıp boyutlandırılamayacağı.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-indigo-600 pl-6">collapsible</td>
+                            <td class="p-3 font-mono text-slate-500">bool</td>
+                            <td class="p-3 font-mono">true</td>
+                            <td class="p-3">Panelin kapatılabilir/katlanabilir olup olmadığı.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-indigo-600 pl-6">scrollable</td>
+                            <td class="p-3 font-mono text-slate-500">bool</td>
+                            <td class="p-3 font-mono">true</td>
+                            <td class="p-3">Panel içeriğinin taşma durumunda kaydırma çubuğu gösterip göstermeyeceği.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">TagHelper Özellikleri & Parametreleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-splitter&gt; bileşeninin desteklediği tüm C# ve HTML nitelikleri.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesSplitterTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-4">Varsayılan</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşen kimliği.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">orientation</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"horizontal"</td>
+                            <td class="py-3 px-6 text-slate-700">Bölme yönü: "horizontal" veya "vertical".</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">panes</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">Panel başlangıç boyutları.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Klavye Erişilebilirliği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes Splitter bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Nitelikleri</div>
+                    <div class="text-slate-600">
+                        Standart <code>role="separator"</code> rolünü taşır. Duruma göre <code>aria-disabled</code>, <code>aria-expanded</code>, <code>aria-selected</code> ve <code>aria-label</code> nitelikleri dinamik olarak güncellenir.
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Odak Yönetimi (Focus Management)</div>
+                    <div class="text-slate-600">
+                        Sekme sırasını doğal akışında korur (<code>tabIndex="0"</code>). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları (Keyboard Shortcuts)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev (Function)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Sol / Sağ / Yukarı / Aşağı Ok</kbd></td>
+                                <td class="py-2.5 px-4">Bölücü çubuğu klavyeyle hareket ettirir.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter</kbd></td>
+                                <td class="py-2.5 px-4">Paneli daraltır veya açar.</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-splitter.js"></script>
+<script>
+function logSplitterEvent(message) {
+            const container = document.getElementById('splitterEventLogs');
+            if (!container) return;
+            const row = document.createElement('div');
+            const time = new Date().toLocaleTimeString();
+            row.innerHTML = `<span class="text-slate-500">[${time}]</span> ${message}`;
+            container.appendChild(row);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function handleSplitterResize(e) {
+            const badge = document.getElementById('paneSizeBadge');
+            if (badge && e.prevSize) {
+                badge.textContent = `Sol Genişlik: ${Math.round(e.prevSize)}px`;
+            }
+            logSplitterEvent(`<span class="text-amber-400">onResize:</span> Sol: ${Math.round(e.prevSize)}px, Sağ: ${Math.round(e.nextSize)}px`);
+        }
+
+        function toggleLeftPane() {
+            const splitter = window.panoptesSplitter.getInstance('demoSplitterApi');
+            if (splitter) {
+                splitter.toggle('paneApiLeft');
+                logSplitterEvent(`<span class="text-blue-400">toggle:</span> Sol panel durumu değiştirildi.`);
+            }
+        }
+
+        function collapseLeftPane() {
+            const splitter = window.panoptesSplitter.getInstance('demoSplitterApi');
+            if (splitter) {
+                splitter.collapse('paneApiLeft');
+                logSplitterEvent(`<span class="text-rose-400">collapse:</span> Sol panel kapatıldı.`);
+            }
+        }
+
+        function expandLeftPane() {
+            const splitter = window.panoptesSplitter.getInstance('demoSplitterApi');
+            if (splitter) {
+                splitter.expand('paneApiLeft');
+                logSplitterEvent(`<span class="text-emerald-400">expand:</span> Sol panel açıldı.`);
+            }
+        }
+
+        function setLeftPaneSize(size) {
+            const splitter = window.panoptesSplitter.getInstance('demoSplitterApi');
+            if (splitter) {
+                splitter.size('paneApiLeft', size);
+                const badge = document.getElementById('paneSizeBadge');
+                if (badge) badge.textContent = `Sol Genişlik: ${size}`;
+                logSplitterEvent(`<span class="text-purple-400">size:</span> Sol panel boyutu ${size} yapıldı.`);
+            }
+        }
+
+        function clearSplitterLog() {
+            const container = document.getElementById('splitterEventLogs');
+            if (container) {
+                container.innerHTML = '<div class="text-slate-500 italic">// Temizlendi. Yeni olaylar bekleniyor...</div>';
+            }
+        }
+</script>
+}

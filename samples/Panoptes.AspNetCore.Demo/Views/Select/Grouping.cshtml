@@ -1,0 +1,111 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Select - Grouping" : "Select - Gruplama (Grouping)";
+}
+
+<div class="space-y-8">
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Select" : "/Select")" class="hover:text-blue-600 transition">Select</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">@(isEn ? "Grouping" : "Gruplama (Grouping)")</span>
+    </nav>
+
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "Categorized Grouping (OptGroup)" : "Gruplama (Grouping)")</h1>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Categorize and organize items under sticky category headers (HTML5 optgroup equivalent) for clear visual hierarchy."
+                    : "Verilerinizi belirli bir alana göre kategorize ederek açılır liste içinde hiyerarşik (OptGroup benzeri) görünümde listeleyebilirsiniz.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ Production Ready
+            </span>
+        </div>
+    </div>
+
+    <!-- Live Demo Card -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "Grouped Options" : "Gruplu Seçenekler (Grouping)")</h2>
+            <p class="text-xs text-slate-500 mt-1">@(isEn ? "Hierarchical options sorted under category headers." : "Kategori başlıkları altında organize edilmiş öğe hiyerarşisi.")</p>
+        </div>
+
+        <div class="max-w-xl space-y-2">
+            <label class="block text-xs font-bold text-slate-700">@(isEn ? "Product Selection by Category" : "Kategorilerine Göre Ürün Seçimi")</label>
+            <panoptes-select id="sel_grouping"
+                             placeholder="@(isEn ? "Select categorized product..." : "Kategorize edilmiş ürün seçin...")"
+                             options='[
+                                 {"text":"iPhone 15 Pro Max","value":"iphone15","group":"Akıllı Telefonlar"},
+                                 {"text":"Samsung Galaxy S24 Ultra","value":"s24","group":"Akıllı Telefonlar"},
+                                 {"text":"Google Pixel 8 Pro","value":"pixel8","group":"Akıllı Telefonlar"},
+                                 {"text":"MacBook Pro M3 Max","value":"mbp_m3","group":"Dizüstü Bilgisayarlar"},
+                                 {"text":"Dell XPS 15","value":"dell_xps","group":"Dizüstü Bilgisayarlar"},
+                                 {"text":"Lenovo ThinkPad X1 Carbon","value":"thinkpad","group":"Dizüstü Bilgisayarlar"},
+                                 {"text":"Sony WH-1000XM5","value":"sony_xm5","group":"Ses & Kulaklık"},
+                                 {"text":"AirPods Max","value":"airpods_max","group":"Ses & Kulaklık"},
+                                 {"text":"Bose QuietComfort Ultra","value":"bose_qc","group":"Ses & Kulaklık"}
+                             ]' />
+            <span class="text-[11px] text-slate-400">@(isEn ? "Rendered with sticky category headers in the popup list." : "Açılır listede yapışkan (sticky) grup başlıkları eşliğinde listelenir.")</span>
+        </div>
+    </div>
+
+    <!-- Feature Description Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Sticky Group Headers" : "Yapışkan Grup Başlıkları")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Category labels remain pinned at the top of the dropdown viewport as the user scrolls through lengthy lists."
+                    : "Kullanıcı uzun listelerde kaydırma yaparken kategori başlıkları görünümün üstünde sabitlenerek bağlamı korur.")
+            </div>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Zero Client Overhead" : "Sıfır İstemci Yükü")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Automatic grouping handles JSON payloads with group properties or group-by attribute mapping seamlessly."
+                    : "JSON veri modelinde group alanı veya group-by özniteliği ile ekstra kod gerekmeden otomatik gruplanır.")
+            </div>
+        </div>
+    </div>
+
+    <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+    <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                    @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                </span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-select id="sel_grouping"
+                 placeholder="@(isEn ? "Select categorized product..." : "Kategorize edilmiş ürün seçin...")"
+                 options='[
+                     {"text":"iPhone 15 Pro Max","value":"iphone15","group":"Akıllı Telefonlar"},
+                     {"text":"Samsung Galaxy S24 Ultra","value":"s24","group":"Akıllı Telefonlar"},
+                     {"text":"MacBook Pro M3 Max","value":"mbp_m3","group":"Dizüstü Bilgisayarlar"},
+                     {"text":"Dell XPS 15","value":"dell_xps","group":"Dizüstü Bilgisayarlar"},
+                     {"text":"Sony WH-1000XM5","value":"sony_xm5","group":"Ses &amp; Kulaklık"}
+                 ]' /&gt;</code></pre>
+        </div>
+    </div>
+</div>

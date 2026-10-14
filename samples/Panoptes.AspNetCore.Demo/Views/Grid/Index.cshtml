@@ -1,0 +1,258 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    string p = DemoTranslations.Prefix(isEn);
+    ViewData["Title"] = isEn ? "Data Grid (Advanced Data Table) - Panoptes Enterprise UI" : "Data Grid (Gelişmiş Veri Tablosu) - Panoptes Kurumsal UI";
+    ViewData["ActiveTab"] = "Overview";
+}
+
+<div class="space-y-6">
+    <partial name="_GridNav" />
+
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(p == "" ? "/" : p)" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(p + "/Grid")" class="hover:text-blue-600 transition">@(isEn ? "Data Management & Grids" : "Veri Yönetimi & Tablolar")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Data Grid</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "Data Grid (Advanced Data Table)" : "Data Grid (Gelişmiş Veri Tablosu)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-grid&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "High-performance enterprise data grid featuring multi-sorting, filtering, grouping, paging, in-cell/inline/popup editing, hierarchical detail templates, Excel/PDF export, and virtualization."
+                    : "Sıralama (multi-sort), filtreleme, gruplama, sayfalama, satır içi düzenleme (Incell / Inline / Popup), hiyerarşik detay şablonları, Excel/PDF dışa aktarım ve sanal kaydırma (virtualization) özelliklerine sahip yüksek performanslı kurumsal veri ızgarası.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold">
+                @(isEn ? "✓ Production Ready" : "✓ Tam Sürüm Hazır")
+            </span>
+        </div>
+    </div>
+
+    <!-- KPI İstatistik Kartları -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-xs font-medium text-slate-500">@DemoTranslations.T("Grid.Kpi1Title", isEn)</span>
+                <div class="text-2xl font-black text-slate-900 mt-0.5">100+</div>
+                <span class="text-[11px] text-emerald-600 font-semibold">@DemoTranslations.T("Grid.Kpi1Sub", isEn)</span>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold">📦</div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-xs font-medium text-slate-500">@DemoTranslations.T("Grid.Kpi2Title", isEn)</span>
+                <div class="text-2xl font-black text-slate-900 mt-0.5">₺4.8M</div>
+                <span class="text-[11px] text-emerald-600 font-semibold">@DemoTranslations.T("Grid.Kpi2Sub", isEn)</span>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 font-bold">💰</div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-xs font-medium text-slate-500">@DemoTranslations.T("Grid.Kpi3Title", isEn)</span>
+                <div class="text-2xl font-black text-slate-900 mt-0.5">4.6 ★</div>
+                <span class="text-[11px] text-amber-600 font-semibold">@DemoTranslations.T("Grid.Kpi3Sub", isEn)</span>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 font-bold">⭐</div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-xs font-medium text-slate-500">@DemoTranslations.T("Grid.Kpi4Title", isEn)</span>
+                <div class="text-2xl font-black text-slate-900 mt-0.5">%88</div>
+                <span class="text-[11px] text-blue-600 font-semibold">@DemoTranslations.T("Grid.Kpi4Sub", isEn)</span>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold">📊</div>
+        </div>
+    </div>
+
+    <!-- Hızlı Eylem & Kontrol Araç Çubuğu -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2 flex-wrap">
+            <button type="button" onclick="triggerGridAction('export-excel')" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span>@DemoTranslations.T("Grid.ExportExcel", isEn)</span>
+            </button>
+
+            <button type="button" onclick="triggerGridAction('export-pdf')" class="px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                <span>@DemoTranslations.T("Grid.ExportPdf", isEn)</span>
+            </button>
+
+            <button type="button" onclick="triggerGridAction('add-new')" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                <span>@DemoTranslations.T("Grid.AddNew", isEn)</span>
+            </button>
+
+            <button type="button" onclick="triggerGridAction('refresh')" class="px-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-medium text-xs transition flex items-center gap-1.5 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                <span>@DemoTranslations.T("Grid.Refresh", isEn)</span>
+            </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-500 font-medium">@DemoTranslations.T("Grid.EditMode", isEn)</span>
+            <select id="editModeSelect" onchange="changeEditMode(this.value)" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-700 focus:outline-none">
+                <option value="incell" selected>@DemoTranslations.T("Grid.Incell", isEn)</option>
+                <option value="inline">@DemoTranslations.T("Grid.Inline", isEn)</option>
+                <option value="popup">@DemoTranslations.T("Grid.Popup", isEn)</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Live Grid Preview -->
+    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex items-center justify-between">
+            <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <span>📦 @DemoTranslations.T("Grid.FullSuiteDemo", isEn)</span>
+            </h2>
+            <span class="text-xs text-slate-400">@DemoTranslations.T("Grid.AsyncLoaded", isEn)</span>
+        </div>
+
+        <panoptes-grid id="grid_Main"
+                       page-size="10"
+                       page-sizes="5,10,20,50,100"
+                       sortable="true"
+                       filterable="true"
+                       groupable="true"
+                       resizable="true"
+                       reorderable="true"
+                       column-menu="true"
+                       selectable="true"
+                       exportable="true"
+                       pdf-export="true"
+                       searchable="true"
+                       editable="incell"
+                       class="shadow-xs">
+            <panoptes-grid-datasource url="/api/products"
+                                      create-url="/api/products/create"
+                                      update-url="/api/products/update"
+                                      delete-url="/api/products/delete" />
+            <panoptes-grid-columns>
+                <panoptes-grid-column selectable="true" width="55px" />
+                <panoptes-grid-column field="Id" title="#" width="70px" editable="false" />
+                <panoptes-grid-column field="Name" title="@(isEn ? "Product Name" : "Ürün Adı")" width="260px" editor-type="text" />
+                <panoptes-grid-column field="Price" title="@(isEn ? "Unit Price" : "Birim Fiyat")" width="130px" format="currency" align="right" editor-type="number" />
+                <panoptes-grid-column field="IsActive" title="@(isEn ? "Inventory Status" : "Stok Durumu")" width="130px" format="badge" align="center" editor-type="boolean" />
+                <panoptes-grid-column field="Category" title="@(isEn ? "Category" : "Kategori")" width="150px" editor-type="select" editor-options="Elektronik, Giyim, Kitap, Kozmetik, Aksesuar, Spor" />
+                <panoptes-grid-column field="CustomerRating" title="@(isEn ? "Rating" : "Değerlendirme")" width="150px" format="rating" align="center" editable="false" />
+                <panoptes-grid-column field="Country" title="@(isEn ? "Country" : "Ülke")" width="130px" format="country" align="left" editor-type="select" editor-options="Türkiye, Almanya, Japonya, ABD, İtalya, İngiltere, Fransa" />
+                <panoptes-grid-column field="Stock" title="@(isEn ? "Quantity" : "Miktar")" width="100px" align="right" editor-type="number" />
+                <panoptes-grid-column field="TotalSales" title="@(isEn ? "Total Revenue" : "Toplam Ciro")" width="150px" format="currency" align="right" editable="false" />
+                <panoptes-grid-column field="TargetSales" title="@(isEn ? "Target Sales" : "Hedef Gerçekleşme")" width="180px" format="sparkline" editable="false" />
+            </panoptes-grid-columns>
+
+            <panoptes-grid-detail-template>
+                <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-800">
+                        <span class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                            <span>@(isEn ? "📦 Stock Movement History: #: Name # (Product ID: #: Id #)" : "📦 Stok Hareket Geçmişi: #: Name # (Ürün No: #: Id #)")</span>
+                        </span>
+                        <span class="text-slate-400 font-normal">@(isEn ? "Last 30 days in/out logs" : "Son 30 günlük giriş / çıkış logları")</span>
+                    </div>
+                    <panoptes-grid id="subGrid_#:Id#"
+                                   page-size="5"
+                                   sortable="true"
+                                   resizable="true">
+                        <panoptes-grid-datasource url="/api/stockmovements?productId=#:Id#" />
+                        <panoptes-grid-columns>
+                            <panoptes-grid-column field="MovementType" title="@(isEn ? "Movement Type" : "Hareket Türü")" width="130px" />
+                            <panoptes-grid-column field="Quantity" title="@(isEn ? "Quantity" : "Miktar")" width="90px" align="right" />
+                            <panoptes-grid-column field="MovementDate" title="@(isEn ? "Date" : "Tarih")" width="130px" format="date" />
+                            <panoptes-grid-column field="Warehouse" title="@(isEn ? "Warehouse" : "Depo")" width="150px" />
+                            <panoptes-grid-column field="ReferenceNo" title="@(isEn ? "Ref No" : "Referans No")" width="160px" />
+                            <panoptes-grid-column field="Description" title="@(isEn ? "Description" : "Açıklama")" />
+                        </panoptes-grid-columns>
+                    </panoptes-grid>
+                </div>
+            </panoptes-grid-detail-template>
+        </panoptes-grid>
+    </div>
+
+    <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+    <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                    @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                </span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-grid id="grid_Main"
+               page-size="10"
+               page-sizes="5,10,20,50,100"
+               sortable="true"
+               filterable="true"
+               groupable="true"
+               resizable="true"
+               reorderable="true"
+               column-menu="true"
+               selectable="true"
+               exportable="true"
+               pdf-export="true"
+               searchable="true"
+               editable="incell"&gt;
+    &lt;panoptes-grid-datasource url="/api/products"
+                              create-url="/api/products/create"
+                              update-url="/api/products/update"
+                              delete-url="/api/products/delete" /&gt;
+    &lt;panoptes-grid-columns&gt;
+        &lt;panoptes-grid-column selectable="true" width="55px" /&gt;
+        &lt;panoptes-grid-column field="Id" title="#" width="70px" editable="false" /&gt;
+        &lt;panoptes-grid-column field="Name" title="@(isEn ? "Product Name" : "Ürün Adı")" width="260px" /&gt;
+        &lt;panoptes-grid-column field="Price" title="@(isEn ? "Unit Price" : "Birim Fiyat")" width="130px" format="currency" align="right" /&gt;
+        &lt;panoptes-grid-column field="IsActive" title="@(isEn ? "Status" : "Durum")" width="130px" format="badge" align="center" /&gt;
+        &lt;panoptes-grid-column field="Category" title="@(isEn ? "Category" : "Kategori")" width="150px" /&gt;
+        &lt;panoptes-grid-column field="CustomerRating" title="@(isEn ? "Rating" : "Değerlendirme")" width="150px" format="rating" align="center" /&gt;
+        &lt;panoptes-grid-column field="Country" title="@(isEn ? "Country" : "Ülke")" width="130px" format="country" /&gt;
+        &lt;panoptes-grid-column field="Stock" title="@(isEn ? "Stock" : "Stok")" width="100px" align="right" /&gt;
+        &lt;panoptes-grid-column field="TotalSales" title="@(isEn ? "Total Revenue" : "Toplam Ciro")" width="150px" format="currency" align="right" /&gt;
+        &lt;panoptes-grid-column field="TargetSales" title="@(isEn ? "Target Sales" : "Hedef Gerçekleşme")" width="180px" format="sparkline" /&gt;
+    &lt;/panoptes-grid-columns&gt;
+
+    &lt;panoptes-grid-detail-template&gt;
+        &lt;!-- Hiyerarşik Alt Tablo Detayı --&gt;
+    &lt;/panoptes-grid-detail-template&gt;
+&lt;/panoptes-grid&gt;</code></pre>
+        </div>
+    </div>
+</div>
+
+<script>
+    function triggerGridAction(action) {
+        const gridEl = document.getElementById('grid_Main');
+        if (!gridEl) return;
+        const btn = gridEl.querySelector(`[data-action="${action}"]`);
+        if (btn) btn.click();
+    }
+
+    function changeEditMode(mode) {
+        const prefix = '@p';
+        window.location.href = prefix + (mode === 'incell' ? '/Grid/IncellEdit' : (mode === 'inline' ? '/Grid/InlineEdit' : '/Grid/PopupEdit'));
+    }
+</script>

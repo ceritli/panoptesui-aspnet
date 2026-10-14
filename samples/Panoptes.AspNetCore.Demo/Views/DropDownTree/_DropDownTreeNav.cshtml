@@ -1,0 +1,43 @@
+@{
+    var activeTab = (string)(ViewData["ActiveTab"] ?? "BasicUsage");
+    var navLinks = new[]
+    {
+        new { Key = "BasicUsage", Title = "1. Genel Bakış", Url = "/DropDownTree/BasicUsage" },
+        new { Key = "TagHelper", Title = "2. TagHelper", Url = "/DropDownTree/TagHelper" },
+        new { Key = "Checkboxes", Title = "3. Checkboxes (Çoklu)", Url = "/DropDownTree/Checkboxes" },
+        new { Key = "Appearance", Title = "4. Appearance (Stil)", Url = "/DropDownTree/Appearance" },
+        new { Key = "FloatingLabel", Title = "5. Floating Label", Url = "/DropDownTree/FloatingLabel" },
+        new { Key = "AdaptiveMode", Title = "6. Adaptive (Mobil)", Url = "/DropDownTree/AdaptiveMode" },
+        new { Key = "Images", Title = "7. İkonlar & Resimler", Url = "/DropDownTree/Images" },
+        new { Key = "Templates", Title = "8. Şablonlar (Templates)", Url = "/DropDownTree/Templates" },
+        new { Key = "ClientFiltering", Title = "9. Canlı Arama (Filter)", Url = "/DropDownTree/ClientFiltering" },
+        new { Key = "LocalDataBinding", Title = "10. Yerel Veri (Local)", Url = "/DropDownTree/LocalDataBinding" },
+        new { Key = "RemoteDataBinding", Title = "11. Uzak Veri (Remote)", Url = "/DropDownTree/RemoteDataBinding" },
+        new { Key = "Events", Title = "12. Olaylar (Events)", Url = "/DropDownTree/Events" },
+        new { Key = "Api", Title = "13. JavaScript API", Url = "/DropDownTree/Api" },
+        new { Key = "RtlSupport", Title = "14. RTL Desteği", Url = "/DropDownTree/RtlSupport" },
+        new { Key = "KeyboardNavigation", Title = "15. Klavye Gezintisi", Url = "/DropDownTree/KeyboardNavigation" }
+    };
+}
+
+<div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm overflow-x-auto">
+    <div class="flex items-center gap-1.5 min-w-max">
+        @foreach (var tab in navLinks)
+        {
+            var isActive = tab.Key.Equals(activeTab, System.StringComparison.OrdinalIgnoreCase);
+            if (isActive)
+            {
+                <span class="px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white shadow-sm flex items-center gap-1.5 cursor-default">
+                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                    <span>@tab.Title</span>
+                </span>
+            }
+            else
+            {
+                <a href="@tab.Url" class="px-3 py-1.5 rounded-xl text-xs font-medium text-slate-600 hover:text-blue-600 hover:bg-slate-100 transition">
+                    @tab.Title
+                </a>
+            }
+        }
+    </div>
+</div>

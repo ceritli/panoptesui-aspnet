@@ -1,0 +1,168 @@
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "TileLayout - Dynamic Add & Remove Tiles" : "TileLayout - Dinamik Kart Ekleme ve Kaldırma (Add/Remove)";
+    ViewData["ActiveTab"] = "AddRemove";
+}
+
+<div class="space-y-6">
+    <partial name="_TileLayoutNav" />
+
+    <!-- Info Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight mb-2">@(isEn ? "Dynamic Tile Add & Remove" : "Dinamik Kart Ekleme & Kaldırma (Add/Remove Tiles)")</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            @(isEn ? "Panoptes TileLayout enables users to customize their dashboard by adding new tiles at runtime and removing unwanted tiles via the close (x) button in the tile header. The removable=\"true\" parameter enables the close button." : "Panoptes TileLayout, kullanıcının panosunu kişiselleştirebilmesi için çalışma zamanında (runtime) yeni kartlar eklemesine ve istemediği kartları başlığındaki kapatma (x) butonuyla kaldırmasına olanak tanır. removable=\"true\" parametresi kart başlığında kapatma butonunu aktif hale getirir.")
+        </p>
+    </div>
+
+    <!-- Live Controls: Add Card Form -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-6">
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex flex-wrap items-end gap-3">
+            <div class="flex-1 min-w-[200px]">
+                <label class="block text-xs font-bold text-slate-700 mb-1">@(isEn ? "Tile Title" : "Kart Başlığı")</label>
+                <input id="newTileTitle" type="text" value="@(isEn ? "Weekly Sales Target" : "Haftalık Satış Hedefi")" class="w-full px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white" placeholder="@(isEn ? "Tile Title..." : "Kart Başlığı...")" />
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">@(isEn ? "Content Type" : "İçerik Tipi")</label>
+                <select id="newTileType" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white">
+                    <option value="metric">@(isEn ? "Metric / Counter" : "Metrik / Sayısal Kutu")</option>
+                    <option value="chart">@(isEn ? "Mini Trend Chart" : "Mini Trend Çubuğu")</option>
+                    <option value="list">@(isEn ? "Task & Reminder List" : "Görev & Hatırlatıcı Listesi")</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">@(isEn ? "Width (col-span)" : "Genişlik (col-span)")</label>
+                <select id="newTileColSpan" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white">
+                    <option value="1" selected>@(isEn ? "1 Column" : "1 Sütun")</option>
+                    <option value="2">@(isEn ? "2 Columns" : "2 Sütun")</option>
+                    <option value="3">@(isEn ? "3 Columns" : "3 Sütun")</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">@(isEn ? "Height (row-span)" : "Yükseklik (row-span)")</label>
+                <select id="newTileRowSpan" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white">
+                    <option value="1" selected>@(isEn ? "1 Row" : "1 Satır")</option>
+                    <option value="2">@(isEn ? "2 Rows" : "2 Satır")</option>
+                </select>
+            </div>
+            <button type="button" onclick="addNewTile()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-sm flex items-center gap-1.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                <span>@(isEn ? "Add to Dashboard" : "Panoya Ekle")</span>
+            </button>
+        </div>
+
+        <panoptes-tilelayout id="dynamicLayout" columns="3" row-height="160px" gap="16px" reorderable="true" resizable="true">
+            <panoptes-tilelayout-item id="dyn-1" header-text="Sistem Bildirimleri" col-span="1" row-span="1" removable="true">
+                <div class="p-2 text-xs text-slate-600">
+                    <p class="font-semibold text-slate-800">3 yeni duyuru mevcut</p>
+                    <p class="text-[11px] text-slate-400 mt-1">Bu kartı sağ üstteki kapatma (x) butonuna basarak kaldırabilirsiniz.</p>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="dyn-2" header-text="Müşteri Memnuniyeti" col-span="1" row-span="1" removable="true">
+                <div class="flex flex-col justify-center items-center h-full p-2">
+                    <div class="text-2xl font-black text-emerald-600">4.9 / 5.0</div>
+                    <span class="text-[11px] text-slate-400 mt-1">1.250 değerlendirme</span>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="dyn-3" header-text="Sabit Kutu (Kapatılamaz)" col-span="1" row-span="1" removable="false">
+                <div class="flex flex-col justify-center items-center h-full p-2 text-center">
+                    <span class="text-xs font-bold text-slate-700">Kalıcı Kart</span>
+                    <span class="text-[11px] text-slate-400">removable="false" olduğu için kapatma butonu yoktur.</span>
+                </div>
+            </panoptes-tilelayout-item>
+        </panoptes-tilelayout>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;!-- Razor içinde removable=&quot;true&quot; ile kapatılabilir kart tanımı --&gt;
+&lt;panoptes-tilelayout-item id=&quot;dyn-1&quot; header-text=&quot;Kapatılabilir Kart&quot; removable=&quot;true&quot;&gt;
+    &lt;p&gt;Kapatma butonu sağ üstte otomatik render edilir.&lt;/p&gt;
+&lt;/panoptes-tilelayout-item&gt;
+
+&lt;!-- JavaScript ile Dinamik Kart Ekleme --&gt;
+&lt;script&gt;
+    const tileLayout = window.Panoptes.TileLayout.get('dynamicLayout');
+    tileLayout.addTile({
+        id: 'new_card_1',
+        headerText: 'Yeni Eklenen Kart',
+        colSpan: 2,
+        rowSpan: 1,
+        bodyHtml: '&lt;p&gt;Dinamik içerik&lt;/p&gt;',
+        removable: true
+    });
+&lt;/script&gt;</code></pre>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let tileCounter = 1;
+
+        function addNewTile() {
+            const tl = window.Panoptes.TileLayout.get('dynamicLayout');
+            if (!tl) return;
+
+            const title = document.getElementById('newTileTitle').value.trim() || `Yeni Kart #${tileCounter}`;
+            const type = document.getElementById('newTileType').value;
+            const colSpan = parseInt(document.getElementById('newTileColSpan').value) || 1;
+            const rowSpan = parseInt(document.getElementById('newTileRowSpan').value) || 1;
+
+            let bodyHtml = '';
+            if (type === 'metric') {
+                bodyHtml = `
+                    <div class="flex flex-col justify-between h-full p-2">
+                        <div class="text-2xl font-black text-indigo-600 tracking-tight">₺${(Math.random() * 50000 + 10000).toLocaleString('tr-TR', { maximumFractionDigits: 0 })}</div>
+                        <p class="text-xs text-slate-500">Dinamik oluşturulan metrik verisi</p>
+                    </div>
+                `;
+            } else if (type === 'chart') {
+                bodyHtml = `
+                    <div class="flex flex-col justify-between h-full p-2">
+                        <p class="text-xs text-slate-600 mb-2 font-medium">Haftalık Tamamlanma</p>
+                        <div class="flex items-end gap-1.5 h-16 w-full">
+                            <div class="w-1/4 bg-indigo-200 rounded-t h-8"></div>
+                            <div class="w-1/4 bg-indigo-300 rounded-t h-12"></div>
+                            <div class="w-1/4 bg-indigo-400 rounded-t h-10"></div>
+                            <div class="w-1/4 bg-indigo-600 rounded-t h-16"></div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                bodyHtml = `
+                    <div class="space-y-1.5 p-1 text-xs text-slate-600">
+                        <div class="flex items-center gap-1.5"><input type="checkbox" checked class="rounded text-indigo-600"/> <span>API Belgeleri Güncellendi</span></div>
+                        <div class="flex items-center gap-1.5"><input type="checkbox" class="rounded text-indigo-600"/> <span>Test ortamı kontrolleri</span></div>
+                        <div class="flex items-center gap-1.5"><input type="checkbox" class="rounded text-indigo-600"/> <span>Kullanıcı geri bildirimleri</span></div>
+                    </div>
+                `;
+            }
+
+            tl.addTile({
+                id: `tile_dyn_${tileCounter++}`,
+                headerText: title,
+                colSpan: colSpan,
+                rowSpan: rowSpan,
+                bodyHtml: bodyHtml,
+                removable: true,
+                reorderable: true,
+                resizable: true
+            });
+
+            document.getElementById('newTileTitle').value = `Yeni Kart #${tileCounter}`;
+        }
+    </script>
+}

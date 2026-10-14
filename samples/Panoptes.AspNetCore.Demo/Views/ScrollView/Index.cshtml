@@ -1,0 +1,299 @@
+@{
+    ViewData["Title"] = "ScrollView (Karosel & Kaydırıcı) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">Ana Sayfa</a>
+        <span>/</span>
+        <a href="/ScrollView" class="hover:text-blue-600 transition">Veri Yönetimi & Tablolar</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">ScrollView</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">ScrollView (Karosel & Kaydırıcı)</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-scrollview&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    WAI-ARIA Uyumlu
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                Tam ekran veya kutu içi banner görselleri, ürün slaytları, nokta sayfalayıcı (pager dots) ve otomatik geçiş (autoplay) desteği.
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>Örnekler (Features)</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">2</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>API Referansı (Props & Events)</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">2</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>Erişilebilirlik (WAI-ARIA)</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        <p class="text-slate-500 max-w-3xl leading-relaxed">
+            Tam esneklik sağlamak amacıyla <strong>ScrollView (Carousel)</strong> ve <strong>Lightbox (Galeri)</strong> birbirinden tamamen ayrılmıştır. Geliştirici, Carousel içerisindeki resimleri büyütmek isterse ScrollView'ı sadece bir <code>&lt;panoptes-lightbox&gt;</code> etiketiyle sarmalar. Aynı Lightbox, Carousel olmadan düz bir HTML ızgarasında (Grid) da çalışabilir.
+        </p>
+
+    <!-- Örnek 1: ScrollView + Lightbox Birlikte -->
+    <section class="space-y-4">
+        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs">1</span>
+            ScrollView (Carousel) ve Lightbox Entegrasyonu
+        </h2>
+        <p class="text-sm text-slate-500">Aşağıdaki resimleri kaydırabilir (Carousel) ve üzerlerine tıklayarak tam ekran Galeri (Lightbox) modunda inceleyebilirsiniz.</p>
+        
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <panoptes-lightbox selector="a[data-lightbox='demo-1']" enable-zoom="true" enable-download="true">
+                <panoptes-scrollview id="main-carousel" height="350px" page-size="3" autoplay="true" loop="true" autoplay-interval="4000">
+                    <div class="p-2">
+                        <a href="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80" data-lightbox="demo-1" title="Sevimli Kedi 1" class="block h-full w-full rounded-xl overflow-hidden group relative shadow-sm">
+                            <img src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Kedi 1" />
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                <svg class="w-10 h-10 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="p-2">
+                        <a href="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80" data-lightbox="demo-1" title="Sevimli Kedi 2" class="block h-full w-full rounded-xl overflow-hidden group relative shadow-sm">
+                            <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Kedi 2" />
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                <svg class="w-10 h-10 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="p-2">
+                        <a href="https://images.unsplash.com/photo-1495360010541-f48722b34f7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80" data-lightbox="demo-1" title="Sevimli Kedi 3" class="block h-full w-full rounded-xl overflow-hidden group relative shadow-sm">
+                            <img src="https://images.unsplash.com/photo-1495360010541-f48722b34f7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Kedi 3" />
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                <svg class="w-10 h-10 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="p-2">
+                        <a href="https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80" data-lightbox="demo-1" title="Sevimli Kedi 4" class="block h-full w-full rounded-xl overflow-hidden group relative shadow-sm">
+                            <img src="https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Kedi 4" />
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                <svg class="w-10 h-10 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="p-2">
+                        <a href="https://images.unsplash.com/photo-1529778458776-414c13009d1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80" data-lightbox="demo-1" title="Sevimli Kedi 5" class="block h-full w-full rounded-xl overflow-hidden group relative shadow-sm">
+                            <img src="https://images.unsplash.com/photo-1529778458776-414c13009d1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Kedi 5" />
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                <svg class="w-10 h-10 text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                            </div>
+                        </a>
+                    </div>
+                </panoptes-scrollview>
+            </panoptes-lightbox>
+        </div>
+
+        <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+        <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                        Razor TagHelper (C# / .NET 8)
+                    </span>
+                </div>
+                <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    <span>Kodu Kopyala</span>
+                </button>
+            </div>
+            <div class="panoptes-code-viewer">
+                <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-lightbox selector="a[data-lightbox='demo-1']" enable-zoom="true" enable-download="true"&gt;
+    &lt;panoptes-scrollview id="main-carousel" height="350px" page-size="3" autoplay="true" loop="true" autoplay-interval="4000"&gt;
+        &lt;div class="p-2"&gt;
+            &lt;a href="https://images.unsplash.com/.../large1.jpg" data-lightbox="demo-1" title="Sevimli Kedi 1"&gt;
+                &lt;img src="https://images.unsplash.com/.../thumb1.jpg" alt="Kedi 1" /&gt;
+            &lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/panoptes-scrollview&gt;
+&lt;/panoptes-lightbox&gt;</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Örnek 2: Sadece Lightbox (Carousel Olmadan) -->
+    <section class="space-y-4">
+        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs">2</span>
+            Bağımsız Lightbox (CSS Izgarası İçin)
+        </h2>
+        <p class="text-sm text-slate-500">Lightbox motorunu standart bir CSS ızgarasına veya örneğin KediPet / KopekDunyasi ilan detaylarındaki bağımsız fotoğraflara doğrudan uygulayabilirsiniz.</p>
+        
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <panoptes-lightbox selector=".standalone-gallery-item" enable-zoom="true">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <a href="https://images.unsplash.com/photo-1543852786-1cf6624b9987?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80" class="standalone-gallery-item block h-32 rounded-lg overflow-hidden relative group" title="Grid Kedi 1">
+                        <img src="https://images.unsplash.com/photo-1543852786-1cf6624b9987?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    </a>
+                    <a href="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80" class="standalone-gallery-item block h-32 rounded-lg overflow-hidden relative group" title="Grid Kedi 2">
+                        <img src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    </a>
+                    <a href="https://images.unsplash.com/photo-1519052537078-e6302a4968d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80" class="standalone-gallery-item block h-32 rounded-lg overflow-hidden relative group" title="Grid Kedi 3">
+                        <img src="https://images.unsplash.com/photo-1519052537078-e6302a4968d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    </a>
+                    <a href="https://images.unsplash.com/photo-1472491235688-bdc81a63246e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80" class="standalone-gallery-item block h-32 rounded-lg overflow-hidden relative group" title="Grid Kedi 4">
+                        <img src="https://images.unsplash.com/photo-1472491235688-bdc81a63246e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    </a>
+                </div>
+            </panoptes-lightbox>
+        </div>
+
+        <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+        <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                        Razor TagHelper (C# / .NET 8)
+                    </span>
+                </div>
+                <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    <span>Kodu Kopyala</span>
+                </button>
+            </div>
+            <div class="panoptes-code-viewer">
+                <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-lightbox selector=".standalone-gallery-item" enable-zoom="true"&gt;
+    &lt;div class="grid grid-cols-2 md:grid-cols-4 gap-4"&gt;
+        &lt;a href="/images/cat1.jpg" class="standalone-gallery-item"&gt;
+            &lt;img src="/images/cat1_thumb.jpg" alt="Fotoğraf" /&gt;
+        &lt;/a&gt;
+    &lt;/div&gt;
+&lt;/panoptes-lightbox&gt;</code></pre>
+            </div>
+        </div>
+    </section>
+</div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">TagHelper Özellikleri & Parametreleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-scrollview&gt; bileşeninin desteklediği tüm C# ve HTML nitelikleri.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesScrollviewTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-4">Varsayılan</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşen kimliği.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">autoplay</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                            <td class="py-3 px-6 text-slate-700">Otomatik slayt geçişi.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Klavye Erişilebilirliği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes ScrollView bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Nitelikleri</div>
+                    <div class="text-slate-600">
+                        Standart <code>role="region (carousel)"</code> rolünü taşır. Duruma göre <code>aria-disabled</code>, <code>aria-expanded</code>, <code>aria-selected</code> ve <code>aria-label</code> nitelikleri dinamik olarak güncellenir.
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Odak Yönetimi (Focus Management)</div>
+                    <div class="text-slate-600">
+                        Sekme sırasını doğal akışında korur (<code>tabIndex="0"</code>). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları (Keyboard Shortcuts)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev (Function)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Sol / Sağ Ok</kbd></td>
+                                <td class="py-2.5 px-4">Önceki veya sonraki slayta geçer.</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,40 @@
+@model Panoptes.AspNetCore.Demo.Controllers.TreeListPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-xs flex flex-wrap items-center gap-x-5 gap-y-2 text-xs">
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Arama alanları:</span>
+            <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="sf" value="Name" checked /> Ad Soyad</label>
+            <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="sf" value="Role" checked /> Unvan</label>
+            <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="sf" value="Department" /> Departman</label>
+            <label class="inline-flex items-center gap-1.5 cursor-pointer"><input type="checkbox" class="sf" value="Location" /> Lokasyon</label>
+            <span class="text-slate-400">Örn. "Ankara" yazıp Lokasyon'u işaretleyin / kaldırın.</span>
+        </div>
+
+        <panoptes-treelist id="searchTree"
+                           title="Çalışanlar"
+                           columns="@Model.Columns"
+                           items="@Model.Items"
+                           show-search="true"
+                           search-fields="Name,Role"
+                           on-event="ptlOnEvent" />
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+    <script>
+        document.querySelectorAll('.sf').forEach(function (cb) {
+            cb.addEventListener('change', function () {
+                const fields = Array.from(document.querySelectorAll('.sf:checked')).map(function (x) { return x.value; });
+                const t = Panoptes.TreeList.getInstance('searchTree');
+                if (t) { t.setSearchFields(fields); ptlLog('setSearchFields(' + JSON.stringify(fields) + ')', 'text-amber-300'); }
+            });
+        });
+    </script>
+}

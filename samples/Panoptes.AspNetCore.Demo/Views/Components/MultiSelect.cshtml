@@ -1,0 +1,384 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "MultiSelect - Panoptes Enterprise UI" : "MultiSelect (Çoklu Seçim) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Components/MultiSelect" : "/Components/MultiSelect")" class="hover:text-blue-600 transition">@(isEn ? "Form Components" : "Form Bileşenleri")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">MultiSelect</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">MultiSelect (Çoklu Seçim)</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-multiselect&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Multiple item selection with discrete tags (Multiple) or compact summary badge (Single), real-time filtering, max limits, and JavaScript API."
+                    : "Etiket modu (TagMode: Multiple vs Single özet badge), gruplama, maksimum seçim sınırı, anlık arama, tek tıkla temizleme ve zengin JavaScript API'si.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ @(isEn ? "Lightweight & Standalone" : "Bağımsız & Hafif")
+            </span>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Demos & Showcase" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">2</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">5</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        <!-- 1. Temel Kullanım & Etiket Modları -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+                <h2 class="text-base font-bold text-slate-800">
+                    @(isEn ? "1. Tag Display Modes (Multiple vs Single Badge)" : "1. Etiket Gösterim Modları (TagMode: Multiple vs Single)")
+                </h2>
+                <p class="text-xs text-slate-500 mt-1">
+                    @(isEn 
+                        ? "Choose between individual tags or a space-saving summary badge ('N items selected')."
+                        : "Ayrı ayrı etiketler veya yer kazandıran tek özet rozet ('N öğe seçildi').")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Standart Multiple TagMode -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">@(isEn ? "Individual Tags (TagMode: \"multiple\")" : "Ayrı Etiketler (TagMode: \"multiple\")")</label>
+                    <panoptes-multiselect id="ms_multiple"
+                                          tag-mode="multiple"
+                                          values="C#, TypeScript"
+                                          placeholder="@(isEn ? "Select skills..." : "Yetenekler seçiniz...")"
+                                          options="C#, TypeScript, JavaScript, Python, Go, Rust, Java, Kotlin, Swift, SQL, Docker" />
+                    <span class="text-[11px] text-slate-400 block">
+                        @(isEn ? "Each selected option appears as a removable tag." : "Seçilen her öğe kendi silme 'X' butonuyla etiket olarak listelenir.")
+                    </span>
+                </div>
+
+                <!-- Single TagMode (Özet Rozet) -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">@(isEn ? "Summary Badge Mode (TagMode: \"single\")" : "Özet Rozet Modu (TagMode: \"single\")")</label>
+                    <panoptes-multiselect id="ms_single"
+                                          tag-mode="single"
+                                          values="C#, Python, Go"
+                                          placeholder="@(isEn ? "Single badge mode..." : "Tek rozet modu...")"
+                                          options="C#, TypeScript, JavaScript, Python, Go, Rust, Java, Kotlin, Swift, SQL, Docker" />
+                    <span class="text-[11px] text-slate-400 block">
+                        @(isEn ? "Keeps input compact with a summary counter badge." : "Çok sayıda seçimde kutuyu büyütmez, kompakt '3 öğe seçildi' gösterir.")
+                    </span>
+                </div>
+            </div>
+
+            <!-- Razor TagHelper Code Block (Prime Standard) -->
+            <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                            Razor TagHelper
+                        </span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy Code" : "Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;!-- 1. Standart Çoklu Etiket Modu (Multiple TagMode) --&gt;
+&lt;panoptes-multiselect id="ms_multiple"
+                      tag-mode="multiple"
+                      values="C#, TypeScript"
+                      options="C#, TypeScript, JavaScript, Python, Go, Rust" /&gt;
+
+&lt;!-- 2. Kompakt Özet Rozet Modu (Single TagMode) --&gt;
+&lt;panoptes-multiselect id="ms_single"
+                      tag-mode="single"
+                      values="C#, Python, Go"
+                      options="C#, TypeScript, JavaScript, Python, Go, Rust" /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. İstemci API ve Olay Günlüğü -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+                <h2 class="text-base font-bold text-slate-800">
+                    @(isEn ? "2. JavaScript Client API & Live Console" : "2. İstemci JavaScript API ve Canlı Olay Günlüğü")
+                </h2>
+                <p class="text-xs text-slate-500 mt-1">
+                    @(isEn 
+                        ? "Inspect selection mutations in real time and programmatically set or clear values."
+                        : "Seçim değişikliklerini canlı konsolda izleyin ve API ile programatik olarak değer atayın.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <div class="space-y-4">
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-slate-700">@(isEn ? "Interactive API MultiSelect" : "API ile Yönetilen MultiSelect")</label>
+                        <panoptes-multiselect id="ms_api_demo"
+                                              tag-mode="multiple"
+                                              max-selected="4"
+                                              placeholder="@(isEn ? "Select categories (max 4)..." : "Kategoriler seçiniz (En fazla 4)...")"
+                                              options="Elektronik, Giyim, Kitap, Spor, Kozmetik, Ev & Yaşam, Otomotiv" />
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <button type="button" onclick="msDemoSetPreset()" class="px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 rounded-lg text-xs font-semibold transition cursor-pointer">
+                            @(isEn ? "Assign: Kitap, Spor" : "Ata: Kitap, Spor")
+                        </button>
+                        <button type="button" onclick="msDemoClear()" class="px-3 py-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 rounded-lg text-xs font-semibold transition cursor-pointer">
+                            @(isEn ? "Clear All" : "Tümünü Temizle")
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Event Log Console -->
+                <div class="bg-slate-950 p-4 rounded-xl text-xs font-mono text-slate-300 border border-slate-800 shadow-inner">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
+                        <span class="font-bold text-slate-400 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+                            @(isEn ? "Live Event Console" : "Etkileşimli Olay Konsolu (Live Events)")
+                        </span>
+                        <button type="button" onclick="document.getElementById('eventLogMs').innerHTML=''" class="text-[11px] text-slate-400 hover:text-slate-200 transition cursor-pointer">
+                            @(isEn ? "Clear" : "Temizle")
+                        </button>
+                    </div>
+                    <div id="eventLogMs" class="space-y-1 max-h-40 overflow-y-auto font-mono text-[11px]">
+                        <div class="text-slate-500">[Ready] @(isEn ? "Listening to MultiSelect change events..." : "Olaylar bekleniyor (change)...")</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JavaScript API Code Block (Prime Standard) -->
+            <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                            JavaScript API
+                        </span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy Code" : "Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>// JavaScript API ile MultiSelect Yönetimi:
+const ms = window.Panoptes.MultiSelect.instances.get("ms_api_demo");
+
+ms.value(['Kitap', 'Spor']);       // Değerleri dizi olarak atar
+const selected = ms.getValue();    // Seçili dizi elemanlarını okur
+ms.clearAll();                     // Tüm seçimleri temizler</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "TagHelper Properties & Parameters" : "TagHelper Özellikleri & Parametreleri")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "Supported attributes for <panoptes-multiselect>." : "<panoptes-multiselect> bileşeninin desteklediği tüm C# ve HTML nitelikleri.")</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesMultiselectTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">@(isEn ? "Attribute" : "Özellik (Attribute)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Type (C#)" : "Tip (C#)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-6">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">@(isEn ? "Auto" : "Otomatik")</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Component unique identifier." : "Bileşen kimliği.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">values</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Comma-separated list of selected items." : "Seçili öğelerin virgülle ayrılmış listesi.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">options</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Available options comma-separated or JSON array." : "Mevcut seçenekler listesi.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">tag-mode</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"multiple"</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Tag display mode: \"multiple\" or \"single\"." : "Etiket modu: \"multiple\" veya \"single\".")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">max-selected</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">int?</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Maximum selectable items count." : "İzin verilen azami seçim sayısı.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Standards & Keyboard Accessibility" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    @(isEn 
+                        ? "Panoptes MultiSelect complies with W3C WAI-ARIA standards for multiselect listbox and removable tag chips."
+                        : "Panoptes MultiSelect bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "WAI-ARIA Attributes" : "WAI-ARIA Nitelikleri")</div>
+                    <div class="text-slate-600">
+                        @(isEn 
+                            ? "Carries standard role=\"listbox\" with aria-multiselectable=\"true\"."
+                            : "Standart role=\"listbox (multiselect)\" rolünü taşır. Duruma göre aria-disabled, aria-expanded, aria-selected ve aria-label nitelikleri dinamik olarak güncellenir.")
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "Focus Management" : "Odak Yönetimi (Focus Management)")</div>
+                    <div class="text-slate-600">
+                        @(isEn 
+                            ? "Maintains sequential tab focus and clear focus rings."
+                            : "Sekme sırasını doğal akışında korur (tabIndex=\"0\"). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.")
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları (Keyboard Shortcuts)")</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">@(isEn ? "Key" : "Tuş (Key)")</th>
+                                <th class="py-2.5 px-4">@(isEn ? "Function" : "İşlev (Function)")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Down / Up Arrow</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Traverses option list." : "Seçenekler listesini açar ve gezinir.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter / Space</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Toggles highlighted option." : "Vurgulanan öğeyi seçer veya seçimden çıkarır.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Backspace</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Removes the last selected tag." : "En son eklenen etiketi kaldırır.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Escape</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Closes options dropdown." : "Açılır menüyü kapatır.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function logMsEvent(msg) {
+        const log = document.getElementById('eventLogMs');
+        if (!log) return;
+        const time = new Date().toLocaleTimeString();
+        const div = document.createElement('div');
+        div.innerHTML = `<span class="text-slate-600">[${time}]</span> ${msg}`;
+        log.prepend(div);
+    }
+
+    function msDemoSetPreset() {
+        const inst = window.Panoptes?.MultiSelect?.instances?.get('ms_api_demo');
+        if (inst) {
+            inst.value(['Kitap', 'Spor']);
+            logMsEvent('Değer atandı: <strong class="text-blue-400">["Kitap", "Spor"]</strong>');
+        }
+    }
+
+    function msDemoClear() {
+        const inst = window.Panoptes?.MultiSelect?.instances?.get('ms_api_demo');
+        if (inst) {
+            inst.clearAll();
+            logMsEvent('Tüm seçimler temizlendi.');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const apiEl = document.getElementById('ms_api_demo');
+        if (apiEl) {
+            apiEl.addEventListener('change', function(e) {
+                logMsEvent(`Olay: <strong class="text-blue-400">change</strong> -> Seçilenler: <span class="text-amber-300">${JSON.stringify(e.detail?.values || [])}</span>`);
+            });
+        }
+    });
+</script>

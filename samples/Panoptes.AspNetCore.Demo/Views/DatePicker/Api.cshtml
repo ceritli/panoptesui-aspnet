@@ -1,0 +1,137 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "DatePicker - Client API" : "DatePicker - API Metotları";
+}
+
+<div class="space-y-8">
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/DatePicker" : "/DatePicker")" class="hover:text-blue-600 transition">DatePicker</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">@(isEn ? "Client API" : "API (Metotlar)")</span>
+    </nav>
+
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "Client-Side API & Methods" : "İstemci API (Client-side API)")</h1>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Control the datepicker programmatically from JavaScript: open, close, setValue, getValue, and enable/disable."
+                    : "JavaScript API metodlarını tetikleyerek tarih seçiciyi programatik olarak yönetin: open, close, setValue, getValue ve enable/disable.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ Production Ready
+            </span>
+        </div>
+    </div>
+
+    <!-- Live Demo Card -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "Programmatic API Control" : "Programatik API Yönetimi")</h2>
+            <p class="text-xs text-slate-500 mt-1">@(isEn ? "Interact with the DatePicker instance via external buttons." : "Harici butonlar üzerinden DatePicker örneği ile etkileşime geçin.")</p>
+        </div>
+
+        <div class="space-y-4 max-w-xl">
+            <div class="space-y-2">
+                <label class="block text-xs font-bold text-slate-700">@(isEn ? "Target DatePicker Instance" : "Hedef Tarih Seçici Örneği")</label>
+                <panoptes-datepicker id="dp_api_demo"
+                                     value="@DateTime.Now.ToString("dd.MM.yyyy")"
+                                     placeholder="@(isEn ? "Select date..." : "Tarih seçin...")" />
+            </div>
+
+            <!-- API Buttons -->
+            <div class="flex flex-wrap gap-2 pt-2">
+                <button type="button" onclick="window.Panoptes?.DatePicker?.instances?.get('dp_api_demo')?.open()" class="px-3 py-1.5 text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg shadow-2xs transition cursor-pointer">
+                    .open()
+                </button>
+                <button type="button" onclick="window.Panoptes?.DatePicker?.instances?.get('dp_api_demo')?.close()" class="px-3 py-1.5 text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg shadow-2xs transition cursor-pointer">
+                    .close()
+                </button>
+                <button type="button" onclick="window.Panoptes?.DatePicker?.instances?.get('dp_api_demo')?.setValue('01.01.2027')" class="px-3 py-1.5 text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg shadow-2xs transition cursor-pointer">
+                    .setValue('01.01.2027')
+                </button>
+                <button type="button" onclick="alert('@(isEn ? "Selected Date: " : "Seçili Tarih: ")' + (window.Panoptes?.DatePicker?.instances?.get('dp_api_demo')?.getValue() || 'Boş'))" class="px-3 py-1.5 text-xs font-semibold bg-blue-50 border border-blue-200 hover:bg-blue-100 text-blue-700 rounded-lg shadow-2xs transition cursor-pointer">
+                    .getValue()
+                </button>
+                <button type="button" onclick="toggleDatePickerEnable()" id="btnToggleDpEnable" class="px-3 py-1.5 text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg shadow-2xs transition cursor-pointer">
+                    .enable(false)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature Description Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Global Instance Registry" : "Evrensel Örnek Kayıt Dizini")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Access any rendered DatePicker via window.Panoptes.DatePicker.instances.get(id) anywhere in your scripts."
+                    : "Sayfadaki herhangi bir DatePicker bileşenine window.Panoptes.DatePicker.instances.get(id) ile doğrudan erişin.")
+            </div>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Bidirectional Value Binding" : "Çift Yönlü Değer Atama")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Calling setValue automatically syncs the underlying input value, triggers change listeners, and highlights the active calendar cell."
+                    : "setValue çağrısı arka plandaki input değerini senkronize eder, change olayını tetikler ve takvim hücresini günceller.")
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript API Code Snippet (Light Code Viewer Standard) -->
+    <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                    JavaScript API
+                </span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>// Örneğe erişim
+const dp = window.Panoptes?.DatePicker?.instances?.get('dp_api_demo');
+
+// Takvimi açma / kapatma
+dp?.open();
+dp?.close();
+
+// Değer atama ve okuma
+dp?.setValue('01.01.2027');
+const secilenTarih = dp?.getValue();
+
+// Etkinleştirme / Devre dışı bırakma
+dp?.enable(false); // Kilitler
+dp?.enable(true);  // Aktif eder</code></pre>
+        </div>
+    </div>
+</div>
+
+<script>
+    let isDpEnabled = true;
+    function toggleDatePickerEnable() {
+        const inst = window.Panoptes?.DatePicker?.instances?.get('dp_api_demo');
+        if (!inst) return;
+        isDpEnabled = !isDpEnabled;
+        inst.enable(isDpEnabled);
+        document.getElementById('btnToggleDpEnable').textContent = isDpEnabled ? '.enable(false)' : '.enable(true)';
+    }
+</script>

@@ -1,0 +1,22 @@
+@model Panoptes.AspNetCore.Demo.Controllers.SpreadsheetPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <div class="flex flex-wrap gap-2">
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().resizeColumn(3, 240)">Sütun C = 240 px</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().resizeRow(1, 44)">Satır 1 = 44 px</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().undo()">Geri al (Ctrl+Z)</button>
+        </div>
+        <panoptes-spreadsheet id="sheet" sheets="@Model.Sheets" height="400" on-event="pssOnEvent" resizable="true" />
+        <p class="text-xs text-slate-500 leading-relaxed">Sütun başlığının sağ kenarını sürükleyin; kenarlığa <b>çift tıklayınca</b> içeriğe göre otomatik sığar. Bileşenin sağ alt köşesindeki tutamaçtan tüm tabloyu büyütebilirsiniz.</p>
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+}

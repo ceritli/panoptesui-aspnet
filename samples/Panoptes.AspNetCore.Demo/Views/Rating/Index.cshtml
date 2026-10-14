@@ -1,0 +1,515 @@
+@{
+var productRating = ViewBag.ProductRating as int? ?? 4;
+    var customerSatisfaction = ViewBag.CustomerSatisfaction as decimal? ?? 3.5m;
+    var storeRating = ViewBag.StoreRating as decimal? ?? 4.8m;
+}
+
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Rating - Panoptes Enterprise UI" : "Rating (Puanlama & Değerlendirme) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Rating" : "/Rating")" class="hover:text-blue-600 transition">@(isEn ? "Form Components" : "Form Bileşenleri")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Rating</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Rating (Puanlama & Değerlendirme)</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-rating&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    WAI-ARIA Uyumlu
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                Yıldız ve kalp ikonları, yarım puan hassasiyeti (0.5 precision), hover önizleme animasyonları ve salt okunur özet modunu destekleyen kurumsal puanlama bileşeni.
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>Örnekler (Features)</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">5</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>API Referansı (Props & Events)</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">6</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>Erişilebilirlik (WAI-ARIA)</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+<!-- DEMO 1: Standart 5 Yıldızlı Ürün Puanlama -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                    1. Standart 5 Yıldızlı Ürün & Hizmet Puanlama
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Üzerine gelindiğinde interaktif hover büyüme efekti ve anlık etiket güncellemesi sağlar.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">&lt;panoptes-rating value="4" max="5"&gt;</span>
+        </div>
+
+        <div class="p-6 flex flex-col items-center justify-center space-y-2">
+            <panoptes-rating id="productRatingDemo" value="@productRating" max="5" on-change="handleRatingChange" />
+            <p class="text-xs text-slate-400">Yıldızların üzerine gelerek veya tıklayarak puanınızı belirleyin.</p>
+        </div>
+
+        <!-- Standart Kod Kutusu (1. Resimdeki Standart Kapalı Details) -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>Kopyala</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-rating id=&quot;productRatingDemo&quot; 
+                 value=&quot;@@productRating&quot; 
+                 max=&quot;5&quot; 
+                 on-change=&quot;handleRatingChange&quot; /&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 2: Yarım Puan Hassasiyeti & Kalp İkonu (Precision: 0.5) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span>
+                    2. Yarım Puan Hassasiyeti ve Kalp İkonu (Müşteri Memnuniyeti)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    İkonun sol veya sağ tarafına tıklanarak yarım puan (örn: 3.5, 4.5) seçimi yapılmasına olanak tanır.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-rose-50 text-rose-700 px-2 py-1 rounded font-medium border border-rose-100">&lt;panoptes-rating icon="Heart" precision="@(0.5m)"&gt;</span>
+        </div>
+
+        <div class="p-6 flex flex-col items-center justify-center space-y-2">
+            <panoptes-rating id="heartRatingDemo" 
+                             value="@customerSatisfaction" 
+                             max="5" 
+                             precision="@(0.5m)" 
+                             icon="Heart" 
+                             on-change="handleRatingChange" />
+            <p class="text-xs text-slate-400">Kalbin sol yarısına tıklayarak buçuklu puan verebilirsiniz.</p>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>Kopyala</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-rating id=&quot;heartRatingDemo&quot; 
+                 value=&quot;3.5&quot; 
+                 max=&quot;5&quot; 
+                 precision=&quot;0.5&quot; 
+                 icon=&quot;Heart&quot; 
+                 on-change=&quot;handleRatingChange&quot; /&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 3: Salt Okunur Özet Gösterimi (Readonly) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                    3. Salt Okunur Mağaza Değerlendirme Özeti (Readonly)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Kullanıcı müdahalesine kapalı, 10 üzerinden veya 5 üzerinden toplam puan skor rozeti olarak gösterim.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">&lt;panoptes-rating readonly="true" max="10"&gt;</span>
+        </div>
+
+        <div class="p-6 flex flex-col items-center justify-center space-y-2">
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center gap-4">
+                <div class="text-center border-r border-slate-200 pr-4">
+                    <div class="text-2xl font-black text-slate-800 font-mono">4.8</div>
+                    <div class="text-[10px] text-slate-400 font-semibold uppercase">1.248 Yorum</div>
+                </div>
+                <panoptes-rating id="readonlyStoreRating" 
+                                 value="@storeRating" 
+                                 max="5" 
+                                 precision="@(0.5m)" 
+                                 readonly="true" 
+                                 show-label="false" />
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>Kopyala</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-rating id=&quot;readonlyStoreRating&quot; 
+                 value=&quot;4.8&quot; 
+                 max=&quot;5&quot; 
+                 precision=&quot;0.5&quot; 
+                 readonly=&quot;true&quot; 
+                 show-label=&quot;false&quot; /&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 4: Programatik JavaScript API ve Canlı Olay Günlüğü -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-cyan-600 inline-block"></span>
+                    4. Programatik JavaScript API ve Canlı Olay Günlüğü (Event Log)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    JavaScript ile puanı dinamik değiştirin, okuyun veya form onay olaylarını canlı yakalayın.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-cyan-50 text-cyan-700 px-2 py-1 rounded font-medium border border-cyan-100">window.panoptesRating.getInstance()</span>
+        </div>
+
+        <div class="p-6 space-y-4">
+            <div class="flex flex-wrap items-center gap-2 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                <button type="button" onclick="setDemoRating(1)" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-medium text-xs shadow-xs transition">
+                    1 Yıldız (Kötü)
+                </button>
+                <button type="button" onclick="setDemoRating(3)" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium text-xs shadow-xs transition">
+                    3 Yıldız (Orta)
+                </button>
+                <button type="button" onclick="setDemoRating(5)" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium text-xs shadow-xs transition">
+                    5 Yıldız (Mükemmel)
+                </button>
+                <button type="button" onclick="clearRatingLogs()" class="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-600 border border-slate-300 rounded-lg font-medium text-xs shadow-xs transition ml-auto">
+                    Günlüğü Temizle
+                </button>
+            </div>
+
+            <!-- Canlı Olay Günlüğü -->
+            <div class="bg-slate-900 text-slate-200 p-4 rounded-xl font-mono text-xs h-28 overflow-y-auto space-y-1" id="ratingEventLog">
+                <div class="text-slate-500">// Canlı puanlama günlüğü hazır. Yukarıdaki yıldızlara tıklayın veya butonları kullanın...</div>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>Kopyala</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>var rating = window.panoptesRating.getInstance('productRatingDemo');
+
+// Değeri değiştirme
+rating.setValue(5);
+
+// Değeri okuma
+var currentScore = rating.getValue();</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- TagHelper Referans Tablosu -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+            <h2 class="text-base font-bold text-slate-800">TagHelper Parametre ve Nitelik Referansı</h2>
+            <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-rating&gt; bileşeninin desteklediği tüm C# nitelikleri ve veri tipleri.</p>
+        </div>
+        <div class="p-6 overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-200 text-slate-500 font-semibold bg-slate-50">
+                        <th class="py-2.5 px-4">Nitelik Adı</th>
+                        <th class="py-2.5 px-4">Veri Tipi</th>
+                        <th class="py-2.5 px-4">Varsayılan</th>
+                        <th class="py-2.5 px-4">Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-600">
+                    <tr>
+                        <td class="py-2.5 px-4 font-mono font-bold text-blue-600">id</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-500">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">otomatik guid</td>
+                        <td class="py-2.5 px-4">Bileşenin benzersiz HTML kimliği ve form input adı.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-mono font-bold text-blue-600">value</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-500">decimal</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">0</td>
+                        <td class="py-2.5 px-4">Başlangıç puanı (örn: 3.5, 4).</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-mono font-bold text-blue-600">max</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-500">int</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">5</td>
+                        <td class="py-2.5 px-4">Toplam gösterilecek maksimum ikon sayısı (örn: 5 veya 10).</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-mono font-bold text-blue-600">precision</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-500">decimal</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">1</td>
+                        <td class="py-2.5 px-4">Puanlama hassasiyeti: 1 (tam sayı) veya 0.5 (yarım puan).</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-mono font-bold text-blue-600">icon</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-500">RatingIcon</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">Star</td>
+                        <td class="py-2.5 px-4">Puanlama ikonu türü: Star (Yıldız), Heart (Kalp), Circle (Daire).</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-mono font-bold text-blue-600">readonly</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-500">bool</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">false</td>
+                        <td class="py-2.5 px-4">Tıklama ve fare hareketlerini engelleyerek salt okunur gösterim sağlar.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-mono font-bold text-blue-600">show-label</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-500">bool</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">true</td>
+                        <td class="py-2.5 px-4">Yıldızların yanında "4.5 / 5" metin etiketinin gösterilip gösterilmeyeceği.</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 px-4 font-mono font-bold text-blue-600">on-change</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-500">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Puan değiştiğinde çalışacak JavaScript fonksiyonunun adı.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-rating.js" asp-append-version="true"></script>
+    
+}
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">TagHelper Özellikleri & Parametreleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-rating&gt; bileşeninin desteklediği tüm C# ve HTML nitelikleri.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesRatingTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-4">Varsayılan</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşen kimliği.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">value</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">decimal</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">0</td>
+                            <td class="py-3 px-6 text-slate-700">Mevcut seçili puan.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">max</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">int</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">5</td>
+                            <td class="py-3 px-6 text-slate-700">Toplam yıldız/ikon adedi (genellikle 5 veya 10).</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">precision</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">decimal</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">1</td>
+                            <td class="py-3 px-6 text-slate-700">Puan hassasiyeti: 1 (tam) veya 0.5 (yarım yıldız).</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">icon</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"star"</td>
+                            <td class="py-3 px-6 text-slate-700">İkon tipi: "star", "heart", "thumb".</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">readonly</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                            <td class="py-3 px-6 text-slate-700">Salt okunur gösterim modu.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Klavye Erişilebilirliği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes Rating bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Nitelikleri</div>
+                    <div class="text-slate-600">
+                        Standart <code>role="radiogroup / slider"</code> rolünü taşır. Duruma göre <code>aria-disabled</code>, <code>aria-expanded</code>, <code>aria-selected</code> ve <code>aria-label</code> nitelikleri dinamik olarak güncellenir.
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Odak Yönetimi (Focus Management)</div>
+                    <div class="text-slate-600">
+                        Sekme sırasını doğal akışında korur (<code>tabIndex="0"</code>). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları (Keyboard Shortcuts)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev (Function)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Sağ / Yukarı Ok</kbd></td>
+                                <td class="py-2.5 px-4">Puanı bir basamak artırır.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Sol / Aşağı Ok</kbd></td>
+                                <td class="py-2.5 px-4">Puanı bir basamak azaltır.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Space / Enter</kbd></td>
+                                <td class="py-2.5 px-4">Seçili puanı kaydeder.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Tab</kbd></td>
+                                <td class="py-2.5 px-4">Puanlama alanına odaklanır.</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function logRating(msg) {
+            var logEl = document.getElementById('ratingEventLog');
+            if (!logEl) return;
+            var time = new Date().toLocaleTimeString('tr-TR');
+            var line = document.createElement('div');
+            line.innerHTML = '<span class="text-slate-500">[' + time + ']</span> ' + msg;
+            logEl.appendChild(line);
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function clearRatingLogs() {
+            var logEl = document.getElementById('ratingEventLog');
+            if (logEl) logEl.innerHTML = '<div class="text-slate-500">// Günlük temizlendi. Yeni olaylar bekleniyor...</div>';
+        }
+
+        function handleRatingChange(val) {
+            logRating('<span class="text-amber-400 font-bold">Puan Değişti:</span> Seçilen Değer: ' + val);
+        }
+
+        function setDemoRating(score) {
+            var rating = window.panoptesRating.getInstance('productRatingDemo');
+            if (rating) {
+                rating.setValue(score);
+            }
+        }
+</script>

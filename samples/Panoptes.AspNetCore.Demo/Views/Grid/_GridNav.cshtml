@@ -1,0 +1,305 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    var p = DemoTranslations.Prefix(isEn);
+    var activeTab = (string)(ViewData["ActiveTab"] ?? "Overview");
+    var navLinks = new[]
+    {
+        new { Key = "Overview", Title = isEn ? "1. Overview" : "1. Genel Bakış", Url = p + "/Grid/Index" },
+        new { Key = "TagHelper", Title = isEn ? "2. TagHelper" : "2. TagHelper", Url = p + "/Grid/TagHelper" },
+        new { Key = "Paging", Title = isEn ? "3. Paging" : "3. Sayfalama (Paging)", Url = p + "/Grid/Paging" },
+        new { Key = "Sorting", Title = isEn ? "4. Sorting (Multi)" : "4. Sıralama (Sorting)", Url = p + "/Grid/Sorting" },
+        new { Key = "Filtering", Title = isEn ? "5. Filtering" : "5. Filtreleme (Filtering)", Url = p + "/Grid/Filtering" },
+        new { Key = "Grouping", Title = isEn ? "6. Grouping" : "6. Gruplama (Grouping)", Url = p + "/Grid/Grouping" },
+        new { Key = "Selection", Title = isEn ? "7. Selection" : "7. Seçim (Selection)", Url = p + "/Grid/Selection" },
+        new { Key = "IncellEdit", Title = isEn ? "8. In-Cell Edit" : "8. Hücre İçi (In-Cell)", Url = p + "/Grid/IncellEdit" },
+        new { Key = "InlineEdit", Title = isEn ? "9. In-Line Edit" : "9. Satır İçi (In-Line)", Url = p + "/Grid/InlineEdit" },
+        new { Key = "PopupEdit", Title = isEn ? "10. PopUp Edit" : "10. Açılır Pencere (PopUp)", Url = p + "/Grid/PopupEdit" },
+        new { Key = "Hierarchy", Title = isEn ? "11. Hierarchy & Detail" : "11. Hiyerarşi & Alt Grid", Url = p + "/Grid/Hierarchy" },
+        new { Key = "Columns", Title = isEn ? "12. Column Management" : "12. Sütun Yönetimi", Url = p + "/Grid/Columns" },
+        new { Key = "Export", Title = isEn ? "13. Export (Excel/PDF)" : "13. Dışa Aktarma (Export)", Url = p + "/Grid/Export" },
+        new { Key = "Aggregates", Title = isEn ? "14. Aggregates" : "14. Toplamlar (Aggregates)", Url = p + "/Grid/Aggregates" },
+        new { Key = "SearchPanel", Title = isEn ? "15. Search Panel" : "15. Arama Paneli (Search)", Url = p + "/Grid/SearchPanel" },
+        new { Key = "Events", Title = isEn ? "16. Client Events" : "16. Olaylar (Events)", Url = p + "/Grid/Events" },
+        new { Key = "Api", Title = isEn ? "17. Client API" : "17. İstemci API", Url = p + "/Grid/Api" }
+    };
+}
+
+<div id="grid-nav-container">
+<!-- Main Navigation Tabs (Features | API | Accessibility) -->
+<div class="border-b border-slate-200 mb-6">
+    <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+        <button type="button" 
+                id="grid-main-tab-btn-features" 
+                onclick="switchGridDocTab('features')"
+                class="grid-main-tab-btn inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            <span>@(isEn ? "Examples (Features)" : "Örnekler (Features)")</span>
+            <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">17</span>
+        </button>
+
+        <button type="button" 
+                id="grid-main-tab-btn-api" 
+                onclick="switchGridDocTab('api')"
+                class="grid-main-tab-btn inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+            <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+            <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">14</span>
+        </button>
+
+        <button type="button" 
+                id="grid-main-tab-btn-a11y" 
+                onclick="switchGridDocTab('a11y')"
+                class="grid-main-tab-btn inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+            <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+        </button>
+    </nav>
+</div>
+
+<!-- TAB 1: Sub Navigation Pills (_GridNav style) -->
+<div id="grid-doc-panel-features" class="grid-doc-panel">
+    <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm overflow-x-auto mb-6">
+        <div class="flex items-center gap-1.5 min-w-max">
+            @foreach (var tab in navLinks)
+            {
+                var isActive = tab.Key.Equals(activeTab, System.StringComparison.OrdinalIgnoreCase);
+                if (isActive)
+                {
+                    <span class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm flex items-center gap-1.5 cursor-default">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                        <span>@tab.Title</span>
+                    </span>
+                }
+                else
+                {
+                    <a href="@tab.Url" class="px-3.5 py-1.5 rounded-xl text-xs font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-100 transition">
+                        @tab.Title
+                    </a>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<!-- TAB 2: API & TagHelper Props Reference Panel -->
+<div id="grid-doc-panel-api" class="grid-doc-panel hidden space-y-6 mb-6">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+            <div>
+                <h3 class="text-sm font-bold text-slate-900">
+                    @(isEn ? "PanoptesGrid TagHelper & Props Reference" : "PanoptesGrid TagHelper & Nitelik Referansı")
+                </h3>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    @(isEn ? "Attributes and client parameters supported by <panoptes-grid> and <panoptes-grid-column>." : "<panoptes-grid> ve <panoptes-grid-column> tarafından desteklenen tüm nitelikler ve istemci parametreleri.")
+                </p>
+            </div>
+            <span class="px-2.5 py-1 rounded text-[11px] font-mono bg-blue-100 text-blue-800">
+                &lt;panoptes-grid&gt;
+            </span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                        <th class="py-3 px-6">Nitelik / Prop</th>
+                        <th class="py-3 px-4">Tip (C# / TS)</th>
+                        <th class="py-3 px-4">Varsayılan</th>
+                        <th class="py-3 px-6">Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr class="hover:bg-slate-50/60 transition">
+                        <td class="py-3 px-6 font-mono font-bold text-indigo-600">id</td>
+                        <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-3 px-4 font-mono text-slate-400">zorunlu</td>
+                        <td class="py-3 px-6 text-slate-700">Grid bileşeninin DOM üzerindeki benzersiz kimliği.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/60 transition">
+                        <td class="py-3 px-6 font-mono font-bold text-indigo-600">page-size / pageSize</td>
+                        <td class="py-3 px-4 font-mono text-purple-600">int / number</td>
+                        <td class="py-3 px-4 font-mono text-slate-400">10</td>
+                        <td class="py-3 px-6 text-slate-700">Sayfa başına gösterilecek varsayılan kayıt adedi.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/60 transition">
+                        <td class="py-3 px-6 font-mono font-bold text-indigo-600">page-sizes / pageSizes</td>
+                        <td class="py-3 px-4 font-mono text-purple-600">string / int[]</td>
+                        <td class="py-3 px-4 font-mono text-slate-400">"5,10,20"</td>
+                        <td class="py-3 px-6 text-slate-700">Kullanıcının seçebileceği sayfa boyutu seçenekleri.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/60 transition">
+                        <td class="py-3 px-6 font-mono font-bold text-indigo-600">sortable</td>
+                        <td class="py-3 px-4 font-mono text-purple-600">bool / boolean</td>
+                        <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                        <td class="py-3 px-6 text-slate-700">Sütun başlıklarına tıklayarak artan/azalan sıralamayı etkinleştirir.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/60 transition">
+                        <td class="py-3 px-6 font-mono font-bold text-indigo-600">filterable</td>
+                        <td class="py-3 px-4 font-mono text-purple-600">bool / boolean</td>
+                        <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                        <td class="py-3 px-6 text-slate-700">Sütun filtreleme menülerini ve koşul kutularını etkinleştirir.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/60 transition">
+                        <td class="py-3 px-6 font-mono font-bold text-indigo-600">groupable</td>
+                        <td class="py-3 px-4 font-mono text-purple-600">bool / boolean</td>
+                        <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                        <td class="py-3 px-6 text-slate-700">Sütun başlıklarını üst alana sürükleyerek veri gruplamayı sağlar.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/60 transition">
+                        <td class="py-3 px-6 font-mono font-bold text-indigo-600">selectable</td>
+                        <td class="py-3 px-4 font-mono text-purple-600">bool / boolean</td>
+                        <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                        <td class="py-3 px-6 text-slate-700">Satır seçimi (checkbox veya tıklama ile tekli/çoklu seçim).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/60 transition">
+                        <td class="py-3 px-6 font-mono font-bold text-indigo-600">searchable</td>
+                        <td class="py-3 px-4 font-mono text-purple-600">bool / boolean</td>
+                        <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                        <td class="py-3 px-6 text-slate-700">Araç çubuğunda anlık genel arama filtre kutusunu etkinleştirir.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/60 transition">
+                        <td class="py-3 px-6 font-mono font-bold text-indigo-600">editable</td>
+                        <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                        <td class="py-3 px-6 text-slate-700">Düzenleme modu: "inline" (satır içi), "incell" (hücre içi) veya "popup" (modal).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/60 transition">
+                        <td class="py-3 px-6 font-mono font-bold text-indigo-600">exportable</td>
+                        <td class="py-3 px-4 font-mono text-purple-600">bool / boolean</td>
+                        <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                        <td class="py-3 px-6 text-slate-700">Excel (.xlsx/.xls/.csv) dışa aktarma butonunu araç çubuğuna ekler.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/60 transition">
+                        <td class="py-3 px-6 font-mono font-bold text-indigo-600">pdf-export / pdfExport</td>
+                        <td class="py-3 px-4 font-mono text-purple-600">bool / boolean</td>
+                        <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                        <td class="py-3 px-6 text-slate-700">Yüksek çözünürlüklü vektörel PDF dışa aktarma / yazdırma butonunu ekler.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/60 transition">
+                        <td class="py-3 px-6 font-mono font-bold text-indigo-600">detail-template / detailTemplate</td>
+                        <td class="py-3 px-4 font-mono text-purple-600">string / function</td>
+                        <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-3 px-6 text-slate-700">Satır genişletildiğinde açılacak hiyerarşik alt tablo veya detay şablonu.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/60 transition">
+                        <td class="py-3 px-6 font-mono font-bold text-indigo-600">onSelectionChange</td>
+                        <td class="py-3 px-4 font-mono text-purple-600">function(selected)</td>
+                        <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-3 px-6 text-slate-700">Seçilen satırların listesi değiştiğinde tetiklenen istemci callback'i.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/60 transition">
+                        <td class="py-3 px-6 font-mono font-bold text-indigo-600">onSave</td>
+                        <td class="py-3 px-4 font-mono text-purple-600">function(record)</td>
+                        <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-3 px-6 text-slate-700">Düzenlenen satır veya hücre kaydedildiğinde tetiklenen callback.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- TAB 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) Panel -->
+<div id="grid-doc-panel-a11y" class="grid-doc-panel hidden space-y-6 mb-6">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+        <div>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                @(isEn ? "WAI-ARIA DataGrid Standards & Keyboard Navigation" : "WAI-ARIA DataGrid Standartları & Klavye Erişilebilirliği")
+            </h2>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                @(isEn 
+                    ? "Panoptes Grid implements the W3C WAI-ARIA DataGrid 1.2 design pattern with full keyboard navigation and screen-reader support."
+                    : "Panoptes Grid bileşeni, W3C WAI-ARIA DataGrid 1.2 tasarım desenine tam uyumludur. Ekran okuyucu yazılımlar (NVDA, JAWS, VoiceOver) ve salt klavye kullanan kullanıcılar için optimize edilmiştir.")
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                <div class="font-bold text-slate-800 font-mono">WAI-ARIA Rolleri ve Nitelikleri</div>
+                <div class="text-slate-600">Tablo konteyneri <code>role="grid"</code>, başlıklar <code>role="columnheader"</code>, satırlar <code>role="row"</code> ve hücreler <code>role="gridcell"</code> olarak etiketlenir. Sıralı sütunlar için <code>aria-sort</code>, seçili satırlar için <code>aria-selected</code> nitelikleri anlık güncellenir.</div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                <div class="font-bold text-slate-800 font-mono">Odak ve Sanal İmleç (Focus Management)</div>
+                <div class="text-slate-600">Tab tuşu ile grid içine girildiğinde roving tabIndex devreye girer; ok tuşlarıyla hücreden hücreye serbestçe gezinilebilir, sayfalama ve kaydırma görünür alana odaklanır.</div>
+            </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100">
+            <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları (Keyboard Shortcuts)</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                            <th class="py-2.5 px-4">İşlev (Function)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">↓ / ↑ / ← / →</kbd></td>
+                            <td class="py-2.5 px-4">Hücreler ve satırlar arasında dört yöne serbest gezinme.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Space</kbd></td>
+                            <td class="py-2.5 px-4">Odaklanılmış satırı seçer veya seçimi kaldırır (Checkbox seçim modu).</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter</kbd></td>
+                            <td class="py-2.5 px-4">Düzenleme modunda hücre/satır editörünü açar veya onaylar; hiyerarşi modunda detay satırını genişletir/daraltır.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Escape</kbd></td>
+                            <td class="py-2.5 px-4">Hücre düzenlemesini veya açık olan sütun filtre popover menüsünü iptal eder.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Page Up / Page Down</kbd></td>
+                            <td class="py-2.5 px-4">Bir önceki veya bir sonraki sayfaya hızlı geçiş yapar.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<script>
+    function switchGridDocTab(tabName) {
+        // Update tab buttons
+        document.querySelectorAll('.grid-main-tab-btn').forEach(btn => {
+            btn.classList.remove('font-bold', 'text-blue-600', 'border-blue-600', 'bg-blue-50/40');
+            btn.classList.add('font-semibold', 'text-slate-600', 'border-transparent');
+        });
+        const activeBtn = document.getElementById('grid-main-tab-btn-' + tabName);
+        if (activeBtn) {
+            activeBtn.classList.remove('font-semibold', 'text-slate-600', 'border-transparent');
+            activeBtn.classList.add('font-bold', 'text-blue-600', 'border-blue-600', 'bg-blue-50/40');
+        }
+
+        // Show/hide panels inside _GridNav
+        document.querySelectorAll('.grid-doc-panel').forEach(p => p.classList.add('hidden'));
+        const activePanel = document.getElementById('grid-doc-panel-' + tabName);
+        if (activePanel) {
+            activePanel.classList.remove('hidden');
+        }
+
+        // Hide/show page body content (siblings of grid-nav-container)
+        const navContainer = document.getElementById('grid-nav-container');
+        if (navContainer && navContainer.parentElement) {
+            Array.from(navContainer.parentElement.children).forEach(child => {
+                if (child !== navContainer) {
+                    if (tabName === 'features') {
+                        child.style.display = '';
+                    } else {
+                        child.style.display = 'none';
+                    }
+                }
+            });
+        }
+        if (typeof initPanoptesLightCodeBlocks === 'function') {
+            initPanoptesLightCodeBlocks();
+        }
+    }
+</script>

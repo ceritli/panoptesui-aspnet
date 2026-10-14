@@ -1,0 +1,565 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Stepper & Wizard - Panoptes UI" : "Stepper & Wizard (Adım Takipçisi) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/Stepper" class="hover:text-blue-600 transition">@(isEn ? "Navigation & Layout" : "Navigasyon & Düzen")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Stepper & Wizard</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Stepper &amp; Wizard @(isEn ? "(Step Indicator & Form Wizard)" : "(Adım Takipçisi)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-stepper&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "Step indicator and progress tracker for multi-step forms, onboarding wizards, and checkout flows with horizontal and vertical layouts." : "Çok adımlı formlar, kayıt sihirbazları ve sipariş tamamlama süreçleri için aşamalı adım göstergesi (doğrulama ve durum ikonları).")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Examples (Features)" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">4</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">3</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+<!-- DEMO 1: Yatay Doğrusal Form Sihirbazı -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                    1. Yatay Doğrusal Form Sihirbazı (Hesap Kurulumu)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Adım halkaları, ara bağlantı çizgileri, dinamik form geçişi ve otomatik Geri/İleri kontrolleri.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">orientation="horizontal"</span>
+        </div>
+
+        <div class="p-6">
+            <div class="max-w-3xl">
+                <panoptes-stepper id="stepperBasic" orientation="horizontal" linear="true">
+                    <panoptes-step label="Kullanıcı Bilgileri" subtitle="E-posta &amp; Şifre" icon="user" selected="true">
+                        <div class="space-y-4">
+                            <h3 class="text-sm font-bold text-slate-800">1. Adım: Temel Hesap Bilgileri</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-600 mb-1">Ad Soyad</label>
+                                    <input type="text" placeholder="Mehmet Demir" class="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-600 mb-1">Kurumsal E-posta</label>
+                                    <input type="email" placeholder="mehmet.demir@firma.com" class="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                                </div>
+                            </div>
+                        </div>
+                    </panoptes-step>
+
+                    <panoptes-step label="Kurumsal Profil" subtitle="Şirket &amp; Vergi No" icon="settings">
+                        <div class="space-y-4">
+                            <h3 class="text-sm font-bold text-slate-800">2. Adım: Şirket ve Fatura Detayları</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-600 mb-1">Şirket Unvanı</label>
+                                    <input type="text" placeholder="Panoptes Bilişim A.Ş." class="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-600 mb-1">Vergi Numarası / Dairesi</label>
+                                    <input type="text" placeholder="1234567890 - Kadıköy" class="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                                </div>
+                            </div>
+                        </div>
+                    </panoptes-step>
+
+                    <panoptes-step label="Onay &amp; Tamamlama" subtitle="Sözleşme Onayı" icon="check">
+                        <div class="space-y-4">
+                            <h3 class="text-sm font-bold text-slate-800">3. Adım: Son Onay ve Başlatma</h3>
+                            <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 space-y-2">
+                                <div class="font-bold flex items-center gap-1.5">
+                                    <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <span>Tüm zorunlu adımlar eksiksiz tamamlandı!</span>
+                                </div>
+                                <p class="text-emerald-700">Aşağıdaki butona basarak kurumsal hesap oluşturma işlemini tamamlayabilirsiniz.</p>
+                            </div>
+                        </div>
+                    </panoptes-step>
+                </panoptes-stepper>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu (1. Resimdeki Standart Kapalı Details) -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-stepper id="stepperBasic" orientation="horizontal" linear="true"&gt;
+    &lt;panoptes-step label="Kullanıcı Bilgileri" subtitle="E-posta &amp; Şifre" icon="user" selected="true"&gt;
+        &lt;!-- 1. Adım Formu --&gt;
+    &lt;/panoptes-step&gt;
+    &lt;panoptes-step label="Kurumsal Profil" subtitle="Şirket &amp; Vergi" icon="settings"&gt;
+        &lt;!-- 2. Adım Formu --&gt;
+    &lt;/panoptes-step&gt;
+    &lt;panoptes-step label="Onay" subtitle="Sözleşme" icon="check"&gt;
+        &lt;!-- 3. Adım Formu --&gt;
+    &lt;/panoptes-step&gt;
+&lt;/panoptes-stepper&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 2: Dikey Yerleşimli Adım Sihirbazı -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                    2. Dikey Yerleşimli Adım Sihirbazı (Vertical Orientation)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Sol sütunda dikey sıralanan adımlar ve sağ alanda genişletilmiş içerik paneli.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">orientation="vertical"</span>
+        </div>
+
+        <div class="p-6">
+            <div class="max-w-3xl">
+                <panoptes-stepper id="stepperVertical" orientation="vertical" linear="false">
+                    <panoptes-step label="Sipariş Alındı" subtitle="10.10.2026 09:30" completed="true">
+                        <div class="text-xs text-slate-600 space-y-2">
+                            <h4 class="font-bold text-slate-800">Sipariş Kaydı Doğrulandı</h4>
+                            <p>Siparişiniz sisteme kaydedildi ve depo departmanına iletildi.</p>
+                        </div>
+                    </panoptes-step>
+
+                    <panoptes-step label="Hazırlanıyor &amp; Paketleme" subtitle="Depo Raf No: B-12" selected="true">
+                        <div class="text-xs text-slate-600 space-y-2">
+                            <h4 class="font-bold text-slate-800">Paketleme İşlemi Devam Ediyor</h4>
+                            <p>Ürünler kalite kontrolden geçerek barkodlandı ve kargo kutusuna yerleştirildi.</p>
+                        </div>
+                    </panoptes-step>
+
+                    <panoptes-step label="Kargoya Verildi" subtitle="Takip No: YRT-884192">
+                        <div class="text-xs text-slate-600 space-y-2">
+                            <h4 class="font-bold text-slate-800">Taşıyıcı Kuryeye Teslim</h4>
+                            <p>Kurye paketi teslim aldı. Tahmini varış süresi 1 iş günüdür.</p>
+                        </div>
+                    </panoptes-step>
+                </panoptes-stepper>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-stepper id="stepperVertical" orientation="vertical" linear="false"&gt;
+    &lt;panoptes-step label="Sipariş Alındı" subtitle="09:30" completed="true"&gt;...&lt;/panoptes-step&gt;
+    &lt;panoptes-step label="Hazırlanıyor" subtitle="Depo" selected="true"&gt;...&lt;/panoptes-step&gt;
+    &lt;panoptes-step label="Kargoya Verildi" subtitle="Kurye"&gt;...&lt;/panoptes-step&gt;
+&lt;/panoptes-stepper&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 3: Programatik JavaScript API & Canlı Olay Günlüğü -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-purple-600 inline-block"></span>
+                    3. Programatik JavaScript API ve Canlı Olay Günlüğü (Event Log)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Harici butonlarla sihirbazı ileri/geri hareket ettirme (<code class="text-purple-700 bg-purple-50 px-1 py-0.5 rounded font-mono">next()</code>, <code class="text-purple-700 bg-purple-50 px-1 py-0.5 rounded font-mono">prev()</code>, <code class="text-purple-700 bg-purple-50 px-1 py-0.5 rounded font-mono">goTo(index)</code>) ve <code class="text-purple-700 bg-purple-50 px-1 py-0.5 rounded font-mono">on-change</code> olayını yakalama.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-purple-50 text-purple-700 px-2 py-1 rounded font-medium border border-purple-100">panoptesStepper API</span>
+        </div>
+
+        <div class="p-6 space-y-6">
+            <!-- Butonlar -->
+            <div class="flex flex-wrap items-center gap-2">
+                <button type="button" onclick="window.stepperGoTo(0)" class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition">
+                    1. Adıma Git (goTo 0)
+                </button>
+                <button type="button" onclick="window.stepperGoTo(1)" class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition">
+                    2. Adıma Git (goTo 1)
+                </button>
+                <button type="button" onclick="window.stepperGoTo(2)" class="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition">
+                    3. Adıma Git (goTo 2)
+                </button>
+                <button type="button" onclick="window.stepperNext()" class="px-3 py-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-lg border border-emerald-200 transition">
+                    Sonraki Adım (.next)
+                </button>
+                <button type="button" onclick="window.clearStepperLog()" class="px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg border border-red-200 transition ml-auto">
+                    Konsolu Temizle
+                </button>
+            </div>
+
+            <div class="max-w-3xl">
+                <panoptes-stepper id="demoStepperApi" orientation="horizontal" on-change="handleStepperChange">
+                    <panoptes-step label="Planlama" subtitle="Gereksinimler" icon="settings" selected="true">
+                        <p class="text-xs text-slate-600">Proje mimari gereksinimleri ve hedef kapsam belirlendi.</p>
+                    </panoptes-step>
+                    <panoptes-step label="Geliştirme" subtitle="Kodlama &amp; Test" icon="user">
+                        <p class="text-xs text-slate-600">Backend API'ler ve Panoptes TagHelper bileşenleri geliştirildi.</p>
+                    </panoptes-step>
+                    <panoptes-step label="Yayın" subtitle="Canlıya Alma" icon="check">
+                        <p class="text-xs text-slate-600">CI/CD boru hattı üzerinden prod ortama deployment sağlandı.</p>
+                    </panoptes-step>
+                </panoptes-stepper>
+            </div>
+
+            <!-- Canlı Olay Günlüğü Konsolu -->
+            <div class="mt-4 max-w-3xl">
+                <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Canlı Olay Günlüğü (Event Log Console)
+                    </span>
+                    <span id="stepperEventCount" class="text-[11px] font-mono text-slate-400">0 olay tetiklendi</span>
+                </div>
+                <div id="stepperEventLogContainer" class="bg-slate-900 text-slate-200 font-mono text-[11px] p-3 rounded-lg h-32 overflow-y-auto space-y-1 shadow-inner border border-slate-800">
+                    <div class="text-slate-500 italic">// Butonları kullanın veya adımları değiştirin, olaylar burada görünecektir.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>// Stepper örneğini alma
+const stepper = window.panoptesStepper.getInstance('demoStepperApi');
+
+// Fonksiyonlar
+stepper.next();
+stepper.prev();
+stepper.goTo(2); // 3. adıma git</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- API Dokümantasyonu & Nitelik Referans Tablosu -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+            <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                Panoptes Stepper TagHelper Parametre & Nitelik Referansı
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">
+                <code class="text-blue-600 font-mono">&lt;panoptes-stepper&gt;</code> ve <code class="text-blue-600 font-mono">&lt;panoptes-step&gt;</code> TagHelper'ları tarafından desteklenen tüm nitelikler.
+            </p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-600 border-collapse">
+                <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                    <tr>
+                        <th class="py-3 px-4">TagHelper</th>
+                        <th class="py-3 px-4">Nitelik (Attribute)</th>
+                        <th class="py-3 px-4">Tip</th>
+                        <th class="py-3 px-4">Varsayılan</th>
+                        <th class="py-3 px-4">Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-blue-600 font-semibold">&lt;panoptes-stepper&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">id</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Sihirbazın benzersiz HTML ID'si.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-blue-600 font-semibold">&lt;panoptes-stepper&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">orientation</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">"horizontal"</td>
+                        <td class="py-2.5 px-4">Yerleşim yönü: <code class="font-mono">"horizontal"</code> (yatay) veya <code class="font-mono">"vertical"</code> (dikey).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-blue-600 font-semibold">&lt;panoptes-stepper&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">linear</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">bool</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">true</td>
+                        <td class="py-2.5 px-4">Doğrusal akış kuralı. Aktif olmayan adımlara doğrudan atlamayı sınırlar.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-blue-600 font-semibold">&lt;panoptes-stepper&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">on-change / on-select</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Adım değiştiğinde tetiklenecek global JavaScript fonksiyon adı.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-step&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">label</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Adım ana başlığı.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-step&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">subtitle</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Adım alt açıklaması.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-step&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">icon</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Adım dairesi içinde gösterilecek Heroicon SVG adı (<code class="font-mono">"user"</code>, <code class="font-mono">"settings"</code>, <code class="font-mono">"check"</code> vb.).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-step&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">selected / completed / disabled</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">bool</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">false</td>
+                        <td class="py-2.5 px-4">Adımın aktiflik, tamamlanmışlık ve devre dışı olma durumları.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">TagHelper Özellikleri & Parametreleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-stepper&gt; bileşeninin desteklediği tüm C# ve HTML nitelikleri.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesStepperTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-4">Varsayılan</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşen kimliği.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">linear</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">Yalnızca sırayla ilerlemeye izin verir.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">orientation</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"horizontal"</td>
+                            <td class="py-3 px-6 text-slate-700">Hizalama: "horizontal" veya "vertical".</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Klavye Erişilebilirliği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes Stepper & Wizard bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Nitelikleri</div>
+                    <div class="text-slate-600">
+                        Standart <code>role="navigation (stepper)"</code> rolünü taşır. Duruma göre <code>aria-disabled</code>, <code>aria-expanded</code>, <code>aria-selected</code> ve <code>aria-label</code> nitelikleri dinamik olarak güncellenir.
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Odak Yönetimi (Focus Management)</div>
+                    <div class="text-slate-600">
+                        Sekme sırasını doğal akışında korur (<code>tabIndex="0"</code>). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları (Keyboard Shortcuts)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev (Function)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Tab</kbd></td>
+                                <td class="py-2.5 px-4">Mevcut adımın etkileşimli elemanlarına odaklanır.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter</kbd></td>
+                                <td class="py-2.5 px-4">Adımı tamamlar ve sonrakine geçer.</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+let stepperEventCounter = 0;
+
+        function logStepperEvent(action, detail) {
+            stepperEventCounter++;
+            const counterEl = document.getElementById('stepperEventCount');
+            if (counterEl) counterEl.textContent = `${stepperEventCounter} olay tetiklendi`;
+
+            const container = document.getElementById('stepperEventLogContainer');
+            if (!container) return;
+            const time = new Date().toLocaleTimeString();
+
+            const entry = document.createElement('div');
+            entry.className = 'flex items-center gap-2 py-0.5 border-b border-slate-800/60';
+            entry.innerHTML = `
+                <span class="text-slate-500">[${time}]</span>
+                <span class="font-bold text-purple-400">${action}</span>
+                <span class="text-slate-300 font-medium">${detail || ''}</span>
+            `;
+
+            if (container.querySelector('.italic')) container.innerHTML = '';
+            container.prepend(entry);
+        }
+
+        function handleStepperChange(e) {
+            logStepperEvent('CHANGE', `Adım: ${e.index + 1}${e.isFinished ? ' (Süreç Tamamlandı)' : ''}`);
+        }
+
+        function getDemoStepper() {
+            return window.panoptesStepper?.getInstance('demoStepperApi');
+        }
+
+        window.stepperGoTo = function (index) {
+            const stepper = getDemoStepper();
+            if (stepper) {
+                stepper.goTo(index);
+                logStepperEvent('API_CALL', `goTo(${index}) çağrıldı`);
+            }
+        };
+
+        window.stepperNext = function () {
+            const stepper = getDemoStepper();
+            if (stepper) {
+                stepper.next();
+                logStepperEvent('API_CALL', 'next() çağrıldı');
+            }
+        };
+
+        window.clearStepperLog = function () {
+            stepperEventCounter = 0;
+            const counterEl = document.getElementById('stepperEventCount');
+            if (counterEl) counterEl.textContent = '0 olay tetiklendi';
+            const container = document.getElementById('stepperEventLogContainer');
+            if (container) container.innerHTML = '<div class="text-slate-500 italic">// Olay günlüğü temizlendi.</div>';
+        };
+</script>
+}

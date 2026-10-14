@@ -1,0 +1,39 @@
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    string langPrefix = isEn ? "/en" : "";
+    var activeTab = (string)(ViewData["ActiveTab"] ?? "Overview");
+    var navLinks = new[]
+    {
+        new { Key = "Overview", Title = isEn ? "1. Overview" : "1. Genel Bakış", Url = langPrefix + "/ActionSheet/Overview" },
+        new { Key = "TagHelper", Title = isEn ? "2. TagHelper" : "2. TagHelper", Url = langPrefix + "/ActionSheet/TagHelper" },
+        new { Key = "Animation", Title = isEn ? "3. Animations" : "3. Animasyonlar", Url = langPrefix + "/ActionSheet/Animation" },
+        new { Key = "ActionButtons", Title = isEn ? "4. Action Buttons" : "4. Eylem Butonları", Url = langPrefix + "/ActionSheet/ActionButtons" },
+        new { Key = "Api", Title = isEn ? "5. JavaScript API" : "5. JavaScript API", Url = langPrefix + "/ActionSheet/Api" },
+        new { Key = "Events", Title = isEn ? "6. Events & Console" : "6. Olaylar (Events)", Url = langPrefix + "/ActionSheet/Events" },
+        new { Key = "KeyboardNavigation", Title = isEn ? "7. Keyboard Nav (A11y)" : "7. Klavye Gezintisi (A11y)", Url = langPrefix + "/ActionSheet/KeyboardNavigation" },
+        new { Key = "Templates", Title = isEn ? "8. Templates & Content" : "8. Şablonlar & İçerik", Url = langPrefix + "/ActionSheet/Templates" },
+        new { Key = "ModalFullscreen", Title = isEn ? "9. Modal & Fullscreen" : "9. Modal & Tam Ekran", Url = langPrefix + "/ActionSheet/ModalFullscreen" }
+    };
+}
+
+<div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm overflow-x-auto mb-6">
+    <div class="flex items-center gap-1.5 min-w-max">
+        @foreach (var tab in navLinks)
+        {
+            var isActive = tab.Key.Equals(activeTab, System.StringComparison.OrdinalIgnoreCase);
+            if (isActive)
+            {
+                <span class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm flex items-center gap-1.5 cursor-default">
+                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                    <span>@tab.Title</span>
+                </span>
+            }
+            else
+            {
+                <a href="@tab.Url" class="px-3.5 py-1.5 rounded-xl text-xs font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-100 transition">
+                    @tab.Title
+                </a>
+            }
+        }
+    </div>
+</div>

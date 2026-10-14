@@ -1,0 +1,27 @@
+@model Panoptes.AspNetCore.Demo.Controllers.SpreadsheetPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <div class="flex flex-wrap gap-2">
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().exportXlsx()">Excel'e aktar (.xlsx)</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().importXlsx()">Excel'den içe aktar (.xlsx)</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().exportCsv()">CSV indir</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().exportJson()">JSON indir</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().importFile()">CSV / JSON aç</button>
+        </div>
+        <panoptes-spreadsheet id="sheet" sheets="@Model.Sheets" height="460"
+                           export-url="@Url.Action("ExportXlsx", "Spreadsheet")"
+                           import-url="@Url.Action("ImportXlsx", "Spreadsheet")"
+                           file-name="Butce" on-event="pssOnEvent" />
+        <p class="text-xs text-slate-500 leading-relaxed">İndirdiğiniz .xlsx dosyasını Excel/Numbers ile açabilir, düzenleyip tekrar içe aktarabilirsiniz. Resimler ve yorumlar .xlsx'e yazılmaz; JSON dışa aktarımı ise her şeyi içerir.</p>
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+}

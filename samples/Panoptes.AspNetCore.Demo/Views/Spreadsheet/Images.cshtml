@@ -1,0 +1,26 @@
+@model Panoptes.AspNetCore.Demo.Controllers.SpreadsheetPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <div class="flex flex-wrap gap-2">
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssAddImage()">Örnek resim ekle (E10)</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().exec('image')">Dosyadan resim ekle</button>
+        </div>
+        <panoptes-spreadsheet id="sheet" sheets="@Model.Sheets" height="460" on-event="pssOnEvent" />
+        <p class="text-xs text-slate-500 leading-relaxed">Resmi tıklayıp seçin; sürükleyerek taşıyın, köşesinden boyutlandırın, <kbd class="px-1 border rounded bg-slate-100">Delete</kbd> ile silin. Satır/sütun eklendiğinde resimler bağlı oldukları hücreyle birlikte kayar.</p>
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+    <script>
+        function pssAddImage() {
+            pssSheet().addImage({ src: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Panoptes.AspNetCore.Demo.Controllers.SpreadsheetDemoData.SampleImage(0))), row: 10, col: 5, width: 140, height: 100 });
+        }
+    </script>
+}

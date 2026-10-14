@@ -1,0 +1,179 @@
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "TileLayout - State Persistence & Dashboard" : "TileLayout - Durum Saklama (State Persistence & Dashboard)";
+    ViewData["ActiveTab"] = "StatePersistence";
+}
+
+<div class="space-y-6">
+    <partial name="_TileLayoutNav" />
+
+    <!-- Info Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight mb-2">@(isEn ? "Save & Restore Dashboard Layout (State Persistence)" : "Pano Düzenini Saklama & Geri Yükleme (State Persistence)")</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            @(isEn ? "Extract customized dashboard layouts (tile orders, col-span, and row-span) as JSON objects via getState() / getOptions(), persist them to localStorage or server databases, and restore instantly with setState()." : "Kullanıcıların dashboard üzerinde yaptığı özel yerleşim değişikliklerini (kart sıraları, sütun ve satır boyutları) getState() / getOptions() metotları ile JSON formatında alabilir, localStorage veya sunucu veritabanına kaydedebilir ve daha sonra setState() ile tek tıkla geri yükleyebilirsiniz.")
+        </p>
+    </div>
+
+    <!-- Actions & Status Panel -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <div class="flex flex-wrap items-center gap-2">
+                <button type="button" onclick="saveDashboardState()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-sm flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                    <span>@(isEn ? "Save to Storage" : "Düzeni Kaydet (Save to Storage)")</span>
+                </button>
+                <button type="button" onclick="loadDashboardState()" class="px-4 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold transition shadow-sm flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                    <span>@(isEn ? "Restore Layout" : "Kayıtlı Düzeni Yükle (Restore)")</span>
+                </button>
+                <button type="button" onclick="resetDashboardState()" class="px-4 py-2 rounded-xl bg-rose-50 border border-rose-200 hover:bg-rose-100 text-rose-700 text-xs font-bold transition shadow-sm flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    <span>@(isEn ? "Reset Default" : "Sıfırla (Reset)")</span>
+                </button>
+            </div>
+            <div id="saveStatusIndicator" class="text-xs font-semibold text-slate-500 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+                <span>@(isEn ? "Not yet saved" : "Henüz kaydedilmedi")</span>
+            </div>
+        </div>
+
+        <panoptes-tilelayout id="persistenceLayout" columns="3" row-height="160px" gap="16px" reorderable="true" resizable="true">
+            <panoptes-tilelayout-item id="persist-1" header-text="Kart 1: Satış Grafiği" col-span="2" row-span="1">
+                <div class="p-2 text-xs text-slate-600">
+                    <p class="font-bold text-indigo-600">Geniş Satış Paneli</p>
+                    <p class="mt-1">Kartı taşıyıp boyutlandırın ve ardından "Düzeni Kaydet" butonuna tıklayın.</p>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="persist-2" header-text="Kart 2: Canlı Sayaç" col-span="1" row-span="1">
+                <div class="flex flex-col justify-center items-center h-full p-2">
+                    <div class="text-2xl font-black text-emerald-600">894</div>
+                    <span class="text-[11px] text-slate-400">Bekleyen Talep</span>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="persist-3" header-text="Kart 3: Müşteri Yorumları" col-span="1" row-span="1">
+                <div class="p-2 text-xs text-slate-600">
+                    <p class="font-bold text-purple-600">Geri Bildirimler</p>
+                    <p class="mt-1">Haftalık 42 yeni olumlu yorum alındı.</p>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="persist-4" header-text="Kart 4: Finansal Özet" col-span="2" row-span="1">
+                <div class="p-2 text-xs text-slate-600">
+                    <p class="font-bold text-blue-600">Nakit Akışı & Giderler</p>
+                    <p class="mt-1">Bütçe gerçekleşme oranı %94 seviyesinde seyrediyor.</p>
+                </div>
+            </panoptes-tilelayout-item>
+        </panoptes-tilelayout>
+
+        <!-- Live JSON State Inspector -->
+        <div class="p-4 bg-slate-900 rounded-2xl border border-slate-800 text-slate-300">
+            <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-xs font-mono font-bold text-slate-400">
+                <span>Canlı JSON Durum Çıktısı (Live State Object)</span>
+                <span class="text-[10px] text-indigo-400">getState()</span>
+            </div>
+            <pre id="jsonStateDisplay" class="text-xs font-mono text-emerald-400 overflow-x-auto max-h-48"></pre>
+        </div>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>const tl = window.Panoptes.TileLayout.get('persistenceLayout');
+
+// Düzeni Kaydetme / Save State
+function saveState() {
+    const state = tl.getState();
+    localStorage.setItem('myDashboardState', JSON.stringify(state));
+}
+
+// Kayıtlı Düzeni Geri Yükleme / Restore State
+function restoreState() {
+    const saved = localStorage.getItem('myDashboardState');
+    if (saved) {
+        tl.setState(JSON.parse(saved));
+    }
+}
+
+// Varsayılan İlk Düzeni Sıfırlama / Reset State
+function resetState() {
+    tl.reset();
+}</code></pre>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const STORAGE_KEY = 'panoptes_tilelayout_state_demo';
+
+        function refreshJsonDisplay() {
+            const tl = window.Panoptes.TileLayout.get('persistenceLayout');
+            const display = document.getElementById('jsonStateDisplay');
+            if (tl && display) {
+                display.textContent = JSON.stringify(tl.getState(), null, 2);
+            }
+        }
+
+        function saveDashboardState() {
+            const tl = window.Panoptes.TileLayout.get('persistenceLayout');
+            if (!tl) return;
+            const state = tl.getState();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+
+            const indicator = document.getElementById('saveStatusIndicator');
+            if (indicator) {
+                indicator.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500"></span><span class="text-emerald-600 font-bold">' + @(isEn ? "'Saved to LocalStorage ('" : "'LocalStorage\\'a kaydedildi ('") + new Date().toLocaleTimeString('@(isEn ? "en-US" : "tr-TR")') + ')</span>';
+            }
+            refreshJsonDisplay();
+        }
+
+        function loadDashboardState() {
+            const tl = window.Panoptes.TileLayout.get('persistenceLayout');
+            if (!tl) return;
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                tl.setState(JSON.parse(saved));
+                const indicator = document.getElementById('saveStatusIndicator');
+                if (indicator) {
+                    indicator.innerHTML = '<span class="w-2 h-2 rounded-full bg-indigo-500"></span><span class="text-indigo-600 font-bold">@(isEn ? "Saved layout restored" : "Kayıtlı düzen geri yüklendi")</span>';
+                }
+                refreshJsonDisplay();
+            } else {
+                alert('@(isEn ? "No saved layout found. Please click 'Save to Storage' first." : "Kayıtlı bir düzen bulunamadı. Lütfen önce 'Düzeni Kaydet' butonuna basın.")');
+            }
+        }
+
+        function resetDashboardState() {
+            const tl = window.Panoptes.TileLayout.get('persistenceLayout');
+            if (!tl) return;
+            tl.reset();
+            localStorage.removeItem(STORAGE_KEY);
+            const indicator = document.getElementById('saveStatusIndicator');
+            if (indicator) {
+                indicator.innerHTML = '<span class="w-2 h-2 rounded-full bg-rose-500"></span><span class="text-rose-600 font-bold">@(isEn ? "Reset to default layout" : "Varsayılan düzene sıfırlandı")</span>';
+            }
+            refreshJsonDisplay();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const tlEl = document.getElementById('persistenceLayout');
+            if (tlEl) {
+                tlEl.addEventListener('panoptes:tilelayout:reorder', refreshJsonDisplay);
+                tlEl.addEventListener('panoptes:tilelayout:resize', refreshJsonDisplay);
+                setTimeout(refreshJsonDisplay, 100);
+            }
+        });
+    </script>
+}

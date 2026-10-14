@@ -1,0 +1,183 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Map - Multiple Tile Layers" : "Map - Çoklu Harita Katmanları (Tile Layers)";
+    ViewData["ActiveTab"] = "TileLayers";
+}
+
+<div class="space-y-6">
+    <partial name="_MapNav" />
+
+    <!-- Hero Header -->
+    <div class="bg-gradient-to-r from-teal-700 via-emerald-600 to-cyan-600 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
+        <div class="relative z-10 max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold text-white mb-4">
+                <span>@(isEn ? "Raster Tile Providers (Free & No API Key)" : "Raster Karo Sağlayıcıları (Ücretsiz & API Key İstemez)")</span>
+            </div>
+            <h1 class="text-3xl font-extrabold tracking-tight mb-3">@(isEn ? "Multiple Tile Layers" : "Çoklu Harita Katmanları (Tile Layers)")</h1>
+            <p class="text-teal-100 text-sm sm:text-base leading-relaxed">
+                @(isEn ? "Seamlessly switch between OpenStreetMap Standard, OSM Humanitarian (HOT), Esri Satellite, OpenTopoMap (Topographic), and Esri Streets with dynamic opacity management. No API keys required." : "OpenStreetMap Standart, OpenStreetMap Humanitarian (HOT), Esri Uydu (Satellite), OpenTopoMap (Topografik Yükselti) ve Esri Sokak Haritası arasında kesintisiz geçiş yapabilir, şeffaflık (opacity) oranlarını dinamik olarak yönetebilirsiniz. Hiçbir API anahtarı gerektirmez.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Layer Switcher Bar -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+                <h3 class="text-base font-bold text-slate-900">@(isEn ? "Layer Selection & Opacity Control" : "Katman Seçimi & Şeffaflık Ayarı")</h3>
+                <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "Click any provider below to switch map imagery instantly." : "Aşağıdaki sağlayıcılardan birine tıklayarak harita görünümünü anında değiştirebilirsiniz.")</p>
+            </div>
+            <div class="flex items-center gap-3 bg-slate-50 px-4 py-2 rounded-2xl border border-slate-200">
+                <label for="opacitySlider" class="text-xs font-semibold text-slate-700">@(isEn ? "Opacity:" : "Şeffaflık:")</label>
+                <input id="opacitySlider" type="range" min="0.1" max="1" step="0.05" value="1" oninput="changeOpacity(this.value)" class="w-28 accent-teal-600 cursor-pointer">
+                <span id="opacityLabel" class="text-xs font-mono font-bold text-teal-600">100%</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+            <button type="button" onclick="selectTile('OpenStreetMap')" id="btn-osm" class="tile-btn active p-3 rounded-2xl border-2 border-teal-600 bg-teal-50/70 text-left transition flex flex-col justify-between cursor-pointer">
+                <span class="text-xs font-bold text-slate-900">OpenStreetMap</span>
+                <span class="text-[11px] text-slate-500 mt-1">@(isEn ? "Standard Street" : "Standart Sokak")</span>
+            </button>
+
+            <button type="button" onclick="selectTile('OSM Humanitarian')" id="btn-osm-hot" class="tile-btn p-3 rounded-2xl border border-slate-200 hover:border-teal-400 bg-white text-left transition flex flex-col justify-between cursor-pointer">
+                <span class="text-xs font-bold text-slate-900">OSM Humanitarian</span>
+                <span class="text-[11px] text-slate-500 mt-1">@(isEn ? "High Contrast (HOT)" : "Canlı Kontrast (HOT)")</span>
+            </button>
+
+            <button type="button" onclick="selectTile('Esri Satellite')" id="btn-satellite" class="tile-btn p-3 rounded-2xl border border-slate-200 hover:border-teal-400 bg-white text-left transition flex flex-col justify-between cursor-pointer">
+                <span class="text-xs font-bold text-slate-900">Esri Satellite</span>
+                <span class="text-[11px] text-slate-500 mt-1">@(isEn ? "Satellite Imagery" : "Gerçek Uydu Çekimi")</span>
+            </button>
+
+            <button type="button" onclick="selectTile('OpenTopoMap')" id="btn-topo" class="tile-btn p-3 rounded-2xl border border-slate-200 hover:border-teal-400 bg-white text-left transition flex flex-col justify-between cursor-pointer">
+                <span class="text-xs font-bold text-slate-900">OpenTopoMap</span>
+                <span class="text-[11px] text-slate-500 mt-1">@(isEn ? "Elevation & Topo" : "Yükselti & Eğim")</span>
+            </button>
+
+            <button type="button" onclick="selectTile('Esri Street')" id="btn-esri-street" class="tile-btn p-3 rounded-2xl border border-slate-200 hover:border-teal-400 bg-white text-left transition flex flex-col justify-between cursor-pointer">
+                <span class="text-xs font-bold text-slate-900">Esri Street</span>
+                <span class="text-[11px] text-slate-500 mt-1">@(isEn ? "Detailed Roads" : "Detaylı Yol Ağı")</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Live Map -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <panoptes-map id="tileMap" center="38.7205, 35.4826" zoom="6" min-zoom="3" max-zoom="18" height="520px" controls="true">
+            <!-- 1. OpenStreetMap Standart -->
+            <panoptes-map-layer type="tile" title="OpenStreetMap" 
+                                url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png" 
+                                attribution="&copy; OpenStreetMap contributors" visible="true" />
+
+            <!-- 2. OpenStreetMap Humanitarian (HOT) -->
+            <panoptes-map-layer type="tile" title="OSM Humanitarian" 
+                                url-template="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" 
+                                subdomains="abc" attribution="&copy; OpenStreetMap contributors & HOT" visible="false" />
+
+            <!-- 3. Esri Satellite -->
+            <panoptes-map-layer type="tile" title="Esri Satellite" 
+                                url-template="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" 
+                                attribution="&copy; Esri & Maxar Technologies" visible="false" />
+
+            <!-- 4. OpenTopoMap -->
+            <panoptes-map-layer type="tile" title="OpenTopoMap" 
+                                url-template="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png" 
+                                subdomains="abc" attribution="&copy; OpenTopoMap" visible="false" />
+
+            <!-- 5. Esri Street Map -->
+            <panoptes-map-layer type="tile" title="Esri Street" 
+                                url-template="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}" 
+                                attribution="&copy; Esri & Contributors" visible="false" />
+
+            <!-- İşaretçiler -->
+            <panoptes-map-marker lat="38.7205" lng="35.4826" title='@(isEn ? "Kayseri (Mount Erciyes)" : "Kayseri (Erciyes Dağı)")' color="#0d9488" icon="star" tooltip='@(isEn ? "Mount Erciyes - 3,917m" : "Erciyes Dağı - 3.917m")' />
+            <panoptes-map-marker lat="39.7500" lng="44.2980" title='@(isEn ? "Mount Ararat (5,137m)" : "Ağrı Dağı (5.137m)")' color="#0284c7" icon="star" tooltip='@(isEn ? "Mount Ararat - Turkey&#39;s Highest Peak" : "Ağrı Dağı - Türkiye&#39;nin En Yüksek Zirvesi")' />
+            <panoptes-map-marker lat="36.8523" lng="30.7571" title='@(isEn ? "Taurus Mountains - Antalya" : "Toros Dağları - Antalya")' color="#e11d48" icon="pin" tooltip='@(isEn ? "Taurus Range & Mediterranean Coast" : "Beydağları & Akdeniz Kıyısı")' />
+        </panoptes-map>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-map id=&quot;tileMap&quot; center=&quot;38.7205, 35.4826&quot; zoom=&quot;6&quot; height=&quot;520px&quot;&gt;
+    &lt;!-- 1. Standart OpenStreetMap --&gt;
+    &lt;panoptes-map-layer type=&quot;tile&quot; title=&quot;OpenStreetMap&quot; 
+                        url-template=&quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot; 
+                        attribution=&quot;&amp;copy; OpenStreetMap&quot; visible=&quot;true&quot; /&gt;
+
+    &lt;!-- 2. OpenStreetMap Humanitarian (HOT) --&gt;
+    &lt;panoptes-map-layer type=&quot;tile&quot; title=&quot;OSM Humanitarian&quot; 
+                        url-template=&quot;https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png&quot; 
+                        subdomains=&quot;abc&quot; visible=&quot;false&quot; /&gt;
+
+    &lt;!-- 3. Esri World Imagery (Uydu) --&gt;
+    &lt;panoptes-map-layer type=&quot;tile&quot; title=&quot;Esri Satellite&quot; 
+                        url-template=&quot;https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}&quot; 
+                        visible=&quot;false&quot; /&gt;
+
+    &lt;!-- 4. OpenTopoMap (Yükselti) --&gt;
+    &lt;panoptes-map-layer type=&quot;tile&quot; title=&quot;OpenTopoMap&quot; 
+                        url-template=&quot;https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png&quot; 
+                        subdomains=&quot;abc&quot; visible=&quot;false&quot; /&gt;
+
+    &lt;!-- 5. Esri Street Map (Sokak Haritası) --&gt;
+    &lt;panoptes-map-layer type=&quot;tile&quot; title=&quot;Esri Street&quot; 
+                        url-template=&quot;https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}&quot; 
+                        visible=&quot;false&quot; /&gt;
+&lt;/panoptes-map&gt;</code></pre>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    let currentTileKey = 'OpenStreetMap';
+
+    function selectTile(tileKey) {
+        currentTileKey = tileKey;
+        const map = window.Panoptes?.Map?.getInstance('tileMap');
+        if (map) {
+            map.switchTileLayer(tileKey);
+        }
+
+        // Aktif buton stilini güncelle
+        document.querySelectorAll('.tile-btn').forEach(btn => {
+            btn.classList.remove('border-teal-600', 'bg-teal-50/70');
+            btn.classList.add('border-slate-200');
+        });
+
+        const activeIdMap = {
+            'OpenStreetMap': 'btn-osm',
+            'OSM Humanitarian': 'btn-osm-hot',
+            'Esri Satellite': 'btn-satellite',
+            'OpenTopoMap': 'btn-topo',
+            'Esri Street': 'btn-esri-street'
+        };
+
+        const activeBtn = document.getElementById(activeIdMap[tileKey]);
+        if (activeBtn) {
+            activeBtn.classList.remove('border-slate-200');
+            activeBtn.classList.add('border-teal-600', 'bg-teal-50/70');
+        }
+    }
+
+    function changeOpacity(val) {
+        const percent = Math.round(val * 100);
+        document.getElementById('opacityLabel').textContent = percent + '%';
+        const map = window.Panoptes?.Map?.getInstance('tileMap');
+        if (map) {
+            map.setLayerOpacity(currentTileKey, parseFloat(val));
+        }
+    }
+</script>
+}

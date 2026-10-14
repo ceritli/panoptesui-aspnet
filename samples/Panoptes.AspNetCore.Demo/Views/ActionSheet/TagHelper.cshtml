@@ -1,0 +1,159 @@
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "ActionSheet - Tag Helper Usage" : "ActionSheet - Tag Helper Kullanımı";
+    ViewData["ActiveTab"] = "TagHelper";
+}
+
+<div class="space-y-6">
+    <partial name="_ActionSheetNav" />
+
+    <!-- Info Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight mb-2">@(isEn ? "Declarative ActionSheet with Tag Helper" : "Tag Helper ile Deklaratif ActionSheet")</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            @(isEn ? "Panoptes ActionSheet component provides a clean declarative syntax in C# Razor with <panoptes-actionsheet> and child <panoptes-actionsheet-item> tags." : "Panoptes ActionSheet bileşeni, C# Razor sayfalarında <panoptes-actionsheet> ve alt öğesi olan <panoptes-actionsheet-item> etiketleriyle temiz bir deklaratif sözdizimi sunar.")
+        </p>
+    </div>
+
+    <!-- Live Demo Trigger -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+        <h2 class="text-base font-bold text-slate-800">@(isEn ? "Declarative ActionSheet Example" : "Deklaratif ActionSheet Örneği")</h2>
+        <button type="button" onclick="window.Panoptes.ActionSheet.open('tagHelperSheet')" class="px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-sm flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/></svg>
+            <span>@(isEn ? "Open Tag Helper ActionSheet" : "Tag Helper ActionSheet'i Aç")</span>
+        </button>
+
+        <panoptes-actionsheet id="tagHelperSheet" title="Sipariş İşlemleri" subtitle="Sipariş #48920 için eylem seçin" modal="true" close-button="true">
+            <panoptes-actionsheet-item id="th-fatura" text="Faturayı PDF İndir" description="E-Fatura formatında indirilir" theme-color="primary">
+            </panoptes-actionsheet-item>
+
+            <panoptes-actionsheet-item id="th-kargo" text="Kargo Takip Bilgisi" description="Yurtiçi Kargo: 492049281">
+            </panoptes-actionsheet-item>
+
+            <panoptes-actionsheet-item id="th-iade" text="İade Talebi Oluştur" description="14 gün içinde ücretsiz iade hakkı" theme-color="warning">
+            </panoptes-actionsheet-item>
+
+            <panoptes-actionsheet-item id="th-iptal" text="Siparişi İptal Et" description="Ödeme kartınıza iade edilir" theme-color="danger">
+            </panoptes-actionsheet-item>
+        </panoptes-actionsheet>
+    </div>
+
+    <!-- Attributes Reference Table -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm overflow-hidden">
+        <h2 class="text-base font-bold text-slate-800 mb-4">TagHelper Parametre Referansı</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-600 border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-200 bg-slate-50 font-bold text-slate-800">
+                        <th class="p-3">Etiket / Parametre</th>
+                        <th class="p-3">Tip</th>
+                        <th class="p-3">Varsayılan</th>
+                        <th class="p-3">Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr>
+                        <td class="p-3 font-mono text-indigo-600 font-bold">&lt;panoptes-actionsheet&gt;</td>
+                        <td class="p-3">TagHelper</td>
+                        <td class="p-3">-</td>
+                        <td class="p-3">Ana ActionSheet açılır panel sarmalayıcısı.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">title / header-text</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">null</td>
+                        <td class="p-3">Üst başlık metni.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">subtitle / description</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">null</td>
+                        <td class="p-3">Başlığın altındaki açıklayıcı metin.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">modal</td>
+                        <td class="p-3">bool</td>
+                        <td class="p-3">true</td>
+                        <td class="p-3">Arka planda yarı saydam karartma (backdrop overlay) gösterir.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">close-button</td>
+                        <td class="p-3">bool</td>
+                        <td class="p-3">true</td>
+                        <td class="p-3">Sağ üst köşede kapatma (x) butonu gösterir.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">fullscreen</td>
+                        <td class="p-3">bool</td>
+                        <td class="p-3">false</td>
+                        <td class="p-3">Açıldığında tüm ekran yüksekliğini kaplar.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">animation</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">"slide"</td>
+                        <td class="p-3">Açılış animasyonu: <code>"slide"</code>, <code>"fade"</code>, <code>"none"</code>.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono text-indigo-600 font-bold">&lt;panoptes-actionsheet-item&gt;</td>
+                        <td class="p-3">TagHelper</td>
+                        <td class="p-3">-</td>
+                        <td class="p-3">Tekil eylem seçeneği veya butonu.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">text / title</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">""</td>
+                        <td class="p-3">Butonun ana metni.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">description / subtitle</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">null</td>
+                        <td class="p-3">Butonun altındaki açıklama metni.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">theme-color</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">"default"</td>
+                        <td class="p-3">Renk stili: <code>"default"</code>, <code>"primary"</code>, <code>"danger"</code>, <code>"warning"</code>, <code>"success"</code>.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">disabled</td>
+                        <td class="p-3">bool</td>
+                        <td class="p-3">false</td>
+                        <td class="p-3">Butonu pasif hale getirir.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">click / onclick</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">null</td>
+                        <td class="p-3">Tıklandığında çalışacak JavaScript fonksiyon çağrısı.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-actionsheet id=&quot;tagHelperSheet&quot; title=&quot;Sipariş İşlemleri&quot; subtitle=&quot;Açıklama&quot; modal=&quot;true&quot; close-button=&quot;true&quot;&gt;
+    &lt;panoptes-actionsheet-item id=&quot;th-fatura&quot; text=&quot;Faturayı PDF İndir&quot; theme-color=&quot;primary&quot;&gt;
+    &lt;/panoptes-actionsheet-item&gt;
+
+    &lt;panoptes-actionsheet-item id=&quot;th-iptal&quot; text=&quot;Siparişi İptal Et&quot; theme-color=&quot;danger&quot;&gt;
+    &lt;/panoptes-actionsheet-item&gt;
+&lt;/panoptes-actionsheet&gt;</code></pre>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,237 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    var p = DemoTranslations.Prefix(isEn);
+    ViewData["Title"] = isEn ? "Enterprise UI Ecosystem & Component Showcase" : "Kurumsal UI Ekosistemi ve Bileşen Vitrini";
+}
+
+<div class="space-y-10">
+    <!-- Hero Banner -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-8 sm:p-12 shadow-xl border border-slate-800">
+        <div class="relative z-10 max-w-3xl space-y-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-blue-500/20 text-blue-300 border border-blue-400/30 backdrop-blur-xs">
+                <span>@DemoTranslations.T("Home.HeroBadge", isEn)</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                <span>@DemoTranslations.T("Home.HeroBadge2", isEn)</span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+                @DemoTranslations.T("Home.HeroTitle1", isEn) <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">@DemoTranslations.T("Home.HeroTitle2", isEn)</span>
+            </h1>
+            <p class="text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl">
+                @DemoTranslations.T("Home.HeroDesc", isEn)
+            </p>
+            <div class="flex flex-wrap gap-3 pt-2">
+                <a href="@(p + "/Grid")" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg hover:shadow-blue-500/25 transition flex items-center gap-2">
+                    <span>@DemoTranslations.T("Home.BtnGrid", isEn)</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+                <a href="@(p + "/Home/ComponentCatalog")" class="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs backdrop-blur-xs border border-white/10 transition flex items-center gap-2">
+                    <span>@DemoTranslations.T("Home.BtnComponents", isEn)</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+        </div>
+        <!-- Decorative Glow -->
+        <div class="absolute -right-10 -bottom-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    </div>
+
+    <!-- Quick Stats Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="p-5 bg-white rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-black text-xl shrink-0">
+                12
+            </div>
+            <div>
+                <div class="text-xs font-bold text-slate-800">@DemoTranslations.T("Home.Stat1Title", isEn)</div>
+                <div class="text-xs text-slate-400">@DemoTranslations.T("Home.Stat1Sub", isEn)</div>
+            </div>
+        </div>
+        <div class="p-5 bg-white rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-black text-xl shrink-0">
+                16
+            </div>
+            <div>
+                <div class="text-xs font-bold text-slate-800">@DemoTranslations.T("Home.Stat2Title", isEn)</div>
+                <div class="text-xs text-slate-400">@DemoTranslations.T("Home.Stat2Sub", isEn)</div>
+            </div>
+        </div>
+        <div class="p-5 bg-white rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-black text-xl shrink-0">
+                0
+            </div>
+            <div>
+                <div class="text-xs font-bold text-slate-800">@DemoTranslations.T("Home.Stat3Title", isEn)</div>
+                <div class="text-xs text-slate-400">@DemoTranslations.T("Home.Stat3Sub", isEn)</div>
+            </div>
+        </div>
+        <div class="p-5 bg-white rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-black text-xl shrink-0">
+                100%
+            </div>
+            <div>
+                <div class="text-xs font-bold text-slate-800">Tailwind CSS</div>
+                <div class="text-xs text-slate-400">@(isEn ? "Fully Customizable" : "Tamamen Özelleştirilebilir")</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 1: Data Grid Feature Cards -->
+    <div class="space-y-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
+                    <span>📊 Data Grid Özellik Sayfaları</span>
+                </h2>
+                <p class="text-xs text-slate-500">Her özellik için izole çalışan özel demo sayfaları</p>
+            </div>
+            <a href="/Grid" class="text-xs font-bold text-blue-600 hover:text-blue-800 transition">Tümünü İncele →</a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <a href="/Grid/Paging" class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex flex-col justify-between">
+                <div class="space-y-2">
+                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">📄</div>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">Sayfalama (Paging)</div>
+                    <p class="text-xs text-slate-500 leading-relaxed">Özel sayfa boyutları, sayfa atlama ve hızlı navigasyon kontrolleri.</p>
+                </div>
+                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">Demoyu Aç →</div>
+            </a>
+            <a href="/Grid/Sorting" class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex flex-col justify-between">
+                <div class="space-y-2">
+                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">↕️</div>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">Sıralama (Multi-Sort)</div>
+                    <p class="text-xs text-slate-500 leading-relaxed">Shift tuşuyla sınırsız çoklu sütun sıralama ve yön ikonları.</p>
+                </div>
+                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">Demoyu Aç →</div>
+            </a>
+            <a href="/Grid/Filtering" class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex flex-col justify-between">
+                <div class="space-y-2">
+                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">🔍</div>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">Filtreleme (Row & Popover)</div>
+                    <p class="text-xs text-slate-500 leading-relaxed">Satır içi arama kutusu ve başlık filtre menüsü operatörleri.</p>
+                </div>
+                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">Demoyu Aç →</div>
+            </a>
+            <a href="/Grid/Grouping" class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex flex-col justify-between">
+                <div class="space-y-2">
+                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">🗂️</div>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">Gruplama & Özetler</div>
+                    <p class="text-xs text-slate-500 leading-relaxed">Sürükle-bırak grup çubuğu, açılır/kapanır gruplar ve toplamlar.</p>
+                </div>
+                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">Demoyu Aç →</div>
+            </a>
+            <a href="/Grid/Selection" class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex flex-col justify-between">
+                <div class="space-y-2">
+                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">☑️</div>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">Seçim (Checkbox)</div>
+                    <p class="text-xs text-slate-500 leading-relaxed">Tekli veya sol seçim kutularıyla sayfalar arası çoklu satır seçimi.</p>
+                </div>
+                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">Demoyu Aç →</div>
+            </a>
+            <a href="/Grid/InlineEdit" class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex flex-col justify-between">
+                <div class="space-y-2">
+                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">✏️</div>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">Satır İçi Düzenleme</div>
+                    <p class="text-xs text-slate-500 leading-relaxed">Satırdaki Düzenle butonuyla hücreleri anında forma dönüştürme.</p>
+                </div>
+                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">Demoyu Aç →</div>
+            </a>
+            <a href="/Grid/PopupEdit" class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex flex-col justify-between">
+                <div class="space-y-2">
+                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">🪟</div>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">Modal ile Düzenleme</div>
+                    <p class="text-xs text-slate-500 leading-relaxed">Panoptes form bileşenleriyle zenginleştirilmiş açılır düzenleme modalı.</p>
+                </div>
+                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">Demoyu Aç →</div>
+            </a>
+            <a href="/Grid/Hierarchy" class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex flex-col justify-between">
+                <div class="space-y-2">
+                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">📦</div>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">Hiyerarşi & Alt Grid</div>
+                    <p class="text-xs text-slate-500 leading-relaxed">Satır altında bağımsız çalışan iç içe stok hareketleri detay gridi.</p>
+                </div>
+                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">Demoyu Aç →</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Section 2: Form Components Grid -->
+    <div class="space-y-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
+                    <span>🧩 16 Özel Form Bileşeni</span>
+                </h2>
+                <p class="text-xs text-slate-500">Her bileşen için canlı test alanı, varyasyonlar, TagHelper kodu ve API özellikleri</p>
+            </div>
+            <a href="/Components/DatePicker" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition">Tümünü İncele →</a>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-3">
+            <a href="/Components/DatePicker" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition text-center space-y-1.5 group">
+                <div class="w-8 h-8 mx-auto rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold group-hover:scale-110 transition">📅</div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-600 truncate">DatePicker</div>
+            </a>
+            <a href="/Components/DateRangePicker" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition text-center space-y-1.5 group">
+                <div class="w-8 h-8 mx-auto rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold group-hover:scale-110 transition">🗓️</div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-600 truncate">DateRange</div>
+            </a>
+            <a href="/Components/TimePicker" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition text-center space-y-1.5 group">
+                <div class="w-8 h-8 mx-auto rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold group-hover:scale-110 transition">⏰</div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-600 truncate">TimePicker</div>
+            </a>
+            <a href="/Components/DateTimePicker" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition text-center space-y-1.5 group">
+                <div class="w-8 h-8 mx-auto rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold group-hover:scale-110 transition">⏳</div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-600 truncate">DateTime</div>
+            </a>
+            <a href="/Components/Select" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition text-center space-y-1.5 group">
+                <div class="w-8 h-8 mx-auto rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold group-hover:scale-110 transition">🔽</div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-600 truncate">Select</div>
+            </a>
+            <a href="/Components/MultiSelect" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition text-center space-y-1.5 group">
+                <div class="w-8 h-8 mx-auto rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold group-hover:scale-110 transition">🏷️</div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-600 truncate">MultiSelect</div>
+            </a>
+            <a href="/Components/ComboBox" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition text-center space-y-1.5 group">
+                <div class="w-8 h-8 mx-auto rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold group-hover:scale-110 transition">📋</div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-600 truncate">ComboBox</div>
+            </a>
+            <a href="/Components/AutoComplete" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition text-center space-y-1.5 group">
+                <div class="w-8 h-8 mx-auto rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold group-hover:scale-110 transition">⚡</div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-600 truncate">AutoCompl.</div>
+            </a>
+            <a href="/Components/NumericTextBox" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition text-center space-y-1.5 group">
+                <div class="w-8 h-8 mx-auto rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold group-hover:scale-110 transition">₺</div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-600 truncate">Numeric</div>
+            </a>
+            <a href="/Components/TextBox" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition text-center space-y-1.5 group">
+                <div class="w-8 h-8 mx-auto rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold group-hover:scale-110 transition">✏️</div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-600 truncate">TextBox</div>
+            </a>
+            <a href="/Components/TextArea" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition text-center space-y-1.5 group">
+                <div class="w-8 h-8 mx-auto rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold group-hover:scale-110 transition">📝</div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-600 truncate">TextArea</div>
+            </a>
+            <a href="/Components/Switch" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition text-center space-y-1.5 group">
+                <div class="w-8 h-8 mx-auto rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold group-hover:scale-110 transition">🔘</div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-600 truncate">Switch</div>
+            </a>
+            <a href="/Components/CheckBox" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition text-center space-y-1.5 group">
+                <div class="w-8 h-8 mx-auto rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold group-hover:scale-110 transition">☑️</div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-600 truncate">CheckBox</div>
+            </a>
+            <a href="/Components/RadioGroup" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition text-center space-y-1.5 group">
+                <div class="w-8 h-8 mx-auto rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold group-hover:scale-110 transition">⚪</div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-600 truncate">RadioGroup</div>
+            </a>
+            <a href="/Components/MaskedTextBox" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition text-center space-y-1.5 group">
+                <div class="w-8 h-8 mx-auto rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold group-hover:scale-110 transition">📞</div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-600 truncate">Masked</div>
+            </a>
+            <a href="/Components/ColorPicker" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition text-center space-y-1.5 group">
+                <div class="w-8 h-8 mx-auto rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold group-hover:scale-110 transition">🎨</div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-indigo-600 truncate">ColorPicker</div>
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+@model Panoptes.AspNetCore.Demo.Controllers.TreeListPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <div class="bg-white border border-slate-200 rounded-xl p-4 space-y-3 shadow-xs">
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Programatik İşlemler (Panoptes.TreeList.getInstance('apiTree'))</div>
+            <div class="flex flex-wrap gap-2 text-xs">
+                <button type="button" onclick="apiDo('expandAll')" class="api-btn">expandAll()</button>
+                <button type="button" onclick="apiDo('collapseAll')" class="api-btn">collapseAll()</button>
+                <button type="button" onclick="apiDo('expand')" class="api-btn">expand('3')</button>
+                <button type="button" onclick="apiDo('collapse')" class="api-btn">collapse('2')</button>
+                <button type="button" onclick="apiDo('select')" class="api-btn">select('7')</button>
+                <button type="button" onclick="apiDo('selected')" class="api-btn">getSelectedItems()</button>
+                <button type="button" onclick="apiDo('clearSelection')" class="api-btn">clearSelection()</button>
+                <button type="button" onclick="apiDo('sort')" class="api-btn">sortBy('Salary','desc')</button>
+                <button type="button" onclick="apiDo('clearSort')" class="api-btn">clearSort()</button>
+                <button type="button" onclick="apiDo('filter')" class="api-btn">filter({ Salary: '&gt;=100000' })</button>
+                <button type="button" onclick="apiDo('search')" class="api-btn">filter('Ankara')</button>
+                <button type="button" onclick="apiDo('clearFilters')" class="api-btn">clearFilters()</button>
+                <button type="button" onclick="apiDo('add')" class="api-btn api-ok">addItem(..., '2')</button>
+                <button type="button" onclick="apiDo('update')" class="api-btn api-ok">updateItem('4', { Salary })</button>
+                <button type="button" onclick="apiDo('remove')" class="api-btn api-del">removeItem('5')</button>
+                <button type="button" onclick="apiDo('data')" class="api-btn">getData().length</button>
+                <button type="button" onclick="apiDo('excel')" class="api-btn">exportExcel()</button>
+            </div>
+        </div>
+
+        <panoptes-treelist id="apiTree"
+                           title="Çalışanlar"
+                           columns="@Model.Columns"
+                           items="@Model.Items"
+                           selectable="multiple"
+                           sortable="true"
+                           filterable="true"
+                           on-event="ptlOnEvent" />
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <style>
+        .api-btn { padding: .35rem .65rem; border: 1px solid #cbd5e1; border-radius: .5rem; background: #fff; font-family: ui-monospace, monospace; font-size: 11px; color: #334155; transition: all .15s ease; }
+        .api-btn:hover { background: #f1f5f9; border-color: #94a3b8; }
+        .api-btn:active { transform: scale(.96); }
+        .api-ok { border-color: #a7f3d0; background: #ecfdf5; color: #047857; }
+        .api-del { border-color: #fecaca; background: #fef2f2; color: #b91c1c; }
+    </style>
+    <partial name="_LogScript" />
+    <script>
+        let apiSeq = 0;
+        function apiDo(cmd) {
+            const t = Panoptes.TreeList.getInstance('apiTree');
+            if (!t) return;
+            switch (cmd) {
+                case 'expandAll': t.expandAll(); break;
+                case 'collapseAll': t.collapseAll(); break;
+                case 'expand': t.expand('3'); break;
+                case 'collapse': t.collapse('2'); break;
+                case 'select': t.select('7'); break;
+                case 'selected': ptlLog('getSelectedItems() → ' + JSON.stringify(t.getSelectedItems().map(i => i.values.Name)), 'text-amber-300'); break;
+                case 'clearSelection': t.clearSelection(); break;
+                case 'sort': t.sortBy('Salary', 'desc'); break;
+                case 'clearSort': t.clearSort(); break;
+                case 'filter': t.filter({ Salary: '>=100000' }); break;
+                case 'search': t.filter('Ankara'); break;
+                case 'clearFilters': t.clearFilters(); break;
+                case 'add': apiSeq++; t.addItem({ Name: 'Yeni Personel ' + apiSeq, Role: 'Stajyer', Department: 'Teknoloji', Location: 'Uzaktan', Salary: 40000, Active: true }, '2'); break;
+                case 'update': t.updateItem('4', { Salary: 99000 + Math.round(Math.random() * 9000) }); break;
+                case 'remove': if (t.node('5')) t.removeItem('5'); else ptlLog('5 numaralı kayıt zaten silinmiş', 'text-amber-300'); break;
+                case 'data': ptlLog('getData().length → ' + t.getData().length, 'text-amber-300'); break;
+                case 'excel': t.exportExcel(); break;
+            }
+        }
+    </script>
+}

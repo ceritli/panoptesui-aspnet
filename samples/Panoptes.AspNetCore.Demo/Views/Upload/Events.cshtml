@@ -1,0 +1,155 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Upload Events - Panoptes Enterprise UI" : "Olaylar (Events) - Upload - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Upload" : "/Upload")" class="hover:text-blue-600 transition">Upload</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">@(isEn ? "Events" : "Olaylar")</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Upload - @(isEn ? "Lifecycle Events & Console" : "Olaylar (Events & Console)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 font-mono">
+                    on-select / on-success
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                    @(isEn ? "Real-Time Console" : "Canlı Olay İzleme")
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Monitor client-side upload callbacks including onSelect, onUpload, onSuccess, onError, and onRemove in real-time." 
+                    : "Bileşenin JavaScript olay (event) dinleyicileri (select, upload, success, error, remove) ve canlı konsol çıktısı.")
+            </p>
+        </div>
+    </div>
+
+    <!-- DEMO: Olaylar -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                    @(isEn ? "Upload Event Logging" : "Yükleme Olayları (Event Log)")
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    @(isEn 
+                        ? "JavaScript callbacks trigger as files are selected, uploaded, or deleted." 
+                        : "Dosya seçildiğinde, yüklendiğinde ve kaldırıldığında JavaScript callback fonksiyonları tetiklenir.")
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">on-success="..."</span>
+        </div>
+
+        <div class="p-8 max-w-3xl mx-auto space-y-6">
+            <panoptes-upload id="eventsUploadDemo" 
+                            name="eventsFiles" 
+                            multiple="true" 
+                            auto-upload="true" 
+                            save-url="/Upload/Save"
+                            on-select="onApiUploadSelect" 
+                            on-success="onApiUploadSuccess" 
+                            on-error="onApiUploadError"
+                            on-remove="onApiUploadRemove" 
+                            drop-zone-text="@(isEn ? "Drop files here to test real-time events" : "Olayları canlı test etmek için buraya dosya bırakın")" />
+
+            <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        @(isEn ? "Live Event Console:" : "Canlı Yükleme Olay Günlüğü:")
+                    </span>
+                    <button type="button" onclick="clearUploadLog()" class="px-2.5 py-1 text-xs font-medium text-slate-500 hover:text-slate-800 rounded bg-slate-100 hover:bg-slate-200 transition cursor-pointer">
+                        @(isEn ? "Clear Log" : "Günlüğü Temizle")
+                    </button>
+                </div>
+                <div id="uploadEventLog" class="h-44 bg-slate-950 text-slate-200 p-3 rounded-xl font-mono text-[11px] overflow-y-auto space-y-1 border border-slate-800 shadow-inner">
+                    <div class="text-slate-500">@(isEn ? "// Ready. Waiting for file interactions..." : "// Dosya yükleme olayları burada canlı listelenecektir...")</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabbed Light Code Block (Prime standard) -->
+        <div class="panoptes-code-block border-t border-slate-200 bg-white overflow-hidden">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                </div>
+                <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    <span>@(isEn ? "Copy" : "Kopyala")</span>
+                </button>
+            </div>
+            <div class="panoptes-code-viewer">
+                <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-upload id="eventsUploadDemo" 
+                 name="eventsFiles" 
+                 multiple="true" 
+                 auto-upload="true" 
+                 save-url="/Upload/Save"
+                 on-select="onApiUploadSelect" 
+                 on-success="onApiUploadSuccess" 
+                 on-remove="onApiUploadRemove" /&gt;
+
+&lt;script&gt;
+function onApiUploadSelect(fileObj) {
+    console.log("Dosya Seçildi:", fileObj.name, fileObj.size);
+}
+
+function onApiUploadSuccess(fileObj) {
+    console.log("Yükleme Tamamlandı:", fileObj.name);
+}
+
+function onApiUploadRemove(fileObj) {
+    console.log("Dosya Kaldırıldı:", fileObj.name);
+}
+&lt;/script&gt;</code></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-upload.js"></script>
+    <script>
+        function onApiUploadSelect(fileObj) {
+            logUploadEvent(`[on-select]: Dosya seçildi: "${fileObj.name}" (${fileObj.size} bytes)`);
+        }
+
+        function onApiUploadSuccess(fileObj) {
+            logUploadEvent(`[on-success]: Yükleme tamamlandı: "${fileObj.name}"`);
+        }
+
+        function onApiUploadError(fileObj) {
+            logUploadEvent(`[on-error]: Yükleme hatası: "${fileObj.name}" - ${fileObj.errorMessage}`);
+        }
+
+        function onApiUploadRemove(fileObj) {
+            logUploadEvent(`[on-remove]: Dosya kaldırıldı: "${fileObj.name}"`);
+        }
+
+        function logUploadEvent(msg) {
+            const logBox = document.getElementById('uploadEventLog');
+            if (!logBox) return;
+            const time = new Date().toLocaleTimeString();
+            const row = document.createElement('div');
+            row.innerHTML = `<span class="text-emerald-400 font-mono">[${time}]</span> <span class="text-slate-200">${msg}</span>`;
+            logBox.appendChild(row);
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        function clearUploadLog() {
+            const logBox = document.getElementById('uploadEventLog');
+            if (logBox) logBox.innerHTML = '<div class="text-slate-500">// Günlük temizlendi...</div>';
+        }
+    </script>
+}

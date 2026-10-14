@@ -1,0 +1,17 @@
+@model Panoptes.AspNetCore.Demo.Controllers.SpreadsheetPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <panoptes-spreadsheet id="sheet" sheets="@Model.Sheets" height="460" on-event="pssOnEvent" />
+        <p class="text-xs text-slate-500 leading-relaxed">Öncelik: açılır liste &middot; Termin: tarih seçici &middot; Tamamlanma: 0-100 (adım 5) &middot; Aktif: onay kutusu (tıklayın ya da Boşluk) &middot; Etiket rengi: renk seçici &middot; Memnuniyet: 1-5 yıldız.</p>
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+}

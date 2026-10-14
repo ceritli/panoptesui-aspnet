@@ -1,0 +1,444 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "ToolBar - Panoptes UI" : "ToolBar (Araç Çubuğu) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/ToolBar" class="hover:text-blue-600 transition">@(isEn ? "Navigation & Layout" : "Navigasyon & Düzen")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">ToolBar</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">ToolBar @(isEn ? "(Command ToolBar)" : "(Araç Çubuğu)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-toolbar&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "Command toolbar bringing together buttons, dropdowns, splitters, and button groups with responsive overflow menu support." : "Butonlar, açılır listeler, ayraçlar ve buton gruplarını responsive taşma (overflow) menüsüyle bir araya getiren komut araç çubuğu.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Examples (Features)" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">4</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">2</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+<!-- DEMO 1: Standart Tablo & Veri Yönetim Araç Çubuğu -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                    1. Standart Tablo ve Veri Yönetim Araç Çubuğu
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Birincil eylem butonu, düzenleme/silme butonları, dikey ayırıcılar, dışa aktarma ve dahili arama kutusu.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">&lt;panoptes-toolbar&gt;</span>
+        </div>
+
+        <div class="p-6">
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 max-w-4xl">
+                <panoptes-toolbar id="demoTb1">
+                    <panoptes-toolbar-button text="Yeni Kayıt Ekle" icon="plus" variant="primary" onclick="logAction('Yeni Kayıt')" />
+                    <panoptes-toolbar-button text="Düzenle" icon="edit" variant="secondary" onclick="logAction('Düzenle')" />
+                    <panoptes-toolbar-button text="Sil" icon="trash" variant="danger" onclick="logAction('Sil')" />
+                    <panoptes-toolbar-separator />
+                    <panoptes-toolbar-button text="Yenile" icon="refresh" variant="ghost" onclick="logAction('Yenile')" />
+                    <panoptes-toolbar-button text="Dışa Aktar" icon="download" variant="secondary" badge="Excel" onclick="logAction('Dışa Aktar')" />
+                    <panoptes-toolbar-separator />
+                    <panoptes-toolbar-search placeholder="Kayıtlarda ara..." />
+                </panoptes-toolbar>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu (1. Resimdeki Standart Kapalı Details) -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-toolbar id="demoTb1"&gt;
+    &lt;panoptes-toolbar-button text="Yeni Kayıt" icon="plus" variant="primary" onclick="handleAdd()" /&gt;
+    &lt;panoptes-toolbar-button text="Düzenle" icon="edit" variant="secondary" /&gt;
+    &lt;panoptes-toolbar-button text="Sil" icon="trash" variant="danger" /&gt;
+    &lt;panoptes-toolbar-separator /&gt;
+    &lt;panoptes-toolbar-button text="Dışa Aktar" icon="download" badge="Excel" /&gt;
+    &lt;panoptes-toolbar-search placeholder="Kayıtlarda ara..." /&gt;
+&lt;/panoptes-toolbar&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 2: Bitişik Buton Grupları (Toolbar Group) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                    2. Bitişik Buton Grupları (Segmented Button Group)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    <code class="text-emerald-700 bg-emerald-50 px-1 py-0.5 rounded font-mono">&lt;panoptes-toolbar-group&gt;</code> ile birbirine bitişik, kenarları yuvarlatılmış filtre butonları.
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">&lt;panoptes-toolbar-group&gt;</span>
+        </div>
+
+        <div class="p-6">
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 max-w-4xl">
+                <panoptes-toolbar id="demoTb2">
+                    <panoptes-toolbar-group>
+                        <panoptes-toolbar-button text="Tümü" variant="primary" onclick="logAction('Filtre: Tümü')" />
+                        <panoptes-toolbar-button text="Aktifler" variant="secondary" onclick="logAction('Filtre: Aktif')" />
+                        <panoptes-toolbar-button text="Bekleyenler" variant="secondary" onclick="logAction('Filtre: Bekleyen')" />
+                        <panoptes-toolbar-button text="Arşiv" variant="secondary" onclick="logAction('Filtre: Arşiv')" />
+                    </panoptes-toolbar-group>
+                    <panoptes-toolbar-separator />
+                    <panoptes-toolbar-button text="Filtreleri Temizle" icon="filter" variant="ghost" onclick="logAction('Filtre Temizlendi')" />
+                    <panoptes-toolbar-button text="Yazdır" icon="print" variant="secondary" onclick="logAction('Yazdır')" />
+                </panoptes-toolbar>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-toolbar id="demoTb2"&gt;
+    &lt;panoptes-toolbar-group&gt;
+        &lt;panoptes-toolbar-button text="Tümü" variant="primary" /&gt;
+        &lt;panoptes-toolbar-button text="Aktifler" variant="secondary" /&gt;
+        &lt;panoptes-toolbar-button text="Bekleyenler" variant="secondary" /&gt;
+    &lt;/panoptes-toolbar-group&gt;
+    &lt;panoptes-toolbar-separator /&gt;
+    &lt;panoptes-toolbar-button text="Yazdır" icon="print" /&gt;
+&lt;/panoptes-toolbar&gt;</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- DEMO 3: Canlı Olay Günlüğü Konsolu -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-purple-600 inline-block"></span>
+                    3. Canlı Olay Günlüğü Konsolu (Event Log)
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Araç çubuğu butonlarına tıklandığında tetiklenen JavaScript eylemleri.
+                </p>
+            </div>
+            <button type="button" onclick="clearToolbarLog()" class="px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg border border-red-200 transition">
+                Konsolu Temizle
+            </button>
+        </div>
+
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-1.5 max-w-4xl">
+                <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Canlı Olay Günlüğü
+                </span>
+                <span id="toolbarEventCount" class="text-[11px] font-mono text-slate-400">0 eylem kaydedildi</span>
+            </div>
+            <div id="toolbarEventLog" class="bg-slate-900 text-slate-200 font-mono text-[11px] p-3 rounded-lg h-32 overflow-y-auto space-y-1 shadow-inner border border-slate-800 max-w-4xl">
+                <div class="text-slate-500 italic">// Yukarıdaki araç çubuklarındaki butonlara tıklayın, olaylar burada görünecektir.</div>
+            </div>
+        </div>
+
+        <!-- Standart Kod Kutusu -->
+        <div class="px-6 pb-6">
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>function logAction(actionName) {
+    console.log('Araç Çubuğu Eylemi:', actionName);
+}</code></pre>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- API Dokümantasyonu & Nitelik Referans Tablosu -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+            <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                Panoptes ToolBar TagHelper Parametre & Nitelik Referansı
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">
+                <code class="text-blue-600 font-mono">&lt;panoptes-toolbar&gt;</code>, <code class="text-blue-600 font-mono">&lt;panoptes-toolbar-button&gt;</code>, <code class="text-blue-600 font-mono">&lt;panoptes-toolbar-group&gt;</code>, <code class="text-blue-600 font-mono">&lt;panoptes-toolbar-separator&gt;</code> ve <code class="text-blue-600 font-mono">&lt;panoptes-toolbar-search&gt;</code> etiketleri.
+            </p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-600 border-collapse">
+                <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                    <tr>
+                        <th class="py-3 px-4">TagHelper</th>
+                        <th class="py-3 px-4">Nitelik (Attribute)</th>
+                        <th class="py-3 px-4">Tip</th>
+                        <th class="py-3 px-4">Varsayılan</th>
+                        <th class="py-3 px-4">Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-blue-600 font-semibold">&lt;panoptes-toolbar&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">id</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Araç çubuğunun benzersiz HTML ID'si.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-toolbar-button&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">text / icon</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                        <td class="py-2.5 px-4">Buton üzerindeki metin ve SVG ikon adı (<code class="font-mono">"plus"</code>, <code class="font-mono">"edit"</code>, <code class="font-mono">"trash"</code> vb.).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-toolbar-button&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">variant</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">"secondary"</td>
+                        <td class="py-2.5 px-4">Görsel stil varyantı: <code class="font-mono">"primary"</code>, <code class="font-mono">"secondary"</code>, <code class="font-mono">"danger"</code> veya <code class="font-mono">"ghost"</code>.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-toolbar-button&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">badge / disabled</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string / bool</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">null / false</td>
+                        <td class="py-2.5 px-4">Buton sağındaki rozet ve pasif duruma getirme.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-toolbar-group&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">-</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">-</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">-</td>
+                        <td class="py-2.5 px-4">İçerisine konulan butonları birbirine bitişik tek parça grup olarak sarar.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-toolbar-separator&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">-</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">-</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">-</td>
+                        <td class="py-2.5 px-4">Araç çubuğu öğeleri arasına dikey ayırıcı çizgi yerleştirir.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="py-2.5 px-4 font-mono text-indigo-600 font-semibold">&lt;panoptes-toolbar-search&gt;</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-slate-800">placeholder</td>
+                        <td class="py-2.5 px-4 font-mono text-purple-600">string</td>
+                        <td class="py-2.5 px-4 font-mono text-slate-400">"Ara..."</td>
+                        <td class="py-2.5 px-4">Arama kutusu girdi alanı.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">TagHelper Özellikleri & Parametreleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-toolbar&gt; bileşeninin desteklediği tüm C# ve HTML nitelikleri.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesToolbarTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-4">Varsayılan</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşen kimliği.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">resizable</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">Dar ekranlarda butonları açılır taşma menüsüne toplar.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Klavye Erişilebilirliği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes ToolBar bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Nitelikleri</div>
+                    <div class="text-slate-600">
+                        Standart <code>role="toolbar"</code> rolünü taşır. Duruma göre <code>aria-disabled</code>, <code>aria-expanded</code>, <code>aria-selected</code> ve <code>aria-label</code> nitelikleri dinamik olarak güncellenir.
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Odak Yönetimi (Focus Management)</div>
+                    <div class="text-slate-600">
+                        Sekme sırasını doğal akışında korur (<code>tabIndex="0"</code>). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları (Keyboard Shortcuts)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev (Function)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Sol / Sağ Ok</kbd></td>
+                                <td class="py-2.5 px-4">Araç çubuğu butonları arasında gezinir.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter / Space</kbd></td>
+                                <td class="py-2.5 px-4">Odaklanmış butonu tetikler.</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+let tbEventCount = 0;
+
+        function logAction(actionName) {
+            tbEventCount++;
+            const counterEl = document.getElementById('toolbarEventCount');
+            if (counterEl) counterEl.textContent = `${tbEventCount} eylem kaydedildi`;
+
+            const container = document.getElementById('toolbarEventLog');
+            if (!container) return;
+            const time = new Date().toLocaleTimeString();
+
+            const entry = document.createElement('div');
+            entry.className = 'flex items-center gap-2 py-0.5 border-b border-slate-800/60';
+            entry.innerHTML = `
+                <span class="text-slate-500">[${time}]</span>
+                <span class="font-bold text-emerald-400">ACTION</span>
+                <span class="text-slate-300 font-medium">"${actionName}"</span>
+            `;
+
+            if (container.querySelector('.italic')) container.innerHTML = '';
+            container.prepend(entry);
+        }
+
+        function clearToolbarLog() {
+            tbEventCount = 0;
+            const counterEl = document.getElementById('toolbarEventCount');
+            if (counterEl) counterEl.textContent = '0 eylem kaydedildi';
+            const container = document.getElementById('toolbarEventLog');
+            if (container) container.innerHTML = '<div class="text-slate-500 italic">// Olay günlüğü temizlendi.</div>';
+        }
+</script>
+}

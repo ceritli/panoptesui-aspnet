@@ -1,0 +1,22 @@
+@model Panoptes.AspNetCore.Demo.Controllers.SpreadsheetPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <div class="flex flex-wrap gap-2">
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().clearValidation('C2:C20')">C sütunu kuralını kaldır</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().setValidationRule('C2:C20', { type: 'whole', comparer: 'between', from: 1, to: 100, error: 'Adet 1-100 arasında olmalı.' })">C sütununa kural ekle (1-100)</button>
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().select('C2'); pssSheet().exec('validation')">Doğrulama penceresini aç</button>
+        </div>
+        <panoptes-spreadsheet id="sheet" sheets="@Model.Sheets" height="460" on-event="pssOnEvent" />
+        <p class="text-xs text-slate-500 leading-relaxed">Geçersiz bir değer girmeyi deneyin (örn. Adet = 500, Ülke = Mars). Reddet modunda değer kabul edilmez; "Fiyat" sütunu uyarı modundadır ve onayla geçilebilir. Kurallı hücreyi seçince giriş mesajı görünür.</p>
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+}

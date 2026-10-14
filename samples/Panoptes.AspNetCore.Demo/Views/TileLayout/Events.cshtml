@@ -1,0 +1,135 @@
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "TileLayout - Events & Console" : "TileLayout - Olaylar & Konsol (Events)";
+    ViewData["ActiveTab"] = "Events";
+}
+
+<div class="space-y-6">
+    <partial name="_TileLayoutNav" />
+
+    <!-- Info Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight mb-2">@(isEn ? "TileLayout Event Handling" : "TileLayout Olay Yönetimi (Events)")</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            @(isEn ? "React dynamically using client-side events triggered when tiles are reordered (on-reorder), resized (on-resize), added, or removed from the dashboard." : "TileLayout üzerinde kartlar yeniden sıralandığında (on-reorder), yeniden boyutlandırıldığında (on-resize), yeni kart eklendiğinde veya kaldırıldığında istemci tarafında tetiklenen olaylar sayesinde dinamik tepkiler verebilirsiniz.")
+        </p>
+    </div>
+
+    <!-- Live Demo & Interactive Event Console -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Layout Demo -->
+        <div class="lg:col-span-2 bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "Interactive Dashboard Area" : "İşlem Yapılacak Pano Alanı")</h2>
+            <panoptes-tilelayout id="eventsLayout" columns="2" row-height="150px" gap="14px" reorderable="true" resizable="true" on-reorder="handleTileReorder" on-resize="handleTileResize">
+                <panoptes-tilelayout-item id="ev-tile-1" header-text="Satış Raporu (ev-1)" col-span="1" row-span="1" removable="true">
+                    <div class="p-2 text-xs text-slate-600">
+                        <p class="font-bold text-indigo-600">@(isEn ? "Event Test Tile 1" : "Olay Test Kartı 1")</p>
+                        <p class="mt-1">@(isEn ? "Drag or resize this tile." : "Bu kartı sürükleyin veya boyutlandırın.")</p>
+                    </div>
+                </panoptes-tilelayout-item>
+
+                <panoptes-tilelayout-item id="ev-tile-2" header-text="Müşteri İletişim (ev-2)" col-span="1" row-span="1" removable="true">
+                    <div class="p-2 text-xs text-slate-600">
+                        <p class="font-bold text-emerald-600">@(isEn ? "Event Test Tile 2" : "Olay Test Kartı 2")</p>
+                        <p class="mt-1">@(isEn ? "Reordering logs to the console on the right." : "Taşıma yapıldığında sağdaki konsolda log oluşur.")</p>
+                    </div>
+                </panoptes-tilelayout-item>
+
+                <panoptes-tilelayout-item id="ev-tile-3" header-text="Depo Durumu (ev-3)" col-span="2" row-span="1" removable="true">
+                    <div class="p-2 text-xs text-slate-600">
+                        <p class="font-bold text-purple-600">@(isEn ? "Event Test Tile 3 (2x1)" : "Olay Test Kartı 3 (2x1)")</p>
+                        <p class="mt-1">@(isEn ? "Clicking the close button triggers remove event." : "Kapatma butonuna basıldığında remove olayı tetiklenir.")</p>
+                    </div>
+                </panoptes-tilelayout-item>
+            </panoptes-tilelayout>
+        </div>
+
+        <!-- Event Console Log -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm flex flex-col h-[400px]">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <h3 class="text-sm font-bold text-slate-800">@(isEn ? "Event Console (Log)" : "Olay Konsolu (Log)")</h3>
+                </div>
+                <button type="button" onclick="clearEventLog()" class="text-xs font-semibold text-slate-400 hover:text-slate-700 transition">@(isEn ? "Clear" : "Temizle")</button>
+            </div>
+            <div id="eventsLogContainer" class="flex-1 overflow-y-auto space-y-2 pr-1 font-mono text-[11px]">
+                <div class="text-slate-400 italic">@(isEn ? "Event listeners active. Drag or resize tiles..." : "Olay dinleyicileri hazır. Kartları taşıyın veya boyutlandırın...")</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;!-- TagHelper üzerinde callback fonksiyonları bağlama --&gt;
+&lt;panoptes-tilelayout id=&quot;eventsLayout&quot; columns=&quot;2&quot; on-reorder=&quot;handleTileReorder&quot; on-resize=&quot;handleTileResize&quot;&gt;
+    &lt;panoptes-tilelayout-item id=&quot;ev-tile-1&quot; header-text=&quot;Kart 1&quot;&gt;...&lt;/panoptes-tilelayout-item&gt;
+&lt;/panoptes-tilelayout&gt;
+
+&lt;script&gt;
+    function handleTileReorder(e) {
+        console.log(`[reorder] Kart: ${e.container.id} | Eski Sıra: ${e.oldIndex} ➔ Yeni Sıra: ${e.newIndex}`);
+    }
+
+    function handleTileResize(e) {
+        console.log(`[resize] Kart: ${e.container.id} | Yeni Boyut: ${e.colSpan}x${e.rowSpan}`);
+    }
+&lt;/script&gt;</code></pre>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function logEvent(title, detail, color = 'indigo') {
+            const container = document.getElementById('eventsLogContainer');
+            if (!container) return;
+
+            const time = new Date().toLocaleTimeString('@(isEn ? "en-US" : "tr-TR")');
+            const entry = document.createElement('div');
+            entry.className = `p-2 rounded-xl bg-slate-50 border border-slate-100 border-l-4 border-l-${color}-500 text-slate-700 leading-tight`;
+            entry.innerHTML = `
+                <div class="flex items-center justify-between text-[10px] text-slate-400 mb-0.5">
+                    <span class="font-bold text-${color}-600">${title}</span>
+                    <span>${time}</span>
+                </div>
+                <div>${detail}</div>
+            `;
+            container.insertBefore(entry, container.firstChild);
+        }
+
+        function clearEventLog() {
+            const container = document.getElementById('eventsLogContainer');
+            if (container) container.innerHTML = '<div class="text-slate-400 italic">@(isEn ? "Console cleared." : "Konsol temizlendi.")</div>';
+        }
+
+        function handleTileReorder(e) {
+            const title = e.container.querySelector('.panoptes-tilelayout-item-title')?.textContent || e.container.id;
+            logEvent('@(isEn ? "REORDER TRIGGERED" : "REORDER TETİKLENDİ")', @(isEn ? "`Tile <b>${title}</b> moved from position <b>${e.oldIndex + 1}</b> to <b>${e.newIndex + 1}</b>.`" : "`<b>${title}</b> kartı <b>${e.oldIndex + 1}.</b> sıradan <b>${e.newIndex + 1}.</b> sıraya taşındı.`"), 'indigo');
+        }
+
+        function handleTileResize(e) {
+            const title = e.container.querySelector('.panoptes-tilelayout-item-title')?.textContent || e.container.id;
+            logEvent('@(isEn ? "RESIZE TRIGGERED" : "RESIZE TETİKLENDİ")', @(isEn ? "`Tile <b>${title}</b> resized to <b>${e.colSpan} x ${e.rowSpan}</b>. (Old: ${e.oldColSpan}x${e.oldRowSpan})`" : "`<b>${title}</b> kartı <b>${e.colSpan} x ${e.rowSpan}</b> boyutuna ölçeklendi. (Eski: ${e.oldColSpan}x${e.oldRowSpan})`"), 'emerald');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const tl = document.getElementById('eventsLayout');
+            if (tl) {
+                tl.addEventListener('panoptes:tilelayout:remove', (e) => {
+                    logEvent('@(isEn ? "REMOVE TRIGGERED" : "REMOVE TETİKLENDİ")', @(isEn ? "`Tile removed: <b>${e.detail.containerId}</b>`" : "`Kart kaldırıldı: <b>${e.detail.containerId}</b>`"), 'rose');
+                });
+            }
+        });
+    </script>
+}

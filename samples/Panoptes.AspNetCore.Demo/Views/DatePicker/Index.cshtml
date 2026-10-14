@@ -1,0 +1,739 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = "DatePicker (Tarih Seçici) - Panoptes Kurumsal UI";
+    var startOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToString("dd.MM.yyyy");
+    var endOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)).ToString("dd.MM.yyyy");
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">Ana Sayfa</a>
+        <span>/</span>
+        <a href="/DatePicker" class="hover:text-blue-600 transition">Tarih & Zaman</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">DatePicker</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">DatePicker (Tarih Seçici)</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-datepicker&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    WAI-ARIA Uyumlu
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                Açılır takvim görünümü, yerelleştirilmiş Türkçe ay/gün isimleri, Min/Max tarih sınırlamaları, hafta sonu devre dışı bırakma, hafta numaraları ve JavaScript istemci API'si.
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ Production Ready
+            </span>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>Örnekler (Features)</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">7</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>API Referansı (Props & Events)</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">18</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>Erişilebilirlik (WAI-ARIA)</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        <!-- 1. Temel Kullanım & Formatlar -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <div class="border-b border-slate-100 pb-4 mb-6">
+                <h2 class="text-base font-bold text-slate-800">1. Temel Kullanım & Tarih Formatları</h2>
+                <p class="text-xs text-slate-500 mt-1">Farklı gösterim formatları, yerelleştirme ve tek tıkla temizleme (clearable) yeteneği.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">Türkiye Standardı (DD.MM.YYYY)</label>
+                    <panoptes-datepicker id="dp_format_tr"
+                                         value="@DateTime.Now.ToString("dd.MM.yyyy")"
+                                         format="DD.MM.YYYY"
+                                         placeholder="GG.AA.YYYY" />
+                    <span class="text-[11px] text-slate-400">Varsayılan Türkçe tarih biçimi.</span>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">ISO Standardı (YYYY-MM-DD)</label>
+                    <panoptes-datepicker id="dp_format_iso"
+                                         value="@DateTime.Now.ToString("yyyy-MM-dd")"
+                                         format="YYYY-MM-DD"
+                                         placeholder="YYYY-AA-GG" />
+                    <span class="text-[11px] text-slate-400">Veritabanı ve API uyumlu ISO biçimi.</span>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">Eğik Çizgi Formatı (DD/MM/YYYY)</label>
+                    <panoptes-datepicker id="dp_format_slash"
+                                         format="DD/MM/YYYY"
+                                         placeholder="GG/AA/YYYY" />
+                    <span class="text-[11px] text-slate-400">Uluslararası slash formatı.</span>
+                </div>
+            </div>
+
+            <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+            <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mt-6">
+                <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                            @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                        </span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;!-- Türkiye Standardı (DD.MM.YYYY) --&gt;
+&lt;panoptes-datepicker id="dp_format_tr"
+                     value="@@DateTime.Now.ToString("dd.MM.yyyy")"
+                     format="DD.MM.YYYY"
+                     placeholder="GG.AA.YYYY" /&gt;
+
+&lt;!-- ISO Standardı (YYYY-MM-DD) --&gt;
+&lt;panoptes-datepicker id="dp_format_iso"
+                     value="@@DateTime.Now.ToString("yyyy-MM-dd")"
+                     format="YYYY-MM-DD"
+                     placeholder="YYYY-AA-GG" /&gt;
+
+&lt;!-- Eğik Çizgi Formatı (DD/MM/YYYY) --&gt;
+&lt;panoptes-datepicker id="dp_format_slash"
+                     format="DD/MM/YYYY"
+                     placeholder="GG/AA/YYYY" /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Görünüm & Boyutlar -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <div class="border-b border-slate-100 pb-4 mb-6">
+                <h2 class="text-base font-bold text-slate-800">2. Boyut & Stil Çeşitleri (Appearance)</h2>
+                <p class="text-xs text-slate-500 mt-1">Küçük (sm), Orta (md), Büyük (lg) boyutlar ve tam yuvarlak (full) kenarlık seçenekleri.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">Küçük Boyut (Size: "sm")</label>
+                    <panoptes-datepicker id="dp_size_sm" size="sm" placeholder="Küçük..." />
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">Büyük & Yuvarlak (Size: "lg", Rounded: "full")</label>
+                    <panoptes-datepicker id="dp_size_lg" size="lg" rounded="full" placeholder="Büyük & Yuvarlak..." />
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">Alt Çizgili (FillMode: "flat")</label>
+                    <panoptes-datepicker id="dp_fill_flat" fill-mode="flat" placeholder="Düz alt çizgili..." />
+                </div>
+            </div>
+
+            <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+            <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mt-6">
+                <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                            @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                        </span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;!-- Küçük Boyut (Size: "sm") --&gt;
+&lt;panoptes-datepicker id="dp_size_sm" size="sm" placeholder="Küçük..." /&gt;
+
+&lt;!-- Büyük &amp; Yuvarlak (Size: "lg", Rounded: "full") --&gt;
+&lt;panoptes-datepicker id="dp_size_lg" size="lg" rounded="full" placeholder="Büyük &amp; Yuvarlak..." /&gt;
+
+&lt;!-- Alt Çizgili (FillMode: "flat") --&gt;
+&lt;panoptes-datepicker id="dp_fill_flat" fill-mode="flat" placeholder="Düz alt çizgili..." /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Doğrulama: Min/Max Tarih Sınırları & Pasif Tarihler -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <div class="border-b border-slate-100 pb-4 mb-6">
+                <h2 class="text-base font-bold text-slate-800">3. Tarih Doğrulama & Hafta Sonu Devre Dışı Bırakma</h2>
+                <p class="text-xs text-slate-500 mt-1">Kullanıcının yalnızca geçerli bir tarih aralığında ve iş günlerinde seçim yapmasını sağlayın.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">Min/Max Sınırı (Yalnızca Bu Ay)</label>
+                    <panoptes-datepicker id="dp_min_max_demo"
+                                         min="@startOfMonth"
+                                         max="@endOfMonth"
+                                         placeholder="Bu ay için tarih seçiniz..." />
+                    <span class="text-[11px] text-slate-400">@startOfMonth öncesi ve @endOfMonth sonrası takvimde soluk ve kilitlidir.</span>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">İş Günü Randevusu (Hafta Sonu Pasif)</label>
+                    <panoptes-datepicker id="dp_disabled_weekends_demo"
+                                         disable-dates="weekend"
+                                         placeholder="İş günü seçiniz (Pzt-Cum)..." />
+                    <span class="text-[11px] text-slate-400">Cumartesi ve Pazar günleri otomatik olarak devre dışı bırakılır.</span>
+                </div>
+            </div>
+
+            <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+            <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mt-6">
+                <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                            @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                        </span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;!-- Min / Max Tarih Sınırlandırması --&gt;
+&lt;panoptes-datepicker id="dp_min_max_demo"
+                     min="@@startOfMonth"
+                     max="@@endOfMonth"
+                     placeholder="Bu ay için tarih seçiniz..." /&gt;
+
+&lt;!-- Hafta Sonu Günlerini Pasife Alma --&gt;
+&lt;panoptes-datepicker id="dp_disabled_weekends_demo"
+                     disable-dates="weekend"
+                     placeholder="İş günü seçiniz (Pzt-Cum)..." /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Hafta Numaraları -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <div class="border-b border-slate-100 pb-4 mb-6">
+                <h2 class="text-base font-bold text-slate-800">4. Hafta Numaraları (Week Numbers)</h2>
+                <p class="text-xs text-slate-500 mt-1">Takvimin en sol sütununda ISO-8601 standardına göre yılın hafta numarasını (1-52) gösterir.</p>
+            </div>
+
+            <div class="max-w-md space-y-2">
+                <label class="block text-xs font-bold text-slate-700">Hafta Numaralı Takvim (week-number="true")</label>
+                <panoptes-datepicker id="dp_week_numbers_demo"
+                                     week-number="true"
+                                     value="@DateTime.Now.ToString("dd.MM.yyyy")"
+                                     placeholder="Hafta numaralı takvim..." />
+            </div>
+
+            <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+            <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mt-6">
+                <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                            @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                        </span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;!-- Hafta Numaralı Takvim --&gt;
+&lt;panoptes-datepicker id="dp_week_numbers_demo"
+                     week-number="true"
+                     value="@@DateTime.Now.ToString("dd.MM.yyyy")"
+                     placeholder="Hafta numaralı takvim..." /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. JavaScript İstemci API Kontrolleri -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <div class="border-b border-slate-100 pb-4 mb-6">
+                <h2 class="text-base font-bold text-slate-800">5. JavaScript İstemci API (Programatik Yönetim)</h2>
+                <p class="text-xs text-slate-500 mt-1">JavaScript API metodlarını tetikleyerek tarih seçiciyi dışarıdan yönetin.</p>
+            </div>
+
+            <div class="space-y-4 max-w-xl">
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">API Test Tarih Seçici</label>
+                    <panoptes-datepicker id="dp_api_demo"
+                                         value="@DateTime.Now.ToString("dd.MM.yyyy")"
+                                         placeholder="Tarih seçin..." />
+                </div>
+
+                <!-- API Buttons -->
+                <div class="flex flex-wrap gap-2 pt-2">
+                    <button type="button" onclick="getDpInst('dp_api_demo')?.open()" class="px-3 py-1.5 text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg shadow-2xs transition">
+                        .open()
+                    </button>
+                    <button type="button" onclick="getDpInst('dp_api_demo')?.close()" class="px-3 py-1.5 text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg shadow-2xs transition">
+                        .close()
+                    </button>
+                    <button type="button" onclick="getDpInst('dp_api_demo')?.setValue('01.01.2027')" class="px-3 py-1.5 text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg shadow-2xs transition">
+                        .setValue('01.01.2027')
+                    </button>
+                    <button type="button" onclick="alert('Seçili Tarih: ' + (getDpInst('dp_api_demo')?.getValue() || 'Boş'))" class="px-3 py-1.5 text-xs font-semibold bg-blue-50 border border-blue-200 hover:bg-blue-100 text-blue-700 rounded-lg shadow-2xs transition">
+                        .getValue()
+                    </button>
+                    <button type="button" onclick="toggleDatePickerEnable()" id="btnToggleDpEnable" class="px-3 py-1.5 text-xs font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg shadow-2xs transition">
+                        .enable(false)
+                    </button>
+                </div>
+            </div>
+
+            <!-- JavaScript API Code Snippet (Light Code Viewer Standard) -->
+            <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mt-6">
+                <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                            JavaScript API
+                        </span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>// Örneğe erişim
+const dp = window.Panoptes?.DatePicker?.instances?.get('dp_api_demo');
+
+// Takvimi açma / kapatma
+dp?.open();
+dp?.close();
+
+// Değer atama ve okuma
+dp?.setValue('01.01.2027');
+const secilenTarih = dp?.getValue();
+
+// Etkinleştirme / Devre dışı bırakma
+dp?.enable(false); // Kilitler
+dp?.enable(true);  // Aktif eder</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Canlı Olay Günlüğü -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <div class="border-b border-slate-100 pb-4 mb-6">
+                <h2 class="text-base font-bold text-slate-800">6. Olaylar & Canlı Olay Günlüğü (Events)</h2>
+                <p class="text-xs text-slate-500 mt-1">Kullanıcı takvimi açtığında, kapattığında veya yeni bir tarih seçtiğinde tetiklenen istemci olayları.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <div class="space-y-4">
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-slate-700">Etkileşimli Tarih Seçici</label>
+                        <panoptes-datepicker id="dp_events_demo"
+                                             value="@DateTime.Now.ToString("dd.MM.yyyy")"
+                                             placeholder="Tarih seçin..." />
+                        <span class="text-[11px] text-slate-400">Takvimi açın veya farklı bir gün seçin.</span>
+                    </div>
+                </div>
+
+                <!-- Event Log Console -->
+                <div class="bg-slate-900 rounded-xl p-4 text-xs font-mono text-slate-300">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
+                        <span class="font-bold text-slate-400">Canlı Olay Günlüğü (Event Log)</span>
+                        <button type="button" onclick="document.getElementById('eventLogDp').innerHTML = ''" class="text-[11px] text-slate-500 hover:text-slate-300 transition">Temizle</button>
+                    </div>
+                    <div id="eventLogDp" class="h-36 overflow-y-auto space-y-1 text-[11px] text-slate-400">
+                        <div class="text-emerald-400">&gt; Sistem hazır. DatePicker olayları bekleniyor...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JavaScript Event Listener Snippet (Light Code Viewer Standard) -->
+            <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mt-6">
+                <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                            JavaScript Event Listener
+                        </span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>const el = document.getElementById('dp_events_demo');
+
+// Tarih seçim olayı
+el?.addEventListener('change', function(e) {
+    const val = e.detail?.value || el.querySelector('input')?.value;
+    console.log('Seçilen Tarih:', val);
+});
+
+// Odaklanma olayı
+el?.querySelector('input')?.addEventListener('focus', function() {
+    console.log('DatePicker odaklandı');
+});</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Alt Sayfalar & Özellik Galerisi -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+            <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+                <h2 class="text-base font-bold text-slate-800">DatePicker Özellik Sayfaları</h2>
+                <p class="text-xs text-slate-500 mt-0.5">Her özellik için bağımsız çalışan detaylı demo sayfaları.</p>
+            </div>
+            <div class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <a href="/DatePicker/Validation" class="group block rounded-xl border border-slate-200 p-4 hover:border-blue-300 hover:bg-blue-50/30 transition">
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition flex items-center justify-between">
+                        <span>Doğrulama (Min/Max)</span>
+                        <svg class="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-1">Geçerli aralık dışındaki günleri kilitleme.</p>
+                </a>
+                <a href="/DatePicker/DisabledDates" class="group block rounded-xl border border-slate-200 p-4 hover:border-blue-300 hover:bg-blue-50/30 transition">
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition flex items-center justify-between">
+                        <span>Pasif Tarihler</span>
+                        <svg class="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-1">Hafta sonu veya tatil günlerini seçime kapatma.</p>
+                </a>
+                <a href="/DatePicker/WeekNumber" class="group block rounded-xl border border-slate-200 p-4 hover:border-blue-300 hover:bg-blue-50/30 transition">
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition flex items-center justify-between">
+                        <span>Hafta Numaraları</span>
+                        <svg class="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-1">ISO-8601 hafta numarası gösterimi.</p>
+                </a>
+                <a href="/DatePicker/Events" class="group block rounded-xl border border-slate-200 p-4 hover:border-blue-300 hover:bg-blue-50/30 transition">
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition flex items-center justify-between">
+                        <span>Olaylar (Events)</span>
+                        <svg class="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-1">Change, open ve close olaylarının takibi.</p>
+                </a>
+                <a href="/DatePicker/Api" class="group block rounded-xl border border-slate-200 p-4 hover:border-blue-300 hover:bg-blue-50/30 transition">
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition flex items-center justify-between">
+                        <span>API Metotları</span>
+                        <svg class="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-1">Programatik JS metotları ile tam kontrol.</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <!-- TagHelper Props -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">TagHelper Özellikleri & Parametreleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-datepicker&gt; bileşeninin desteklediği tüm C# ve HTML nitelikleri.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesDatepickerTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-4">Varsayılan</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşen DOM kimliği ve JavaScript API örneği anahtarı.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">name</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">Form submit sırasında gönderilecek input adı.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">value</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">Başlangıç tarihi değeri ("14.10.2026" veya "2026-10-14").</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">format</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"DD.MM.YYYY"</td>
+                            <td class="py-3 px-6 text-slate-700">Tarih format kalıbı (DD.MM.YYYY, YYYY-MM-DD, DD/MM/YYYY).</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">min</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">Seçilebilecek en erken tarih sınırı.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">max</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">Seçilebilecek en geç tarih sınırı.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">disable-dates</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">Devre dışı bırakılacak tarihler: "weekend" veya virgülle ayrılmış tarihler.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">week-number</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                            <td class="py-3 px-6 text-slate-700">Takvimin sol tarafında ISO hafta numaralarını gösterir.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">size</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"md"</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşen boyutu: "sm", "md", "lg".</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">rounded</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"md"</td>
+                            <td class="py-3 px-6 text-slate-700">Kenarlık yuvarlaklığı: "none", "sm", "md", "lg", "full".</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">fill-mode</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"outline"</td>
+                            <td class="py-3 px-6 text-slate-700">Dolgu modu: "outline", "solid", "flat".</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">clearable</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">Tarihi tek tıkla silen temizleme butonunu gösterir.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">placeholder</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"GG.AA.YYYY"</td>
+                            <td class="py-3 px-6 text-slate-700">İpucu metni.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">disabled</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşeni kilitler ve kullanıcı etkileşimini kapatır.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">readonly</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                            <td class="py-3 px-6 text-slate-700">Kutuyu salt okunur yapar (açılır takvim engellenir).</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">class</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">Kök elemente eklenecek özel CSS sınıfları.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">on-change</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">Tarih değiştiğinde çalışan JavaScript fonksiyonu adı.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">on-open / on-close</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">Takvim açıldığında veya kapandığında çalışan JavaScript fonksiyonu.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- JavaScript API Methods -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">JavaScript İstemci API Metotları</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Panoptes.DatePicker.instances.get(id) üzerinden erişilen metotlar.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-100 text-emerald-800">Client API</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Metot</th>
+                            <th class="py-3 px-4">Dönüş Tipi</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-emerald-700">open()</td><td class="py-2.5 px-4 font-mono text-purple-600">void</td><td class="py-2.5 px-6">Açılır takvim penceresini programatik olarak açar.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-emerald-700">close()</td><td class="py-2.5 px-4 font-mono text-purple-600">void</td><td class="py-2.5 px-6">Açık takvim penceresini kapatır.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-emerald-700">getValue()</td><td class="py-2.5 px-4 font-mono text-purple-600">string</td><td class="py-2.5 px-6">Seçili olan tarih dizesini (formatına göre) döndürür.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-emerald-700">setValue(dateString)</td><td class="py-2.5 px-4 font-mono text-purple-600">void</td><td class="py-2.5 px-6">Belirtilen tarih dizesini seçer ve input değerini günceller.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-emerald-700">enable(boolean)</td><td class="py-2.5 px-4 font-mono text-purple-600">void</td><td class="py-2.5 px-6">true ile etkinleştirir, false ile devre dışı kilitler.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Klavye Erişilebilirliği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes DatePicker bileşeni, W3C WAI-ARIA DatePicker ve Combobox tasarım desenine tam uyumludur. Ekran okuyucu yazılımlar ve salt klavye kullanan kullanıcılar için optimize edilmiştir.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Nitelikleri</div>
+                    <div class="text-slate-600">
+                        Giriş kutusunda <code>role="combobox"</code>, açılır takvimde <code>role="dialog"</code> ve takvim günlerinde <code>role="gridcell"</code> uygulanır. <code>aria-expanded</code>, <code>aria-haspopup="dialog"</code> ve <code>aria-selected</code> nitelikleri anlık güncellenir.
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Odak Yönetimi (Focus Management)</div>
+                    <div class="text-slate-600">
+                        Klavye odağı takvime girdiğinde gün ızgarası üzerinde roving tabindex devreye girer. Ok tuşlarıyla günler arasında serbestçe gezinilebilir.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları (Keyboard Shortcuts)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-52">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev (Function)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Alt + Aşağı Ok</kbd></td>
+                                <td class="py-2.5 px-4">Açılır takvim penceresini açar.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">← ↑ → ↓ (Ok Tuşları)</kbd></td>
+                                <td class="py-2.5 px-4">Takvim günleri arasında 4 yöne serbest gezinir.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter</kbd> / <kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Space</kbd></td>
+                                <td class="py-2.5 px-4">Vurgulanan günü seçer ve takvimi kapatır.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Escape</kbd></td>
+                                <td class="py-2.5 px-4">Açık takvimi seçimi değiştirmeden kapatır.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Page Up</kbd> / <kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Page Down</kbd></td>
+                                <td class="py-2.5 px-4">Bir önceki veya bir sonraki aya hızlı geçiş yapar.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Shift + Page Up / Down</kbd></td>
+                                <td class="py-2.5 px-4">Bir önceki veya bir sonraki yıla hızlı geçiş yapar.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Home</kbd> / <kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">End</kbd></td>
+                                <td class="py-2.5 px-4">Geçerli ayın ilk veya son gününe doğrudan atlar.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function getDpInst(id) {
+        return window.Panoptes?.DatePicker?.instances?.get(id);
+    }
+
+    let isDpEnabled = true;
+    function toggleDatePickerEnable() {
+        const inst = getDpInst('dp_api_demo');
+        if (!inst) return;
+        isDpEnabled = !isDpEnabled;
+        inst.enable(isDpEnabled);
+        const btn = document.getElementById('btnToggleDpEnable');
+        if (btn) btn.textContent = isDpEnabled ? '.enable(false)' : '.enable(true)';
+    }
+
+    function logDpEvent(msg) {
+        const log = document.getElementById('eventLogDp');
+        if (!log) return;
+        const time = new Date().toLocaleTimeString();
+        const div = document.createElement('div');
+        div.innerHTML = `<span class="text-slate-600">[${time}]</span> ${msg}`;
+        log.prepend(div);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const evEl = document.getElementById('dp_events_demo');
+        if (evEl) {
+            evEl.addEventListener('change', function(e) {
+                const val = e.detail?.value || evEl.querySelector('input')?.value || '';
+                logDpEvent(`Olay: <strong class="text-blue-400">change</strong> -&gt; Seçilen Tarih: <span class="text-emerald-400 font-semibold">"${val}"</span>`);
+            });
+            const inputEl = evEl.querySelector('input');
+            if (inputEl) {
+                inputEl.addEventListener('focus', function() {
+                    logDpEvent(`Olay: <strong class="text-indigo-400">focus</strong> -&gt; Giriş alanına odaklanıldı`);
+                });
+            }
+        }
+    });
+</script>

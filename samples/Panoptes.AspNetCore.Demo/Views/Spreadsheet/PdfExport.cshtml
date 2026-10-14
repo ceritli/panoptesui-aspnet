@@ -1,0 +1,20 @@
+@model Panoptes.AspNetCore.Demo.Controllers.SpreadsheetPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <div class="flex flex-wrap gap-2">
+            <button type="button" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition" onclick="pssSheet().exportPdf()">PDF olarak aktar (yazdır)</button>
+        </div>
+        <panoptes-spreadsheet id="sheet" sheets="@Model.Sheets" height="460" file-name="Calisanlar" on-event="pssOnEvent" />
+        <p class="text-xs text-slate-500 leading-relaxed">Açılan pencerede hedef olarak <b>PDF olarak kaydet</b> seçin. Çıktı yalnızca etkin sayfadaki kullanılan aralığı içerir; ikinci sayfaya geçip tekrar deneyebilirsiniz.</p>
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+}

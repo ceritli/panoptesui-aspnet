@@ -1,0 +1,147 @@
+@model List<Panoptes.AspNetCore.Models.DropDownTreeItemModel>
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "DropDownTree - Icons & Images" : "DropDownTree - İkonlar ve Resimli Düğümler (Images)";
+
+    var personnelTree = new List<Panoptes.AspNetCore.Models.DropDownTreeItemModel>
+    {
+        new()
+        {
+            Id = "grp_exec",
+            Value = "exec",
+            Text = isEn ? "Executive Board & C-Level" : "Yönetim Kurulu & C-Level",
+            Icon = "folder",
+            Expanded = true,
+            Children = new List<Panoptes.AspNetCore.Models.DropDownTreeItemModel>
+            {
+                new() { Id = "u1", Value = "u1", Text = isEn ? "Alex Sanders - Chief Executive Officer (CEO)" : "Ali Koçer - Genel Müdür (CEO)", ImageUrl = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80", Badge = "CEO", BadgeColor = "purple" },
+                new() { Id = "u2", Value = "u2", Text = isEn ? "Sarah Jenkins - Chief Technology Officer (CTO)" : "Selin Yılmaz - Teknoloji Lideri (CTO)", ImageUrl = "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&auto=format&fit=crop&q=80", Badge = "CTO", BadgeColor = "blue" }
+            }
+        },
+        new()
+        {
+            Id = "grp_dev",
+            Value = "dev",
+            Text = isEn ? "Engineering & Product Leads" : "Mühendislik & Tasarım Liderleri",
+            Icon = "folder",
+            Expanded = true,
+            Children = new List<Panoptes.AspNetCore.Models.DropDownTreeItemModel>
+            {
+                new() { Id = "u3", Value = "u3", Text = isEn ? "David Miller - Principal Software Architect" : "Ahmet Yılmaz - Kıdemli Yazılım Mimarı", ImageUrl = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80", Badge = isEn ? "Architect" : "Mimar", BadgeColor = "emerald" },
+                new() { Id = "u4", Value = "u4", Text = isEn ? "Emily Watson - Head of Design (UI/UX)" : "Ayşe Çelik - UI/UX Tasarım Direktörü", ImageUrl = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&auto=format&fit=crop&q=80", Badge = isEn ? "Design" : "Tasarım", BadgeColor = "rose" },
+                new() { Id = "u5", Value = "u5", Text = isEn ? "Marcus Cole - Mobile Team Lead" : "Can Öztürk - Mobil Uygulama Lideri", ImageUrl = "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&auto=format&fit=crop&q=80", Badge = isEn ? "Mobile" : "Mobil", BadgeColor = "amber" }
+            }
+        }
+    };
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/DropDownTree" : "/DropDownTree")" class="hover:text-blue-600 transition">DropDownTree</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">@(isEn ? "Images & Avatars" : "İkonlar & Resimler")</span>
+    </nav>
+
+    <!-- Top Navigation Bar between 15 examples -->
+    @await Html.PartialAsync("_DropDownTreeNav")
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "Icons & Avatar Images" : "İkonlar ve Resimli Düğümler (Images)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-pink-50 text-pink-700 border border-pink-200">
+                    Icons & Image Avatars
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Enrich tree nodes with circular profile photo avatars, SVG icon glyphs, and contextual badge pills."
+                    : "Ağaç düğümlerine özel SVG sistem ikonları veya gerçek personel profil fotoğrafları/resim URL'leri ekleyebilirsiniz.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-pink-50 text-pink-700 border border-pink-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ ImageUrl & SVG Icons
+            </span>
+        </div>
+    </div>
+
+    <!-- Live Showcase Card -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "7. Profile Avatar Personnel Selector" : "7. Profil Fotoğraflı Personel Seçici")</h2>
+            <p class="text-xs text-slate-500 mt-1">
+                @(isEn 
+                    ? "Each item uses the ImageUrl property to render team avatars alongside role badges. The chosen selection shows the avatar in the main trigger input."
+                    : "Her düğümde ImageUrl özelliği ile personel avatarları ve unvan rozetleri listelenir. Seçilen kişi kutuda avatarı ile birlikte gösterilir.")
+            </p>
+        </div>
+
+        <div class="max-w-md space-y-2">
+            <label class="block text-xs font-bold text-slate-700">@(isEn ? "Select Lead / Manager" : "Proje Yöneticisi / Sorumlu Seçiniz")</label>
+            <panoptes-dropdowntree id="ddt_images_demo"
+                                  items="@personnelTree"
+                                  placeholder="@(isEn ? "Select personnel..." : "Personel veya yönetici seçin...")"
+                                  value="u3"
+                                  dropdown-width="440px">
+            </panoptes-dropdowntree>
+            <span class="text-[11px] text-slate-400">
+                @(isEn ? "Selected: David Miller (Principal Software Architect)." : "Seçili: Ahmet Yılmaz (Kıdemli Yazılım Mimarı).")
+            </span>
+        </div>
+    </div>
+
+    <!-- Feature Description Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Avatar Masking & Aspect" : "Dairesel Maskeleme")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Avatars are automatically clipped into perfect circles with fallback initials if the image fails to load."
+                    : "Resimler otomatik olarak dairesel kırpılır, yükleme hatasında zarif harf başharfleri devreye girer.")
+            </div>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Contextual Role Badges" : "Bağlamsal Rozetler (Badges)")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Display title pills like CEO, CTO, Architect with custom badge colors (purple, blue, emerald)."
+                    : "CEO, CTO veya Mimar gibi unvan rozetlerini renk kodları ile öğe sağında şık bir şekilde sunun.")
+            </div>
+        </div>
+    </div>
+
+    <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+    <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                    @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                </span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-dropdowntree id="ddt_images_demo"
+                       items="@@personnelTree"
+                       placeholder="@(isEn ? "Select personnel..." : "Personel seçin...")"
+                       value="u3"
+                       dropdown-width="440px"&gt;
+&lt;/panoptes-dropdowntree&gt;</code></pre>
+        </div>
+    </div>
+</div>

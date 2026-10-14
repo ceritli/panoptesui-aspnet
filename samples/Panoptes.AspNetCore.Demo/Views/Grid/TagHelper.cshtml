@@ -1,0 +1,135 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    string p = DemoTranslations.Prefix(isEn);
+    ViewData["Title"] = "Data Grid - TagHelper Sözdizimi";
+    ViewData["ActiveTab"] = "TagHelper";
+}
+
+<div class="space-y-6">
+    <partial name="_GridNav" />
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">TagHelper Mimarisi ve Sözdizimi</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                    ASP.NET Core TagHelper
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                Deklaratif <code class="text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded">&lt;panoptes-grid&gt;</code> TagHelper bileşenleri. C# Razor sayfalarında HTML dostu, okunabilir ve temiz bileşen tanımı sunar.
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold">
+                @(isEn ? "✓ Production Ready" : "✓ Tam Sürüm Hazır")
+            </span>
+        </div>
+    </div>
+
+    <!-- Live Grid Preview -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <span>⚡ &lt;panoptes-grid&gt; ile Oluşturulan Canlı Grid</span>
+            </h2>
+            <span class="text-xs text-slate-400">Sunucu tarafı EF Core verileri ile bağlanmış deklaratif TagHelper</span>
+        </div>
+
+        <panoptes-grid id="grid_taghelper"
+                       page-size="7"
+                       page-sizes="5,7,10,20"
+                       sortable="true"
+                       filterable="true"
+                       groupable="true"
+                       class="shadow-xs">
+            <panoptes-grid-datasource url="/api/products"
+                                      create-url="/api/products/create"
+                                      update-url="/api/products/update"
+                                      delete-url="/api/products/delete" />
+            <panoptes-grid-columns>
+                <panoptes-grid-column selectable="true" width="50px" />
+                <panoptes-grid-column field="Id" title="#" width="60px" editable="false" />
+                <panoptes-grid-column field="Name" title="@(isEn ? "Product Name" : "Ürün Adı")" width="220px" editor-type="text" />
+                <panoptes-grid-column field="Category" title="@(isEn ? "Category" : "Kategori")" width="140px" editor-type="select" editor-options="Elektronik, Giyim, Kitap, Kozmetik, Aksesuar, Spor" />
+                <panoptes-grid-column field="Country" title="@(isEn ? "Country" : "Ülke")" width="130px" format="country" />
+                <panoptes-grid-column field="Price" title="Birim Fiyat" width="130px" format="currency" editor-type="number" />
+                <panoptes-grid-column field="Stock" title="@(isEn ? "Stock" : "Stok")" width="90px" editor-type="number" />
+                <panoptes-grid-column field="CustomerRating" title="Puan" width="120px" format="stars" />
+                <panoptes-grid-column field="TargetSales" title="Hedef Satış" width="140px" format="sparkline" />
+            </panoptes-grid-columns>
+        </panoptes-grid>
+    </div>
+
+    <!-- Comparison & Syntax Documentation -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Panoptes TagHelper Syntax -->
+        <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+            <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                        @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                    </span>
+                </div>
+                <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+                </button>
+            </div>
+            <div class="panoptes-code-viewer flex-1">
+                <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-grid id="grid"
+               page-size="10"
+               page-sizes="5,10,20,50"
+               sortable="true"
+               filterable="true"
+               groupable="true"&gt;
+    &lt;panoptes-grid-datasource url="/api/products"
+                              create-url="/api/products/create"
+                              update-url="/api/products/update"
+                              delete-url="/api/products/delete" /&gt;
+    &lt;panoptes-grid-columns&gt;
+        &lt;panoptes-grid-column selectable="true" width="50px" /&gt;
+        &lt;panoptes-grid-column field="Name" title="@(isEn ? "Product Name" : "Ürün Adı")" /&gt;
+        &lt;panoptes-grid-column field="Category" title="@(isEn ? "Category" : "Kategori")" /&gt;
+        &lt;panoptes-grid-column field="Price" title="@(isEn ? "Price" : "Fiyat")" format="currency" /&gt;
+        &lt;panoptes-grid-column field="CustomerRating" title="Puan" format="stars" /&gt;
+        &lt;panoptes-grid-column field="TargetSales" title="Hedef" format="sparkline" /&gt;
+    &lt;/panoptes-grid-columns&gt;
+&lt;/panoptes-grid&gt;</code></pre>
+            </div>
+        </div>
+
+        <!-- C# Backend Controller -->
+        <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+            <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-emerald-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                        @(isEn ? "ASP.NET Core Controller (C#)" : "ASP.NET Core Controller (C#)")
+                    </span>
+                </div>
+                <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+                </button>
+            </div>
+            <div class="panoptes-code-viewer flex-1">
+                <pre class="panoptes-raw-code hidden"><code>[HttpPost]
+public async Task&lt;IActionResult&gt; Products_Read([FromBody] DataSourceRequest request)
+{
+    var result = await _db.Products.ToDataSourceResultAsync(request);
+    return Json(result);
+}
+
+[HttpPost]
+public async Task&lt;IActionResult&gt; Products_Update([FromBody] Product product)
+{
+    _db.Products.Update(product);
+    await _db.SaveChangesAsync();
+    return Json(product);
+}</code></pre>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,145 @@
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "TileLayout - 2D Resizing" : "TileLayout - 2D Yeniden Boyutlandırma (Resizing)";
+    ViewData["ActiveTab"] = "Resizing";
+}
+
+<div class="space-y-6">
+    <partial name="_TileLayoutNav" />
+
+    <!-- Info Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight mb-2">@(isEn ? "2-Dimensional Grid Resizing" : "2 Boyutlu Izgara Ölçekleme (2D Resizing)")</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            @(isEn ? "With the resize handle located at the bottom-right corner of each tile, users can dynamically expand or shrink tiles both horizontally (col-span) and vertically (row-span). Tile dimensions automatically snap to CSS Grid cells with a live size badge." : "Kartların sağ alt köşesinde bulunan boyutlandırma tutamacı sayesinde kullanıcılar kartı hem yatayda (sütun genişliği - col-span) hem de dikeyde (satır yüksekliği - row-span) dinamik olarak büyütebilir veya küçültebilir. İşlem sırasında kart boyutları otomatik olarak arka plandaki CSS Grid hücrelerine hizalanır (snap-to-grid) ve anlık boyut rozeti (örn: 2 x 1) gösterilir.")
+        </p>
+    </div>
+
+    <!-- Live Controls & Demo -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+        <!-- Izgara Ayarları -->
+        <div class="flex flex-wrap items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <div class="flex items-center gap-2">
+                <label class="text-xs font-bold text-slate-700">@(isEn ? "Columns:" : "Sütun Sayısı:")</label>
+                <select id="colsSelect" onchange="changeColumns(this.value)" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white">
+                    <option value="2">@(isEn ? "2 Columns" : "2 Sütun")</option>
+                    <option value="3" selected>@(isEn ? "3 Columns" : "3 Sütun")</option>
+                    <option value="4">@(isEn ? "4 Columns" : "4 Sütun")</option>
+                </select>
+            </div>
+            <div class="flex items-center gap-2">
+                <label class="text-xs font-bold text-slate-700">@(isEn ? "Row Height:" : "Satır Yüksekliği:")</label>
+                <select id="rowHeightSelect" onchange="changeRowHeight(this.value)" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white">
+                    <option value="140px">140px (@(isEn ? "Compact" : "Kompakt"))</option>
+                    <option value="180px" selected>180px (@(isEn ? "Normal" : "Normal"))</option>
+                    <option value="230px">230px (@(isEn ? "Spacious" : "Geniş"))</option>
+                </select>
+            </div>
+            <div class="text-xs text-indigo-600 font-semibold ml-auto flex items-center gap-1.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>@(isEn ? "Try dragging the resize handle at the bottom-right corner" : "Kartın sağ altındaki tutamacı sürükleyerek deneyin")</span>
+            </div>
+        </div>
+
+        <panoptes-tilelayout id="resizeLayout" columns="3" row-height="180px" gap="16px" reorderable="true" resizable="true">
+            <panoptes-tilelayout-item id="resize-1" header-text="Boyutlandırılabilir Kart 1" col-span="1" row-span="1">
+                <div class="flex flex-col justify-between h-full p-2">
+                    <p class="text-xs text-slate-600">Bu kartın boyutunu sağ alttaki tutamaçtan hem sağa hem aşağı doğru büyütebilirsiniz.</p>
+                    <div class="p-2 rounded-xl bg-indigo-50 text-[11px] font-mono text-indigo-700 border border-indigo-100 flex justify-between">
+                        <span>col-span: <b id="span-col-1">1</b></span>
+                        <span>row-span: <b id="span-row-1">1</b></span>
+                    </div>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="resize-2" header-text="Geniş Başlangıç Kartı 2" col-span="2" row-span="1">
+                <div class="flex flex-col justify-between h-full p-2">
+                    <p class="text-xs text-slate-600">Başlangıçta 2 sütun genişliğinde tanımlanmış kart.</p>
+                    <div class="p-2 rounded-xl bg-purple-50 text-[11px] font-mono text-purple-700 border border-purple-100 flex justify-between">
+                        <span>col-span: <b id="span-col-2">2</b></span>
+                        <span>row-span: <b id="span-row-2">1</b></span>
+                    </div>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="resize-3" header-text="Kare Kart 3" col-span="2" row-span="2">
+                <div class="flex flex-col justify-between h-full p-2">
+                    <p class="text-xs text-slate-600">Başlangıçta 2x2 boyutlarında geniş alan kaplayan kart.</p>
+                    <div class="p-2 rounded-xl bg-emerald-50 text-[11px] font-mono text-emerald-700 border border-emerald-100 flex justify-between">
+                        <span>col-span: <b id="span-col-3">2</b></span>
+                        <span>row-span: <b id="span-row-3">2</b></span>
+                    </div>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="resize-4" header-text="Sabit Boyutlu Kart (resizable=false)" col-span="1" row-span="1" resizable="false">
+                <div class="flex flex-col justify-center items-center h-full p-2 text-center">
+                    <div class="text-xl mb-1">🚫</div>
+                    <p class="text-xs font-bold text-slate-700">Boyutlandırılamaz</p>
+                    <p class="text-[11px] text-slate-400">resizable="false"</p>
+                </div>
+            </panoptes-tilelayout-item>
+        </panoptes-tilelayout>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-tilelayout id=&quot;resizeLayout&quot; columns=&quot;3&quot; row-height=&quot;180px&quot; resizable=&quot;true&quot;&gt;
+    &lt;!-- Standart boyutlandırılabilir kart --&gt;
+    &lt;panoptes-tilelayout-item id=&quot;resize-1&quot; header-text=&quot;Kart 1&quot; col-span=&quot;1&quot; row-span=&quot;1&quot;&gt;
+        &lt;p&gt;Boyutlandırılabilir içerik&lt;/p&gt;
+    &lt;/panoptes-tilelayout-item&gt;
+
+    &lt;!-- resizable=&quot;false&quot; ile boyutlandırması kilitlenen kart --&gt;
+    &lt;panoptes-tilelayout-item id=&quot;resize-4&quot; header-text=&quot;Sabit Kart&quot; resizable=&quot;false&quot;&gt;
+        &lt;p&gt;Sabit 1x1 kutu&lt;/p&gt;
+    &lt;/panoptes-tilelayout-item&gt;
+&lt;/panoptes-tilelayout&gt;</code></pre>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tl = document.getElementById('resizeLayout');
+            if (tl) {
+                tl.addEventListener('panoptes:tilelayout:resize', (e) => {
+                    const item = e.detail.container;
+                    const colSpan = e.detail.colSpan;
+                    const rowSpan = e.detail.rowSpan;
+                    if (item.id === 'resize-1') {
+                        document.getElementById('span-col-1').textContent = colSpan;
+                        document.getElementById('span-row-1').textContent = rowSpan;
+                    } else if (item.id === 'resize-2') {
+                        document.getElementById('span-col-2').textContent = colSpan;
+                        document.getElementById('span-row-2').textContent = rowSpan;
+                    } else if (item.id === 'resize-3') {
+                        document.getElementById('span-col-3').textContent = colSpan;
+                        document.getElementById('span-row-3').textContent = rowSpan;
+                    }
+                });
+            }
+        });
+
+        function changeColumns(val) {
+            const tl = window.Panoptes.TileLayout.get('resizeLayout');
+            if (tl) tl.setColumns(val);
+        }
+
+        function changeRowHeight(val) {
+            const tl = window.Panoptes.TileLayout.get('resizeLayout');
+            if (tl) tl.setRowHeight(val);
+        }
+    </script>
+}

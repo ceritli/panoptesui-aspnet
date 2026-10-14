@@ -1,0 +1,530 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Dialog (Alert, Confirm & Prompt) - Panoptes Corporate UI" : "Dialog (Uyarı & Onay Penceresi) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/Dialog" class="hover:text-blue-600 transition">@(isEn ? "Popups & Overlays" : "Açılır Pencereler")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Dialog</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Dialog @(isEn ? "(Alert, Confirm & Prompt)" : "(Uyarı & Onay Penceresi)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-dialog&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "Backdrop modal dialog engine for Alert, Confirm, Prompt and custom templates with focus trapping, customizable action buttons and keyboard navigation." : "Alert, Confirm ve Prompt senaryoları için arka plan karartmalı (modal), özel butonlu ve odak hapisli (focus trap) diyalog penceresi.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Features & Demos" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">4</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">3</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        <!-- DEMO 1: Standart Alert (Bilgi Modalı) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                        @(isEn ? "1. Standard Alert (Information Modal)" : "1. Standart Alert (Bilgilendirme Modalı)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Single-button informational dialog, dismissible via ESC key or OK button." : "Tek butonlu, bilgi verici, ESC veya Tamam butonu ile kapatılabilen modal.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">Panoptes.alert(...)</span>
+            </div>
+
+            <div class="p-6">
+                <div class="flex flex-wrap items-center gap-3">
+                    <button type="button" onclick="showAlertDemo()" class="px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition shadow-xs flex items-center gap-2 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        @(isEn ? "Open Alert Modal" : "Bilgi Alert Modalı Aç")
+                    </button>
+                </div>
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript API</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>Panoptes.alert('Sistem güncellemeleri bu gece saat 01:00 ile 03:00 arasında gerçekleştirilecektir.', 'Sistem Bilgisi')
+    .then(() =&gt; {
+        console.log('Kullanıcı bildirimi okudu ve kapattı.');
+    });</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 2: Confirm (Onay / Vazgeç Diyaloğu) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+                        @(isEn ? "2. Confirm (Two-Choice Confirmation / Cancellation Dialog)" : "2. Confirm (İki Seçenekli Onay / Vazgeç Diyaloğu)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Asynchronous Promise dialog resolving to true on confirmation or false on cancellation / ESC." : "Kullanıcı onay verirse true, vazgeçerse veya ESC basarsa false döndüren asenkron Promise yapısı.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-amber-50 text-amber-700 px-2 py-1 rounded font-medium border border-amber-100">Panoptes.confirm(...)</span>
+            </div>
+
+            <div class="p-6">
+                <div class="flex flex-wrap items-center gap-3">
+                    <button type="button" onclick="showStandardConfirm()" class="px-4 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg transition shadow-xs flex items-center gap-2 cursor-pointer">
+                        <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        @(isEn ? "Standard Change Confirmation" : "Standart Değişiklik Onayı")
+                    </button>
+                    <button type="button" onclick="showDangerConfirm()" class="px-4 py-2 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition shadow-xs flex items-center gap-2 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        @(isEn ? "Danger Deletion Confirmation" : "Tehlikeli Kayıt Silme Onayı")
+                    </button>
+                    <span id="confirmResultBadge" class="text-xs font-mono text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+                        @(isEn ? "Result: No action yet" : "Sonuç: Henüz eylem yapılmadı")
+                    </span>
+                </div>
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Async Confirm API</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>const isConfirmed = await Panoptes.confirm(
+    'Bu kaydı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.',
+    'Kayıt Silinecek',
+    { danger: true, okText: 'Evet, Sil', cancelText: 'Vazgeç' }
+);
+
+if (isConfirmed) {
+    Panoptes.notify.success('Kayıt silindi.');
+} else {
+    Panoptes.notify.info('İşlem iptal edildi.');
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 3: Prompt (Metin Giriş Modalı) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block"></span>
+                        @(isEn ? "3. Prompt (Text Input Modal)" : "3. Prompt (Kullanıcıdan Metin Girişi Alma Modalı)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Promise-based prompt dialog prompting users for a single-line string input or notes." : "Kullanıcıdan hızlıca tek satırlık metin, not veya isim girmesini talep eden Promise tabanlı diyalog kutusu.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-indigo-50 text-indigo-700 px-2 py-1 rounded font-medium border border-indigo-100">Panoptes.prompt(...)</span>
+            </div>
+
+            <div class="p-6">
+                <div class="flex flex-wrap items-center gap-3">
+                    <button type="button" onclick="showPromptDemo()" class="px-4 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition shadow-xs flex items-center gap-2 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                        @(isEn ? "Ask New Folder Name (Prompt)" : "Yeni Klasör Adı Sor (Prompt)")
+                    </button>
+                    <span id="promptResultBadge" class="text-xs font-mono text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+                        @(isEn ? "Entered Value: -" : "Girilen Değer: -")
+                    </span>
+                </div>
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Prompt Modal API</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>const folderName = await Panoptes.prompt(
+    'Oluşturulacak yeni klasörün adını giriniz:',
+    'Yeni Klasör',
+    'Klasör Oluştur'
+);
+
+if (folderName) {
+    Panoptes.notify.success(`'${folderName}' klasörü oluşturuldu.`);
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 4: Declarative Razor TagHelper & Özel İçerik -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                        @(isEn ? "4. Declarative Razor TagHelper Dialog Definition" : "4. Declarative Razor TagHelper ile Diyalog Tanımlama")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Triggering rich HTML/Razor dialog templates defined directly on the page via action buttons." : "Sayfada HTML/Razor şablonu olarak tanımlanan zengin içerikli diyalogu buton ile tetikleme.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">&lt;panoptes-dialog&gt;</span>
+            </div>
+
+            <div class="p-6">
+                <panoptes-dialog id="myCustomDialog" title="@(isEn ? "User License Agreement" : "Kullanıcı Lisans Sözleşmesi")" ok-text="@(isEn ? "I Accept" : "Kabul Ediyorum")" cancel-text="@(isEn ? "Decline" : "Reddet")" width="500px">
+                    <div class="space-y-3 text-xs text-slate-600">
+                        <p class="font-semibold text-slate-800">@(isEn ? "Panoptes Corporate UI Terms of Use" : "Panoptes Kurumsal UI Kullanım Şartları")</p>
+                        <p>
+                            @(isEn ? "This software package is optimized for enterprise applications and subject to license terms. Distribution to unauthorized third parties is prohibited." : "Bu yazılım paketi kurumsal uygulamalar için optimize edilmiş olup, lisans şartlarına tabi olarak kullanılabilir. Üçüncü taraflarla paylaşılması ve izinsiz çoğaltılması yasaktır.")
+                        </p>
+                        <div class="p-2.5 bg-slate-100 rounded-lg text-slate-500 text-[11px]">
+                            @(isEn ? "Please make sure you have read and understood all clauses before proceeding." : "Lütfen devam etmeden önce tüm maddeleri okuduğunuzdan ve anladığınızdan emin olunuz.")
+                        </div>
+                    </div>
+                </panoptes-dialog>
+
+                <button type="button" onclick="Panoptes.Dialog.open('myCustomDialog')" class="px-4 py-2 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition shadow-xs flex items-center gap-2 cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    @(isEn ? "Open Agreement Modal (TagHelper)" : "Sözleşme Modalı Aç (TagHelper)")
+                </button>
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-dialog id="myCustomDialog" title="Lisans Sözleşmesi" ok-text="Kabul Et" cancel-text="Reddet" width="500px"&gt;
+    &lt;div class="p-2"&gt;
+        &lt;p&gt;Kurumsal kullanım şartları ve detaylar...&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/panoptes-dialog&gt;
+
+&lt;button onclick="Panoptes.Dialog.open('myCustomDialog')"&gt;Aç&lt;/button&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TagHelper Parametre & Nitelik Referans Tablosu -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    @(isEn ? "TagHelper Parameter & Attribute Reference" : "TagHelper Parametre ve Nitelik Referansı")
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    @(isEn ? "Razor TagHelper attributes and API methods supported by the Dialog component." : "Dialog bileşeni tarafından desteklenen Razor TagHelper nitelikleri ve API metotları.")
+                </p>
+            </div>
+            <div class="p-6">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border border-slate-200 rounded-lg">
+                        <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">@(isEn ? "Tag / Attribute" : "Etiket / Nitelik")</th>
+                                <th class="p-3">@(isEn ? "Type" : "Tip")</th>
+                                <th class="p-3">@(isEn ? "Default" : "Varsayılan")</th>
+                                <th class="p-3">@(isEn ? "Description" : "Açıklama")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-600">
+                            <tr>
+                                <td class="p-3 font-mono font-bold text-blue-600">&lt;panoptes-dialog&gt;</td>
+                                <td class="p-3 font-mono text-slate-500">TagHelper</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">@(isEn ? "Modal dialog container." : "Modal diyalog kapsayıcısı.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">title</td>
+                                <td class="p-3 font-mono text-slate-500">string</td>
+                                <td class="p-3 font-mono">null</td>
+                                <td class="p-3">@(isEn ? "Dialog title." : "Diyalog başlığı.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">type</td>
+                                <td class="p-3 font-mono text-slate-500">string</td>
+                                <td class="p-3 font-mono">"alert"</td>
+                                <td class="p-3">@(isEn ? "Dialog type: \"alert\", \"confirm\", \"prompt\"." : "Diyalog türü: \"alert\", \"confirm\", \"prompt\".")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">ok-text</td>
+                                <td class="p-3 font-mono text-slate-500">string</td>
+                                <td class="p-3 font-mono">"Tamam"</td>
+                                <td class="p-3">@(isEn ? "Confirmation button text." : "Onay butonu metni.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">cancel-text</td>
+                                <td class="p-3 font-mono text-slate-500">string</td>
+                                <td class="p-3 font-mono">"İptal"</td>
+                                <td class="p-3">@(isEn ? "Cancellation button text." : "İptal butonu metni.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">width</td>
+                                <td class="p-3 font-mono text-slate-500">string</td>
+                                <td class="p-3 font-mono">"440px"</td>
+                                <td class="p-3">@(isEn ? "Maximum dialog modal width." : "Maksimum modal genişliği.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">closable</td>
+                                <td class="p-3 font-mono text-slate-500">bool</td>
+                                <td class="p-3 font-mono">true</td>
+                                <td class="p-3">@(isEn ? "Allows close button and click-outside dismissal." : "Sağ üst kapatma butonu ve dışarı tıklayarak kapatma izni.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "TagHelper Properties & Parameters" : "TagHelper Özellikleri & Parametreleri")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-dialog&gt; @(isEn ? "all supported C# and HTML attributes." : "bileşeninin desteklediği tüm C# ve HTML nitelikleri.")</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesDialogTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">@(isEn ? "Attribute" : "Özellik (Attribute)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Type (C#)" : "Tip (C#)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-6">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">@(isEn ? "Automatic" : "Otomatik")</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Component identifier." : "Bileşen kimliği.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">title</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Dialog title." : "Diyalog başlığı.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">width</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"420px"</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Dialog modal width." : "Pencere genişliği.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Standards & Keyboard Accessibility" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    @(isEn ? "Panoptes Dialog is designed for screen readers and keyboard-only users in compliance with W3C WAI-ARIA modal guidelines." : "Panoptes Dialog bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "WAI-ARIA Attributes" : "WAI-ARIA Nitelikleri")</div>
+                    <div class="text-slate-600">
+                        @(isEn ? "Carries standard role=\"dialog\" (modal). Attributes aria-modal=\"true\", aria-labelledby and aria-describedby are maintained dynamically." : "Standart role=\"dialog (modal)\" rolünü taşır. Duruma göre aria-disabled, aria-expanded, aria-selected ve aria-label nitelikleri dinamik olarak güncellenir.")
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "Focus Management" : "Odak Yönetimi (Focus Management)")</div>
+                    <div class="text-slate-600">
+                        @(isEn ? "Maintains focus trap inside modal dialog, auto-focuses primary action button upon opening and restores focus to triggering element upon close." : "Sekme sırasını doğal akışında korur (tabIndex=\"0\"). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.")
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları (Keyboard Shortcuts)")</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">@(isEn ? "Key" : "Tuş (Key)")</th>
+                                <th class="py-2.5 px-4">@(isEn ? "Function" : "İşlev (Function)")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Escape</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Cancels and closes the active dialog." : "Diyaloğu iptal eder / kapatır.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Confirms default primary action." : "Varsayılan birincil eylemi onaylar.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-dialog.js"></script>
+    <script>
+        const isEnDialog = @(isEn ? "true" : "false");
+
+        function showAlertDemo() {
+            Panoptes.alert(
+                isEnDialog ? 'System updates have completed successfully. All services are active.' : 'Sistem güncellemeleri başarıyla tamamlandı. Tüm servisler aktif durumda.',
+                isEnDialog ? 'System Update' : 'Sistem Güncellemesi'
+            );
+        }
+
+        async function showStandardConfirm() {
+            const confirmed = await Panoptes.confirm(
+                isEnDialog ? 'Do you want to save all changes?' : 'Değişiklikleri kaydetmek istiyor musunuz?',
+                isEnDialog ? 'Save Confirmation' : 'Kayıt Onayı',
+                { okText: isEnDialog ? 'Save' : 'Kaydet', cancelText: isEnDialog ? 'Cancel' : 'Vazgeç' }
+            );
+
+            const badge = document.getElementById('confirmResultBadge');
+            if (badge) {
+                if (isEnDialog) {
+                    badge.textContent = 'Result: ' + (confirmed ? 'Confirmed (true)' : 'Cancelled (false)');
+                } else {
+                    badge.textContent = 'Sonuç: ' + (confirmed ? 'Onaylandı (true)' : 'Vazgeçildi (false)');
+                }
+                badge.className = 'text-xs font-mono px-3 py-1.5 rounded-lg border ' + (confirmed ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200');
+            }
+        }
+
+        async function showDangerConfirm() {
+            const confirmed = await Panoptes.confirm(
+                isEnDialog ? 'The selected 3 records will be permanently deleted. This cannot be undone!' : 'Seçilen 3 adet kayıt kalıcı olarak silinecektir. Bu eylem geri alınamaz!',
+                isEnDialog ? 'Delete Records' : 'Kayıtları Sil',
+                { danger: true, okText: isEnDialog ? 'Yes, Delete Permanently' : 'Evet, Kalıcı Olarak Sil', cancelText: isEnDialog ? 'Cancel' : 'İptal' }
+            );
+
+            const badge = document.getElementById('confirmResultBadge');
+            if (badge) {
+                if (isEnDialog) {
+                    badge.textContent = 'Result: ' + (confirmed ? 'Deletion Confirmed (true)' : 'Deletion Cancelled (false)');
+                } else {
+                    badge.textContent = 'Sonuç: ' + (confirmed ? 'Silme Onaylandı (true)' : 'Silme İptal Edildi (false)');
+                }
+                badge.className = 'text-xs font-mono px-3 py-1.5 rounded-lg border ' + (confirmed ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-slate-100 text-slate-600 border-slate-200');
+            }
+        }
+
+        async function showPromptDemo() {
+            const result = await Panoptes.prompt(
+                isEnDialog ? 'Enter the name of the new project folder:' : 'Yeni oluşturulacak proje klasörünün adını giriniz:',
+                'Finance-Reports-2026',
+                isEnDialog ? 'New Folder' : 'Yeni Klasör'
+            );
+
+            const badge = document.getElementById('promptResultBadge');
+            if (badge) {
+                if (result !== null) {
+                    badge.textContent = isEnDialog ? `Entered Value: "${result}"` : `Girilen Değer: "${result}"`;
+                    badge.className = 'text-xs font-mono px-3 py-1.5 rounded-lg border bg-blue-50 text-blue-700 border-blue-200';
+                } else {
+                    badge.textContent = isEnDialog ? 'Input Cancelled' : 'Giriş İptal Edildi';
+                    badge.className = 'text-xs font-mono px-3 py-1.5 rounded-lg border bg-slate-100 text-slate-600 border-slate-200';
+                }
+            }
+        }
+    </script>
+}

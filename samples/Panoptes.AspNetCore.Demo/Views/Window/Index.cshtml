@@ -1,0 +1,461 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Window (Draggable & Resizable Window) - Panoptes Corporate UI" : "Window (Taşınabilir & Boyutlandırılabilir Pencere) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/Window" class="hover:text-blue-600 transition">@(isEn ? "Popups & Overlays" : "Açılır Pencereler")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Window</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Window @(isEn ? "(Draggable & Resizable Window)" : "(Taşınabilir & Boyutlandırılabilir Pencere)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-window&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "Desktop OS-style floating window component with free dragging, smooth resizing, maximize/restore actions and non-modal multitasking support." : "Masaüstü işletim sistemi tarzında serbestçe taşınabilir (drag), yeniden boyutlandırılabilir ve tam ekran yapılabilir kayar pencere bileşeni.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Features & Demos" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">4</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">4</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        <!-- DEMO 1: Standart Sürüklenebilir & Boyutlandırılabilir Pencere -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                        @(isEn ? "1. Standard Draggable & Resizable Modal Window" : "1. Standart Sürüklenebilir & Boyutlandırılabilir Modal Pencere")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Drag by titlebar anywhere on the viewport, and resize freely via the bottom-right corner grip." : "Başlığından tutup ekranda istediğiniz yere taşıyabilir, sağ alt köşeden fareyle tutarak boyutlandırabilirsiniz.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">&lt;panoptes-window draggable="true" resizable="true"&gt;</span>
+            </div>
+
+            <div class="p-6">
+                <panoptes-window id="winStandardDemo" title="@(isEn ? "User Profile Details" : "Kullanıcı Profili Detayları")" width="560px" height="380px" modal="true">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 pb-4 border-b border-slate-100">
+                            <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-base">
+                                FC
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-800">Fatih Ceritli</h4>
+                                <p class="text-xs text-slate-500">@(isEn ? "Senior Software Architect / System Admin" : "Kıdemli Yazılım Mimarı / Sistem Yöneticisi")</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div class="p-2.5 bg-slate-50 rounded-lg">
+                                <span class="text-slate-400 block text-[10px] uppercase font-bold">@(isEn ? "Email" : "E-Posta")</span>
+                                <span class="text-slate-700 font-medium">fatih&#64;panoptes.dev</span>
+                            </div>
+                            <div class="p-2.5 bg-slate-50 rounded-lg">
+                                <span class="text-slate-400 block text-[10px] uppercase font-bold">@(isEn ? "Role" : "Rol")</span>
+                                <span class="text-slate-700 font-medium">Administrator</span>
+                            </div>
+                            <div class="p-2.5 bg-slate-50 rounded-lg">
+                                <span class="text-slate-400 block text-[10px] uppercase font-bold">@(isEn ? "Last Login" : "Son Giriş")</span>
+                                <span class="text-slate-700 font-medium">@(isEn ? "Today, 13:45" : "Bugün, 13:45")</span>
+                            </div>
+                            <div class="p-2.5 bg-slate-50 rounded-lg">
+                                <span class="text-slate-400 block text-[10px] uppercase font-bold">@(isEn ? "Status" : "Durum")</span>
+                                <span class="text-emerald-600 font-bold">● @(isEn ? "Active" : "Aktif")</span>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-amber-50 rounded-lg border border-amber-200 text-amber-800 text-[11px]">
+                            <strong>@(isEn ? "Tip:" : "İpucu:")</strong> @(isEn ? "You can drag the window header or resize it from the bottom-right grip handle." : "Pencere başlığını tutup sürükleyebilir veya sağ alt köşeden büyütebilirsiniz.")
+                        </div>
+                    </div>
+                </panoptes-window>
+
+                <button type="button" onclick="Panoptes.Window.open('winStandardDemo')" class="px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition shadow-xs flex items-center gap-2 cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                    @(isEn ? "Open Modal Window" : "Modal Pencereyi Aç")
+                </button>
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-window id="winStandardDemo" title="Kullanıcı Profili" width="560px" height="380px" modal="true" draggable="true" resizable="true"&gt;
+    &lt;div class="p-4"&gt;
+        &lt;h4&gt;İçerik Başlığı&lt;/h4&gt;
+        &lt;p&gt;Pencere gövde içeriği...&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/panoptes-window&gt;
+
+&lt;button onclick="Panoptes.Window.open('winStandardDemo')"&gt;Aç&lt;/button&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 2: Non-Modal (Serbest Masaüstü Penceresi) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block"></span>
+                        @(isEn ? "2. Non-Modal (Floating Non-Blocking Desktop Window)" : "2. Non-Modal (Serbest Sayfa Üstü Masaüstü Penceresi)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "With modal=\"false\", no dark backdrop is rendered. Users can interact freely with the background page while the window remains open." : "modal=\"false\" olduğunda arka plan karartılmaz (backdrop yok); pencere açıkken sayfa ile etkileşime devam edebilirsiniz.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-indigo-50 text-indigo-700 px-2 py-1 rounded font-medium border border-indigo-100">modal="false"</span>
+            </div>
+
+            <div class="p-6">
+                <panoptes-window id="winNonModalDemo" title="@(isEn ? "Live Monitoring & Log Stream" : "Canlı İzleme & Log Monitörü")" width="480px" height="300px" modal="false">
+                    <div class="space-y-3 font-mono text-[11px]">
+                        <div class="text-slate-400 pb-1 border-b border-slate-100 font-sans font-semibold text-xs flex items-center justify-between">
+                            <span>@(isEn ? "System Logs (Live Stream)" : "Sistem Logları (Canlı Akış)")</span>
+                            <span class="text-emerald-600">● @(isEn ? "Connected" : "Bağlandı")</span>
+                        </div>
+                        <div class="p-2 bg-slate-900 text-slate-200 rounded-lg h-36 overflow-y-auto space-y-1">
+                            <div><span class="text-slate-500">[13:40:01]</span> GET /api/v1/users 200 OK (12ms)</div>
+                            <div><span class="text-slate-500">[13:40:15]</span> POST /api/v1/auth/login 200 OK (45ms)</div>
+                            <div><span class="text-slate-500">[13:41:02]</span> WebSocket connection established.</div>
+                            <div class="text-emerald-400"><span class="text-slate-500">[13:42:00]</span> Cache synchronization complete.</div>
+                        </div>
+                        <p class="text-slate-500 text-[10px] font-sans">
+                            @(isEn ? "While this window is active, you can interact with background buttons or forms freely." : "Bu pencere açıkken arkadaki butonlara tıklayabilir veya formu doldurabilirsiniz.")
+                        </p>
+                    </div>
+                </panoptes-window>
+
+                <button type="button" onclick="Panoptes.Window.open('winNonModalDemo')" class="px-4 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg transition shadow-xs flex items-center gap-2 cursor-pointer">
+                    <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                    @(isEn ? "Open Non-Modal Window (Unblocked Page)" : "Non-Modal Pencereyi Aç (Arka Plan Kilitlenmez)")
+                </button>
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Non-Modal TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-window id="winNonModalDemo" title="Log Monitörü" modal="false" draggable="true"&gt;
+    &lt;div&gt;Canlı log içerikleri...&lt;/div&gt;
+&lt;/panoptes-window&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 3: Programatik JavaScript API ile Kontrol -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                        @(isEn ? "3. Programmatic JavaScript Window Control" : "3. Programatik JavaScript API ile Pencere Kontrolü")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Manage windows remotely via Panoptes.Window.open, close, center, and toggleMaximize methods." : "Panoptes.Window.open, close, center, toggleMaximize metotlarıyla pencereleri uzaktan yönetin.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">Programmatic API</span>
+            </div>
+
+            <div class="p-6">
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <button type="button" onclick="Panoptes.Window.open('winStandardDemo')" class="px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition shadow-xs cursor-pointer">
+                        @(isEn ? "Open Window (open)" : "Pencereyi Aç (open)")
+                    </button>
+                    <button type="button" onclick="Panoptes.Window.close('winStandardDemo')" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg transition shadow-xs cursor-pointer">
+                        @(isEn ? "Close Window (close)" : "Pencereyi Kapat (close)")
+                    </button>
+                    <button type="button" onclick="centerStandardWindow()" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg transition shadow-xs cursor-pointer">
+                        @(isEn ? "Center to Screen (center)" : "Ekrana Ortala (center)")
+                    </button>
+                </div>
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript API</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>const win = Panoptes.Window.getInstance('winStandardDemo');
+
+win.open();
+win.center();
+win.toggleMaximize();
+win.close();</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TagHelper Parametre & Nitelik Referans Tablosu -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    @(isEn ? "TagHelper Parameter & Attribute Reference" : "TagHelper Parametre ve Nitelik Referansı")
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    @(isEn ? "Razor TagHelper attributes supported by the Window component." : "Window bileşeni tarafından desteklenen Razor TagHelper nitelikleri.")
+                </p>
+            </div>
+            <div class="p-6">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border border-slate-200 rounded-lg">
+                        <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">@(isEn ? "Tag / Attribute" : "Etiket / Nitelik")</th>
+                                <th class="p-3">@(isEn ? "Type" : "Tip")</th>
+                                <th class="p-3">@(isEn ? "Default" : "Varsayılan")</th>
+                                <th class="p-3">@(isEn ? "Description" : "Açıklama")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-600">
+                            <tr>
+                                <td class="p-3 font-mono font-bold text-blue-600">&lt;panoptes-window&gt;</td>
+                                <td class="p-3 font-mono text-slate-500">TagHelper</td>
+                                <td class="p-3">-</td>
+                                <td class="p-3">@(isEn ? "Desktop floating modal window container." : "Masaüstü pencere modalı kapsayıcısı.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">title</td>
+                                <td class="p-3 font-mono text-slate-500">string</td>
+                                <td class="p-3 font-mono">@(isEn ? "\"Window\"" : "\"Pencere\"")</td>
+                                <td class="p-3">@(isEn ? "Titlebar header text." : "Başlık çubuğu metni.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">width / height</td>
+                                <td class="p-3 font-mono text-slate-500">string</td>
+                                <td class="p-3 font-mono">540px / 360px</td>
+                                <td class="p-3">@(isEn ? "Initial width and height dimensions." : "Başlangıç genişlik ve yükseklik ölçüsü.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">modal</td>
+                                <td class="p-3 font-mono text-slate-500">bool</td>
+                                <td class="p-3 font-mono">true</td>
+                                <td class="p-3">@(isEn ? "When true renders backdrop overlay; false allows free background interaction." : "True ise arka plana backdrop koyar; false ise sayfa serbest kalır.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">draggable</td>
+                                <td class="p-3 font-mono text-slate-500">bool</td>
+                                <td class="p-3 font-mono">true</td>
+                                <td class="p-3">@(isEn ? "Allows moving the window by dragging titlebar." : "Başlıktan tutularak ekranda taşınabilme izni.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">resizable</td>
+                                <td class="p-3 font-mono text-slate-500">bool</td>
+                                <td class="p-3 font-mono">true</td>
+                                <td class="p-3">@(isEn ? "Allows resizing window via bottom-right grip corner." : "Sağ alt köşeden boyutlandırılabilme izni.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">maximizable</td>
+                                <td class="p-3 font-mono text-slate-500">bool</td>
+                                <td class="p-3 font-mono">true</td>
+                                <td class="p-3">@(isEn ? "Fullscreen maximize / restore button and toggle feature." : "Tam ekran / geri yükleme butonu ve özelliği.")</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 pl-6">minimizable</td>
+                                <td class="p-3 font-mono text-slate-500">bool</td>
+                                <td class="p-3 font-mono">true</td>
+                                <td class="p-3">@(isEn ? "Collapse / restore into header bar feature." : "Başlık çubuğuna katlama / geri açma özelliği.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "TagHelper Properties & Parameters" : "TagHelper Özellikleri & Parametreleri")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-window&gt; @(isEn ? "all supported C# and HTML attributes." : "bileşeninin desteklediği tüm C# ve HTML nitelikleri.")</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesWindowTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">@(isEn ? "Attribute" : "Özellik (Attribute)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Type (C#)" : "Tip (C#)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-6">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">@(isEn ? "Automatic" : "Otomatik")</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Component identifier." : "Bileşen kimliği.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">title</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Window titlebar title." : "Pencere başlığı.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">draggable</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Enable dragging via titlebar." : "Başlıktan sürüklenerek taşınabilme.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">resizable</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Enable resizing from corners." : "Köşelerden boyutlandırılabilme.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Standards & Keyboard Accessibility" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    @(isEn ? "Panoptes Window component adheres to W3C WAI-ARIA guidelines for screen reader landmarks and full keyboard traversal." : "Panoptes Window bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "WAI-ARIA Attributes" : "WAI-ARIA Nitelikleri")</div>
+                    <div class="text-slate-600">
+                        @(isEn ? "Carries standard role=\"dialog\" or role=\"region\". State attributes aria-modal, aria-expanded, and aria-label are synchronized automatically." : "Standart role=\"dialog\" rolünü taşır. Duruma göre aria-disabled, aria-expanded, aria-selected ve aria-label nitelikleri dinamik olarak güncellenir.")
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "Focus Management" : "Odak Yönetimi (Focus Management)")</div>
+                    <div class="text-slate-600">
+                        @(isEn ? "Preserves logical tab sequence within window controls with high-contrast visible focus rings." : "Sekme sırasını doğal akışında korur (tabIndex=\"0\"). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.")
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları (Keyboard Shortcuts)")</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">@(isEn ? "Key" : "Tuş (Key)")</th>
+                                <th class="py-2.5 px-4">@(isEn ? "Function" : "İşlev (Function)")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Escape</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Closes active window." : "Pencereyi kapatır.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Tab</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Navigates between interactive elements inside the window." : "Pencere içindeki elemanlar arasında dolaşır.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-window.js"></script>
+    <script>
+        function centerStandardWindow() {
+            const win = Panoptes.Window.getInstance('winStandardDemo');
+            if (win) win.center();
+        }
+    </script>
+}

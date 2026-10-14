@@ -1,0 +1,117 @@
+@model List<Panoptes.AspNetCore.Models.DropDownTreeItemModel>
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "DropDownTree - Adaptive Mobile Mode" : "DropDownTree - Mobil Uyumlu Mod (Adaptive Mode)";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/DropDownTree" : "/DropDownTree")" class="hover:text-blue-600 transition">DropDownTree</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">AdaptiveMode</span>
+    </nav>
+
+    <!-- Top Navigation Bar between 15 examples -->
+    @await Html.PartialAsync("_DropDownTreeNav")
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "Adaptive Mobile Mode (Bottom-Sheet)" : "Mobil Uyumlu Mod (Adaptive Mode)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-cyan-50 text-cyan-700 border border-cyan-200">
+                    Mobile First Bottom-Sheet
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Delivers an app-like bottom-sheet modal on mobile smartphones and tablets instead of constrained floating menus, featuring touch gestures and a backdrop overlay."
+                    : "Akıllı telefon ve tablet ekranlarında masaüstü açılır pencereleri yerine modern bir Bottom-Sheet (Alttan Açılan Eylem Sayfası) deneyimi sunar. Karartmalı arka plan (backdrop), başlık çubuğu ve dokunmatik butonlar içerir.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-cyan-50 text-cyan-700 border border-cyan-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ adaptive-mode="auto"
+            </span>
+        </div>
+    </div>
+
+    <!-- Live Showcase Card -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "6. Responsive Adaptive Tree Selector" : "6. Duyarlı (Responsive) Ağaç Seçici")</h2>
+            <p class="text-xs text-slate-500 mt-1">
+                @(isEn 
+                    ? "When the viewport width drops below 768px (or on touch devices), the tree smoothly slides up from the bottom as an actionable modal sheet."
+                    : "Tarayıcı genişliği 768 pikselin altına indiğinde (veya mobil cihazlarda) açılır liste ekranın altından yukarı kayarak tam odaklanma sağlar.")
+            </p>
+        </div>
+
+        <div class="max-w-md space-y-2">
+            <label class="block text-xs font-bold text-slate-700">@(isEn ? "Select Category (Adaptive)" : "Kategori / Ürün Grubu (Adaptive)")</label>
+            <panoptes-dropdowntree id="ddt_adaptive_demo"
+                                  items="@Model"
+                                  adaptive-mode="auto"
+                                  placeholder="@(isEn ? "Select category (test on mobile)..." : "Kategori seçin (Mobilde test edin)...")"
+                                  value="laptop"
+                                  dropdown-width="380px">
+            </panoptes-dropdowntree>
+            <span class="text-[11px] text-slate-400">
+                @(isEn ? "Testing tip: Resize your browser or switch to mobile view in Developer Tools." : "Test İpucu: Tarayıcı pencerenizi daraltın veya geliştirici araçlarından mobil görünüme geçip tıklayın.")
+            </span>
+        </div>
+    </div>
+
+    <!-- Feature Description Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Native Touch Ergonomics" : "Doğal Dokunma Ergonomisi")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Larger tap targets, scroll elasticity, and single-hand thumb reachability on mobile displays."
+                    : "Mobil ekranlarda parmakla kolay tıklanabilen genişletilmiş satır yükseklikleri ve tek elle kullanım rahatlığı.")
+            </div>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Dismissible Backdrop" : "Karartmalı Arka Plan")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Tapping the dim overlay, swiping down, or clicking the header close icon smoothly dismisses the modal."
+                    : "Arka plan karartmasına tıklanarak veya üst kapat butonuna dokunularak kolayca kapatılır.")
+            </div>
+        </div>
+    </div>
+
+    <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+    <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                    @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                </span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-dropdowntree id="ddt_adaptive_demo"
+                       items="@@Model"
+                       adaptive-mode="auto"
+                       placeholder="@(isEn ? "Select category (test on mobile)..." : "Kategori seçin (Mobilde test edin)...")"
+                       value="laptop"&gt;
+&lt;/panoptes-dropdowntree&gt;</code></pre>
+        </div>
+    </div>
+</div>

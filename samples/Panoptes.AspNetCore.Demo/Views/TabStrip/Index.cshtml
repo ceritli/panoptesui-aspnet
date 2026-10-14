@@ -1,0 +1,718 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "TabStrip - Panoptes UI" : "TabStrip (Sekmeli Panel Düzeni) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/TabStrip" class="hover:text-blue-600 transition">@(isEn ? "Navigation & Layout" : "Navigasyon & Düzen")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">TabStrip</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">TabStrip @(isEn ? "(Tabbed Panel Layout)" : "(Sekmeli Panel Düzeni)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-tabstrip&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "Organize multiple content panes into a single tabbed space with dynamic tab adding/closing, scrolling, and smooth tab transitions." : "Birden çok içerik sayfasını tek bir alanda sekmelerle organize eden, dinamik sekme ekleme/kapatma, kaydırma ve animasyonlu sekme bileşeni.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Examples (Features)" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">6</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">3</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+<div class="flex items-center gap-2 shrink-0">
+            <a href="/Menu" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 transition flex items-center gap-1.5 shadow-2xs">
+                <span>📋 Menu & ContextMenu</span>
+            </a>
+        </div>
+
+    <!-- Quick Feature Highlights -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+            <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm mb-2">🧭</div>
+            <div class="font-bold text-sm text-slate-800">4 Yön Konumlandırma</div>
+            <div class="text-xs text-slate-500 mt-0.5">Üst (Top), Alt (Bottom), Sol ve Sağ dikey</div>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+            <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm mb-2">⚡</div>
+            <div class="font-bold text-sm text-slate-800">AJAX Lazy Loading</div>
+            <div class="text-xs text-slate-500 mt-0.5">Tıklanınca sunucudan dinamik yükleme</div>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+            <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-sm mb-2">✖️</div>
+            <div class="font-bold text-sm text-slate-800">Kapatılabilir Sekmeler</div>
+            <div class="text-xs text-slate-500 mt-0.5">Tek tıkla sekme kapatma ve otomatik geçiş</div>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs">
+            <div class="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-sm mb-2">➕</div>
+            <div class="font-bold text-sm text-slate-800">Çalışma Zamanı API</div>
+            <div class="text-xs text-slate-500 mt-0.5">addTab, removeTab, select metotları</div>
+        </div>
+    </div>
+
+    <!-- DEMO 1: Standart Yatay Sekmeler ve AJAX Lazy Load (Tek Başına Tam Genişlik) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 border-b border-slate-100 pb-4">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+                    <span>1. Standart Yatay Sekmeli Panel (Top Position & Lazy Load)</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    İkonlar, renkli rozetler, pasif sekme ve son sekmede <strong>AJAX Lazy Loading</strong> desteği.
+                </p>
+            </div>
+            <span class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-mono font-medium self-start sm:self-auto">
+                tab-position="top"
+            </span>
+        </div>
+
+        <panoptes-tabstrip id="mainTabStrip" tab-position="top" animation="fade" on-select="onTabSelect">
+            <!-- Sekme 1 -->
+            <panoptes-tab title="Genel Bakış" icon="home" badge="Canlı" badge-color="emerald" active="true">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <h3 class="text-sm font-bold text-slate-800">Kurumsal Performans Paneli</h3>
+                        <span class="text-xs text-slate-400">Son güncelleme: Az önce</span>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Panoptes TabStrip bileşeni, kurumsal web uygulamalarında çok sayfalı veya sekmeli veri görünümlerini organize etmek için geliştirilmiştir. Tailwind CSS ile kusursuz uyumlu, yüksek performanslı ve sıfır dış bağımlılıklıdır.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                        <div class="p-3 bg-blue-50/60 border border-blue-200/60 rounded-xl">
+                            <div class="text-[11px] font-semibold text-blue-700">Toplam Modüller</div>
+                            <div class="text-xl font-black text-blue-900 mt-0.5">24 Adet</div>
+                        </div>
+                        <div class="p-3 bg-emerald-50/60 border border-emerald-200/60 rounded-xl">
+                            <div class="text-[11px] font-semibold text-emerald-700">Aktif İş Parçacıkları</div>
+                            <div class="text-xl font-black text-emerald-900 mt-0.5">142 Worker</div>
+                        </div>
+                        <div class="p-3 bg-indigo-50/60 border border-indigo-200/60 rounded-xl">
+                            <div class="text-[11px] font-semibold text-indigo-700">Tepki Süresi</div>
+                            <div class="text-xl font-black text-indigo-900 mt-0.5">4.2 ms</div>
+                        </div>
+                    </div>
+                </div>
+            </panoptes-tab>
+
+            <!-- Sekme 2 -->
+            <panoptes-tab title="Kullanıcı Yönetimi" icon="users" badge="14 Yeni" badge-color="blue">
+                <div class="space-y-3">
+                    <h3 class="text-sm font-bold text-slate-800">Yetkili Kullanıcı Listesi</h3>
+                    <div class="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden bg-slate-50/50">
+                        <div class="p-3 flex items-center justify-between">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center">FC</div>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-800">Fatih Ceritli</div>
+                                    <div class="text-[11px] text-slate-400">Sistem Mimarı & Yönetici</div>
+                                </div>
+                            </div>
+                            <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded-full">Aktif</span>
+                        </div>
+                        <div class="p-3 flex items-center justify-between">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-7 h-7 rounded-full bg-purple-600 text-white font-bold text-xs flex items-center justify-center">AY</div>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-800">Ahmet Yılmaz</div>
+                                    <div class="text-[11px] text-slate-400">Kıdemli Veritabanı Yöneticisi</div>
+                                </div>
+                            </div>
+                            <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded-full">Aktif</span>
+                        </div>
+                    </div>
+                </div>
+            </panoptes-tab>
+
+            <!-- Sekme 3 -->
+            <panoptes-tab title="Güvenlik & Yetkiler" icon="shield">
+                <div class="space-y-3">
+                    <h3 class="text-sm font-bold text-slate-800">Güvenlik Politikaları & Sertifikasyon</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        İki faktörlü kimlik doğrulama (2FA) zorunluluğu, IP beyaz liste filtreleme ve rol bazlı erişim denetimi (RBAC) kuralları bu sekmeden yönetilir.
+                    </p>
+                    <div class="p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 flex items-center gap-2 font-medium">
+                        <span>⚠️</span>
+                        <span>Son 24 saatte şüpheli bir giriş denemesi tespit edilmedi. SSL sertifikası geçerli.</span>
+                    </div>
+                </div>
+            </panoptes-tab>
+
+            <!-- Sekme 4: AJAX Lazy Loading Sekmesi -->
+            <panoptes-tab title="Canlı Sunucu İstatistikleri (AJAX)" icon="chart" badge="Lazy Load" badge-color="purple" content-url="/TabStrip/LazyData">
+            </panoptes-tab>
+
+            <!-- Sekme 5: Pasif Sekme -->
+            <panoptes-tab title="Arşiv Kayıtları (Kilitli)" icon="lock" disabled="true">
+                <p class="text-xs text-slate-500">Bu içeriğe erişim yetkiniz kısıtlıdır.</p>
+            </panoptes-tab>
+        </panoptes-tabstrip>
+
+        <!-- Collapsible Code Snippet (Standart Tıklayınca Açılan - Tüm Kod Detayları) -->
+        <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-tabstrip id=&quot;mainTabStrip&quot; tab-position=&quot;top&quot; animation=&quot;fade&quot; on-select=&quot;onTabSelect&quot;&gt;
+    &lt;!-- Statik Sekme: Doğrudan Razor İçeriği --&gt;
+    &lt;panoptes-tab title=&quot;Genel Bakış&quot; icon=&quot;home&quot; badge=&quot;Canlı&quot; badge-color=&quot;emerald&quot; active=&quot;true&quot;&gt;
+        &lt;h3&gt;Kurumsal Performans Paneli&lt;/h3&gt;
+        &lt;p&gt;Sekme içeriği doğrudan Razor görünümü içinde tanımlanır.&lt;/p&gt;
+    &lt;/panoptes-tab&gt;
+
+    &lt;panoptes-tab title=&quot;Kullanıcı Yönetimi&quot; icon=&quot;users&quot; badge=&quot;14 Yeni&quot; badge-color=&quot;blue&quot;&gt;
+        &lt;p&gt;Yetkili kullanıcı listesi ve roller.&lt;/p&gt;
+    &lt;/panoptes-tab&gt;
+
+    &lt;!-- AJAX Lazy Loading: Sekmeye tıklanınca sunucudan asenkron yüklenir --&gt;
+    &lt;panoptes-tab title=&quot;Canlı Sunucu İstatistikleri (AJAX)&quot; icon=&quot;chart&quot; badge=&quot;Lazy Load&quot; badge-color=&quot;purple&quot; content-url=&quot;/TabStrip/LazyData&quot; /&gt;
+
+    &lt;!-- Pasif / Kilitli Sekme --&gt;
+    &lt;panoptes-tab title=&quot;Arşiv Kayıtları (Kilitli)&quot; icon=&quot;lock&quot; disabled=&quot;true&quot; /&gt;
+&lt;/panoptes-tabstrip&gt;</code></pre>
+        </div>
+    </div>
+    </div>
+
+    <!-- DEMO 2: Kapatılabilir ve Dinamik Sekmeler (Tek Başına Tam Genişlik) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 border-b border-slate-100 pb-4">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                    <span>2. Kapatılabilir & Dinamik Sekmeler (Closable & Dynamic API)</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Tarayıcı sekmesi tarzında sekmeleri tek tıkla kapatma (<code class="text-blue-600 font-mono">closable="true"</code>) ve çalışma zamanında yeni sekme açma.
+                </p>
+            </div>
+            <button type="button" onclick="addNewDynamicTab()" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-2xs self-start sm:self-auto">
+                <span>➕</span>
+                <span>Yeni Sekme Ekle</span>
+            </button>
+        </div>
+
+        <panoptes-tabstrip id="closableDemo" tab-position="top" closable="true" on-select="onTabSelect" on-close="onTabClose">
+            <panoptes-tab title="Sipariş #4810" icon="file" closable="true" active="true">
+                <div class="space-y-2">
+                    <div class="font-bold text-slate-800 text-xs">Sipariş Detayı (#4810)</div>
+                    <p class="text-xs text-slate-600">Müşteri: Aslan Ticaret A.Ş. | Tutar: ₺34.500,00</p>
+                    <span class="inline-block px-2 py-0.5 bg-blue-100 text-blue-800 text-[10px] font-bold rounded">Hazırlanıyor</span>
+                </div>
+            </panoptes-tab>
+            <panoptes-tab title="Fatura #9201" icon="file" closable="true">
+                <div class="space-y-2">
+                    <div class="font-bold text-slate-800 text-xs">E-Arşiv Fatura Belgesi</div>
+                    <p class="text-xs text-slate-600">Vergi Dairesi: Beşiktaş | KDV Dahil: ₺12.450,00</p>
+                    <span class="inline-block px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded">Onaylandı</span>
+                </div>
+            </panoptes-tab>
+            <panoptes-tab title="Müşteri Raporu" icon="chart" closable="true" badge="Taslak" badge-color="amber">
+                <div class="space-y-2">
+                    <div class="font-bold text-slate-800 text-xs">Müşteri Sadakat & Ciro Analizi</div>
+                    <p class="text-xs text-slate-600">2026 3. Çeyrek dönemsel büyüme oranı %28 olarak gerçekleşti.</p>
+                </div>
+            </panoptes-tab>
+        </panoptes-tabstrip>
+
+        <!-- Collapsible Code Snippet (Standart Tıklayınca Açılan) -->
+        <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-tabstrip id=&quot;closableDemo&quot; tab-position=&quot;top&quot; closable=&quot;true&quot; on-select=&quot;onTabSelect&quot; on-close=&quot;onTabClose&quot;&gt;
+    &lt;panoptes-tab title=&quot;Sipariş #4810&quot; icon=&quot;file&quot; closable=&quot;true&quot; active=&quot;true&quot;&gt;...&lt;/panoptes-tab&gt;
+    &lt;panoptes-tab title=&quot;Fatura #9201&quot; icon=&quot;file&quot; closable=&quot;true&quot;&gt;...&lt;/panoptes-tab&gt;
+    &lt;panoptes-tab title=&quot;Müşteri Raporu&quot; icon=&quot;chart&quot; closable=&quot;true&quot; badge=&quot;Taslak&quot; badge-color=&quot;amber&quot;&gt;...&lt;/panoptes-tab&gt;
+&lt;/panoptes-tabstrip&gt;</code></pre>
+        </div>
+    </div>
+    </div>
+
+    <!-- DEMO 3: Dikey Sekmeli Panel (Tek Başına Tam Genişlik) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 border-b border-slate-100 pb-4">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+                    <span>3. Dikey Sekmeli Panel (tab-position="left")</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Sol kenar menüsü ve sağ içerik paneliyle profil, hesap ayarları veya yönetim modülleri tasarımı.
+                </p>
+            </div>
+            <span class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-mono font-medium self-start sm:self-auto">
+                tab-position="left"
+            </span>
+        </div>
+
+        <panoptes-tabstrip id="verticalTabStrip" tab-position="left" animation="fade" on-select="onTabSelect">
+            <panoptes-tab title="Profil Bilgileri" icon="user" active="true">
+                <div class="space-y-4">
+                    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Kişisel Bilgiler</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[11px] font-semibold text-slate-500 block mb-1">Ad Soyad</label>
+                            <input type="text" value="Fatih Ceritli" readonly class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-800" />
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-semibold text-slate-500 block mb-1">E-Posta</label>
+                            <input type="email" value="fatih@panoptes.dev" readonly class="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-800" />
+                        </div>
+                    </div>
+                </div>
+            </panoptes-tab>
+
+            <panoptes-tab title="Sistem Bildirimleri" icon="bell" badge="3" badge-color="red">
+                <div class="space-y-3">
+                    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Bekleyen Bildirimler</h3>
+                    <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900 flex items-center gap-2">
+                        <span>📌</span>
+                        <span>Panoptes v1.0.0 kütüphane güncellemesi yayınlandı.</span>
+                    </div>
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 flex items-center gap-2">
+                        <span>🔑</span>
+                        <span>API anahtarı yenileme hatırlatıcısı (14 gün kaldı).</span>
+                    </div>
+                </div>
+            </panoptes-tab>
+
+            <panoptes-tab title="Veritabanı & Entegrasyon" icon="database">
+                <div class="space-y-3">
+                    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Bağlantı Ayarları</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Entity Framework Core In-Memory sağlayıcısı aktif. 710 kayıt önbelleğe yüklendi.
+                    </p>
+                    <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900 font-medium">
+                        ✓ Veritabanı bağlantı durumu: Sağlıklı (Ping: 1ms)
+                    </div>
+                </div>
+            </panoptes-tab>
+        </panoptes-tabstrip>
+
+        <!-- Collapsible Code Snippet (Standart Tıklayınca Açılan) -->
+        <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;!-- Dikey Sekmeli Panel (tab-position=&quot;left&quot;) --&gt;
+&lt;panoptes-tabstrip id=&quot;verticalTabStrip&quot; tab-position=&quot;left&quot; animation=&quot;fade&quot; on-select=&quot;onTabSelect&quot;&gt;
+    &lt;panoptes-tab title=&quot;Profil Bilgileri&quot; icon=&quot;user&quot; active=&quot;true&quot;&gt;
+        &lt;h3&gt;Kişisel Bilgiler&lt;/h3&gt;
+    &lt;/panoptes-tab&gt;
+    &lt;panoptes-tab title=&quot;Sistem Bildirimleri&quot; icon=&quot;bell&quot; badge=&quot;3&quot; badge-color=&quot;red&quot;&gt;
+        &lt;p&gt;Bildirimler...&lt;/p&gt;
+    &lt;/panoptes-tab&gt;
+    &lt;panoptes-tab title=&quot;Veritabanı &amp; Entegrasyon&quot; icon=&quot;database&quot;&gt;
+        &lt;p&gt;Bağlantı ayarları...&lt;/p&gt;
+    &lt;/panoptes-tab&gt;
+&lt;/panoptes-tabstrip&gt;</code></pre>
+        </div>
+    </div>
+    </div>
+
+    <!-- DEMO 4: Alttan Konumlandırmalı Sekmeler (Tek Başına Tam Genişlik) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 border-b border-slate-100 pb-4">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                    <span>4. Alttan Konumlandırmalı Sekmeler (tab-position="bottom")</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Sekme başlıklarının içerik alanının altında yer aldığı ters (bottom) konumlandırma yerleşimi.
+                </p>
+            </div>
+            <span class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-mono font-medium self-start sm:self-auto">
+                tab-position="bottom"
+            </span>
+        </div>
+
+        <panoptes-tabstrip id="bottomTabStrip" tab-position="bottom" animation="fade" on-select="onTabSelect">
+            <panoptes-tab title="Ekonomik Analiz" icon="chart" active="true">
+                <div class="space-y-2">
+                    <h3 class="text-xs font-bold text-slate-800">Dönemsel Gelir & Gider Dağılımı</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Sekme çubuğu içerik kartının alt kısmında yer almaktadır. Mobil cihazlarda alt navigasyon barı (bottom navigation) olarak da tercih edilebilir.
+                    </p>
+                </div>
+            </panoptes-tab>
+            <panoptes-tab title="Risk Değerlendirmesi" icon="shield">
+                <div class="space-y-2">
+                    <h3 class="text-xs font-bold text-slate-800">Portföy Risk Skoru</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Tüm operasyonel riskler kabul edilebilir minimum seviyededir.
+                    </p>
+                </div>
+            </panoptes-tab>
+            <panoptes-tab title="Sistem Raporu" icon="file">
+                <div class="space-y-2">
+                    <h3 class="text-xs font-bold text-slate-800">Günlük Konsolide Çıktı</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Rapor başarıyla derlendi ve arşivlenmeye hazır.
+                    </p>
+                </div>
+            </panoptes-tab>
+        </panoptes-tabstrip>
+
+        <!-- Collapsible Code Snippet (Standart Tıklayınca Açılan) -->
+        <div class="panoptes-code-block mt-3 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;!-- Alttan Konumlandırmalı Sekmeler (tab-position=&quot;bottom&quot;) --&gt;
+&lt;panoptes-tabstrip id=&quot;bottomTabStrip&quot; tab-position=&quot;bottom&quot; animation=&quot;fade&quot; on-select=&quot;onTabSelect&quot;&gt;
+    &lt;panoptes-tab title=&quot;Ekonomik Analiz&quot; icon=&quot;chart&quot; active=&quot;true&quot;&gt;...&lt;/panoptes-tab&gt;
+    &lt;panoptes-tab title=&quot;Risk Değerlendirmesi&quot; icon=&quot;shield&quot;&gt;...&lt;/panoptes-tab&gt;
+    &lt;panoptes-tab title=&quot;Sistem Raporu&quot; icon=&quot;file&quot;&gt;...&lt;/panoptes-tab&gt;
+&lt;/panoptes-tabstrip&gt;</code></pre>
+        </div>
+    </div>
+    </div>
+
+    <!-- Canlı Olay Konsolu (Live Event Log) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
+        <div class="p-4 border-b border-slate-200 bg-slate-50/80 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Canlı Sekme Etkileşim Günlüğü (Event Log)</h3>
+            </div>
+            <button type="button" onclick="clearEventLog()" class="text-xs text-slate-500 hover:text-slate-800 px-2 py-0.5 rounded hover:bg-slate-200 transition">
+                Günlüğü Temizle
+            </button>
+        </div>
+        <div id="tabEventConsole" class="p-4 bg-slate-950 font-mono text-xs text-emerald-400 h-36 overflow-y-auto space-y-1.5">
+            <div class="text-slate-500">// Sekmelere tıklayarak veya kapatarak olay akışını izleyin...</div>
+        </div>
+    </div>
+
+    <!-- TagHelper Parametre ve Nitelik Referansı (API Referans Tablosu) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
+        <div class="p-5 border-b border-slate-200 bg-slate-50/70">
+            <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <span>📚</span>
+                <span>TagHelper Nitelik &amp; Parametre Referansı (API Dokümantasyonu)</span>
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">
+                &lt;panoptes-tabstrip&gt; ve &lt;panoptes-tab&gt; etiketlerinin desteklediği tüm yapılandırma parametreleri.
+            </p>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold">
+                        <th class="p-3 w-44">Nitelik (Attribute)</th>
+                        <th class="p-3 w-32">Tip</th>
+                        <th class="p-3 w-32">Varsayılan</th>
+                        <th class="p-3">Açıklama &amp; Desteklenen Değerler</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="p-3 font-mono font-bold text-blue-700">tab-position</td>
+                        <td class="p-3 font-mono text-slate-600">string</td>
+                        <td class="p-3 font-mono text-slate-500">"top"</td>
+                        <td class="p-3 text-slate-700">Sekme çubuğunun konumu: <code class="text-blue-700">top</code> (üst), <code class="text-blue-700">bottom</code> (alt), <code class="text-blue-700">left</code> (sol dikey), <code class="text-blue-700">right</code> (sağ dikey).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="p-3 font-mono font-bold text-blue-700">animation</td>
+                        <td class="p-3 font-mono text-slate-600">string</td>
+                        <td class="p-3 font-mono text-slate-500">"fade"</td>
+                        <td class="p-3 text-slate-700">Sekme geçiş animasyonu: <code class="text-blue-700">fade</code> (yumuşak açılma), <code class="text-blue-700">none</code>.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="p-3 font-mono font-bold text-blue-700">closable</td>
+                        <td class="p-3 font-mono text-slate-600">bool</td>
+                        <td class="p-3 font-mono text-slate-500">false</td>
+                        <td class="p-3 text-slate-700">Sekmelerin üzerinde kapatma (X) butonu gösterilip gösterilmeyeceği. Dinamik sekme yönetimi için idealdir.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="p-3 font-mono font-bold text-blue-700">content-url</td>
+                        <td class="p-3 font-mono text-slate-600">string</td>
+                        <td class="p-3 font-mono text-slate-500">null</td>
+                        <td class="p-3 text-slate-700">(&lt;panoptes-tab&gt; için) AJAX ile sunucudan asenkron HTML yükleme adresi. Tıklandığında yüklenir ve otomatik önbelleklenir.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="p-3 font-mono font-bold text-blue-700">icon</td>
+                        <td class="p-3 font-mono text-slate-600">string</td>
+                        <td class="p-3 font-mono text-slate-500">null</td>
+                        <td class="p-3 text-slate-700">Sekme başlığının solunda gösterilecek dahili SVG ikon adı (<code class="text-blue-700">home</code>, <code class="text-blue-700">users</code>, <code class="text-blue-700">chart</code>, <code class="text-blue-700">lock</code>, <code class="text-blue-700">file</code> vb.).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="p-3 font-mono font-bold text-blue-700">badge / badge-color</td>
+                        <td class="p-3 font-mono text-slate-600">string</td>
+                        <td class="p-3 font-mono text-slate-500">null / "blue"</td>
+                        <td class="p-3 text-slate-700">Sekme üzerindeki bildirim rozeti metni ve rengi (<code class="text-blue-700">blue</code>, <code class="text-emerald-700">emerald</code>, <code class="text-amber-700">amber</code>, <code class="text-purple-700">purple</code>, <code class="text-red-700">red</code>).</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                        <td class="p-3 font-mono font-bold text-blue-700">on-select / on-close</td>
+                        <td class="p-3 font-mono text-slate-600">string</td>
+                        <td class="p-3 font-mono text-slate-500">null</td>
+                        <td class="p-3 text-slate-700">İstemci tarafında tetiklenecek JavaScript geri çağırım fonksiyonları. Argüman olarak <code class="text-blue-700">{ index, title, pane, preventDefault }</code> iletilir.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">TagHelper Özellikleri & Parametreleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-tabstrip&gt; bileşeninin desteklediği tüm C# ve HTML nitelikleri.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesTabstripTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-4">Varsayılan</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşen kimliği.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">tab-position</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"top"</td>
+                            <td class="py-3 px-6 text-slate-700">Sekme konumu: "top", "bottom", "left", "right".</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">animation</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">Geçiş animasyonu desteği.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Klavye Erişilebilirliği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes TabStrip bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Nitelikleri</div>
+                    <div class="text-slate-600">
+                        Standart <code>role="tablist / tab"</code> rolünü taşır. Duruma göre <code>aria-disabled</code>, <code>aria-expanded</code>, <code>aria-selected</code> ve <code>aria-label</code> nitelikleri dinamik olarak güncellenir.
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Odak Yönetimi (Focus Management)</div>
+                    <div class="text-slate-600">
+                        Sekme sırasını doğal akışında korur (<code>tabIndex="0"</code>). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">Klavye Kısayolları (Keyboard Shortcuts)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev (Function)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Sol / Sağ Ok</kbd></td>
+                                <td class="py-2.5 px-4">Sekmeler arasında gezinir.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter / Space</kbd></td>
+                                <td class="py-2.5 px-4">Odaklanmış sekmeyi aktif hale getirir.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Home / End</kbd></td>
+                                <td class="py-2.5 px-4">İlk veya son sekmeye odaklanır.</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+let tabCounter = 1;
+
+        function logTabEvent(type, title, details) {
+            const consoleEl = document.getElementById('tabEventConsole');
+            if (!consoleEl) return;
+
+            const time = new Date().toLocaleTimeString('tr-TR');
+            const row = document.createElement('div');
+            row.className = 'flex items-start gap-2 py-0.5 border-b border-slate-900/60';
+            
+            const badgeColor = type === 'close' ? 'text-rose-400 bg-rose-950/60 border-rose-800' : 'text-blue-400 bg-blue-950/60 border-blue-800';
+            
+            row.innerHTML = `
+                <span class="text-slate-500 shrink-0 font-mono text-[10px]">[${time}]</span>
+                <span class="px-1.5 py-0.2 rounded border text-[10px] font-bold shrink-0 ${badgeColor}">${type === 'close' ? 'CLOSE' : 'SELECT'}</span>
+                <div class="flex-1">
+                    <strong class="text-slate-200">${title}</strong>
+                    <div class="text-[11px] text-slate-400 mt-0.5">${details}</div>
+                </div>
+            `;
+
+            consoleEl.appendChild(row);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        function clearEventLog() {
+            const consoleEl = document.getElementById('tabEventConsole');
+            if (consoleEl) {
+                consoleEl.innerHTML = '<div class="text-slate-500">// Günlük temizlendi.</div>';
+            }
+        }
+
+        function onTabSelect(e) {
+            logTabEvent('select', `"${e.title}" Sekmesi Seçildi`, `İndeks: ${e.index} | TabStrip ID: <span class="text-amber-300">${e.sender.id}</span>`);
+        }
+
+        function onTabClose(e) {
+            logTabEvent('close', `"${e.title}" Sekmesi Kapatıldı`, `Kapatılan İndeks: ${e.index} | TabStrip ID: <span class="text-rose-300">${e.sender.id}</span>`);
+        }
+
+        function addNewDynamicTab() {
+            const tabStrip = window.Panoptes && window.Panoptes.TabStrip ? window.Panoptes.TabStrip.get('closableDemo') : null;
+            if (!tabStrip) return;
+
+            tabCounter++;
+            const newIndex = tabStrip.addTab({
+                title: `Yeni Belge #${tabCounter}`,
+                icon: 'file',
+                badge: 'Yeni',
+                badgeColor: 'emerald',
+                closable: true,
+                active: true,
+                content: `
+                    <div class="space-y-3 animate-fadeIn">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                            <h4 class="text-xs font-bold text-slate-800">Dinamik Oluşturulan Belge #${tabCounter}</h4>
+                            <span class="text-[10px] text-slate-400 font-mono">${new Date().toLocaleTimeString()}</span>
+                        </div>
+                        <p class="text-xs text-slate-600">
+                            Bu sekme istemci tarafında <code>Panoptes.TabStrip.get('closableDemo').addTab(...)</code> fonksiyonu ile dinamik olarak oluşturuldu.
+                        </p>
+                        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900 font-medium">
+                            ✓ Sekme başarıyla açıldı. Dilediğiniz zaman sağındaki çarpı (✖) butonundan kapatabilirsiniz.
+                        </div>
+                    </div>
+                `
+            });
+
+            logTabEvent('select', `Yeni Dinamik Sekme Eklendi`, `Başlık: "Yeni Belge #${tabCounter}" | Yeni İndeks: ${newIndex}`);
+        }
+</script>
+}

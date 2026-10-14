@@ -1,0 +1,420 @@
+@model List<Panoptes.AspNetCore.Models.GanttTaskModel>
+@{
+    var constructionTasks = ViewBag.ConstructionTasks as List<Panoptes.AspNetCore.Models.GanttTaskModel> ?? new List<Panoptes.AspNetCore.Models.GanttTaskModel>();
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Gantt (Project Schedule & Dependencies) - Panoptes Corporate UI" : "Gantt (Proje Zaman Çizelgesi) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/Gantt" class="hover:text-blue-600 transition">@(isEn ? "Scheduling & Project" : "Planlama & Çizelge")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Gantt</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Gantt @(isEn ? "(Project Timeline & Dependencies)" : "(Proje Zaman Çizelgesi)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-gantt&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "Interactive project management timeline with tasks, dependencies, percentage completions (% progress), milestones and split tree-grid / timeline views." : "Proje görevleri, bağımlılık okları (FS, SS), ilerleme yüzdeleri (% progress), kilometre taşları ve sol tablo / sağ zaman çizelgesi bölünümü.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Features & Demos" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">3</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">2</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        <!-- DEMO 1: Yazılım Geliştirme Projesi ve Faz İlerlemeleri -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                        @(isEn ? "1. Software Development Project & Phase Progress" : "1. Yazılım Geliştirme Projesi ve Faz İlerlemeleri")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Phases, subtasks, date intervals and completion percentages rendered on interactive Gantt bars." : "Fazlar, alt görevler, başlangıç-bitiş tarih aralıkları ve tamamlanma yüzdelerini renkli Gantt barları üzerinde gösterir.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">&lt;panoptes-gantt tasks="@@Model"&gt;</span>
+            </div>
+
+            <div class="p-6">
+                <panoptes-gantt id="softwareGantt" tasks="@Model" on-task-click="handleGanttTaskClick" />
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-gantt id="softwareGantt" 
+                tasks="@@Model" 
+                on-task-click="handleGanttTaskClick" /&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 2: İnşaat & Saha Operasyonları Çizelgesi -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+                        @(isEn ? "2. Construction & Infrastructure Field Timeline" : "2. İnşaat & Altyapı Saha Operasyonları Çizelgesi")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Track sequential construction milestones: excavation, concrete foundation, and structural steel assembly." : "Ağır iş makineleri, hafriyat, beton dökümü ve çelik montajı gibi ardışık şantiye adımlarının takibi.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-amber-50 text-amber-700 px-2 py-1 rounded font-medium border border-amber-100">&lt;panoptes-gantt tasks="@@ViewBag.ConstructionTasks"&gt;</span>
+            </div>
+
+            <div class="p-6">
+                <panoptes-gantt id="constructionGantt" tasks="@constructionTasks" on-task-click="handleGanttTaskClick" />
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-gantt id="constructionGantt" 
+                tasks="@@ViewBag.ConstructionTasks" 
+                on-task-click="handleGanttTaskClick" /&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 3: Programatik JavaScript API ve Canlı Görev Olay Günlüğü -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                        @(isEn ? "3. Programmatic JavaScript API & Live Event Log" : "3. Programatik JavaScript API ve Canlı Görev Olay Günlüğü (Event Log)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn ? "Manage Gantt instance via JavaScript API: dynamically add tasks, recalculate dependencies and capture user clicks." : "Gantt örneğini JavaScript API üzerinden yönetin, dinamik görev ekleyin veya görev tıklamalarını anlık yakalayın.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">window.panoptesGantt.getInstance()</span>
+            </div>
+
+            <div class="p-6 space-y-4">
+                <div class="flex flex-wrap items-center gap-2 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                    <button type="button" onclick="addNewDemoTask()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-xs shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        @(isEn ? "Add Dynamic Task (+3 Days)" : "Dinamik Görev Ekle (+3 Gün)")
+                    </button>
+                    <button type="button" onclick="refreshGanttInstance()" class="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg font-medium text-xs shadow-xs transition cursor-pointer">
+                        @(isEn ? "Refresh Timeline (refresh)" : "Çizelgeyi Yenile (refresh)")
+                    </button>
+                    <button type="button" onclick="clearGanttLogs()" class="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-600 border border-slate-300 rounded-lg font-medium text-xs shadow-xs transition ml-auto cursor-pointer">
+                        @(isEn ? "Clear Log" : "Günlüğü Temizle")
+                    </button>
+                </div>
+
+                <!-- Canlı Olay Günlüğü -->
+                <div class="bg-slate-900 text-slate-200 p-4 rounded-xl font-mono text-xs h-40 overflow-y-auto space-y-1" id="ganttEventLog">
+                    <div class="text-slate-500">// @(isEn ? "Live event log ready. Click on any task in the Gantt chart..." : "Canlı olay günlüğü hazır. Gantt üzerindeki herhangi bir göreve tıklayın...")</div>
+                </div>
+            </div>
+
+            <!-- Prime LightCodeViewer -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                    <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript API</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>var gantt = window.panoptesGantt.getInstance('softwareGantt');
+
+// Dinamik görev ekleme
+gantt.addTask({
+    id: 'dynamic_1',
+    title: 'Yeni Acil Güvenlik Yaması',
+    start: '2026-10-15',
+    end: '2026-10-18',
+    percentComplete: 40,
+    colorClass: 'bg-rose-600'
+});
+
+// Çizelgeyi yeniden hesaplama
+gantt.refresh();</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TagHelper Referans Tablosu -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+                <h2 class="text-base font-bold text-slate-800">@(isEn ? "TagHelper Parameter & Attribute Reference" : "TagHelper Parametre ve Nitelik Referansı")</h2>
+                <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-gantt&gt; @(isEn ? "all supported C# attributes and data types." : "bileşeninin desteklediği tüm C# nitelikleri ve veri tipleri.")</p>
+            </div>
+            <div class="p-6 overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 text-slate-500 font-semibold bg-slate-50">
+                            <th class="py-2.5 px-4">@(isEn ? "Attribute Name" : "Nitelik Adı")</th>
+                            <th class="py-2.5 px-4">@(isEn ? "Data Type" : "Veri Tipi")</th>
+                            <th class="py-2.5 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-2.5 px-4">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-600">
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">string</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">guid</td>
+                            <td class="py-2.5 px-4">@(isEn ? "Unique HTML component identifier." : "Bileşenin benzersiz HTML kimliği.")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">tasks</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">List&lt;GanttTaskModel&gt;</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">empty</td>
+                            <td class="py-2.5 px-4">@(isEn ? "List of tasks rendered on the Gantt chart (Start, End, Title, % Progress, Color)." : "Gantt şemasında yer alacak görev listesi (Başlangıç, Bitiş, Başlık, Yüzde, Renk).")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">on-task-click</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">string</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-2.5 px-4">@(isEn ? "JavaScript callback function triggered when a task is clicked." : "Bir göreve tıklandığında çalışacak JavaScript fonksiyon adı.")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">class</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">string</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-2.5 px-4">@(isEn ? "Additional Tailwind or CSS classes applied to container." : "Dış kapsayıcıya eklenecek ilave Tailwind veya CSS sınıfları.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "TagHelper Properties & Parameters" : "TagHelper Özellikleri & Parametreleri")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-gantt&gt; @(isEn ? "all supported C# and HTML attributes." : "bileşeninin desteklediği tüm C# ve HTML nitelikleri.")</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesGanttTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">@(isEn ? "Attribute" : "Özellik (Attribute)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Type (C#)" : "Tip (C#)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-6">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">@(isEn ? "Automatic" : "Otomatik")</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Component identifier." : "Bileşen kimliği.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">start-date</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Initial start date for the timeline range." : "Zaman çizelgesi başlangıç tarihi.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Standards & Keyboard Accessibility" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    @(isEn ? "Panoptes Gantt component is engineered for screen readers and keyboard users with accessible landmarks and grid navigation." : "Panoptes Gantt bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "WAI-ARIA Attributes" : "WAI-ARIA Nitelikleri")</div>
+                    <div class="text-slate-600">
+                        @(isEn ? "Carries standard role=\"application\" or role=\"grid\". Dynamic attributes aria-expanded, aria-selected and aria-valuenow reflect task status." : "Standart role=\"application / grid\" rolünü taşır. Duruma göre aria-disabled, aria-expanded, aria-selected ve aria-label nitelikleri dinamik olarak güncellenir.")
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "Focus Management" : "Odak Yönetimi (Focus Management)")</div>
+                    <div class="text-slate-600">
+                        @(isEn ? "Preserves focus trapping within active dialogs and provides high-contrast visible focus rings for interactive task bars." : "Sekme sırasını doğal akışında korur (tabIndex=\"0\"). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.")
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları (Keyboard Shortcuts)")</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">@(isEn ? "Key" : "Tuş (Key)")</th>
+                                <th class="py-2.5 px-4">@(isEn ? "Function" : "İşlev (Function)")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Tab</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Navigates between task list rows and timeline bars." : "Görev listesi ve zaman çubukları arasında geçer.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-gantt.js" asp-append-version="true"></script>
+    <script>
+        const isEnGantt = @(isEn ? "true" : "false");
+
+        function logGantt(msg) {
+            var logEl = document.getElementById('ganttEventLog');
+            if (!logEl) return;
+            var time = new Date().toLocaleTimeString(isEnGantt ? 'en-US' : 'tr-TR');
+            var line = document.createElement('div');
+            line.innerHTML = '<span class="text-slate-500">[' + time + ']</span> ' + msg;
+            logEl.appendChild(line);
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function clearGanttLogs() {
+            var logEl = document.getElementById('ganttEventLog');
+            if (logEl) {
+                logEl.innerHTML = '<div class="text-slate-500">// ' + (isEnGantt ? 'Log cleared. Waiting for interactions...' : 'Günlük temizlendi. Yeni olaylar bekleniyor...') + '</div>';
+            }
+        }
+
+        function handleGanttTaskClick(task) {
+            logGantt('<span class="text-emerald-400 font-bold">' + (isEnGantt ? 'Task Clicked: ' : 'Göreve Tıklandı: ') + '</span> ' + task.title + ' (' + (isEnGantt ? 'Progress: ' : 'Tamamlanma: %') + task.percentComplete + (isEnGantt ? '%' : '') + ')');
+        }
+
+        var demoTaskCounter = 1;
+        function addNewDemoTask() {
+            var gantt = window.panoptesGantt.getInstance('softwareGantt');
+            if (!gantt) return;
+
+            var today = new Date();
+            var start = new Date(today);
+            start.setDate(today.getDate() + 2);
+            var end = new Date(today);
+            end.setDate(today.getDate() + 6);
+
+            var startStr = start.toISOString().split('T')[0];
+            var endStr = end.toISOString().split('T')[0];
+
+            var newTask = {
+                id: 'dyn_task_' + (demoTaskCounter++),
+                title: (isEnGantt ? 'Additional Security Review #' : 'Ek Güvenlik İncelemesi #') + demoTaskCounter,
+                start: startStr,
+                end: endStr,
+                percentComplete: 50,
+                summary: false,
+                colorClass: 'bg-rose-600'
+            };
+
+            gantt.addTask(newTask);
+            logGantt('<span class="text-blue-400 font-bold">' + (isEnGantt ? 'New Task Added: ' : 'Yeni Görev Eklendi: ') + '</span> ' + newTask.title + ' (' + startStr + ' ~ ' + endStr + ')');
+        }
+
+        function refreshGanttInstance() {
+            var gantt = window.panoptesGantt.getInstance('softwareGantt');
+            if (gantt) {
+                gantt.refresh();
+                logGantt('<span class="text-amber-400">' + (isEnGantt ? 'Timeline recalculated and refreshed.' : 'Çizelge yeniden hesaplandı ve yenilendi (refresh).') + '</span>');
+            }
+        }
+    </script>
+}

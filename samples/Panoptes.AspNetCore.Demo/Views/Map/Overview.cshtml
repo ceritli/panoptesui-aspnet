@@ -1,0 +1,367 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Map (Geographic Map) - Panoptes Corporate UI" : "Map (Coğrafi Konum Haritası) - Panoptes Kurumsal UI";
+    ViewData["ActiveTab"] = "Overview";
+}
+
+<div class="space-y-8 pb-16">
+    <partial name="_MapNav" />
+
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/Map/Overview" class="hover:text-blue-600 transition">@(isEn ? "Charts & Visualization" : "Grafikler & Görselleştirme")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Map</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Map @(isEn ? "(Geographic Map)" : "(Coğrafi Konum Haritası)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-map&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "OpenStreetMap / Leaflet based tile layers, GeoJSON vector boundaries, custom location pins and rich interactive information popups." : "OpenStreetMap / Leaflet tabanlı karo katmanları, GeoJSON vektör sınırları, özel konum pinleri ve bilgi pencereleri (popup).")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Features & Demos" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">1</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">3</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        <!-- Quick Location Bar -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 shadow-sm flex flex-wrap items-center justify-between gap-4">
+            <div>
+                <h2 class="text-sm font-bold text-slate-800">@(isEn ? "Quick Location Focus" : "Hızlı Konum Odaklama")</h2>
+                <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "Focus map center to major metropolitan areas with a single click." : "Harita merkezini Türkiye'nin büyükşehirlerine tek tıkla odaklayın.")</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+                <button type="button" onclick="focusCity(41.0082, 28.9784, 11)" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-xs font-semibold text-slate-700 transition cursor-pointer">
+                    📍 İstanbul
+                </button>
+                <button type="button" onclick="focusCity(39.9334, 32.8597, 11)" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-xs font-semibold text-slate-700 transition cursor-pointer">
+                    📍 Ankara
+                </button>
+                <button type="button" onclick="focusCity(38.4237, 27.1428, 11)" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-xs font-semibold text-slate-700 transition cursor-pointer">
+                    📍 İzmir
+                </button>
+                <button type="button" onclick="focusCity(36.8969, 30.7133, 11)" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 text-xs font-semibold text-slate-700 transition cursor-pointer">
+                    📍 Antalya
+                </button>
+                <button type="button" onclick="focusCity(39.9334, 32.8597, 6)" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold transition cursor-pointer">
+                    🇹🇷 @(isEn ? "All Turkey" : "Tüm Türkiye")
+                </button>
+            </div>
+        </div>
+
+        <!-- Live Map Container -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-slate-900">@(isEn ? "Interactive Map of Turkey" : "Etkileşimli Türkiye Haritası")</h3>
+                    <p class="text-xs text-slate-500">@(isEn ? "Click on markers to display city detail cards and population stats." : "İşaretçilere tıklayarak şehir detay kartlarını ve nüfus bilgilerini görüntüleyebilirsiniz.")</p>
+                </div>
+                <div id="markerInfoBadge" class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-medium">
+                    <span>📍 @(isEn ? "Selected:" : "Seçili:") <b id="selectedCityName">Ankara</b></span>
+                </div>
+            </div>
+
+            <!-- Panoptes Map TagHelper -->
+            <panoptes-map id="overviewMap" center="39.9334, 32.8597" zoom="6" min-zoom="3" max-zoom="18" height="520px" controls="true" on-marker-click="onOverviewMarkerClick">
+                <!-- OpenStreetMap Tile Layer -->
+                <panoptes-map-layer type="tile" title="OpenStreetMap" url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; OpenStreetMap contributors" />
+
+                <!-- Marker Pins with HTML Popups -->
+                <panoptes-map-marker lat="41.0082" lng="28.9784" title="İstanbul" color="#6366f1" icon="building">
+                    <div class="p-2 text-left">
+                        <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-indigo-500"></span> İstanbul
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">@(isEn ? "Turkey's metropolis of finance, commerce and culture." : "Türkiye'nin finans, ticaret ve kültür metropolü.")</p>
+                        <div class="mt-2 text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md">
+                            @(isEn ? "Population:" : "Nüfus:") 15.655.924
+                        </div>
+                    </div>
+                </panoptes-map-marker>
+
+                <panoptes-map-marker lat="39.9334" lng="32.8597" title="Ankara" color="#ef4444" icon="star">
+                    <div class="p-2 text-left">
+                        <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-red-500"></span> Ankara @(isEn ? "(Capital)" : "(Başkent)")
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">@(isEn ? "Capital and administrative center of the Republic of Turkey." : "Türkiye Cumhuriyeti'nin başkenti ve idari merkezi.")</p>
+                        <div class="mt-2 text-xs font-semibold text-red-600 bg-red-50 px-2 py-1 rounded-md">
+                            @(isEn ? "Population:" : "Nüfus:") 5.803.482
+                        </div>
+                    </div>
+                </panoptes-map-marker>
+
+                <panoptes-map-marker lat="38.4237" lng="27.1428" title="İzmir" color="#06b6d4" icon="pin">
+                    <div class="p-2 text-left">
+                        <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-cyan-500"></span> İzmir
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">@(isEn ? "Pearl of the Aegean, export and port hub." : "Ege'nin incisi, ihracat ve liman kenti.")</p>
+                        <div class="mt-2 text-xs font-semibold text-cyan-600 bg-cyan-50 px-2 py-1 rounded-md">
+                            @(isEn ? "Population:" : "Nüfus:") 4.462.056
+                        </div>
+                    </div>
+                </panoptes-map-marker>
+
+                <panoptes-map-marker lat="36.8969" lng="30.7133" title="Antalya" color="#f59e0b" icon="star">
+                    <div class="p-2 text-left">
+                        <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-amber-500"></span> Antalya
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">@(isEn ? "Tourism and agriculture capital of the Mediterranean." : "Akdeniz'in turizm ve tarım başkenti.")</p>
+                        <div class="mt-2 text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-1 rounded-md">
+                            @(isEn ? "Population:" : "Nüfus:") 2.688.004
+                        </div>
+                    </div>
+                </panoptes-map-marker>
+
+                <panoptes-map-marker lat="40.1885" lng="29.0610" title="Bursa" color="#10b981" icon="building">
+                    <div class="p-2 text-left">
+                        <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Bursa
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">@(isEn ? "Automotive and textile manufacturing capital." : "Otomotiv ve tekstil sanayi üretim merkezi.")</p>
+                        <div class="mt-2 text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">
+                            @(isEn ? "Population:" : "Nüfus:") 3.194.720
+                        </div>
+                    </div>
+                </panoptes-map-marker>
+
+                <panoptes-map-marker lat="37.0662" lng="37.3833" title="Gaziantep" color="#f97316" icon="pin">
+                    <div class="p-2 text-left">
+                        <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-orange-500"></span> Gaziantep
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">@(isEn ? "Southeastern industrial hub and gastronomy center." : "Güneydoğu sanayi devi ve gastronomi kenti.")</p>
+                        <div class="mt-2 text-xs font-semibold text-orange-600 bg-orange-50 px-2 py-1 rounded-md">
+                            @(isEn ? "Population:" : "Nüfus:") 2.154.051
+                        </div>
+                    </div>
+                </panoptes-map-marker>
+
+                <panoptes-map-marker lat="41.0027" lng="39.7168" title="Trabzon" color="#059669" icon="pin">
+                    <div class="p-2 text-left">
+                        <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-600"></span> Trabzon
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">@(isEn ? "Eastern Black Sea trade and logistics base." : "Doğu Karadeniz ticaret ve lojistik üssü.")</p>
+                        <div class="mt-2 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-md">
+                            @(isEn ? "Population:" : "Nüfus:") 824.352
+                        </div>
+                    </div>
+                </panoptes-map-marker>
+            </panoptes-map>
+        </div>
+
+        <!-- Code Snippet (Prime LightCodeViewer) -->
+        <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                </div>
+                <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    <span>@(isEn ? "Copy" : "Kopyala")</span>
+                </button>
+            </div>
+            <div class="panoptes-code-viewer">
+                <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-map id=&quot;overviewMap&quot; center=&quot;39.9334, 32.8597&quot; zoom=&quot;6&quot; height=&quot;520px&quot; controls=&quot;true&quot;&gt;
+    &lt;!-- Karo Katmanı --&gt;
+    &lt;panoptes-map-layer type=&quot;tile&quot; title=&quot;OpenStreetMap&quot; 
+                        url-template=&quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot; 
+                        attribution=&quot;&amp;copy; OpenStreetMap contributors&quot; /&gt;
+
+    &lt;!-- İşaretçiler ve Zengin Popup Şablonları --&gt;
+    &lt;panoptes-map-marker lat=&quot;41.0082&quot; lng=&quot;28.9784&quot; title=&quot;İstanbul&quot; color=&quot;#6366f1&quot; icon=&quot;building&quot;&gt;
+        &lt;div class=&quot;p-2&quot;&gt;
+            &lt;h4 class=&quot;font-bold&quot;&gt;İstanbul&lt;/h4&gt;
+            &lt;p&gt;Nüfus: 15.655.924&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/panoptes-map-marker&gt;
+
+    &lt;panoptes-map-marker lat=&quot;39.9334&quot; lng=&quot;32.8597&quot; title=&quot;Ankara&quot; color=&quot;#ef4444&quot; icon=&quot;star&quot;&gt;
+        &lt;div class=&quot;p-2&quot;&gt;
+            &lt;h4 class=&quot;font-bold&quot;&gt;Ankara (Başkent)&lt;/h4&gt;
+            &lt;p&gt;Nüfus: 5.803.482&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/panoptes-map-marker&gt;
+&lt;/panoptes-map&gt;</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "TagHelper Properties & Parameters" : "TagHelper Özellikleri & Parametreleri")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "All C# and HTML attributes supported by the <panoptes-map> component." : "<panoptes-map> bileşeninin desteklediği tüm C# ve HTML nitelikleri.")</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesMapTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">@(isEn ? "Attribute" : "Özellik (Attribute)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Type (C#)" : "Tip (C#)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-6">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">@(isEn ? "Auto" : "Otomatik")</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Unique map identifier." : "Harita kimliği.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">center</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"39.92, 32.85"</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Initial center coordinates (Latitude, Longitude)." : "Merkez koordinatlar (Enlem, Boylam).")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">zoom</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">int</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">6</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Default zoom level." : "Varsayılan yakınlaştırma düzeyi.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">height</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"400px"</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Map canvas height." : "Harita tuvali yüksekliği.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">controls</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Display zoom and pan controls." : "Yakınlaştırma ve kaydırma kontrollerini gösterir.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Standards & Keyboard Accessibility" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    @(isEn ? "Panoptes Map is designed in accordance with W3C WAI-ARIA standards for screen readers and keyboard navigation." : "Panoptes Map bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "WAI-ARIA Attributes" : "WAI-ARIA Nitelikleri")</div>
+                    <div class="text-slate-600">
+                        @(isEn ? "Contains standard role=\"region / map\". aria-label and aria-roledescription are dynamically managed." : "Standart role=\"region / map\" rolünü taşır. Duruma göre aria-disabled, aria-expanded, aria-selected ve aria-label nitelikleri dinamik olarak güncellenir.")
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "Focus Management" : "Odak Yönetimi (Focus Management)")</div>
+                    <div class="text-slate-600">
+                        @(isEn ? "Maintains natural tab sequence with tabindex=\"0\". High contrast focus rings provide clear visibility." : "Sekme sırasını doğal akışında korur (tabIndex=\"0\"). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.")
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları (Keyboard Shortcuts)")</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">@(isEn ? "Key" : "Tuş (Key)")</th>
+                                <th class="py-2.5 px-4">@(isEn ? "Function" : "İşlev (Function)")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">@(isEn ? "Arrow Keys" : "Ok Tuşları")</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Pan the map in four directions." : "Haritayı dört yönde kaydırır.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">+ / -</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Zoom in and out." : "Yakınlaştırır ve uzaklaştırır.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    function focusCity(lat, lng, zoom) {
+        const map = window.Panoptes?.Map?.getInstance('overviewMap');
+        if (map) {
+            map.center(lat, lng, zoom);
+        }
+    }
+
+    function onOverviewMarkerClick(e) {
+        const badge = document.getElementById('selectedCityName');
+        if (badge && e.marker) {
+            badge.textContent = e.marker.title || 'Seçildi';
+        }
+    }
+</script>
+}

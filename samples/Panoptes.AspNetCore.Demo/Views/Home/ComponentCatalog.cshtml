@@ -1,0 +1,229 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    Layout = "_Layout";
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    string p = DemoTranslations.Prefix(isEn);
+    ViewData["Title"] = isEn ? "Panoptes UI — Enterprise Component & Capability Catalog" : "Panoptes UI — Kurumsal Bileşen & Yetenek Kataloğu";
+}
+
+<div class="space-y-8">
+    <!-- Hero Banner -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 p-8 sm:p-10 text-white shadow-xl border border-slate-800">
+        <div class="relative z-10 max-w-4xl space-y-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-300 border border-blue-400/30">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                @DemoTranslations.T("Catalog.HeroBadge", isEn)
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-white">
+                @DemoTranslations.T("Catalog.HeroTitle1", isEn) <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">@DemoTranslations.T("Catalog.HeroTitle2", isEn)</span> @DemoTranslations.T("Catalog.HeroTitle3", isEn)
+            </h1>
+            <p class="text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl">
+                @DemoTranslations.T("Catalog.HeroDesc", isEn)
+            </p>
+        </div>
+
+        <!-- Metric Badges -->
+        <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 border-t border-slate-800/80 pt-6">
+            <div class="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10">
+                <div class="text-2xl sm:text-3xl font-black text-white">52</div>
+                <div class="text-xs text-slate-400 font-medium mt-0.5">@DemoTranslations.T("Catalog.Metric1", isEn)</div>
+            </div>
+            <div class="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10">
+                <div class="text-2xl sm:text-3xl font-black text-emerald-400">100%</div>
+                <div class="text-xs text-slate-400 font-medium mt-0.5">@DemoTranslations.T("Catalog.Metric2", isEn)</div>
+            </div>
+            <div class="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10">
+                <div class="text-2xl sm:text-3xl font-black text-indigo-400">0</div>
+                <div class="text-xs text-slate-400 font-medium mt-0.5">@DemoTranslations.T("Catalog.Metric3", isEn)</div>
+            </div>
+            <div class="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10">
+                <div class="text-2xl sm:text-3xl font-black text-blue-400">Tailwind</div>
+                <div class="text-xs text-slate-400 font-medium mt-0.5">@(isEn ? "Modern CSS & Vanilla JS" : "Modern CSS & Saf JS")</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter & Search Controls -->
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="flex flex-wrap items-center gap-1.5" id="categoryTabs">
+            <button type="button" data-cat="all" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-blue-600 text-white shadow-xs">@DemoTranslations.T("Catalog.CatAll", isEn)</button>
+            <button type="button" data-cat="data" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">@DemoTranslations.T("Catalog.CatData", isEn)</button>
+            <button type="button" data-cat="forms" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">@DemoTranslations.T("Catalog.CatForms", isEn)</button>
+            <button type="button" data-cat="nav" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">@DemoTranslations.T("Catalog.CatNav", isEn)</button>
+            <button type="button" data-cat="popups" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">@DemoTranslations.T("Catalog.CatPopups", isEn)</button>
+            <button type="button" data-cat="scheduling" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">@DemoTranslations.T("Catalog.CatScheduling", isEn)</button>
+            <button type="button" data-cat="charts" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">@DemoTranslations.T("Catalog.CatCharts", isEn)</button>
+            <button type="button" data-cat="tools" class="cat-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">@DemoTranslations.T("Catalog.CatTools", isEn)</button>
+        </div>
+
+        <div class="relative sm:w-72">
+            <input type="text" id="searchInput" placeholder="@DemoTranslations.T("Catalog.SearchPlaceholder", isEn)" class="w-full text-xs pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition" />
+            <span class="absolute left-2.5 top-2.5 text-slate-400 text-xs">🔍</span>
+        </div>
+    </div>
+
+    <!-- Components Grid Container -->
+    <div id="catalogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Rendered via JavaScript -->
+    </div>
+</div>
+
+<script>
+    const langPrefix = '@p';
+    const isEn = @(isEn ? "true" : "false");
+
+    const catLabels = {
+        data: isEn ? 'Data & Grids' : 'Veri & Tablolar',
+        forms: isEn ? 'Forms & Inputs' : 'Form & Girdi',
+        nav: isEn ? 'Navigation' : 'Navigasyon',
+        popups: isEn ? 'Popups & Windows' : 'Pencereler',
+        scheduling: isEn ? 'Scheduling & Gantt' : 'Planlama',
+        charts: isEn ? 'Charts & Visuals' : 'Grafikler',
+        tools: isEn ? 'Tools & Media' : 'Araçlar'
+    };
+
+    const components = [
+        // Data & Grids
+        { id: 'grid', name: 'Data Grid', cat: 'data', url: '/Grid', features: isEn ? ['Paging', 'Sorting', 'Multi-Filtering', 'Grouping', 'In-Line / Popup Edit', 'Hierarchical / Detail Grid', 'Excel & PDF Export', 'Search Panel', 'Aggregates', 'Virtual Scrolling'] : ['Sayfalama', 'Sıralama', 'Çoklu Filtreleme', 'Gruplama', 'Satır İçi / Popup Düzenleme', 'Hiyerarşik / Detay Tablo', 'Excel & PDF Dışa Aktarım', 'Arama Paneli', 'Agregasyonlar', 'Sanal Kaydırma'] },
+        { id: 'treelist', name: 'TreeList', cat: 'data', url: '/TreeList', features: isEn ? ['Hierarchical Tree View', 'Self-Referencing', 'Live Search', 'Column Resizing', 'In-Line Edit', 'Paging'] : ['Ağaç Yapılı Hiyerarşi', 'Kendi Kendine Referans', 'Canlı Arama', 'Sütun Boyutlandırma', 'Satır İçi Düzenleme', 'Sayfalama'] },
+        { id: 'pivotgrid', name: 'PivotGrid', cat: 'data', url: '/PivotGrid', features: isEn ? ['Multi-Dimensional Cross Table', 'Field Configurator', 'Row & Column Totals', 'Dynamic Filter', 'Excel Export'] : ['Çok Boyutlu Çapraz Tablo', 'Alan Yapılandırıcı', 'Satır & Sütun Toplamları', 'Dinamik Filtreleme', 'Excel Aktarım'] },
+        { id: 'spreadsheet', name: 'Spreadsheet', cat: 'data', url: '/Spreadsheet', features: isEn ? ['Excel-like Workbook', 'Formula Engine', 'Cell Formatting', 'PDF/XLSX Export', 'Validation'] : ['Excel Benzeri Hesap Tablosu', 'Formül Motoru', 'Hücre Biçimlendirme', 'PDF/XLSX Dışa Aktarma', 'Doğrulama'] },
+        { id: 'listview', name: 'ListView', cat: 'data', url: '/ListView', features: isEn ? ['Custom Template Cards', 'Paging', 'Multi-Selection', 'CRUD Operations', 'Dynamic Sort'] : ['Özel Şablon Kartlar', 'Sayfalama', 'Çoklu Seçim', 'CRUD İşlemleri', 'Dinamik Sıralama'] },
+        { id: 'pager', name: 'Pager', cat: 'data', url: '/Grid/Paging', features: isEn ? ['Standalone Paging Engine', 'Page Size Selector', 'Quick Jump', 'Summary Info'] : ['Bağımsız Sayfalama Motoru', 'Sayfa Boyut Seçici', 'Hızlı Atlayıcı', 'Özet Bilgi'] },
+
+        // Forms & Inputs
+        { id: 'datepicker', name: 'DatePicker', cat: 'forms', url: '/DatePicker', features: isEn ? ['Date Selection', 'Min/Max Limits', 'Custom Formats', 'Quick Clear'] : ['Tarih Seçimi', 'Min/Max Sınırları', 'Özel Formatlar', 'Hızlı Temizle'] },
+        { id: 'daterangepicker', name: 'DateRangePicker', cat: 'forms', url: '/Components/DateRangePicker', features: isEn ? ['Dual Calendar Range', 'Predefined Ranges', 'Start/End Binding'] : ['Çift Takvimli Aralık', 'Ön Tanımlı Aralıklar', 'Başlangıç/Bitiş Bağlama'] },
+        { id: 'timepicker', name: 'TimePicker', cat: 'forms', url: '/Components/DateTimePicker', features: isEn ? ['Hour & Minute Selection', '24h/12h Modes', 'Step Intervals'] : ['Saat & Dakika Seçimi', '24h/12h Modları', 'Adım Aralığı'] },
+        { id: 'datetimepicker', name: 'DateTimePicker', cat: 'forms', url: '/Components/DateTimePicker', features: isEn ? ['Integrated Date & Time', 'Advanced Popup', 'Local Timezone'] : ['Entegre Tarih ve Saat', 'Gelişmiş Popup', 'Yerel Saat Desteği'] },
+        { id: 'select', name: 'Select / DropDownList', cat: 'forms', url: '/Select', features: isEn ? ['Advanced Dropdown', 'Cascading Selection', 'Grouping', 'Custom Templates'] : ['Gelişmiş Açılır Liste', 'Kademeli Seçim (Cascading)', 'Gruplama', 'Özel Şablonlar'] },
+        { id: 'combobox', name: 'ComboBox', cat: 'forms', url: '/Components/ComboBox', features: isEn ? ['Editable & Selectable', 'Custom Value Entry', 'Autocomplete'] : ['Yazılabilir & Seçilebilir', 'Özel Değer Girişi', 'Otomatik Tamamlama'] },
+        { id: 'autocomplete', name: 'AutoComplete', cat: 'forms', url: '/Components/AutoComplete', features: isEn ? ['Instant Search Suggestions', 'Highlighted Match', 'Remote Binding'] : ['Anlık Arama Önerileri', 'Vurgulu Eşleşme', 'Uzak Veri Bağlama'] },
+        { id: 'multiselect', name: 'MultiSelect', cat: 'forms', url: '/Components/MultiSelect', features: isEn ? ['Chip Multi-Selection', 'Select All', 'Tag Limiting'] : ['Çipli Çoklu Seçim', 'Tümünü Seç', 'Etiket Limitleme'] },
+        { id: 'dropdowntree', name: 'DropDownTree', cat: 'forms', url: '/DropDownTree', features: isEn ? ['Tree-Structured Select', 'Checkbox Mode', 'Client Filter'] : ['Ağaç Yapılı Seçim', 'Onay Kutusu Modu', 'İstemci Filtreleme'] },
+        { id: 'multicolumncombobox', name: 'MultiColumnComboBox', cat: 'forms', url: '/Components/MultiColumnComboBox', features: isEn ? ['Multi-Column Dropdown Grid', 'Column Headers', 'Search Filter'] : ['Çok Sütunlu Izgara Açılır Liste', 'Sütun Başlıkları', 'Arama Filtresi'] },
+        { id: 'numerictextbox', name: 'NumericTextBox', cat: 'forms', url: '/Components/NumericTextBox', features: isEn ? ['Currency / Percent Format', 'Spin Buttons', 'Decimal Precision'] : ['Para Birimi / Yüzde Formatı', 'Artır/Azalt Düğmeleri', 'Ondalık Hassasiyet'] },
+        { id: 'otp', name: 'OtpInput', cat: 'forms', url: '/Otp', features: isEn ? ['SMS / 2FA Code Inputs', 'Auto Focus', 'Clipboard Paste'] : ['SMS / 2FA Kod Kutucukları', 'Otomatik Odaklama', 'Yapıştırma Desteği'] },
+        { id: 'signature', name: 'Signature', cat: 'forms', url: '/Signature', features: isEn ? ['HTML5 Touch Signature', 'PNG/SVG Export', 'Stroke & Color'] : ['HTML5 Dokunmatik İmza', 'PNG/SVG Dışa Aktarma', 'Çizgi Kalınlığı & Renk'] },
+        { id: 'rating', name: 'Rating', cat: 'forms', url: '/Rating', features: isEn ? ['Star & Heart Rating', 'Half-Precision', 'Read-Only Mode'] : ['Yıldız & Kalp Derecelendirme', 'Yarım Puan Hassasiyeti', 'Salt Okunur Mod'] },
+        { id: 'slider', name: 'Slider & Range', cat: 'forms', url: '/Slider', features: isEn ? ['Numeric Range Slider', 'Dual-Handle Range', 'Tick Marks'] : ['Sayısal Aralık Kaydırıcı', 'Çift Başlıklı Range', 'İşaretçiler'] },
+        { id: 'upload', name: 'Upload', cat: 'forms', url: '/Upload', features: isEn ? ['Drag & Drop Upload', 'Progress Bar', 'Multi-File'] : ['Sürükle-Bırak Dosya Yükleme', 'İlerleme Çubuğu', 'Çoklu Dosya'] },
+        { id: 'editor', name: 'Editor (WYSIWYG)', cat: 'forms', url: '/Editor', features: isEn ? ['Rich Text Editor', 'Insert Tables', 'HTML Source View', 'Image Insertion'] : ['Zengin Metin Editörü', 'Tablo Ekleme', 'HTML Kaynak Görünümü', 'Resim Ekleme'] },
+
+        // Navigation & Layout
+        { id: 'menu', name: 'Menu & ContextMenu', cat: 'nav', url: '/Menu', features: isEn ? ['Hierarchical Flyout Menu', 'Right-Click Context Menu', 'Smart Viewport Flip'] : ['Hiyerarşik Açılır Menü', 'Sağ Tık Bağlam Menüsü', 'Akıllı Viewport Hizalama'] },
+        { id: 'tabstrip', name: 'TabStrip', cat: 'nav', url: '/TabStrip', features: isEn ? ['4-Way Tabs', 'Lazy AJAX Loading', 'Closable Tabs', 'Runtime API'] : ['4 Yönlü Sekmeler', 'Lazy AJAX Yükleme', 'Kapatılabilir Sekmeler', 'Çalışma Zamanı API'] },
+        { id: 'panelbar', name: 'PanelBar (Accordion)', cat: 'nav', url: '/PanelBar', features: isEn ? ['Multi-Level Accordion', 'Single/Multi Expansion', 'Icons & Badges'] : ['Çok Seviyeli Akordiyon', 'Tekli/Çoklu Genişleme', 'İkon & Rozet Desteği'] },
+        { id: 'drawer', name: 'Drawer', cat: 'nav', url: '/Drawer', features: isEn ? ['Left/Right Side Drawer', 'Mini / Expanded Mode', 'Overlay & Push Modes'] : ['Sol/Sağ Yan Çekmece', 'Mini / Genişletilmiş Mod', 'Overlay & Push Modları'] },
+        { id: 'treeview', name: 'TreeView', cat: 'nav', url: '/TreeView', features: isEn ? ['Hierarchical Folder Tree', 'Checkboxes', 'Drag & Drop Nodes'] : ['Hiyerarşik Klasör Ağacı', 'Onay Kutuları', 'Sürükle-Bırak Düğüm Taşıma'] },
+        { id: 'stepper', name: 'Stepper & Wizard', cat: 'nav', url: '/Stepper', features: isEn ? ['Multi-Step Form Wizard', 'Step Validation', 'Horizontal / Vertical'] : ['Çok Adımlı Form Sihirbazı', 'Adım Doğrulama', 'Yatay / Dikey Düzen'] },
+        { id: 'breadcrumb', name: 'Breadcrumb', cat: 'nav', url: '/Breadcrumb', features: isEn ? ['Accessible Trail Bar', 'Auto Collapse', 'Root Icon'] : ['Erişilebilir Yol Çubuğu', 'Otomatik Daraltma', 'Kök İkonu'] },
+        { id: 'toolbar', name: 'ToolBar', cat: 'nav', url: '/ToolBar', features: isEn ? ['Responsive Toolbar', 'Overflow Menu', 'Button Groups'] : ['Responsive Araç Çubuğu', 'Taşan Öğeler Menüsü', 'Düğme Grupları'] },
+        { id: 'splitter', name: 'Splitter', cat: 'nav', url: '/Splitter', features: isEn ? ['Resizable Pane System', 'Collapsible Panes', 'Nested Layouts'] : ['Yeniden Boyutlandırılabilir Panel', 'Katlanabilir Bölmeler', 'İç İçe Paneller'] },
+        { id: 'tilelayout', name: 'TileLayout', cat: 'nav', url: '/TileLayout/Overview', features: isEn ? ['2D CSS Grid Dashboard', 'Drag & Drop Reordering', 'Card Resizing'] : ['2D CSS Grid Dashboard', 'Sürükle-Bırak Sıralama', 'Kart Boyutlandırma'] },
+
+        // Popups & Windows
+        { id: 'window', name: 'Window', cat: 'popups', url: '/Window', features: isEn ? ['Draggable & Resizable', 'Maximize/Minimize', 'Modal & Non-Modal'] : ['Sürüklenebilir & Boyutlandırılabilir', 'Maximize/Minimize', 'Modal & Non-Modal'] },
+        { id: 'dialog', name: 'Dialog', cat: 'popups', url: '/Dialog', features: isEn ? ['Alert, Confirm, Prompt', 'Promise-based API', 'Keyboard Navigation'] : ['Alert, Confirm, Prompt', 'Promise Tabanlı API', 'Klavye Tuş Yönetimi'] },
+        { id: 'notification', name: 'Notification', cat: 'popups', url: '/Notification', features: isEn ? ['Toast Popups', 'Multi-Positioning', 'Auto Dismiss'] : ['Toast Açılır Bildirimler', 'Çoklu Pozisyonlama', 'Otomatik Kapanma'] },
+        { id: 'actionsheet', name: 'ActionSheet', cat: 'popups', url: '/ActionSheet/Overview', features: isEn ? ['Bottom Sheet Actions', 'Mobile Friendly', 'Cancel / Action Buttons'] : ['Alttan Açılan Eylem Sayfası', 'Mobil Uyumlu', 'İptal / Onay Butonları'] },
+
+        // Scheduling & Planning
+        { id: 'gantt', name: 'Gantt Chart', cat: 'scheduling', url: '/Gantt', features: isEn ? ['Project Task Tree', 'Timeline View', 'Progress Percentages'] : ['Proje Görev Ağacı', 'Zaman Çizelgesi (Timeline)', 'İlerleme Yüzdeleri'] },
+        { id: 'taskboard', name: 'TaskBoard (Kanban)', cat: 'scheduling', url: '/TaskBoard', features: isEn ? ['HTML5 Drag & Drop Kanban', 'Column Badges', 'Add & Edit Cards'] : ['HTML5 Drag & Drop Kanban', 'Sütun Sayaçları', 'Kart Ekleme & Düzenleme'] },
+
+        // Charts & Visualizations
+        { id: 'chart', name: 'Charts', cat: 'charts', url: '/Chart', features: isEn ? ['Bar, Line, Pie Charts', 'Vector SVG Graphics', 'Interactive Tooltips'] : ['Çubuk, Çizgi, Pasta Grafikleri', 'SVG Vektörel Çizim', 'İnteraktif Tooltip'] },
+        { id: 'stockchart', name: 'StockChart', cat: 'charts', url: '/StockChart', features: isEn ? ['Financial Candlestick', 'Volume Chart', 'Date Navigator'] : ['Finansal Mum Grafik (Candlestick)', 'Hacim Grafiği', 'Tarih Gezgini'] },
+        { id: 'gauge', name: 'Gauges', cat: 'charts', url: '/Gauge', features: isEn ? ['Radial Gauge Dial', 'Linear Thermometer', 'Target Value Ranges'] : ['Radyal Kadran Gösterge', 'Doğrusal Termometre', 'Hedef Değer Aralıkları'] },
+        { id: 'barcode', name: 'Barcode & QRCode', cat: 'charts', url: '/Barcode', features: isEn ? ['Vector Barcode (Code128)', '2D QR Code', 'High Resolution'] : ['SVG Çizgili Barkod (Code128)', '2D Karekod (QRCode)', 'Yüksek Çözünürlük'] },
+        { id: 'diagram', name: 'Diagram & OrgChart', cat: 'charts', url: '/Diagram', features: isEn ? ['Vector Flowcharts', 'Org Hierarchy Chart', 'Connectors'] : ['Vektörel Akış Şemaları', 'Organizasyon Şeması', 'Bağlantı Hatları'] },
+        { id: 'map', name: 'Map', cat: 'charts', url: '/Map/Overview', features: isEn ? ['Interactive Geo Map', 'Custom Markers', 'GeoJSON Layers'] : ['İnteraktif Coğrafi Harita', 'İşaretçiler (Markers)', 'GeoJSON Katmanları'] },
+
+        // Tools & Media
+        { id: 'filemanager', name: 'FileManager', cat: 'tools', url: '/FileManager', features: isEn ? ['Cloud File Explorer', 'Directory Tree', 'Preview & Search'] : ['Bulut Dosya Yöneticisi', 'Klasör Hiyerarşisi', 'Önizleme & Arama'] },
+        { id: 'filter', name: 'Filter', cat: 'tools', url: '/Filter', features: isEn ? ['Hierarchical Query Builder', 'AND/OR Logic Groups', 'Dynamic Operators'] : ['Hiyerarşik Sorgu Oluşturucu', 'AND/OR Mantık Grupları', 'Dinamik İşleçler'] },
+        { id: 'pdfviewer', name: 'PdfViewer', cat: 'tools', url: '/PdfViewer', features: isEn ? ['Embedded PDF Viewer', 'Pagination & Zoom', 'Text Search'] : ['Gömülü PDF Görüntüleyici', 'Sayfalama & Yakınlaştırma', 'Metin Arama'] },
+        { id: 'mediaplayer', name: 'MediaPlayer', cat: 'tools', url: '/MediaPlayer', features: isEn ? ['HTML5 Video/Audio Player', 'Custom Control Bar', 'Fullscreen'] : ['HTML5 Video/Ses Oynatıcı', 'Özel Kontrol Çubuğu', 'Tam Ekran'] }
+    ];
+
+    const grid = document.getElementById('catalogGrid');
+    const searchInput = document.getElementById('searchInput');
+    const catButtons = document.querySelectorAll('.cat-btn');
+    let currentCat = 'all';
+
+    function renderCards() {
+        const query = (searchInput.value || '').toLowerCase().trim();
+        const filtered = components.filter(c => {
+            const currentCatTitle = catLabels[c.cat] || c.cat;
+            const matchesCat = currentCat === 'all' || c.cat === currentCat;
+            const matchesQuery = !query || 
+                c.name.toLowerCase().includes(query) || 
+                currentCatTitle.toLowerCase().includes(query) || 
+                c.features.some(f => f.toLowerCase().includes(query));
+            return matchesCat && matchesQuery;
+        });
+
+        if (filtered.length === 0) {
+            grid.innerHTML = `
+                <div class="col-span-full py-16 text-center text-slate-400 bg-white rounded-2xl border border-slate-200">
+                    <div class="text-3xl mb-2">🔍</div>
+                    <div class="font-bold text-sm text-slate-700">${isEn ? "No components found matching your search." : "Aramanıza uygun bileşen bulunamadı."}</div>
+                    <div class="text-xs text-slate-400 mt-1">${isEn ? "Try a different keyword or reset the category filter." : "Farklı bir kelime deneyin veya filtreyi sıfırlayın."}</div>
+                </div>
+            `;
+            return;
+        }
+
+        grid.innerHTML = filtered.map(c => `
+            <div class="group bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all p-5 flex flex-col justify-between space-y-4">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">${catLabels[c.cat] || c.cat}</span>
+                        <span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            ${isEn ? "Ready" : "Hazır"}
+                        </span>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900 group-hover:text-blue-600 transition flex items-center gap-2">
+                            ${c.name}
+                        </h3>
+                    </div>
+                    <div class="flex flex-wrap gap-1 pt-1">
+                        ${c.features.slice(0, 4).map(f => `
+                            <span class="text-[10px] font-medium px-2 py-0.5 rounded bg-slate-50 text-slate-600 border border-slate-100">${f}</span>
+                        `).join('')}
+                        ${c.features.length > 4 ? `
+                            <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded text-blue-600 bg-blue-50">+${c.features.length - 4}</span>
+                        ` : ''}
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-xs text-slate-400 font-medium">${isEn ? "100% Enterprise Parity" : "%100 Kurumsal Eşlik"}</span>
+                    <a href="${langPrefix}${c.url}" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-xl transition">
+                        ${isEn ? "Open Demo" : "Demoyu Aç"} <span>→</span>
+                    </a>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Category button click
+    catButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            catButtons.forEach(b => {
+                b.classList.remove('bg-blue-600', 'text-white', 'shadow-xs');
+                b.classList.add('text-slate-600', 'hover:text-slate-900', 'hover:bg-slate-100');
+            });
+            btn.classList.add('bg-blue-600', 'text-white', 'shadow-xs');
+            btn.classList.remove('text-slate-600', 'hover:text-slate-900', 'hover:bg-slate-100');
+            currentCat = btn.getAttribute('data-cat');
+            renderCards();
+        });
+    });
+
+    searchInput.addEventListener('input', renderCards);
+    renderCards();
+</script>

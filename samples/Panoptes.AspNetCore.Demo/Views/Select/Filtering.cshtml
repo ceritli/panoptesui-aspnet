@@ -1,0 +1,138 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Select - Filtering & Live Search" : "Select - Filtreleme (Filtering)";
+}
+
+<div class="space-y-8">
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Select" : "/Select")" class="hover:text-blue-600 transition">Select</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">@(isEn ? "Filtering (Searchable)" : "Filtreleme (Searchable)")</span>
+    </nav>
+
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "Filtering & Live Search Options" : "Filtreleme ve Arama Seçenekleri")</h1>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Apply client-side contains or startswith search modes, or use live server-side filtering with customizable debounce and min-length parameters."
+                    : "İstemci tarafında \"içeren\" veya \"ile başlayan\" arama filtreleri uygulayabilir veya büyük veri setleri için minimum harf gerektiren Canlı Sunucu (Server Filtering) modunu kullanabilirsiniz.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ Production Ready
+            </span>
+        </div>
+    </div>
+
+    <!-- 1. Client-Side Search & Filtering -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "1. Client-Side Search & Filtering" : "1. İstemci Taraflı Arama & Filtreleme (Filtering)")</h2>
+            <p class="text-xs text-slate-500 mt-1">@(isEn ? "Contains and StartsWith instant search modes." : "İçeren (Contains) veya ile başlayan (StartsWith) filtreleme modları.")</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-2">
+                <label class="block text-xs font-bold text-slate-700">@(isEn ? "Contains Filter (filter=\"contains\")" : "İçeren Araması (Filter: \"contains\")")</label>
+                <panoptes-select id="sel_filter_contains"
+                                 filter="contains"
+                                 placeholder="@(isEn ? "Search or select country..." : "Ülke arayın veya seçin...")"
+                                 options="Türkiye, Almanya, Amerika Birleşik Devletleri, İngiltere, Fransa, İtalya, İspanya, Hollanda, Belçika, İsviçre, Avusturya, Japonya, Güney Kore" />
+                <span class="text-[11px] text-slate-400">@(isEn ? "Instantly matches any part of the item text." : "Yazılan harfleri içeren tüm ülkeleri anında filtreler.")</span>
+            </div>
+
+            <div class="space-y-2">
+                <label class="block text-xs font-bold text-slate-700">@(isEn ? "StartsWith Filter (filter=\"startswith\")" : "İle Başlayan Araması (Filter: \"startswith\")")</label>
+                <panoptes-select id="sel_filter_startswith"
+                                 filter="startswith"
+                                 placeholder="@(isEn ? "Countries starting with..." : "İ ile başlayan ülkeler...")"
+                                 options="Türkiye, Almanya, Amerika Birleşik Devletleri, İngiltere, Fransa, İtalya, İspanya, Hollanda, Belçika, İsviçre, Avusturya, Japonya, Güney Kore" />
+                <span class="text-[11px] text-slate-400">@(isEn ? "Matches items starting with the typed query." : "Yalnızca aranan harfle başlayan öğeleri listeler.")</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Server-Side Live Search -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "2. Server-Side Live Search (Server Filtering)" : "2. Sunucu Taraflı Canlı Arama (Server Filtering)")</h2>
+            <p class="text-xs text-slate-500 mt-1">@(isEn ? "Sends real-time search queries to the backend for large enterprise catalogues." : "Çok büyük verilerde istemciyi yormamak için her tuş vuruşunda sunucuya anlık filtreleme sorgusu gönderme.")</p>
+        </div>
+
+        <div class="max-w-xl space-y-2">
+            <label class="block text-xs font-bold text-slate-700">@(isEn ? "Live Server Search (server-filtering=\"true\")" : "Canlı Sunucu Araması (Server Filtering)")</label>
+            <panoptes-select id="sel_server_filtering"
+                             url="/api/products"
+                             text-field="name"
+                             value-field="id"
+                             server-filtering="true"
+                             min-filter-length="2"
+                             placeholder="@(isEn ? "Type to search products (min 2 chars)..." : "Ürün aramak için yazın (min 2 harf)...")" />
+            <span class="text-[11px] text-slate-400">@(isEn ? "Dispatches GET /api/products?filter=... as you type." : "Arama çubuğuna yazıldıkça /api/products?filter=... sorgusu sunucuda çalışır.")</span>
+        </div>
+    </div>
+
+    <!-- Feature Description Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Client-Side vs Server-Side" : "İstemci vs Sunucu Filtreleme")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Choose client-side for rapid zero-latency filtering on small sets, or server-side for millions of records."
+                    : "Küçük veri kümelerinde anlık gecikmesiz filtreleme için istemci modunu, milyonlarca kayıt için sunucu modunu seçin.")
+            </div>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Debounce & Minimum Character Threshold" : "Gecikme (Debounce) & Karakter Eşiği")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Configurable min-filter-length prevents costly network calls until the user inputs sufficient characters."
+                    : "Yapılandırılabilir min-filter-length kullanıcının yeterli harf girmesini bekleyerek sunucu yükünü optimize eder.")
+            </div>
+        </div>
+    </div>
+
+    <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+    <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                    @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                </span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;!-- İstemci Taraflı İçeren Arama --&gt;
+&lt;panoptes-select id="sel_filter_contains"
+                 filter="contains"
+                 placeholder="@(isEn ? "Search country..." : "Ülke arayın...")"
+                 options="Türkiye, Almanya, İngiltere, Fransa, İtalya" /&gt;
+
+&lt;!-- Sunucu Taraflı Canlı Arama --&gt;
+&lt;panoptes-select id="sel_server_filtering"
+                 url="/api/products"
+                 text-field="name"
+                 value-field="id"
+                 server-filtering="true"
+                 min-filter-length="2"
+                 placeholder="@(isEn ? "Type to search..." : "Aramak için yazın...")" /&gt;</code></pre>
+        </div>
+    </div>
+</div>

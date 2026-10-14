@@ -1,0 +1,127 @@
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "TileLayout - Drag-and-Drop Reordering" : "TileLayout - Sürükle-Bırak Yeniden Sıralama (Reordering)";
+    ViewData["ActiveTab"] = "Reordering";
+}
+
+<div class="space-y-6">
+    <partial name="_TileLayoutNav" />
+
+    <!-- Info Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight mb-2">@(isEn ? "Drag & Drop Reordering" : "Sürükle & Bırak ile Yeniden Sıralama (Reordering)")</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            @(isEn ? "Users can drag tiles to any position by holding the grip handle located in the tile header. A semi-transparent ghost tile follows the cursor, while a dashed placeholder indicates where it will land." : "Kullanıcılar kartların başlığında bulunan tutamaç (grip) simgesine basılı tutarak kartları istedikleri sıraya taşıyabilirler. Taşıma esnasında hafif dönen yarı saydam hayalet kart (ghost) imleci takip ederken, ızgarada yerleşeceği konumu kesikli çizgili hedef kutusu (placeholder) gösterir.")
+        </p>
+    </div>
+
+    <!-- Live Demo & Controls -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
+            <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+                <span>@(isEn ? "Live Reorder Info:" : "Canlı Sıralama Bilgisi:")</span>
+                <span id="reorderInfo" class="font-mono text-indigo-700 font-bold">Kart 1, Kart 2, Kart 3, Kart 4</span>
+            </div>
+            <button type="button" onclick="shuffleTiles()" class="px-3 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700 transition shadow-sm flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                <span>@(isEn ? "Shuffle Tiles" : "Rastgele Sırala (Shuffle)")</span>
+            </button>
+        </div>
+
+        <panoptes-tilelayout id="reorderLayout" columns="3" row-height="160px" gap="16px" reorderable="true" resizable="false">
+            <panoptes-tilelayout-item id="tile-a" header-text="1. Kart A (Sürüklenebilir)" col-span="1" row-span="1">
+                <div class="flex flex-col justify-center items-center h-full text-center p-2">
+                    <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-lg mb-2">A</div>
+                    <span class="text-xs font-semibold text-slate-700">Birinci Sıra</span>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="tile-b" header-text="2. Kart B (Sabitlenmiş / Kilitli)" col-span="1" row-span="1" reorderable="false">
+                <div class="flex flex-col justify-center items-center h-full text-center p-2">
+                    <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-lg mb-2">🔒</div>
+                    <span class="text-xs font-semibold text-slate-700">Bu kart taşınamaz</span>
+                    <span class="text-[11px] text-slate-400">reorderable="false"</span>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="tile-c" header-text="3. Kart C (Sürüklenebilir)" col-span="1" row-span="1">
+                <div class="flex flex-col justify-center items-center h-full text-center p-2">
+                    <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-lg mb-2">C</div>
+                    <span class="text-xs font-semibold text-slate-700">Üçüncü Sıra</span>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="tile-d" header-text="4. Kart D (Geniş 2x1)" col-span="2" row-span="1">
+                <div class="flex flex-col justify-center items-center h-full text-center p-2">
+                    <div class="w-10 h-10 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-lg mb-2">D</div>
+                    <span class="text-xs font-semibold text-slate-700">2 Sütun Genişliğinde Taşınabilir Kart</span>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="tile-e" header-text="5. Kart E" col-span="1" row-span="1">
+                <div class="flex flex-col justify-center items-center h-full text-center p-2">
+                    <div class="w-10 h-10 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-lg mb-2">E</div>
+                    <span class="text-xs font-semibold text-slate-700">Beşinci Sıra</span>
+                </div>
+            </panoptes-tilelayout-item>
+        </panoptes-tilelayout>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;!-- reorderable=&quot;true&quot; ile tüm ızgarada sürükle-bırak aktif edilir --&gt;
+&lt;panoptes-tilelayout id=&quot;reorderLayout&quot; columns=&quot;3&quot; reorderable=&quot;true&quot;&gt;
+    &lt;panoptes-tilelayout-item id=&quot;tile-a&quot; header-text=&quot;Sürüklenebilir Kart&quot;&gt;
+        &lt;p&gt;İçerik...&lt;/p&gt;
+    &lt;/panoptes-tilelayout-item&gt;
+
+    &lt;!-- İstenen kart reorderable=&quot;false&quot; ile sabitlenebilir --&gt;
+    &lt;panoptes-tilelayout-item id=&quot;tile-b&quot; header-text=&quot;Sabit Kart&quot; reorderable=&quot;false&quot;&gt;
+        &lt;p&gt;Bu kart kilitlidir&lt;/p&gt;
+    &lt;/panoptes-tilelayout-item&gt;
+&lt;/panoptes-tilelayout&gt;</code></pre>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tl = document.getElementById('reorderLayout');
+            if (tl) {
+                tl.addEventListener('panoptes:tilelayout:reorder', () => updateReorderInfo());
+                updateReorderInfo();
+            }
+        });
+
+        function updateReorderInfo() {
+            const tl = window.Panoptes.TileLayout.get('reorderLayout');
+            if (!tl) return;
+            const titles = tl.getItems().map(it => it.querySelector('.panoptes-tilelayout-item-title')?.textContent || it.id);
+            const infoEl = document.getElementById('reorderInfo');
+            if (infoEl) infoEl.textContent = titles.join(' ➔ ');
+        }
+
+        function shuffleTiles() {
+            const tl = window.Panoptes.TileLayout.get('reorderLayout');
+            if (!tl) return;
+            const items = tl.getItems();
+            for (let i = items.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                tl.reorderTile(items[i], j);
+            }
+            updateReorderInfo();
+        }
+    </script>
+}

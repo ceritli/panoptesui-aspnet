@@ -1,0 +1,226 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Upload Image Gallery & Sort - Panoptes Enterprise UI" : "Resim Galerisi (Sıralama) - Upload - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Upload" : "/Upload")" class="hover:text-blue-600 transition">Upload</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">@(isEn ? "Image Gallery (Sortable)" : "Resim Galerisi")</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Upload - @(isEn ? "Image Gallery (Drag & Drop Sortable)" : "Resim Galerisi (Sıralama)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-pink-50 text-pink-700 border border-pink-200 font-mono">
+                    Drag & Drop Sortable
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                    HTML5 DragDrop
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Uploaded photos appear in a visual image card grid with smooth drag-and-drop reordering and instant deletion." 
+                    : "Yüklenen resimlerin bir galeride görüntülenmesi ve sürükle-bırak ile sıralarının değiştirilebilmesi (Drag & Drop Sortable).")
+            </p>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-pink-500 inline-block"></span>
+                    @(isEn ? "Sortable Image Gallery" : "Sıralanabilir Resim Galerisi")
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    @(isEn 
+                        ? "Upload photos below. Drag and drop preview cards to reorder images dynamically." 
+                        : "Resimleri yükleyin. Yüklenen resimler aşağıda galeri olarak listelenecektir. Sıralarını değiştirmek için resimleri tutup sürükleyin.")
+                </p>
+            </div>
+            <span class="text-xs font-mono bg-pink-50 text-pink-700 px-2 py-1 rounded font-medium border border-pink-100">on-success="onGalleryUploadSuccess"</span>
+        </div>
+
+        <div class="p-8 mx-auto space-y-8">
+            <div class="max-w-2xl mx-auto">
+                <panoptes-upload id="galleryUploadDemo" 
+                                name="galleryImages" 
+                                multiple="true" 
+                                auto-upload="true" 
+                                allowed-extensions=".jpg,.jpeg,.png,.webp" 
+                                max-file-size="5242880" 
+                                save-url="/Upload/Save" 
+                                on-success="onGalleryUploadSuccess"
+                                drop-zone-text="@(isEn ? "Drag & drop photos to add to gallery" : "Galeriye eklemek için resimleri buraya sürükleyin")" />
+            </div>
+
+            <!-- Galeri Alanı -->
+            <div>
+                <h3 class="text-sm font-semibold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-2">
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    @(isEn ? "Gallery (Drag & drop cards to reorder)" : "Galeri (Sıralamak için sürükleyip bırakın)")
+                </h3>
+                
+                <div id="imageGallery" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 min-h-[120px] bg-slate-50/50 rounded-xl p-4 border border-slate-100 border-dashed">
+                    <!-- Resimler buraya JavaScript ile eklenecek -->
+                    <div id="emptyGalleryMsg" class="col-span-full flex flex-col items-center justify-center text-slate-400 py-8">
+                        <svg class="w-8 h-8 mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        <span class="text-sm font-medium">@(isEn ? "No images uploaded yet" : "Henüz resim yüklenmedi")</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabbed Light Code Block (Prime standard) -->
+        <div class="panoptes-code-block border-t border-slate-200 bg-white overflow-hidden">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript API</span>
+                </div>
+                <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    <span>@(isEn ? "Copy" : "Kopyala")</span>
+                </button>
+            </div>
+            <div class="panoptes-code-viewer">
+                <pre class="panoptes-raw-code hidden"><code>// Native HTML5 Drag and Drop Sortable
+function onGalleryUploadSuccess(fileObj) {
+    const galleryUrl = URL.createObjectURL(fileObj.file);
+    // Kart oluşturup DOM'a ekle ve dragstart, dragover, drop dinleyicilerini bağla
+}</code></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-upload.js"></script>
+    <script>
+        let draggedItem = null;
+
+        function onGalleryUploadSuccess(fileObj) {
+            const emptyMsg = document.getElementById('emptyGalleryMsg');
+            if (emptyMsg) {
+                emptyMsg.style.display = 'none';
+            }
+
+            const gallery = document.getElementById('imageGallery');
+            
+            // Dosyanın geçici URL'sini oluştur
+            const imgUrl = URL.createObjectURL(fileObj.file);
+
+            // Galeri öğesi oluştur
+            const item = document.createElement('div');
+            item.className = 'group relative aspect-square rounded-xl overflow-hidden shadow-sm border border-slate-200 cursor-move bg-white transition-all duration-200 hover:shadow-md';
+            item.draggable = true;
+            item.dataset.fileName = fileObj.name;
+            
+            item.innerHTML = `
+                <img src="${imgUrl}" class="w-full h-full object-cover" alt="${fileObj.name}" />
+                <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/10 transition duration-200"></div>
+                
+                <!-- Sil butonu -->
+                <button type="button" class="absolute top-2 right-2 w-6 h-6 bg-white/90 text-slate-500 hover:text-rose-600 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm backdrop-blur-sm cursor-pointer" onclick="removeGalleryItem(this)" title="Kaldır">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+
+                <!-- İsim etiketi -->
+                <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-900/70 to-transparent px-3 pb-2 pt-6 opacity-0 group-hover:opacity-100 transition-opacity text-white text-[10px] truncate font-medium">
+                    ${fileObj.name}
+                </div>
+            `;
+
+            // HTML5 Drag & Drop Event'leri
+            item.addEventListener('dragstart', handleDragStart);
+            item.addEventListener('dragover', handleDragOver);
+            item.addEventListener('dragenter', handleDragEnter);
+            item.addEventListener('dragleave', handleDragLeave);
+            item.addEventListener('drop', handleDrop);
+            item.addEventListener('dragend', handleDragEnd);
+
+            gallery.appendChild(item);
+        }
+
+        function removeGalleryItem(btn) {
+            const item = btn.closest('div[draggable]');
+            if (item) {
+                const img = item.querySelector('img');
+                if (img && img.src.startsWith('blob:')) {
+                    URL.revokeObjectURL(img.src);
+                }
+                item.remove();
+                
+                const gallery = document.getElementById('imageGallery');
+                if (gallery.querySelectorAll('div[draggable]').length === 0) {
+                    document.getElementById('emptyGalleryMsg').style.display = 'flex';
+                }
+            }
+        }
+
+        function handleDragStart(e) {
+            draggedItem = this;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', this.dataset.fileName);
+            setTimeout(() => {
+                this.classList.add('opacity-40', 'scale-95');
+            }, 0);
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleDragEnter(e) {
+            if (this !== draggedItem) {
+                this.classList.add('border-blue-500', 'border-2');
+            }
+        }
+
+        function handleDragLeave(e) {
+            this.classList.remove('border-blue-500', 'border-2');
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+            
+            if (draggedItem !== this) {
+                const gallery = document.getElementById('imageGallery');
+                const children = Array.from(gallery.querySelectorAll('div[draggable]'));
+                const draggedIdx = children.indexOf(draggedItem);
+                const targetIdx = children.indexOf(this);
+
+                if (draggedIdx < targetIdx) {
+                    this.after(draggedItem);
+                } else {
+                    this.before(draggedItem);
+                }
+            }
+            
+            this.classList.remove('border-blue-500', 'border-2');
+            return false;
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('opacity-40', 'scale-95');
+            const items = document.querySelectorAll('#imageGallery div[draggable]');
+            items.forEach(item => {
+                item.classList.remove('border-blue-500', 'border-2');
+            });
+        }
+    </script>
+}

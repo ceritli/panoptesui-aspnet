@@ -1,0 +1,458 @@
+@model Panoptes.AspNetCore.Demo.Controllers.SpreadsheetPageModel
+@{
+var pages = Panoptes.AspNetCore.Demo.Controllers.SpreadsheetController.Pages;
+}
+
+@{
+    ViewData["Title"] = "Spreadsheet (Web Excel Tablosu) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">Ana Sayfa</a>
+        <span>/</span>
+        <a href="/Spreadsheet" class="hover:text-blue-600 transition">Veri Yönetimi & Tablolar</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Spreadsheet</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Spreadsheet (Web Excel Tablosu)</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-spreadsheet&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    WAI-ARIA Uyumlu
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                Hücre içi düzenleme, formül çubuğu (SUM, AVG, MIN, MAX vb.), şerit menü (ribbon), çoklu çalışma sayfası (sheets) ve XLSX/CSV dışa aktarım.
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>Örnekler (Features)</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">3</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>API Referansı (Props & Events)</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">1</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>Erişilebilirlik (WAI-ARIA)</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+<!-- Temel Kullanım -->
+    <section class="space-y-3">
+        <div>
+            <h2 class="text-base font-bold text-slate-800">Temel Kullanım</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Hücreyi seçip yazın, <code class="font-mono">=SUM(B2:B4)</code> gibi formüller girin, sağ tıklayın, şerit sekmelerini gezin. Alttaki sekmelerden ikinci sayfaya geçebilirsiniz.</p>
+        </div>
+        <panoptes-spreadsheet id="sheet" sheets="@Model.Sheets" title="Mali Bütçe Çalışma Kitabı" height="520"
+                              export-url="@Url.Action("ExportXlsx", "Spreadsheet")"
+                              import-url="@Url.Action("ImportXlsx", "Spreadsheet")"
+                              file-name="Butce" />
+
+        <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+        <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                        Razor TagHelper (C# / .NET 8)
+                    </span>
+                    <span class="text-xs text-slate-400 font-medium">Spreadsheet (Web Excel Tablosu)</span>
+                </div>
+                <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    <span>Kodu Kopyala</span>
+                </button>
+            </div>
+            <div class="panoptes-code-viewer">
+                <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-spreadsheet id="sheet" 
+                      sheets="@@Model.Sheets" 
+                      title="Mali Bütçe Çalışma Kitabı" 
+                      height="520"
+                      export-url="@@Url.Action("ExportXlsx", "Spreadsheet")"
+                      import-url="@@Url.Action("ImportXlsx", "Spreadsheet")"
+                      file-name="Butce" /&gt;</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Özellik Galerisi -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50 flex items-center justify-between gap-3 flex-wrap">
+            <div>
+                <h2 class="text-base font-bold text-slate-800">Spreadsheet Özellikleri</h2>
+                <p class="text-xs text-slate-500 mt-0.5">Panoptes Spreadsheet bileşeninin sunduğu gelişmiş kurumsal özellikler.</p>
+            </div>
+        </div>
+        <div class="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            @foreach (var p in pages)
+            {
+                <a href="/Spreadsheet/@p.Action" class="group block rounded-2xl border border-slate-200 p-3.5 hover:border-sky-300 hover:bg-sky-50/40 hover:-translate-y-0.5 hover:shadow-sm transition">
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-sky-700 transition">@p.Title</div>
+                    <div class="text-[11px] text-slate-500 mt-0.5 leading-snug">@p.Description</div>
+                </a>
+            }
+        </div>
+    </div>
+
+    <!-- Formül Fonksiyonları -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden w-full">
+        <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+            <h2 class="text-base font-bold text-slate-800">Desteklenen Formül Fonksiyonları</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Dört işlem, karşılaştırma, birleştirme (&amp;), yüzde ve aralık referansları (mutlak/göreli, sayfalar arası) dahil. Fonksiyon adları İngilizcedir.</p>
+        </div>
+        <div id="fnList" class="p-4 flex flex-wrap gap-1.5"></div>
+    </div>
+
+
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <!-- TagHelper Props -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">TagHelper Özellikleri & Parametreleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-spreadsheet&gt; bileşeninin desteklediği tüm C# ve HTML nitelikleri.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesSpreadsheetTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik (Attribute)</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-4">Varsayılan</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşenin DOM kimliği; <code class="font-mono text-blue-600">Panoptes.Spreadsheet.getInstance(id)</code> ile API'ye erişilir.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">title</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">Tablonun üst araç çubuğunda gösterilecek başlık metni.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">sheets</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">List&lt;SpreadsheetSheet&gt;</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">1 boş sayfa</td>
+                            <td class="py-3 px-6 text-slate-700">Çalışma sayfaları koleksiyonu (hücreler, biçimler, birleştirmeler, doğrulamalar, düzenleyiciler, DataSource).</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">height</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">int</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">520</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşenin piksel cinsinden yüksekliği.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">toolbar</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"true"</td>
+                            <td class="py-3 px-6 text-slate-700">true/false veya virgülle ayrılmış sekmeler: <code class="font-mono">home,insert,data,view,file</code>.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">formula-bar</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">Formül ve hücre giriş çubuğunu gösterir veya gizler.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">sheets-bar</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">Tablonun altındaki çalışma sayfası sekmelerini gösterir veya gizler.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">editable</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">false yapıldığında tüm tablo salt okunur (read-only) kilitlenir.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">resizable</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                            <td class="py-3 px-6 text-slate-700">Bileşenin sağ alt köşesinden serbest boyutlandırılabilmesini sağlar.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">show-grid-lines</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">Hücre ızgara çizgilerinin görünürlüğü.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">export-url</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">Excel (.xlsx) dışa aktarma uç noktası (POST, JSON gövde).</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">import-url</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">Excel (.xlsx) içe aktarma uç noktası (POST, multipart "file").</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">file-name</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"Panoptes"</td>
+                            <td class="py-3 px-6 text-slate-700">İndirilen Excel/PDF dosyalarının varsayılan ön adı.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">on-event</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">Tüm tablo olaylarını dinleyen genel JavaScript fonksiyon adı.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">on-cell-change</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">Hücre değeri değiştiğinde çalışan JavaScript fonksiyonu (<code class="font-mono">{ row, col, ref, value }</code>).</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">class</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">Kök konteyner elementine eklenecek özel CSS sınıfları.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SpreadsheetCell Model -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">SpreadsheetCell Modeli Özellikleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Her bir hücrenin veri, formül ve görsel biçim tanımları.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-sky-100 text-sky-800">SpreadsheetCell</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">Row / Col</td><td class="py-2.5 px-4 font-mono text-purple-600">int</td><td class="py-2.5 px-6">1 tabanlı satır ve sütun indeksi.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">Value / Formula</td><td class="py-2.5 px-4 font-mono text-purple-600">string</td><td class="py-2.5 px-6">Sabit metin/sayı değeri veya "=SUM(A1:A5)" biçiminde dinamik formül.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">Bold / Italic / Underline / Strike</td><td class="py-2.5 px-4 font-mono text-purple-600">bool</td><td class="py-2.5 px-6">Tipografi biçimlendirmeleri (kalın, italik, altı çizgili, üstü çizgili).</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">Color / Background</td><td class="py-2.5 px-4 font-mono text-purple-600">string</td><td class="py-2.5 px-6">Yazı rengi ve hücre dolgu rengi (#RRGGBB).</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">Align / VAlign</td><td class="py-2.5 px-4 font-mono text-purple-600">string</td><td class="py-2.5 px-6">Yatay (left|center|right) ve dikey (top|middle|bottom) hizalama.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">Format</td><td class="py-2.5 px-4 font-mono text-purple-600">string</td><td class="py-2.5 px-6">Sayı biçimi: currency, percent, date, datetime, text veya özel kalıp (#,##0.00 ₺).</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">FontSize / Wrap / Border</td><td class="py-2.5 px-4 font-mono text-purple-600">int / bool / string</td><td class="py-2.5 px-6">Yazı boyutu, metin kaydırma ve kenarlık tanımları (t, b, l, r).</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">Enabled</td><td class="py-2.5 px-4 font-mono text-purple-600">bool</td><td class="py-2.5 px-6">false ise hücre kilitlidir; düzenlenemez, silinemez.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">Comment</td><td class="py-2.5 px-4 font-mono text-purple-600">string</td><td class="py-2.5 px-6">Hücre köşe açıklaması/notu.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SpreadsheetSheet Model -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">SpreadsheetSheet Modeli Özellikleri</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Çalışma sayfası düzeyindeki yapılandırmalar.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-indigo-100 text-indigo-800">SpreadsheetSheet</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Özellik</th>
+                            <th class="py-3 px-4">Tip (C#)</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">Name / Rows / Cols</td><td class="py-2.5 px-4 font-mono text-purple-600">string / int</td><td class="py-2.5 px-6">Sayfa sekme adı ve toplam satır/sütun sayısı.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">Cells</td><td class="py-2.5 px-4 font-mono text-purple-600">List&lt;SpreadsheetCell&gt;</td><td class="py-2.5 px-6">Sayfadaki tanımlı hücreler koleksiyonu.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">ColumnWidths / RowHeights</td><td class="py-2.5 px-4 font-mono text-purple-600">Dictionary&lt;int, int&gt;</td><td class="py-2.5 px-6">Özel sütun genişlikleri ve satır yükseklikleri (1 tabanlı dizin → piksel).</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">MergedCells</td><td class="py-2.5 px-4 font-mono text-purple-600">List&lt;string&gt;</td><td class="py-2.5 px-6">Birleştirilmiş aralıklar listesi (örn. ["A1:C1", "D5:E6"]).</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">FrozenRows / FrozenCols</td><td class="py-2.5 px-4 font-mono text-purple-600">int</td><td class="py-2.5 px-6">Kaydırma sırasında sabit kalacak satır ve sütun sayısı.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">Validations</td><td class="py-2.5 px-4 font-mono text-purple-600">List&lt;SpreadsheetValidation&gt;</td><td class="py-2.5 px-6">Aralıklara atanmış veri doğrulama kuralları (liste, sayı aralığı vb.).</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">Editors</td><td class="py-2.5 px-4 font-mono text-purple-600">List&lt;SpreadsheetEditor&gt;</td><td class="py-2.5 px-6">Hücre düzenleyicileri (tarih seçici, açılır liste, renk paleti, onay kutusu).</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">DisabledRanges</td><td class="py-2.5 px-4 font-mono text-purple-600">List&lt;string&gt;</td><td class="py-2.5 px-6">Kilitli/düzenlenemez hücre aralıkları listesi.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">Images</td><td class="py-2.5 px-4 font-mono text-purple-600">List&lt;SpreadsheetImage&gt;</td><td class="py-2.5 px-6">Hücrelere tutturulmuş resimler.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">Filter</td><td class="py-2.5 px-4 font-mono text-purple-600">string</td><td class="py-2.5 px-6">Otomatik filtre uygulanacak aralık, örn. "A1:F20".</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-sky-700">DataSource</td><td class="py-2.5 px-4 font-mono text-purple-600">SpreadsheetDataSource</td><td class="py-2.5 px-6">Sütun tanımları ve kayıt listesi ile dinamik veri bağlama.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- JavaScript Client API -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">JavaScript İstemci API Metotları</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Panoptes.Spreadsheet.getInstance(id) üzerinden erişilen metotlar.</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-100 text-emerald-800">Client API</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">Metot</th>
+                            <th class="py-3 px-4">Dönüş Tipi</th>
+                            <th class="py-3 px-6">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-emerald-700">getData()</td><td class="py-2.5 px-4 font-mono text-purple-600">Array&lt;object&gt;</td><td class="py-2.5 px-6">Etkin sayfadaki veri satırlarını JSON nesnesi olarak döndürür.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-emerald-700">fetchData(url)</td><td class="py-2.5 px-4 font-mono text-purple-600">Promise</td><td class="py-2.5 px-6">Belirtilen URL'den veri çekip sayfayı dinamik olarak yeniler.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-emerald-700">sort(range, colIndex, dir)</td><td class="py-2.5 px-4 font-mono text-purple-600">void</td><td class="py-2.5 px-6">Aralığı belirtilen sütun ve yöne ('asc'|'desc') göre sıralar.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-emerald-700">filter(range)</td><td class="py-2.5 px-4 font-mono text-purple-600">void</td><td class="py-2.5 px-6">Belirtilen aralıkta filtre başlık menülerini aktifleştirir.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-emerald-700">clearFilters()</td><td class="py-2.5 px-4 font-mono text-purple-600">void</td><td class="py-2.5 px-6">Uygulanmış tüm filtre kriterlerini temizler.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-emerald-700">exportPdf()</td><td class="py-2.5 px-4 font-mono text-purple-600">void</td><td class="py-2.5 px-6">Etkin sayfayı yazdırma/PDF görünümüne dönüştürür.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-emerald-700">activateSheet(index)</td><td class="py-2.5 px-4 font-mono text-purple-600">void</td><td class="py-2.5 px-6">Belirtilen dizindeki (0 tabanlı) çalışma sayfasını etkinleştirir.</td></tr>
+                        <tr class="hover:bg-slate-50/60 transition"><td class="py-2.5 px-6 font-mono font-bold text-emerald-700">setCommentAt(ref, text)</td><td class="py-2.5 px-4 font-mono text-purple-600">void</td><td class="py-2.5 px-6">Belirtilen hücre referansına ("B2") köşe yorumu atar veya siler.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    WAI-ARIA Standartları & Klavye Erişilebilirliği
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Panoptes Spreadsheet bileşeni, W3C WAI-ARIA Grid tasarım modeline tam uyumlu olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Nitelikleri</div>
+                    <div class="text-slate-600">
+                        Kök tabloda <code>role="grid"</code>, satırlarda <code>role="row"</code> ve hücrelerde <code>role="gridcell"</code> rolleri uygulanır. <code>aria-selected</code>, <code>aria-readonly</code> ve <code>aria-disabled</code> durumları anlık senkronizedir.
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Odak Yönetimi (Focus Management)</div>
+                    <div class="text-slate-600">
+                        Sekme sırasını doğal akışında korur (<code>tabindex="0"</code>). Aktif hücre etrafında yüksek kontrastlı mavi odak halkası çizilir ve ok tuşlarıyla serbestçe taşınır.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 space-y-6">
+                <h3 class="text-sm font-bold text-slate-900">Klavye Kısayolları (Keyboard Shortcuts)</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <!-- Gezinme -->
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+                        <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-100 text-xs font-bold text-slate-700">Gezinme (Navigation)</div>
+                        <table class="w-full text-xs"><tbody class="divide-y divide-slate-100">
+                            <tr><td class="py-2 px-4 w-44"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">← ↑ → ↓</kbd></td><td class="py-2 px-4 text-slate-600">Hücreler arasında serbest gezin</td></tr>
+                            <tr><td class="py-2 px-4"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Tab</kbd> / <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Shift+Tab</kbd></td><td class="py-2 px-4 text-slate-600">Sağdaki / soldaki hücreye geç</td></tr>
+                            <tr><td class="py-2 px-4"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Enter</kbd> / <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Shift+Enter</kbd></td><td class="py-2 px-4 text-slate-600">Aşağıdaki / yukarıdaki hücreye geç</td></tr>
+                            <tr><td class="py-2 px-4"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Home</kbd> / <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">End</kbd></td><td class="py-2 px-4 text-slate-600">Satırın başına / son dolu hücresine git</td></tr>
+                            <tr><td class="py-2 px-4"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+Home</kbd> / <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+End</kbd></td><td class="py-2 px-4 text-slate-600">A1 hücresine / tablonun sonuna atla</td></tr>
+                        </tbody></table>
+                    </div>
+
+                    <!-- Düzenleme -->
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+                        <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-100 text-xs font-bold text-slate-700">Düzenleme (Editing)</div>
+                        <table class="w-full text-xs"><tbody class="divide-y divide-slate-100">
+                            <tr><td class="py-2 px-4 w-44"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">F2</kbd> / <span class="text-slate-500">Çift Tık</span></td><td class="py-2 px-4 text-slate-600">Hücre düzenleme modunu başlat</td></tr>
+                            <tr><td class="py-2 px-4"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Enter</kbd></td><td class="py-2 px-4 text-slate-600">Yeni değeri onayla ve kaydet</td></tr>
+                            <tr><td class="py-2 px-4"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Esc</kbd></td><td class="py-2 px-4 text-slate-600">Düzenlemeyi iptal et ve eski değere dön</td></tr>
+                            <tr><td class="py-2 px-4"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Delete</kbd> / <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Backspace</kbd></td><td class="py-2 px-4 text-slate-600">Hücre içeriğini ve formülü temizle</td></tr>
+                            <tr><td class="py-2 px-4"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Shift+F2</kbd></td><td class="py-2 px-4 text-slate-600">Hücre yorumunu aç / düzenle</td></tr>
+                        </tbody></table>
+                    </div>
+
+                    <!-- Seçim -->
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+                        <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-100 text-xs font-bold text-slate-700">Seçim (Selection)</div>
+                        <table class="w-full text-xs"><tbody class="divide-y divide-slate-100">
+                            <tr><td class="py-2 px-4 w-44"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Shift+Oklar</kbd></td><td class="py-2 px-4 text-slate-600">Hücre seçimini yöne doğru genişlet</td></tr>
+                            <tr><td class="py-2 px-4"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+A</kbd></td><td class="py-2 px-4 text-slate-600">Tüm sayfayı / kullanılan aralığı seç</td></tr>
+                            <tr><td class="py-2 px-4"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+Boşluk</kbd> / <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Shift+Boşluk</kbd></td><td class="py-2 px-4 text-slate-600">Tüm sütunu / tüm satırı seç</td></tr>
+                        </tbody></table>
+                    </div>
+
+                    <!-- Kısayollar -->
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+                        <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-100 text-xs font-bold text-slate-700">Komutlar (Commands)</div>
+                        <table class="w-full text-xs"><tbody class="divide-y divide-slate-100">
+                            <tr><td class="py-2 px-4 w-44"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+C</kbd> / <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">X</kbd> / <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">V</kbd></td><td class="py-2 px-4 text-slate-600">Kopyala / kes / yapıştır</td></tr>
+                            <tr><td class="py-2 px-4"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+Z</kbd> / <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+Y</kbd></td><td class="py-2 px-4 text-slate-600">Geri al / yinele</td></tr>
+                            <tr><td class="py-2 px-4"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+B</kbd> / <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">I</kbd> / <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">U</kbd></td><td class="py-2 px-4 text-slate-600">Kalın / italik / altı çizgili</td></tr>
+                            <tr><td class="py-2 px-4"><kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Ctrl+Shift+L</kbd> / <kbd class="px-1.5 py-0.5 rounded border border-slate-300 bg-slate-50 font-mono text-[11px] text-slate-700">Alt+↓</kbd></td><td class="py-2 px-4 text-slate-600">Filtreyi aç-kapa / filtre menüsünü aç</td></tr>
+                        </tbody></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+(function () {
+            var host = document.getElementById('fnList');
+            if (!host || !window.Panoptes || !Panoptes.Spreadsheet) return;
+            Panoptes.Spreadsheet.functions.forEach(function (n) {
+                var s = document.createElement('span');
+                s.className = 'inline-flex px-2 py-0.5 rounded-md text-[11px] font-mono font-semibold bg-sky-50 text-sky-700 border border-sky-100';
+                s.textContent = n;
+                host.appendChild(s);
+            });
+        })();
+</script>

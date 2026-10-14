@@ -1,0 +1,121 @@
+@model List<Panoptes.AspNetCore.Models.DropDownTreeItemModel>
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "DropDownTree - Custom Templates" : "DropDownTree - Şablonlar (Templates)";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/DropDownTree" : "/DropDownTree")" class="hover:text-blue-600 transition">DropDownTree</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">@(isEn ? "Templates" : "Şablonlar")</span>
+    </nav>
+
+    <!-- Top Navigation Bar between 15 examples -->
+    @await Html.PartialAsync("_DropDownTreeNav")
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "Custom Templates (Header, Item, Footer)" : "Şablon Desteği (Templates)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-50 text-teal-700 border border-teal-200">
+                    Full Template System
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Full templating capabilities: item-template (node layout), value-template (input summary), header-template (pinned banner), footer-template (bottom actions), and no-data-template."
+                    : "DropDownTree şablon yeteneklerinin tamamı desteklenir: item-template (düğüm görünümü), value-template (seçilen değer görünümü), header-template (açılır pencere üst başlığı), footer-template (alt bilgi) ve no-data-template.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-teal-50 text-teal-700 border border-teal-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ Item & Header & Footer
+            </span>
+        </div>
+    </div>
+
+    <!-- Live Showcase Card -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "8. Custom Header, Item & Footer Tree" : "8. Özel Başlık, Düğüm ve Altbilgi Şablonlu Ağaç")</h2>
+            <p class="text-xs text-slate-500 mt-1">
+                @(isEn 
+                    ? "Sticky header with an enterprise icon, custom rendered node text, and an action footer with HR support links."
+                    : "Açılır panelin tepesinde özel bir bilgilendirme başlığı, her düğümde özel HTML ve alt kısımda çağrı merkezi iletişim butonu yer alır.")
+            </p>
+        </div>
+
+        <div class="max-w-md space-y-2">
+            <label class="block text-xs font-bold text-slate-700">@(isEn ? "Custom Templated Department Selector" : "Özel Şablonlu Departman Seçimi")</label>
+            <panoptes-dropdowntree id="ddt_templates_demo"
+                                  items="@Model"
+                                  placeholder="@(isEn ? "Select department..." : "Özel şablonlu birim seçiniz...")"
+                                  value="software"
+                                  dropdown-width="420px"
+                                  header-template="<div class='flex items-center justify-between text-blue-700'><span class='font-bold flex items-center gap-1.5'><svg class='w-3.5 h-3.5' fill='currentColor' viewBox='0 0 20 20'><path d='M9 2a1 1 0 000 2h2a1 1 0 100-2H9z'/><path fill-rule='evenodd' d='M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z' clip-rule='evenodd'/></svg> Corporate Org Chart</span><span class='text-[10px] bg-blue-100 px-2 py-0.5 rounded-full'>2026</span></div>"
+                                  item-template="<span class='font-semibold text-slate-800'>#: text #</span>"
+                                  footer-template="<div class='flex items-center justify-between w-full'><span class='text-slate-500 text-[11px]'>Panoptes HR System</span><a href='#' class='text-blue-600 hover:underline font-bold text-[11px]'>Get Help</a></div>">
+            </panoptes-dropdowntree>
+            <span class="text-[11px] text-slate-400">
+                @(isEn ? "Click the dropdown to inspect the customized header and footer slots." : "Açılır kutuyu tıklayarak özel header ve footer şablonlarını inceleyin.")
+            </span>
+        </div>
+    </div>
+
+    <!-- Feature Description Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Fixed Header & Footer Slots" : "Sabit Başlık ve Altbilgi Slotları")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Add contextual notices, organizational branding, or quick reset actions above and below the scrolling tree."
+                    : "Kaydırılabilir ağaç listesinin üstüne ve tabanına sabit bilgilendirme alanları veya hızlı aksiyon butonları yerleştirin.")
+            </div>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Node-Level HTML Formatting" : "Düğüm Seviyesinde HTML Şablonları")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Render any custom layout, metadata pills, or action icons inside individual tree leaf nodes."
+                    : "Her bir ağaç düğümü içerisinde serbest HTML, meta veri etiketleri veya aksiyon ikonları görüntüleyin.")
+            </div>
+        </div>
+    </div>
+
+    <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+    <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                    @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                </span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-dropdowntree id="ddt_templates_demo"
+                       items="@@Model"
+                       placeholder="@(isEn ? "Select department..." : "Özel şablonlu birim seçiniz...")"
+                       value="software"
+                       header-template="&lt;div class='font-bold text-blue-700'&gt;Şirket Şeması&lt;/div&gt;"
+                       item-template="&lt;span class='font-semibold'&gt;#: text #&lt;/span&gt;"
+                       footer-template="&lt;div&gt;Panoptes IK Sistemi&lt;/div&gt;"&gt;
+&lt;/panoptes-dropdowntree&gt;</code></pre>
+        </div>
+    </div>
+</div>

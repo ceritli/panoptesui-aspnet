@@ -1,0 +1,39 @@
+@model Panoptes.AspNetCore.Demo.Controllers.TreeListPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <div class="flex items-center gap-2 text-[11px] bg-sky-50 border border-sky-100 rounded-lg px-3 py-2 text-sky-800">
+            <span class="font-bold shrink-0">Son istek:</span>
+            <code id="lastRequest" class="font-mono truncate">— (henüz istek yok)</code>
+        </div>
+
+        <panoptes-treelist id="remoteTree"
+                           title="Ürün Kataloğu (Uzak)"
+                           columns="@Model.Columns"
+                           remote-url="/TreeList/RemoteProducts"
+                           pageable="true"
+                           page-size="4"
+                           sortable="true"
+                           filterable="true"
+                           selectable="single"
+                           on-event="ptlOnEventReq" />
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+    <script>
+        function ptlOnEventReq(e) {
+            if (e.request) {
+                const el = document.getElementById('lastRequest');
+                if (el) { el.textContent = decodeURIComponent(e.request); el.title = el.textContent; }
+            }
+            ptlOnEvent(e);
+        }
+    </script>
+}

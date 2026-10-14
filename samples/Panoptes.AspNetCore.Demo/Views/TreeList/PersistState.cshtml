@@ -1,0 +1,45 @@
+@model Panoptes.AspNetCore.Demo.Controllers.TreeListPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <div class="flex flex-wrap items-center gap-3 text-[11px] bg-amber-50 border border-amber-100 rounded-lg px-3 py-2 text-amber-900">
+            <span class="font-bold">Kayıtlı durum:</span>
+            <span id="stateInfo" class="font-mono">kontrol ediliyor…</span>
+            <span class="text-amber-700">Sıralayın, filtreleyin, sütunları taşıyın / boyutlandırın / gizleyin, düğümleri açın → <b>Durumu Kaydet</b> → sayfayı yenileyin → <b>Durumu Yükle</b>.</span>
+        </div>
+
+        <panoptes-treelist id="stateTree"
+                           title="Çalışanlar"
+                           columns="@Model.Columns"
+                           items="@Model.Items"
+                           persist-key="demo-treelist-state"
+                           tools="saveState,loadState,resetState,expandAll,collapseAll"
+                           sortable="true"
+                           filterable="true"
+                           resizable="true"
+                           reorderable="true"
+                           column-menu="true"
+                           on-event="ptlOnEventState" />
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+    <script>
+        function refreshStateInfo() {
+            const t = Panoptes.TreeList.getInstance('stateTree');
+            const el = document.getElementById('stateInfo');
+            if (t && el) el.textContent = t.hasSavedState() ? 'localStorage içinde kayıtlı durum var' : 'kayıtlı durum yok';
+        }
+        function ptlOnEventState(e) {
+            ptlOnEvent(e);
+            if (e.type === 'stateSave' || e.type === 'stateReset' || e.type === 'stateLoad') refreshStateInfo();
+        }
+        Panoptes.TreeList.whenReady('stateTree', refreshStateInfo);
+    </script>
+}

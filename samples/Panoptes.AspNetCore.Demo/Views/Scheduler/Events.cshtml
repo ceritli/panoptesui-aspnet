@@ -1,0 +1,134 @@
+@model List<Panoptes.AspNetCore.Models.SchedulerEventModel>
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Scheduler - Events & Lifecycle Hooks - Panoptes Corporate UI" : "Scheduler - Olaylar & Düzenleme (Events & Editing) - Panoptes Kurumsal UI";
+    ViewData["ActiveTab"] = "Events";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/Scheduler" class="hover:text-blue-600 transition">Scheduler</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">@(isEn ? "Events" : "Olaylar")</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "Client-Side Events & Interaction Hooks" : "İstemci Olayları (Events) & Düzenleme")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    on-event-click, on-change, on-navigate
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    Live Console
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn ? "Listen to click, select, double-click, drag and navigate interactions with live console output." : "Takvim üzerinde tıklama, seçme, çift tıklama (düzenleme modunu açma) ve sürükleme anlarında tetiklenen JavaScript olaylarını dinleme.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Sub Navigation -->
+    <partial name="_SchedulerNav" />
+
+    <!-- Demo Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "Interactive Event Console Demo" : "İnteraktif Olay Konsolu Demosu")</h2>
+            <p class="text-xs text-slate-500 mt-1">
+                @(isEn ? "Click on appointments or drag across slots to see real-time events logged below." : "Randevulara tıklayarak veya hücreler üzerinde seçim yaparak aşağıdaki log akışını izleyin.")
+            </p>
+        </div>
+
+        <div class="w-full">
+            <panoptes-scheduler id="schedEventsDemo" 
+                                default-view="@Panoptes.AspNetCore.Models.SchedulerViewType.Week" 
+                                events="@Model"
+                                editable="true"
+                                selectable="multiple"
+                                on-event-click="onSchedEventClick"
+                                on-change="onSchedChange"
+                                on-navigate="onSchedNavigate">
+                <panoptes-scheduler-view type="@Panoptes.AspNetCore.Models.SchedulerViewType.Week"></panoptes-scheduler-view>
+            </panoptes-scheduler>
+        </div>
+
+        <div class="mt-4">
+            <div class="flex items-center justify-between pb-2">
+                <span class="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">@(isEn ? "Console Event Stream" : "Canlı Olay Log Akışı")</span>
+                <button type="button" onclick="document.getElementById('eventsLog').innerHTML=''" class="text-xs text-blue-600 hover:text-blue-800 font-medium">@(isEn ? "Clear Log" : "Logları Temizle")</button>
+            </div>
+            <div id="eventsLog" class="h-32 overflow-y-auto bg-slate-900 text-slate-300 text-xs font-mono p-3 rounded-lg shadow-inner">
+                // @(isEn ? "Event logs will stream here upon interactions..." : "Olay logları buraya düşecek...")
+            </div>
+        </div>
+
+        <!-- Prime LightCodeViewer -->
+        <div class="mt-6">
+            <div class="panoptes-code-block border border-slate-200 rounded-xl overflow-hidden shadow-xs">
+                <div class="panoptes-code-header flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-200">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper & JS</span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy" : "Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-scheduler id="schedEventsDemo" 
+                    default-view="@@Panoptes.AspNetCore.Models.SchedulerViewType.Week" 
+                    events="@@Model"
+                    editable="true"
+                    selectable="multiple"
+                    on-event-click="onSchedEventClick"
+                    on-change="onSchedChange"
+                    on-navigate="onSchedNavigate"&gt;
+    &lt;panoptes-scheduler-view type="@@Panoptes.AspNetCore.Models.SchedulerViewType.Week"&gt;&lt;/panoptes-scheduler-view&gt;
+&lt;/panoptes-scheduler&gt;
+
+&lt;script&gt;
+    function logEvent(msg) {
+        var log = document.getElementById('eventsLog');
+        log.innerHTML = "&lt;div&gt;&gt; " + msg + "&lt;/div&gt;" + log.innerHTML;
+    }
+    function onSchedEventClick(e) {
+        logEvent("eventClick: " + e.event.title);
+    }
+    function onSchedChange(e) {
+        logEvent("change (selection): starts " + e.start);
+    }
+    function onSchedNavigate(e) {
+        logEvent("navigate: action " + e.action + " (date: " + e.date + ")");
+    }
+&lt;/script&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function logEvent(msg) {
+            var log = document.getElementById('eventsLog');
+            if (log) {
+                log.innerHTML = "<div>> " + msg + "</div>" + log.innerHTML;
+            }
+        }
+        function onSchedEventClick(e) {
+            logEvent("eventClick: " + (e.event ? e.event.title : 'Event'));
+        }
+        function onSchedChange(e) {
+            logEvent("change: " + e.start + " - " + e.end);
+        }
+        function onSchedNavigate(e) {
+            logEvent("navigate: action = " + e.action);
+        }
+    </script>
+}

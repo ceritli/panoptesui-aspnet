@@ -1,0 +1,102 @@
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "ActionSheet - Animation Effects" : "ActionSheet - Animasyon Efektleri (Animation Effects)";
+    ViewData["ActiveTab"] = "Animation";
+}
+
+<div class="space-y-6">
+    <partial name="_ActionSheetNav" />
+
+    <!-- Info Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight mb-2">@(isEn ? "Animation Effects" : "Animasyon Efektleri (Animation Effects)")</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            @(isEn ? "Specify the transition effect when opening and closing the ActionSheet using the animation attribute. Smooth Slide animation is default, with Fade and None options also available." : "ActionSheet açılırken ve kapanırken kullanılacak geçiş efektini animation parametresiyle belirleyebilirsiniz. Varsayılan olarak akıcı bir Slide (Alttan Yukarı Kayma) animasyonu kullanılır. İsteğe bağlı olarak Fade (Belirme) veya None (Animasyonsuz) seçenekleri de mevcuttur.")
+        </p>
+    </div>
+
+    <!-- Live Demo -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+        <h2 class="text-base font-bold text-slate-800">@(isEn ? "Try Different Animation Modes" : "Farklı Animasyon Modlarını Deneyin")</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <!-- 1. Slide Animation -->
+            <div class="p-5 rounded-2xl bg-indigo-50/50 border border-indigo-100 flex flex-col justify-between">
+                <div>
+                    <span class="text-xs font-bold text-indigo-700 block mb-1">animation="slide" (@(isEn ? "Default" : "Varsayılan"))</span>
+                    <p class="text-xs text-slate-600">@(isEn ? "Slides up from screen bottom with smooth cubic-bezier curve." : "Ekranın altından akıcı cubic-bezier eğrisiyle yukarı doğru kayarak açılır.")</p>
+                </div>
+                <button type="button" onclick="window.Panoptes.ActionSheet.open('slideSheet')" class="mt-4 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-sm">
+                    @(isEn ? "Open with Slide" : "Slide İle Aç")
+                </button>
+            </div>
+
+            <!-- 2. Fade Animation -->
+            <div class="p-5 rounded-2xl bg-purple-50/50 border border-purple-100 flex flex-col justify-between">
+                <div>
+                    <span class="text-xs font-bold text-purple-700 block mb-1">animation="fade"</span>
+                    <p class="text-xs text-slate-600">@(isEn ? "Appears with gentle scale (0.96 -> 1) and opacity fade." : "Hafif bir ölçekleme (scale 0.96 ➔ 1) ve saydamlık (opacity) geçişi ile belirir.")</p>
+                </div>
+                <button type="button" onclick="window.Panoptes.ActionSheet.open('fadeSheet')" class="mt-4 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition shadow-sm">
+                    @(isEn ? "Open with Fade" : "Fade İle Aç")
+                </button>
+            </div>
+
+            <!-- 3. None Animation -->
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between">
+                <div>
+                    <span class="text-xs font-bold text-slate-700 block mb-1">animation="none"</span>
+                    <p class="text-xs text-slate-600">@(isEn ? "Appears instantly on screen without waiting for transitions." : "Herhangi bir geçiş beklemeden anında ekranda görüntülenir.")</p>
+                </div>
+                <button type="button" onclick="window.Panoptes.ActionSheet.open('noneSheet')" class="mt-4 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold transition shadow-sm">
+                    @(isEn ? "Open without Animation" : "Animasyonsuz Aç")
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sheet Definitions -->
+    <panoptes-actionsheet id="slideSheet" title="Slide Animasyonu" subtitle="Alttan yukarı kayma efekti" animation="slide">
+        <panoptes-actionsheet-item id="s-1" text="Birinci Eylem"></panoptes-actionsheet-item>
+        <panoptes-actionsheet-item id="s-2" text="İkinci Eylem"></panoptes-actionsheet-item>
+    </panoptes-actionsheet>
+
+    <panoptes-actionsheet id="fadeSheet" title="Fade Animasyonu" subtitle="Saydamlık ve ölçekleme efekti" animation="fade">
+        <panoptes-actionsheet-item id="f-1" text="Birinci Eylem"></panoptes-actionsheet-item>
+        <panoptes-actionsheet-item id="f-2" text="İkinci Eylem"></panoptes-actionsheet-item>
+    </panoptes-actionsheet>
+
+    <panoptes-actionsheet id="noneSheet" title="Animasyonsuz Gösterim" subtitle="Anında açılış" animation="none">
+        <panoptes-actionsheet-item id="n-1" text="Birinci Eylem"></panoptes-actionsheet-item>
+        <panoptes-actionsheet-item id="n-2" text="İkinci Eylem"></panoptes-actionsheet-item>
+    </panoptes-actionsheet>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;!-- Slide Animasyonu --&gt;
+&lt;panoptes-actionsheet id=&quot;slideSheet&quot; title=&quot;Başlık&quot; animation=&quot;slide&quot;&gt;
+    &lt;panoptes-actionsheet-item text=&quot;Eylem 1&quot; /&gt;
+&lt;/panoptes-actionsheet&gt;
+
+&lt;!-- Fade Animasyonu --&gt;
+&lt;panoptes-actionsheet id=&quot;fadeSheet&quot; title=&quot;Başlık&quot; animation=&quot;fade&quot;&gt;
+    &lt;panoptes-actionsheet-item text=&quot;Eylem 1&quot; /&gt;
+&lt;/panoptes-actionsheet&gt;
+
+&lt;!-- Animasyonsuz --&gt;
+&lt;panoptes-actionsheet id=&quot;noneSheet&quot; title=&quot;Başlık&quot; animation=&quot;none&quot;&gt;
+    &lt;panoptes-actionsheet-item text=&quot;Eylem 1&quot; /&gt;
+&lt;/panoptes-actionsheet&gt;</code></pre>
+        </div>
+    </div>
+</div>

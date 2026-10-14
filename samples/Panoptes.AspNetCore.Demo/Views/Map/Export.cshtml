@@ -1,0 +1,119 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Map - Export (PNG & SVG)" : "Map - Dışa Aktarma (Export to PNG & SVG)";
+    ViewData["ActiveTab"] = "Export";
+}
+
+<div class="space-y-6">
+    <partial name="_MapNav" />
+
+    <!-- Hero Header -->
+    <div class="bg-gradient-to-r from-emerald-800 via-teal-700 to-indigo-800 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
+        <div class="relative z-10 max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold text-white mb-4">
+                <span>@(isEn ? "Client-Side Export" : "İstemci Taraflı Dışa Aktarım")</span>
+            </div>
+            <h1 class="text-3xl font-extrabold tracking-tight mb-3">@(isEn ? "Map Export (Export to PNG & SVG)" : "Harita Dışa Aktarma (Export to PNG & SVG)")</h1>
+            <p class="text-emerald-100 text-sm sm:text-base leading-relaxed">
+                @(isEn ? "Export the current map view, markers and vector boundaries directly in your browser as high-resolution PNG image or SVG vector file format." : "Panoptes Map ile haritanın mevcut görüntüsünü, işaretçilerini ve vektör sınırlarını yüksek çözünürlüklü PNG resim veya SVG vektör dosyası formatında doğrudan tarayıcı üzerinden indirebilirsiniz.")
+            </p>
+        </div>
+        <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+    </div>
+
+    <!-- Export Action Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+                <h3 class="text-base font-bold text-slate-900">@(isEn ? "Export Operations" : "Dışa Aktarma İşlemleri")</h3>
+                <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "Download current map viewport to your device with custom watermark and timestamp." : "Haritanın o anki görünümünü, filigran ve zaman damgasıyla birlikte cihazınıza indirin.")</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button type="button" onclick="exportToPNG()" class="px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-sm flex items-center gap-2 cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    <span>@(isEn ? "Download as PNG (Image)" : "PNG Olarak İndir (Resim)")</span>
+                </button>
+
+                <button type="button" onclick="exportToSVG()" class="px-4 py-2.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition shadow-sm flex items-center gap-2 cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                    <span>@(isEn ? "Download as SVG (Vector)" : "SVG Olarak İndir (Vektörel)")</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="exportStatus" class="hidden p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl text-xs flex items-center gap-2">
+            <span>✓</span>
+            <span id="exportStatusText">@(isEn ? "Map exported successfully." : "Harita başarıyla dışa aktarıldı.")</span>
+        </div>
+    </div>
+
+    <!-- Live Map -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <panoptes-map id="exportMap" center="39.9334, 32.8597" zoom="6" height="520px" controls="true">
+            <panoptes-map-layer type="tile" title="OpenStreetMap" 
+                                url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png" 
+                                attribution="&copy; OpenStreetMap contributors" />
+
+            <panoptes-map-layer type="shape" source-url="/Map/GetRegionsGeoJson" opacity="0.4" stroke-width="1.5" />
+
+            <panoptes-map-marker lat="41.0082" lng="28.9784" title="İstanbul" color="#6366f1" icon="building" tooltip='@(isEn ? "Istanbul Center" : "İstanbul Merkez")' />
+            <panoptes-map-marker lat="39.9334" lng="32.8597" title="Ankara" color="#ef4444" icon="star" tooltip='@(isEn ? "Ankara Capital" : "Ankara Başkent")' />
+            <panoptes-map-marker lat="38.4237" lng="27.1428" title="İzmir" color="#06b6d4" icon="pin" tooltip='@(isEn ? "Izmir Branch" : "İzmir Şube")' />
+        </panoptes-map>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>// Harita örneğini al
+const map = window.Panoptes.Map.getInstance('exportMap');
+
+// 1. PNG Olarak Dışa Aktarma
+map.exportPNG('turkiye-haritasi.png');
+
+// 2. Vektörel SVG Olarak Dışa Aktarma
+map.exportSVG('turkiye-vektorleri.svg');</code></pre>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const isEnExp = @(isEn ? "true" : "false");
+
+    function exportToPNG() {
+        const map = window.Panoptes?.Map?.getInstance('exportMap');
+        if (map) {
+            map.exportPNG('panoptes-harita-export.png');
+            showStatus(isEnExp ? 'PNG map download started.' : 'PNG formatında harita indirme işlemi başlatıldı.');
+        }
+    }
+
+    function exportToSVG() {
+        const map = window.Panoptes?.Map?.getInstance('exportMap');
+        if (map) {
+            map.exportSVG('panoptes-harita-vektor.svg');
+            showStatus(isEnExp ? 'SVG vector download started.' : 'SVG formatında vektörel katman indirme işlemi başlatıldı.');
+        }
+    }
+
+    function showStatus(msg) {
+        const box = document.getElementById('exportStatus');
+        const text = document.getElementById('exportStatusText');
+        if (box && text) {
+            text.textContent = msg;
+            box.classList.remove('hidden');
+            setTimeout(() => box.classList.add('hidden'), 4000);
+        }
+    }
+</script>
+}

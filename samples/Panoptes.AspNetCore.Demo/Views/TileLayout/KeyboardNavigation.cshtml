@@ -1,0 +1,162 @@
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "TileLayout - Keyboard Navigation & Accessibility (A11y)" : "TileLayout - Klavye Gezintisi & Erişilebilirlik (A11y)";
+    ViewData["ActiveTab"] = "KeyboardNavigation";
+}
+
+<div class="space-y-6">
+    <partial name="_TileLayoutNav" />
+
+    <!-- Info Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight mb-2">@(isEn ? "Keyboard Navigation & WCAG Accessibility" : "Klavye Gezintisi & WCAG Erişilebilirliği (Accessibility)")</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            @(isEn ? "Panoptes TileLayout fully supports navigating between tiles, reordering, and resizing using only keyboard shortcuts without needing a mouse. With navigatable=\"true\", all shortcuts are enabled automatically." : "Panoptes TileLayout, fare kullanmadan yalnızca klavye tuşlarıyla kartlar arasında gezinmeyi, kartların sırasını değiştirmeyi ve boyutlarını güncellemeyi tam olarak destekler. navigatable=\"true\" ile tüm kısayollar otomatik devreye girer.")
+        </p>
+    </div>
+
+    <!-- Live Test Area -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+        <div class="flex items-center justify-between p-3.5 bg-indigo-50 border border-indigo-100 rounded-2xl text-xs">
+            <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 animate-pulse"></span>
+                <span class="font-bold text-indigo-900">@(isEn ? "Active Focused Tile:" : "Aktif Odaklanan Kart:")</span>
+                <span id="activeFocusLabel" class="font-mono text-indigo-700 bg-white px-2 py-0.5 rounded-lg border border-indigo-200">@(isEn ? "None (Click or press Tab)" : "Hiçbiri (Tıklayın veya Tab tuşuna basın)")</span>
+            </div>
+            <div class="text-indigo-600 font-medium">@(isEn ? "Last Key:" : "Son Tuş:") <kbd id="lastKeyLabel" class="px-1.5 py-0.5 rounded bg-white border border-indigo-200 font-mono">-</kbd></div>
+        </div>
+
+        <panoptes-tilelayout id="a11yLayout" columns="3" row-height="160px" gap="16px" navigatable="true" reorderable="true" resizable="true">
+            <panoptes-tilelayout-item id="a11y-1" header-text="Kart 1 (Odaklanılabilir)" col-span="1" row-span="1" removable="true">
+                <div class="p-2 text-xs text-slate-600">
+                    <p class="font-semibold text-slate-800">1. Kutu</p>
+                    <p class="mt-1">Yön tuşlarıyla diğer kutulara geçebilirsiniz.</p>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="a11y-2" header-text="Kart 2 (col-span=2)" col-span="2" row-span="1" removable="true">
+                <div class="p-2 text-xs text-slate-600">
+                    <p class="font-semibold text-slate-800">2. Kutu (Geniş)</p>
+                    <p class="mt-1"><kbd class="px-1 bg-slate-100 border rounded">Shift</kbd> + <kbd class="px-1 bg-slate-100 border rounded">Sol Ok</kbd> ile daraltmayı deneyin.</p>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="a11y-3" header-text="Kart 3" col-span="1" row-span="1" removable="true">
+                <div class="p-2 text-xs text-slate-600">
+                    <p class="font-semibold text-slate-800">3. Kutu</p>
+                    <p class="mt-1"><kbd class="px-1 bg-slate-100 border rounded">Ctrl</kbd> + <kbd class="px-1 bg-slate-100 border rounded">Sol/Sağ Ok</kbd> ile yerini değiştirin.</p>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="a11y-4" header-text="Kart 4" col-span="1" row-span="1" removable="true">
+                <div class="p-2 text-xs text-slate-600">
+                    <p class="font-semibold text-slate-800">4. Kutu</p>
+                    <p class="mt-1"><kbd class="px-1 bg-slate-100 border rounded">Delete</kbd> tuşuyla kaldırılabilir.</p>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="a11y-5" header-text="Kart 5" col-span="1" row-span="1" removable="true">
+                <div class="p-2 text-xs text-slate-600">
+                    <p class="font-semibold text-slate-800">5. Kutu</p>
+                    <p class="mt-1">Sonuncu kart.</p>
+                </div>
+            </panoptes-tilelayout-item>
+        </panoptes-tilelayout>
+    </div>
+
+    <!-- Keyboard Shortcuts Guide Table -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm overflow-hidden">
+        <h2 class="text-base font-bold text-slate-800 mb-4">Desteklenen Klavye Kısayolları (Keyboard Shortcuts)</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-600 border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-200 bg-slate-50 font-bold text-slate-800">
+                        <th class="p-3">Tuş Kombinasyonu</th>
+                        <th class="p-3">İşlev</th>
+                        <th class="p-3">Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">Sağ Ok / Aşağı Ok</td>
+                        <td class="p-3 font-semibold text-slate-800">Sonraki Karta Geç</td>
+                        <td class="p-3">Odaklamayı sıradaki karta taşır.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">Sol Ok / Yukarı Ok</td>
+                        <td class="p-3 font-semibold text-slate-800">Önceki Karta Geç</td>
+                        <td class="p-3">Odaklamayı önceki karta taşır.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">Ctrl + Yön Tuşları</td>
+                        <td class="p-3 font-semibold text-slate-800">Kartı Taşı (Reorder)</td>
+                        <td class="p-3">Odaklanmış kartın sırasını sağa/sola taşır.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">Shift + Sağ / Sol Ok</td>
+                        <td class="p-3 font-semibold text-slate-800">Sütun Genişliği (col-span)</td>
+                        <td class="p-3">Kartın sütun genişliğini bir hücre arttırır veya azaltır.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">Shift + Aşağı / Yukarı Ok</td>
+                        <td class="p-3 font-semibold text-slate-800">Satır Yüksekliği (row-span)</td>
+                        <td class="p-3">Kartın satır yüksekliğini bir hücre arttırır veya azaltır.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">Delete</td>
+                        <td class="p-3 font-semibold text-slate-800">Kartı Kapat</td>
+                        <td class="p-3">Eğer kartta <code>removable="true"</code> tanımlıysa panodan kaldırır.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;!-- navigatable=&quot;true&quot; ile tüm klavye gezintisi ve WCAG özellikleri aktif edilir --&gt;
+&lt;panoptes-tilelayout id=&quot;a11yLayout&quot; columns=&quot;3&quot; navigatable=&quot;true&quot; reorderable=&quot;true&quot; resizable=&quot;true&quot;&gt;
+    &lt;panoptes-tilelayout-item id=&quot;a11y-1&quot; header-text=&quot;Kart 1&quot; removable=&quot;true&quot;&gt;
+        &lt;p&gt;Klavye ile taşınabilir ve boyutlandırılabilir.&lt;/p&gt;
+    &lt;/panoptes-tilelayout-item&gt;
+&lt;/panoptes-tilelayout&gt;</code></pre>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const layout = document.getElementById('a11yLayout');
+            const focusLabel = document.getElementById('activeFocusLabel');
+            const keyLabel = document.getElementById('lastKeyLabel');
+
+            if (layout) {
+                layout.addEventListener('focusin', (e) => {
+                    const item = e.target.closest('.panoptes-tilelayout-item');
+                    if (item) {
+                        const title = item.querySelector('.panoptes-tilelayout-item-title')?.textContent || item.id;
+                        focusLabel.textContent = title;
+                    }
+                });
+
+                layout.addEventListener('keydown', (e) => {
+                    let keyStr = e.key;
+                    if (e.ctrlKey) keyStr = 'Ctrl + ' + keyStr;
+                    if (e.shiftKey) keyStr = 'Shift + ' + keyStr;
+                    keyLabel.textContent = keyStr;
+                });
+            }
+        });
+    </script>
+}

@@ -1,0 +1,532 @@
+@{
+    var serverCpuRanges = ViewBag.ServerCpuRanges as List<Panoptes.AspNetCore.Models.GaugeRange> ?? new List<Panoptes.AspNetCore.Models.GaugeRange>();
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Gauge (Dial & Speedometer Engine) - Panoptes Corporate UI" : "Gauge (Kadran & Hız Göstergesi) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/Gauge" class="hover:text-blue-600 transition">@(isEn ? "Charts & Visuals" : "Grafikler & Görselleştirme")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Gauge</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Gauge @(isEn ? "(Dial & Speedometer Engine)" : "(Kadran & Hız Göstergesi)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-gauge&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Radial, Arc and Linear needle gauges featuring color-coded thresholds (green, amber, rose) with fluid CSS/SVG needle animation and telemetry simulations." 
+                    : "Dairesel (Radial), yarım yay (Arc) ve doğrusal (Linear) ibreli göstergeler, renkli hedef aralıkları (yeşil, sarı, kırmızı) ve anlık animasyonlu ibre hareketi.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Features & Demos" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">4</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">5</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        <!-- DEMO 1: Radial Gauge (İbreli Hız & Yük Kadranı) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                        @(isEn ? "1. Radial Gauge (Rotating Needle Server Load Dial)" : "1. Radial Gauge (Dönen İbreli Sunucu Yük Kadranı)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn 
+                            ? "240-degree circular dial, colored threshold bands (Green: Safe, Amber: Moderate, Rose: Critical) and center rotating needle." 
+                            : "240 derecelik dairesel ölçek, renkli eşik aralıkları (Yeşil: Güvenli, Sarı: Yoğun, Kırmızı: Kritik) ve merkezden dönen ibre (needle).")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">&lt;panoptes-gauge type="Radial"&gt;</span>
+            </div>
+
+            <div class="p-6 flex flex-col items-center justify-center">
+                <panoptes-gauge id="radialCpuGauge" 
+                                type="Radial" 
+                                title="@(isEn ? "Production Cluster CPU Load" : "Üretim Kümesi CPU Kullanımı")" 
+                                subtitle="@(isEn ? "Live Kubernetes Node Telemetry" : "Canlı Kubernetes Düğüm Telemetrisi")" 
+                                value="72" 
+                                min="0" 
+                                max="100" 
+                                unit="%" 
+                                ranges="@serverCpuRanges" 
+                                size="260" />
+            </div>
+
+            <!-- Standart Kod Kutusu -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-gauge id="radialCpuGauge" 
+                type="Radial" 
+                title="Üretim Kümesi CPU Kullanımı" 
+                value="72" 
+                min="0" 
+                max="100" 
+                unit="%" 
+                ranges="@@serverCpuRanges" 
+                size="260" /&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 2: Arc Gauge (Yarım Daire Yay Dolum Göstergesi) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                        @(isEn ? "2. Arc Gauge (Semicircular Sales Target Gauge)" : "2. Arc Gauge (Yarım Daire Kota Tamamlanma Göstergesi)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn 
+                            ? "180-degree semicircular thick arc indicator filling according to progress value with large digital KPI reading." 
+                            : "180 derecelik yarım çember üzerinde değere göre dolan kalın yay ve merkezde büyük dijital KPI rakamı.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">&lt;panoptes-gauge type="Arc"&gt;</span>
+            </div>
+
+            <div class="p-6 flex flex-col items-center justify-center">
+                <panoptes-gauge id="arcSalesGauge" 
+                                type="Arc" 
+                                title="@(isEn ? "2026 Q1 Sales Target Completion" : "2026 Ç1 Satış Kota Tamamlanma Oranı")" 
+                                subtitle="@(isEn ? "Headquarters Sales Team Progress" : "Merkez Satış Ekibi Hedef İlerlemesi")" 
+                                value="84" 
+                                min="0" 
+                                max="100" 
+                                unit="%" 
+                                size="240" />
+            </div>
+
+            <!-- Standart Kod Kutusu -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-gauge id="arcSalesGauge" 
+                type="Arc" 
+                title="2026 Ç1 Satış Kota Tamamlanma Oranı" 
+                value="84" 
+                min="0" 
+                max="100" 
+                unit="%" 
+                size="240" /&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 3: Linear Gauge (Dikey Termometre / Sıcaklık Göstergesi) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+                        @(isEn ? "3. Linear Gauge (Vertical Thermometer Temperature Indicator)" : "3. Linear Gauge (Dikey Sıcaklık ve Termometre Göstergesi)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn 
+                            ? "Vertical linear level bar indicator with digital readout ideal for tank capacity, pressure or ambient temperature monitoring." 
+                            : "Dikey lineer dolum çubuğu ve yanındaki dijital durum bilgisi ile termometre veya depo doluluk oranı takibi.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-amber-50 text-amber-700 px-2 py-1 rounded font-medium border border-amber-100">&lt;panoptes-gauge type="Linear"&gt;</span>
+            </div>
+
+            <div class="p-6 flex flex-col items-center justify-center">
+                <panoptes-gauge id="linearTempGauge" 
+                                type="Linear" 
+                                title="@(isEn ? "Server Room Temperature" : "Sistem Odası Ortam Sıcaklığı")" 
+                                subtitle="@(isEn ? "Data Center Sensor #4" : "Veri Merkezi Sensör #4")" 
+                                value="42" 
+                                min="0" 
+                                max="80" 
+                                unit="°C" 
+                                size="220" />
+            </div>
+
+            <!-- Standart Kod Kutusu -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-gauge id="linearTempGauge" 
+                type="Linear" 
+                title="Sistem Odası Ortam Sıcaklığı" 
+                value="42" 
+                min="0" 
+                max="80" 
+                unit="°C" 
+                size="220" /&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 4: Programatik JavaScript API ve Canlı Değer Güncelleme -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-600 inline-block"></span>
+                        @(isEn ? "4. Programmatic JavaScript API & Fluid Needle Animation" : "4. Programatik JavaScript API ve Animasyonlu İbre Hareketi")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn 
+                            ? "Control dials dynamically using JavaScript API methods or run live telemetry streaming loops." 
+                            : "İbreli göstergeleri JavaScript API üzerinden dinamik olarak kontrol edin, telemetri simülasyonu çalıştırın.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-cyan-50 text-cyan-700 px-2 py-1 rounded font-medium border border-cyan-100">window.panoptesGauge.getInstance()</span>
+            </div>
+
+            <div class="p-6 space-y-4">
+                <div class="flex flex-wrap items-center gap-2 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                    <button type="button" onclick="setGaugeValue(25)" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium text-xs shadow-xs transition cursor-pointer">
+                        @(isEn ? "Low Load (25%)" : "Düşük Yük (%25)")
+                    </button>
+                    <button type="button" onclick="setGaugeValue(68)" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium text-xs shadow-xs transition cursor-pointer">
+                        @(isEn ? "Normal / High (68%)" : "Normal / Yüksek (%68)")
+                    </button>
+                    <button type="button" onclick="setGaugeValue(92)" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-medium text-xs shadow-xs transition cursor-pointer">
+                        @(isEn ? "Critical Load (92%)" : "Kritik Yük (%92)")
+                    </button>
+                    <button type="button" onclick="startTelemetrySimulation()" id="btnSimulate" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-xs shadow-xs transition ml-auto flex items-center gap-1.5 cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>@(isEn ? "Start Live Telemetry Simulation" : "Canlı Telemetri Simülasyonu Başlat")</span>
+                    </button>
+                </div>
+
+                <!-- Canlı Olay Günlüğü -->
+                <div class="bg-slate-900 text-slate-200 p-4 rounded-xl font-mono text-xs h-28 overflow-y-auto space-y-1" id="gaugeEventLog">
+                    <div class="text-slate-500">@(isEn ? "// Live gauge telemetry panel ready. Test values using buttons..." : "// Canlı gösterge kontrol paneli hazır. Değerleri butonlarla test edebilirsiniz...")</div>
+                </div>
+            </div>
+
+            <!-- Standart Kod Kutusu -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript API</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>var gauge = window.panoptesGauge.getInstance('radialCpuGauge');
+
+// Animasyonlu yeni değer atama
+gauge.setValue(85);
+
+// Mevcut değeri okuma
+var current = gauge.getValue();</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TagHelper Referans Tablosu -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+                <h2 class="text-base font-bold text-slate-800">@(isEn ? "TagHelper Parameter & Attribute Reference" : "TagHelper Parametre ve Nitelik Referansı")</h2>
+                <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "Attributes and data models supported by <panoptes-gauge>." : "<panoptes-gauge> bileşeninin desteklediği tüm C# nitelikleri ve veri tipleri.")</p>
+            </div>
+            <div class="p-6 overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 text-slate-500 font-semibold bg-slate-50">
+                            <th class="py-2.5 px-4">@(isEn ? "Attribute Name" : "Nitelik Adı")</th>
+                            <th class="py-2.5 px-4">@(isEn ? "Data Type" : "Veri Tipi")</th>
+                            <th class="py-2.5 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-2.5 px-4">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-600">
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">string</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">GUID</td>
+                            <td class="py-2.5 px-4">@(isEn ? "Unique DOM identifier of the gauge element." : "Gösterge kartının benzersiz HTML kimliği.")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">type</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">GaugeType</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">Radial</td>
+                            <td class="py-2.5 px-4">@(isEn ? "Dial type: Radial (Needle Dial), Arc (Half-Arc fill), Linear (Vertical Bar)." : "Gösterge türü: Radial (İbreli Kadran), Arc (Yay Dolumu), Linear (Termometre).")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">value</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">decimal</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">0</td>
+                            <td class="py-2.5 px-4">@(isEn ? "Current numeric telemetry value." : "Gösterilecek sayısal değer.")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">min / max</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">decimal</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">0 / 100</td>
+                            <td class="py-2.5 px-4">@(isEn ? "Minimum and maximum dial scale bounds." : "Kadranın minimum ve maksimum sınır değerleri.")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">unit</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">string</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">""</td>
+                            <td class="py-2.5 px-4">@(isEn ? "Display unit suffix (%, km/h, °C, BAR etc.)." : "Değerin yanına yazılacak birim (%, km/s, °C, BAR vb.).")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">ranges</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">List&lt;GaugeRange&gt;</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">[]</td>
+                            <td class="py-2.5 px-4">@(isEn ? "Colored band segments (From, To, Color)." : "Kadran üzerinde renklendirilecek eşik dilimleri (From, To, Color).")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-mono font-bold text-blue-600">size</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-500">int</td>
+                            <td class="py-2.5 px-4 font-mono text-slate-400">240</td>
+                            <td class="py-2.5 px-4">@(isEn ? "Gauge diameter or canvas width (px)." : "Gösterge çapı veya boyutu (px).")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "TagHelper Attributes & Parameters" : "TagHelper Özellikleri & Parametreleri")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "Configuration parameters supported by <panoptes-gauge>." : "<panoptes-gauge> bileşeninin desteklediği tüm C# ve HTML nitelikleri.")</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesGaugeTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">@(isEn ? "Attribute" : "Özellik (Attribute)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Type" : "Tip (C#)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-6">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Element identifier." : "Bileşen kimliği.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">type</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"radial"</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Type: \"radial\" or \"linear\"." : "Tip: \"radial\" (kadran) veya \"linear\" (çubuk).")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">value</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">decimal</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">0</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Current value." : "Mevcut ibre değeri.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">min</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">decimal</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">0</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Scale minimum." : "Skala tabanı.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">max</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">decimal</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">100</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Scale maximum." : "Skala tavanı.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Standards & Keyboard Accessibility" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    @(isEn 
+                        ? "Panoptes Gauge is built in compliance with W3C WAI-ARIA standards for screen readers and keyboard accessibility." 
+                        : "Panoptes Gauge bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "WAI-ARIA Roles" : "WAI-ARIA Nitelikleri")</div>
+                    <div class="text-slate-600">
+                        @(isEn 
+                            ? "Standard role=\"meter\" or role=\"progressbar\" with aria-valuenow, aria-valuemin, and aria-valuemax." 
+                            : "Standart role=\"meter / progressbar\" rolünü taşır. Duruma göre aria-valuenow, aria-valuemin ve aria-valuemax nitelikleri dinamik olarak güncellenir.")
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "Focus Management" : "Odak Yönetimi (Focus Management)")</div>
+                    <div class="text-slate-600">
+                        @(isEn 
+                            ? "Maintains tab sequence natively (tabIndex=\"0\"). High-contrast visual focus rings." 
+                            : "Sekme sırasını doğal akışında korur (tabIndex=\"0\"). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.")
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları (Keyboard Shortcuts)")</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">@(isEn ? "Key" : "Tuş (Key)")</th>
+                                <th class="py-2.5 px-4">@(isEn ? "Function" : "İşlev (Function)")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Tab</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Focuses on the gauge container." : "Göstergeye odaklanır.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-gauge.js" asp-append-version="true"></script>
+    <script>
+        function logGauge(msg) {
+            var logEl = document.getElementById('gaugeEventLog');
+            if (!logEl) return;
+            var time = new Date().toLocaleTimeString('tr-TR');
+            var line = document.createElement('div');
+            line.innerHTML = '<span class="text-slate-500">[' + time + ']</span> ' + msg;
+            logEl.appendChild(line);
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function setGaugeValue(val) {
+            var radial = window.panoptesGauge.getInstance('radialCpuGauge');
+            var arc = window.panoptesGauge.getInstance('arcSalesGauge');
+            var linear = window.panoptesGauge.getInstance('linearTempGauge');
+
+            if (radial) radial.setValue(val);
+            if (arc) arc.setValue(val);
+            if (linear) linear.setValue(Math.min(80, Math.round(val * 0.8)));
+
+            logGauge('<span class="text-emerald-400 font-bold">Yeni Değer:</span> Göstergeler ' + val + ' değerine güncellendi.');
+        }
+
+        var simInterval = null;
+        function startTelemetrySimulation() {
+            var btn = document.getElementById('btnSimulate');
+            if (simInterval) {
+                clearInterval(simInterval);
+                simInterval = null;
+                btn.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> <span>Canlı Telemetri Simülasyonu Başlat</span>';
+                btn.classList.remove('bg-rose-600', 'hover:bg-rose-700');
+                btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                logGauge('<span class="text-amber-400">Simülasyon durduruldu.</span>');
+            } else {
+                btn.innerHTML = 'Simülasyonu Durdur';
+                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                btn.classList.add('bg-rose-600', 'hover:bg-rose-700');
+                logGauge('<span class="text-blue-400 font-bold">Simülasyon Başlatıldı:</span> Her 1.5 saniyede telemetri verisi güncelleniyor.');
+
+                simInterval = setInterval(function () {
+                    var randVal = Math.round(20 + Math.random() * 75);
+                    setGaugeValue(randVal);
+                }, 1500);
+            }
+        }
+    </script>
+}

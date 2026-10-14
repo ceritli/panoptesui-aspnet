@@ -1,0 +1,493 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "NumericTextBox - Panoptes Enterprise UI" : "NumericTextBox (Sayısal Giriş) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Components/NumericTextBox" : "/Components/NumericTextBox")" class="hover:text-blue-600 transition">@(isEn ? "Form Components" : "Form Bileşenleri")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">NumericTextBox</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">NumericTextBox @(isEn ? "" : "(Sayısal Giriş)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-numerictextbox&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Precision currency (₺), percentage (%), custom decimal places, Min/Max limits, step increments, arrow key shortcuts, and spin buttons." 
+                    : "Para birimi (₺), yüzde (%), ondalık basamak yönetimi (decimals), Min/Max kısıtlamaları, özel artış adımı (step), klavye yukarı/aşağı ok tuşları ve spin butonları.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ @(isEn ? "Precision Number Formatting" : "Hassas Sayısal Format")
+            </span>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Demos & Showcase" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">3</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>API @(isEn ? "Reference" : "Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">9</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+
+        <!-- 1. Formatlar & Tipler (Formats: Currency, Percentage, Integer, Float) -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+                <h2 class="text-base font-bold text-slate-800">
+                    @(isEn ? "1. Numeric Formats (Currency, Percentage, Integer, Decimals)" : "1. Sayısal Formatlar (Formats)")
+                </h2>
+                <p class="text-xs text-slate-500 mt-1">
+                    @(isEn ? "Currency symbol formatting, percent ratios, integer stock counts, and high-precision float inputs." : "Para birimi, yüzde oranı, tam sayı ve ondalıklı sayı biçimlendirmeleri.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Para Birimi (Currency) -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">@(isEn ? "Currency (Format: currency)" : "Para Birimi (Format: \"currency\")")</label>
+                    <panoptes-numerictextbox id="num_currency"
+                                             format="currency"
+                                             value="2450.50"
+                                             step="50"
+                                             min="0" />
+                    <span class="text-[11px] text-slate-400">₺ @(isEn ? "symbol for enterprise prices." : "sembolü ile kurumsal fiyat alanı.")</span>
+                </div>
+
+                <!-- Yüzde (Percent) -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">@(isEn ? "Percent (Format: percent)" : "Yüzde Oranı (Format: \"percent\")")</label>
+                    <panoptes-numerictextbox id="num_percent"
+                                             format="percent"
+                                             value="18"
+                                             min="0"
+                                             max="100"
+                                             step="1" />
+                    <span class="text-[11px] text-slate-400">%(KDV) @(isEn ? "tax or discount rate." : "veya indirim oranı alanı.")</span>
+                </div>
+
+                <!-- Tam Sayı (Integer / n0) -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">@(isEn ? "Integer / Stock (Format: n0)" : "Tam Sayı / Stok (Format: \"n0\")")</label>
+                    <panoptes-numerictextbox id="num_int"
+                                             format="n0"
+                                             decimals="0"
+                                             value="150"
+                                             step="1"
+                                             min="0" />
+                    <span class="text-[11px] text-slate-400">@(isEn ? "Quantity without decimal fractions." : "Ondalık kısmı olmayan adet/stok girişi.")</span>
+                </div>
+
+                <!-- Hassas Ondalık (n4) -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">@(isEn ? "Precision (Decimals: 4)" : "4 Basamaklı Hassas (Decimals: 4)")</label>
+                    <panoptes-numerictextbox id="num_decimals4"
+                                             decimals="4"
+                                             value="0.0425"
+                                             step="0.005"
+                                             min="0" />
+                    <span class="text-[11px] text-slate-400">@(isEn ? "Exchange rate, interest or scientific values." : "Döviz kuru, faiz oranı veya hassas ölçümler.")</span>
+                </div>
+            </div>
+
+            <!-- Tabbed Light Code Block (Prime standard) -->
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy" : "Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;!-- 1. Para Birimi Formatı (₺) --&gt;
+&lt;panoptes-numerictextbox id="num_currency" format="currency" value="2450.50" step="50" min="0" /&gt;
+
+&lt;!-- 2. Yüzde Oranı (%) --&gt;
+&lt;panoptes-numerictextbox id="num_percent" format="percent" value="18" min="0" max="100" step="1" /&gt;
+
+&lt;!-- 3. Tam Sayı (n0) --&gt;
+&lt;panoptes-numerictextbox id="num_int" format="n0" decimals="0" value="150" step="1" min="0" /&gt;
+
+&lt;!-- 4. Hassas Ondalık (4 Basamak) --&gt;
+&lt;panoptes-numerictextbox id="num_decimals4" decimals="4" value="0.0425" step="0.005" min="0" /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Adımlar & Spin Butonları -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+                <h2 class="text-base font-bold text-slate-800">
+                    @(isEn ? "2. Steps, Limits & Spinners" : "2. Özel Artış Adımı & Spin Butonları (Steps & Limits)")
+                </h2>
+                <p class="text-xs text-slate-500 mt-1">
+                    @(isEn ? "Custom increment intervals (e.g. 10 by 10) and hiding spin buttons." : "Özel artış miktarı (örn. 10'ar 10'ar) ve spin butonlarını gizleme seçeneği.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">@(isEn ? "Step 10 (0 - 100)" : "10'ar Adım (Min: 0, Max: 100)")</label>
+                    <panoptes-numerictextbox id="num_step10" value="30" min="0" max="100" step="10" />
+                    <span class="text-[11px] text-slate-400">@(isEn ? "Arrow keys or buttons jump by 10." : "Ok tuşları veya butonlar 10'ar 10'ar artırır.")</span>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-700">@(isEn ? "Without Spinners" : "Spin Butonları Gizli (Spinners: false)")</label>
+                    <panoptes-numerictextbox id="num_no_spinners" spinners="false" value="5000" prefix="USD $" />
+                    <span class="text-[11px] text-slate-400">@(isEn ? "Clean numeric input without spin controls." : "Spin butonları olmadan sade sayısal giriş.")</span>
+                </div>
+            </div>
+
+            <!-- Tabbed Light Code Block (Prime standard) -->
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy" : "Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;!-- 1. 0 ile 100 Arası (10'ar Adım) --&gt;
+&lt;panoptes-numerictextbox id="num_step10" value="30" min="0" max="100" step="10" /&gt;
+
+&lt;!-- 2. Spin Butonları Olmayan Giriş --&gt;
+&lt;panoptes-numerictextbox id="num_no_spinners" spinners="false" value="5000" prefix="USD $" /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Canlı API & Olay Konsolu -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+                <h2 class="text-base font-bold text-slate-800">
+                    @(isEn ? "3. JavaScript Client API & Live Event Log" : "3. İstemci JavaScript API & Canlı Olay Konsolu")
+                </h2>
+                <p class="text-xs text-slate-500 mt-1">
+                    @(isEn ? "Programmatic value set/get, step manipulation, enable/disable toggling, and change event monitoring." : "Programatik değer atama, adım artırma/azaltma, kilitleme ve olay dinleme.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                <div class="space-y-4">
+                    <div class="space-y-2 max-w-xs">
+                        <label class="block text-xs font-bold text-slate-700">@(isEn ? "API Target Input" : "API Hedef Girişi")</label>
+                        <panoptes-numerictextbox id="num_api_demo" value="1250" step="50" min="0" max="10000" />
+                    </div>
+
+                    <!-- API Buttons -->
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <button type="button" onclick="numSet5000()" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 transition cursor-pointer">
+                            @(isEn ? "Set Value: 5000" : "5000 Ata")
+                        </button>
+                        <button type="button" onclick="numStepUp()" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 transition cursor-pointer">
+                            @(isEn ? "Step +100" : "+100 Artır")
+                        </button>
+                        <button type="button" onclick="numStepDown()" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 transition cursor-pointer">
+                            @(isEn ? "Step -50" : "-50 Azalt")
+                        </button>
+                        <button type="button" onclick="numToggleEnable()" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200 transition cursor-pointer">
+                            @(isEn ? "Toggle Enable" : "Aktif/Pasif")
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Event Log Console -->
+                <div class="bg-slate-950 p-4 rounded-xl text-xs font-mono text-slate-300 border border-slate-800 shadow-inner">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
+                        <span class="font-bold text-slate-400 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            @(isEn ? "Live Event Console" : "Canlı Olay Günlüğü (Event Log)")
+                        </span>
+                        <button type="button" onclick="document.getElementById('eventLogNum').innerHTML=''" class="text-[11px] text-slate-400 hover:text-slate-200 transition cursor-pointer">@(isEn ? "Clear" : "Temizle")</button>
+                    </div>
+                    <div id="eventLogNum" class="space-y-1 max-h-40 overflow-y-auto font-mono text-[11px]">
+                        <div class="text-slate-500">@(isEn ? "[Ready] Listening for numeric change events..." : "[Hazır] Sayısal değişiklik olayları bekleniyor...")</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabbed Light Code Block (Prime standard) -->
+            <div class="panoptes-code-block mt-4 rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-amber-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript API</span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy" : "Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>// JavaScript API Kullanımı
+const num = window.Panoptes.NumericTextBox.instances.get("num_api_demo");
+
+num.value(5000);                 // Sayısal değer atar
+const val = num.value();         // Değeri okur (5000)
+num.stepBy(100);                 // +100 artırır (5100)
+num.stepBy(-50);                 // -50 azaltır (5050)
+num.enable(false);               // Kilitler veya aktifleştirir</code></pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "TagHelper Attributes & Properties" : "TagHelper Özellikleri & Parametreleri")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-numerictextbox&gt; @(isEn ? "supported C# and HTML attributes." : "bileşeninin desteklediği tüm C# ve HTML nitelikleri.")</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesNumerictextboxTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">@(isEn ? "Attribute" : "Özellik (Attribute)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Type" : "Tip (C#)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-6">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">guid</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Unique DOM ID." : "Bileşenin benzersiz DOM kimliği.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">value</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">double?</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Numeric value or model binding." : "Sayısal başlangıç değeri veya model bağımlılığı.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">format</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"n2"</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Format type: \"currency\", \"percent\", \"n0\", \"n2\"." : "Biçimlendirme: \"currency\", \"percent\", \"n0\", \"n2\".")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">min</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">double?</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Minimum allowed value." : "İzin verilen minimum sayısal değer.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">max</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">double?</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Maximum allowed value." : "İzin verilen maksimum sayısal değer.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">step</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">double</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">1</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Increment/decrement step delta." : "Spin ve ok tuşları ile artış/azalış miktarı.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">decimals</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">int</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">2</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Number of decimal fraction digits." : "Ondalık basamak hassasiyeti.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">spinners</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Shows/hides up/down spin buttons." : "Yukarı/aşağı artırma butonlarının görünürlüğü.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">disabled</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">false</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Disables user interaction." : "Girişi devre dışı bırakır.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Standards & Keyboard Accessibility" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    @(isEn 
+                        ? "Panoptes NumericTextBox conforms to W3C WAI-ARIA spinbutton guidelines, featuring full keyboard and screen reader support." 
+                        : "Panoptes NumericTextBox bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA @(isEn ? "Attributes" : "Nitelikleri")</div>
+                    <div class="text-slate-600">
+                        @(isEn 
+                            ? "Uses role=\"spinbutton\" with aria-valuenow, aria-valuemin, aria-valuemax, and aria-disabled dynamically maintained."
+                            : "Standart role=\"spinbutton\" rolünü taşır. Duruma göre aria-disabled, aria-valuenow, aria-valuemin ve aria-valuemax nitelikleri dinamik olarak güncellenir.")
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "Focus Management" : "Odak Yönetimi")</div>
+                    <div class="text-slate-600">
+                        @(isEn 
+                            ? "Natural tab order with tabIndex=\"0\" and crisp focus rings for low-vision navigation."
+                            : "Sekme sırasını doğal akışında korur (tabIndex=\"0\"). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.")
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları (Keyboard Shortcuts)")</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">@(isEn ? "Key" : "Tuş (Key)")</th>
+                                <th class="py-2.5 px-4">@(isEn ? "Function" : "İşlev (Function)")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Up Arrow (↑)</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Increases value by step." : "Değeri adım (step) kadar artırır.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Down Arrow (↓)</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Decreases value by step." : "Değeri adım (step) kadar azaltır.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Page Up / Down</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Changes value in large increments (10x step)." : "Değeri daha büyük adımlarla (10x step) değiştirir.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Home / End</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Jumps directly to min or max limit if defined." : "Tanımlıysa min veya max değere atlar.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Tab</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Focuses or leaves the input." : "Sayısal giriş alanına odaklanır.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function logNumEvent(msg) {
+        const log = document.getElementById('eventLogNum');
+        if (!log) return;
+        const time = new Date().toLocaleTimeString();
+        const div = document.createElement('div');
+        div.innerHTML = `<span class="text-slate-600">[${time}]</span> ${msg}`;
+        log.prepend(div);
+    }
+
+    function numSet5000() {
+        const inst = window.Panoptes?.NumericTextBox?.instances?.get('num_api_demo');
+        if (inst) {
+            inst.value(5000);
+            logNumEvent(`Değer atandı: <strong class="text-blue-400">5000</strong>`);
+        }
+    }
+
+    function numStepUp() {
+        const inst = window.Panoptes?.NumericTextBox?.instances?.get('num_api_demo');
+        if (inst) {
+            inst.stepBy(100);
+            logNumEvent(`+100 Artırıldı -> Yeni Değer: <strong class="text-emerald-400">${inst.value()}</strong>`);
+        }
+    }
+
+    function numStepDown() {
+        const inst = window.Panoptes?.NumericTextBox?.instances?.get('num_api_demo');
+        if (inst) {
+            inst.stepBy(-50);
+            logNumEvent(`-50 Azaltıldı -> Yeni Değer: <strong class="text-amber-400">${inst.value()}</strong>`);
+        }
+    }
+
+    let numEnabled = true;
+    function numToggleEnable() {
+        const inst = window.Panoptes?.NumericTextBox?.instances?.get('num_api_demo');
+        if (inst) {
+            numEnabled = !numEnabled;
+            inst.enable(numEnabled);
+            logNumEvent(`Durum: <strong class="text-purple-400">${numEnabled ? 'Aktif' : 'Kilitli'}</strong>`);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const apiEl = document.getElementById('num_api_demo');
+        if (apiEl) {
+            apiEl.addEventListener('change', function(e) {
+                logNumEvent(`Olay: <strong class="text-blue-400">change</strong> -> Yeni Değer: <span class="text-emerald-400 font-bold">${e.detail?.value}</span>`);
+            });
+        }
+    });
+</script>

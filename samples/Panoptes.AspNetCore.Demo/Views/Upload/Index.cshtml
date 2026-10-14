@@ -1,0 +1,504 @@
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Upload - Panoptes Enterprise UI" : "Upload (Dosya & Belge Yükleme) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/Upload" : "/Upload")" class="hover:text-blue-600 transition">@(isEn ? "File Management" : "Dosya Yönetimi")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">Upload</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Upload @(isEn ? "" : "(Dosya & Belge Yükleme)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-upload&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Drag-and-drop file uploading, real-time XHR2 progress bars, multiple file selections, extension & size validation, and comprehensive client JS API." 
+                    : "Sürükle-bırak (Drag & Drop), anlık yükleme ilerleme çubuğu (progress bar), çoklu dosya seçimi, dosya türü ve boyut doğrulama yetenekleri.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ @(isEn ? "Async Upload & Drag-Drop" : "Asenkron Yükleme & Sürükle-Bırak")
+            </span>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Demos & Showcase" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">4</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>API @(isEn ? "Reference" : "Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">9</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+
+        <!-- DEMO 1: Sürükle-Bırak Çoklu Belge Yükleme -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                        @(isEn ? "1. Drag & Drop Multi-Document Upload (PDF, Word, Excel & Real-Time Progress)" : "1. Sürükle-Bırak Çoklu Belge Yükleme (PDF, Word, Excel & Gerçek Zamanlı İlerleme)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn 
+                            ? "Drop files into the zone or click to browse. Sends asynchronous HTTP POST requests with real-time progress updates." 
+                            : "Dosyaları kutu içerisine bırakabilir veya Dosya Seç butonuyla seçebilirsiniz. Sunucuya asenkron HTTP POST gönderilerek anlık ilerleme çubuğu güncellenir.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">&lt;panoptes-upload save-url="/Upload/Save"&gt;</span>
+            </div>
+
+            <div class="p-8 max-w-2xl mx-auto space-y-4">
+                <panoptes-upload id="documentUploadDemo" 
+                                name="documents" 
+                                multiple="true" 
+                                auto-upload="true" 
+                                allowed-extensions=".pdf,.docx,.xlsx" 
+                                max-file-size="15728640" 
+                                save-url="/Upload/Save" 
+                                drop-zone-text="@(isEn ? "Drag & drop contracts and documents here" : "Sözleşme ve dökümanları buraya sürükleyip bırakın")" />
+            </div>
+
+            <!-- Tabbed Light Code Block (Prime standard) -->
+            <div class="panoptes-code-block border-t border-slate-200 bg-white overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy" : "Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-upload id="documentUploadDemo" 
+                 name="documents" 
+                 multiple="true" 
+                 auto-upload="true" 
+                 allowed-extensions=".pdf,.docx,.xlsx" 
+                 max-file-size="15728640" 
+                 save-url="/Upload/Save" 
+                 drop-zone-text="@(isEn ? "Drag & drop contracts and documents here" : "Sözleşme ve dökümanları buraya sürükleyip bırakın")" /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 2: Resim & Galeri Yükleyici -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block"></span>
+                        @(isEn ? "2. Image & Gallery Upload (Strict Extension & Size Validation)" : "2. Resim & Galeri Yükleyici (Sıkı Format & Boyut Doğrulama)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn 
+                            ? "Accepts JPG, PNG, and WebP only. Displays instant client-side warnings if files exceed 5 MB." 
+                            : "Sadece JPG, PNG ve WebP görsel formatlarına izin verilir; 5 MB boyut sınırını aşan veya geçersiz dosyalarda istemci tarafında anında uyarı kartı gösterilir.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-indigo-50 text-indigo-700 px-2 py-1 rounded font-medium border border-indigo-100">allowed-extensions=".jpg,.png,.webp"</span>
+            </div>
+
+            <div class="p-8 max-w-2xl mx-auto space-y-4">
+                <panoptes-upload id="imageUploadDemo" 
+                                name="images" 
+                                multiple="true" 
+                                auto-upload="true" 
+                                allowed-extensions=".jpg,.jpeg,.png,.webp" 
+                                max-file-size="5242880" 
+                                drop-zone-text="@(isEn ? "Drag & drop product photos or images here" : "Ürün ve profil fotoğraflarınızı buraya sürükleyin")" />
+            </div>
+
+            <!-- Tabbed Light Code Block (Prime standard) -->
+            <div class="panoptes-code-block border-t border-slate-200 bg-white overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy" : "Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-upload id="imageUploadDemo" 
+                 name="images" 
+                 multiple="true" 
+                 auto-upload="true" 
+                 allowed-extensions=".jpg,.jpeg,.png,.webp" 
+                 max-file-size="5242880" 
+                 drop-zone-text="@(isEn ? "Drag & drop product photos or images here" : "Ürün ve profil fotoğraflarınızı buraya sürükleyin")" /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 3: Manuel Onaylı Yükleme -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-600 inline-block"></span>
+                        @(isEn ? "3. Manual Batch Upload (AutoUpload: false with Upload All Button)" : "3. Manuel Onaylı Yükleme (Toplu \"Tümünü Yükle\" Butonu)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn 
+                            ? "Files queue up without immediate uploading; users review items, delete unwanted files, and click Upload All to send the batch." 
+                            : "Dosyalar hemen yüklenmez; kullanıcı listeyi inceler, istediği dosyaları silebilir ve hazır olduğunda \"Tümünü Yükle\" butonuna basarak toplu gönderimi başlatır.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-amber-50 text-amber-700 px-2 py-1 rounded font-medium border border-amber-100">auto-upload="false"</span>
+            </div>
+
+            <div class="p-8 max-w-2xl mx-auto space-y-4">
+                <panoptes-upload id="manualUploadDemo" 
+                                name="batchFiles" 
+                                multiple="true" 
+                                auto-upload="false" 
+                                allowed-extensions=".pdf,.zip,.rar,.docx" 
+                                drop-zone-text="@(isEn ? "Add batch archive or document packages" : "Toplu arşiv veya evrak paketlerini ekleyin")" />
+            </div>
+
+            <!-- Tabbed Light Code Block (Prime standard) -->
+            <div class="panoptes-code-block border-t border-slate-200 bg-white overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy" : "Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-upload id="manualUploadDemo" 
+                 name="batchFiles" 
+                 multiple="true" 
+                 auto-upload="false" 
+                 allowed-extensions=".pdf,.zip,.rar,.docx" 
+                 drop-zone-text="@(isEn ? "Add batch archive or document packages" : "Toplu arşiv veya evrak paketlerini ekleyin")" /&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 4: Programatik JavaScript API ve Canlı Olay Günlüğü -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                        @(isEn ? "4. Programmatic JavaScript API & Live Event Log" : "4. Programatik JavaScript API ve Canlı Olay Günlüğü (Event Log)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn 
+                            ? "Access file objects, clear the queue, read status with Panoptes.Upload API, and inspect real-time events." 
+                            : "Panoptes.Upload istemci API'si ile dosya listesini okuma, kuyruğu temizleme ve onSelect, onSuccess, onRemove olaylarını anlık izleme.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">Panoptes.Upload API</span>
+            </div>
+
+            <div class="p-8 max-w-4xl mx-auto space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                    <div class="space-y-4">
+                        <panoptes-upload id="apiUploadDemo" 
+                                        name="apiFiles" 
+                                        multiple="true" 
+                                        auto-upload="true" 
+                                        save-url="/Upload/Save" 
+                                        drop-zone-text="@(isEn ? "Select files to trigger events" : "Olayları test etmek için dosya bırakın")"
+                                        on-select="onApiUploadSelect" 
+                                        on-success="onApiUploadSuccess" 
+                                        on-remove="onApiUploadRemove" />
+
+                        <div class="flex items-center gap-2 pt-2">
+                            <button type="button" onclick="getUploadFiles()" class="px-3 py-1.5 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition active:scale-95 border border-blue-200 cursor-pointer">
+                                @(isEn ? "Get File List (API)" : "Dosyaları Oku (API)")
+                            </button>
+                            <button type="button" onclick="clearUploadFiles()" class="px-3 py-1.5 text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-lg transition active:scale-95 border border-rose-200 cursor-pointer">
+                                @(isEn ? "Clear Queue (API)" : "Kuyruğu Temizle (API)")
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Canlı Olay Konsolu -->
+                    <div class="bg-slate-950 p-4 rounded-xl text-xs font-mono text-slate-300 border border-slate-800 shadow-inner">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
+                            <span class="font-bold text-slate-400 flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                @(isEn ? "Live Event Console" : "Canlı Olay Günlüğü (Event Log)")
+                            </span>
+                            <button type="button" onclick="clearUploadLog()" class="text-[11px] text-slate-400 hover:text-slate-200 transition cursor-pointer">@(isEn ? "Clear" : "Temizle")</button>
+                        </div>
+                        <div id="uploadEventLog" class="space-y-1 h-44 overflow-y-auto font-mono text-[11px]">
+                            <div class="text-slate-500">@(isEn ? "// Ready. Waiting for file interactions..." : "// Sistem hazır. Dosya hareketleri bekleniyor...")</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabbed Light Code Block (Prime standard) -->
+            <div class="panoptes-code-block border-t border-slate-200 bg-white overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-amber-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript API</span>
+                    </div>
+                    <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>@(isEn ? "Copy" : "Kopyala")</span>
+                    </button>
+                </div>
+                <div class="panoptes-code-viewer">
+                    <pre class="panoptes-raw-code hidden"><code>// JavaScript API ve Olay Fonksiyonları
+function onApiUploadSelect(fileObj) {
+    console.log("[on-select]:", fileObj.name, fileObj.size);
+}
+
+function onApiUploadSuccess(fileObj) {
+    console.log("[on-success]:", fileObj.name);
+}
+
+function onApiUploadRemove(fileObj) {
+    console.log("[on-remove]:", fileObj.name);
+}
+
+// Dosya listesini okuma
+const files = Panoptes.Upload.getFiles('apiUploadDemo');
+
+// Listeyi temizleme
+Panoptes.Upload.clearFiles('apiUploadDemo');</code></pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "TagHelper Attributes & Properties" : "TagHelper Özellikleri & Parametreleri")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">&lt;panoptes-upload&gt; @(isEn ? "supported C# and HTML attributes." : "bileşeninin desteklediği tüm C# ve HTML nitelikleri.")</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesUploadTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">@(isEn ? "Attribute" : "Nitelik (Attribute)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Type" : "Tür (Type)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-6">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">guid</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Unique DOM ID and client API reference." : "Bileşenin benzersiz DOM kimliği ve JavaScript API referansı.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">name</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">id ile aynı</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "IFormFile form field name for server binding." : "Form submit edilirken IFormFile veya IFormFileCollection eşleşme adı.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">multiple</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Allows selecting multiple files at once." : "Aynı anda birden fazla dosya seçimine izin verir.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">auto-upload</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Starts uploading immediately upon selection. When false, displays upload button." : "Dosya seçildiği anda otomatik yüklemeyi başlatır. False ise manuel buton gösterilir.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">allowed-extensions</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Comma-separated allowed extensions (e.g. \".pdf,.docx,.png\")." : "İzin verilen dosya uzantıları (virgülle ayrılmış: \".pdf,.docx,.png\").")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">max-file-size</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">long</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">10485760</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Maximum single file size in bytes (defaults to 10 MB)." : "Bayt cinsinden maksimum izin verilen tekil dosya boyutu (varsayılan 10 MB).")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">save-url</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Server endpoint URL for asynchronous HTTP POST upload." : "Asenkron POST yüklemesinin yapılacağı sunucu controller adresi.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">drop-zone-text</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"Dosyaları buraya..."</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Hint text displayed inside the dropzone." : "Sürükle bırak alanında görüntülenen rehber başlık metni.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">on-select / on-success</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">null</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Client-side JS callbacks invoked on file events." : "Dosya seçildiğinde veya yükleme başarıyla bittiğinde çağrılan JS fonksiyonu.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Standards & Keyboard Accessibility" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    @(isEn 
+                        ? "Panoptes Upload conforms to W3C WAI-ARIA file input guidelines, accessible via screen readers and keyboard." 
+                        : "Panoptes Upload bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA @(isEn ? "Attributes" : "Nitelikleri")</div>
+                    <div class="text-slate-600">
+                        @(isEn 
+                            ? "Uses role=\"button\" on dropzone trigger with aria-label, aria-live=\"polite\" on progress announcer, and role=\"list\" on uploaded files."
+                            : "Sürükle bırak alanında role=\"button\" ve aria-label taşır. İlerleme durumunda aria-live=\"polite\" kullanılır, dosya listesi role=\"list\" yapısındadır.")
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "Focus Management" : "Odak Yönetimi")</div>
+                    <div class="text-slate-600">
+                        @(isEn 
+                            ? "Natural tab order with tabIndex=\"0\" and visible high-contrast focus rings."
+                            : "Sekme sırasını doğal akışında korur (tabIndex=\"0\"). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.")
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları (Keyboard Shortcuts)")</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">@(isEn ? "Key" : "Tuş (Key)")</th>
+                                <th class="py-2.5 px-4">@(isEn ? "Function" : "İşlev (Function)")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Enter / Space</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Opens the native OS file picker dialog." : "Dosya seçme penceresini açar.")</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">Tab</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Navigates between uploaded file items and remove buttons." : "Yüklenen dosyalar listesinde ve silme butonlarında gezinir.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/panoptes/panoptes-upload.js"></script>
+    <script>
+        function onApiUploadSelect(fileObj) {
+            logUploadEvent(`[on-select]: Dosya seçildi: "${fileObj.name}" (${fileObj.size} bytes)`);
+        }
+
+        function onApiUploadSuccess(fileObj) {
+            logUploadEvent(`[on-success]: Yükleme tamamlandı: "${fileObj.name}"`);
+        }
+
+        function onApiUploadRemove(fileObj) {
+            logUploadEvent(`[on-remove]: Dosya kaldırıldı: "${fileObj.name}"`);
+        }
+
+        function getUploadFiles() {
+            const files = Panoptes.Upload.getFiles('apiUploadDemo');
+            logUploadEvent(`Panoptes.Upload.getFiles('apiUploadDemo') -> Toplam ${files.length} dosya.`);
+            alert(`Toplam Seçili Dosya Sayısı: ${files.length}`);
+        }
+
+        function clearUploadFiles() {
+            Panoptes.Upload.clearFiles('apiUploadDemo');
+            logUploadEvent(`Panoptes.Upload.clearFiles('apiUploadDemo') çağrıldı.`);
+        }
+
+        function logUploadEvent(msg) {
+            const logBox = document.getElementById('uploadEventLog');
+            if (!logBox) return;
+            const time = new Date().toLocaleTimeString();
+            const row = document.createElement('div');
+            row.innerHTML = `<span class="text-emerald-400 font-mono">[${time}]</span> <span class="text-slate-200">${msg}</span>`;
+            logBox.appendChild(row);
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        function clearUploadLog() {
+            const logBox = document.getElementById('uploadEventLog');
+            if (logBox) logBox.innerHTML = '<div class="text-slate-500">// Günlük temizlendi...</div>';
+        }
+    </script>
+}

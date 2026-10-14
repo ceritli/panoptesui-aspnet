@@ -1,0 +1,193 @@
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "TileLayout - Client JavaScript API Methods" : "TileLayout - İstemci JavaScript API Metotları";
+    ViewData["ActiveTab"] = "Api";
+}
+
+<div class="space-y-6">
+    <partial name="_TileLayoutNav" />
+
+    <!-- Info Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight mb-2">@(isEn ? "Client JavaScript API Methods" : "İstemci JavaScript API Metotları (Client API)")</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            @(isEn ? "Manage all aspects of the TileLayout component programmatically via window.Panoptes.TileLayout.get(id). Use the buttons below to change tile order, sizes, column count, and row height on the fly." : "window.Panoptes.TileLayout.get(id) nesnesi üzerinden TileLayout bileşeninin tüm davranışlarını programatik olarak yönetebilirsiniz. Aşağıdaki butonları kullanarak kartların sırasını, boyutlarını, sütun adedini ve satır yüksekliğini anlık olarak değiştirebilirsiniz.")
+        </p>
+    </div>
+
+    <!-- Interactive API Controls -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <!-- 1. Boyutlandırma API -->
+            <div class="space-y-2">
+                <span class="text-xs font-bold text-slate-700 block">resizeTile(id, colSpan, rowSpan)</span>
+                <div class="flex items-center gap-1.5">
+                    <button type="button" onclick="apiResize('api-tile-1', 2, 1)" class="flex-1 px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition shadow-sm">@(isEn ? "Make Tile 1 2x1" : "Kart 1'i 2x1 Yap")</button>
+                    <button type="button" onclick="apiResize('api-tile-1', 1, 1)" class="flex-1 px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition shadow-sm">@(isEn ? "Reset to 1x1" : "1x1'e Çek")</button>
+                </div>
+            </div>
+
+            <!-- 2. Sıralama API -->
+            <div class="space-y-2">
+                <span class="text-xs font-bold text-slate-700 block">reorderTile(id, newIndex)</span>
+                <div class="flex items-center gap-1.5">
+                    <button type="button" onclick="apiReorder('api-tile-3', 0)" class="flex-1 px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition shadow-sm">@(isEn ? "Move Tile 3 to Front" : "Kart 3'ü En Başa Al")</button>
+                    <button type="button" onclick="apiReorder('api-tile-1', 2)" class="flex-1 px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition shadow-sm">@(isEn ? "Move Tile 1 to End" : "Kart 1'i Sona Al")</button>
+                </div>
+            </div>
+
+            <!-- 3. Izgara Sütun & Yükseklik API -->
+            <div class="space-y-2">
+                <span class="text-xs font-bold text-slate-700 block">setColumns() & setRowHeight()</span>
+                <div class="flex items-center gap-1.5">
+                    <button type="button" onclick="apiSetCols(4)" class="flex-1 px-2 py-1.5 rounded-lg bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition shadow-sm">@(isEn ? "4 Columns" : "4 Sütun")</button>
+                    <button type="button" onclick="apiSetCols(2)" class="flex-1 px-2 py-1.5 rounded-lg bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition shadow-sm">@(isEn ? "2 Columns" : "2 Sütun")</button>
+                    <button type="button" onclick="apiReset()" class="flex-1 px-2 py-1.5 rounded-lg bg-rose-50 border border-rose-200 text-xs font-semibold text-rose-700 hover:bg-rose-100 transition shadow-sm">@(isEn ? "Reset" : "Sıfırla")</button>
+                </div>
+            </div>
+        </div>
+
+        <panoptes-tilelayout id="apiLayout" columns="3" row-height="160px" gap="16px" reorderable="true" resizable="true">
+            <panoptes-tilelayout-item id="api-tile-1" header-text="API Kartı 1" col-span="1" row-span="1" removable="true">
+                <div class="flex flex-col justify-between h-full p-2">
+                    <p class="text-xs text-slate-600 font-semibold text-indigo-600">ID: api-tile-1</p>
+                    <p class="text-xs text-slate-500">Programatik boyutlandırma butonlarıyla test edilebilir.</p>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="api-tile-2" header-text="API Kartı 2" col-span="1" row-span="1" removable="true">
+                <div class="flex flex-col justify-between h-full p-2">
+                    <p class="text-xs text-slate-600 font-semibold text-emerald-600">ID: api-tile-2</p>
+                    <p class="text-xs text-slate-500">Ortadaki sabit başlangıç kartı.</p>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="api-tile-3" header-text="API Kartı 3" col-span="1" row-span="1" removable="true">
+                <div class="flex flex-col justify-between h-full p-2">
+                    <p class="text-xs text-slate-600 font-semibold text-purple-600">ID: api-tile-3</p>
+                    <p class="text-xs text-slate-500">En başa taşıma butonuyla test edilebilir.</p>
+                </div>
+            </panoptes-tilelayout-item>
+        </panoptes-tilelayout>
+    </div>
+
+    <!-- API Reference Table -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm overflow-hidden">
+        <h2 class="text-base font-bold text-slate-800 mb-4">JavaScript API Metot Listesi</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-600 border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-200 bg-slate-50 font-bold text-slate-800">
+                        <th class="p-3">Metot</th>
+                        <th class="p-3">Parametreler</th>
+                        <th class="p-3">Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">reorderTile(itemOrId, newIndex)</td>
+                        <td class="p-3 font-mono">string | HTMLElement, number</td>
+                        <td class="p-3">Belirtilen kartı hedef sıraya (0-tabanlı) taşır.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">resizeTile(itemOrId, colSpan, rowSpan)</td>
+                        <td class="p-3 font-mono">string | HTMLElement, number, number</td>
+                        <td class="p-3">Kartın sütun ve satır kaplama boyutunu günceller.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">addTile(options)</td>
+                        <td class="p-3 font-mono">object { id, headerText, colSpan, ... }</td>
+                        <td class="p-3">Dinamik olarak yeni bir kart oluşturur ve ızgaraya ekler.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">removeTile(itemOrId)</td>
+                        <td class="p-3 font-mono">string | HTMLElement</td>
+                        <td class="p-3">Kartı yumuşak bir çıkış animasyonu ile panodan kaldırır.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">setColumns(cols)</td>
+                        <td class="p-3 font-mono">number</td>
+                        <td class="p-3">Izgaradaki sütun sayısını dinamik olarak günceller.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">setRowHeight(height)</td>
+                        <td class="p-3 font-mono">string (örn: "200px")</td>
+                        <td class="p-3">Izgara satırlarının yüksekliğini günceller.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">getState()</td>
+                        <td class="p-3 font-mono">-</td>
+                        <td class="p-3">Mevcut kart yerleşimlerini JSON dizi formatında döner.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">setState(stateArray)</td>
+                        <td class="p-3 font-mono">Array</td>
+                        <td class="p-3">Daha önce kaydedilmiş bir JSON durumunu ızgaraya uygular.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-indigo-600">reset()</td>
+                        <td class="p-3 font-mono">-</td>
+                        <td class="p-3">Pano yerleşimini sayfa ilk açıldığındaki orijinal durumuna döndürür.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>// 1. Örneğe erişim / Access instance
+const tl = window.Panoptes.TileLayout.get('apiLayout');
+
+// 2. Kartı 2 sütun genişliğinde boyutlandır / Resize tile to 2 columns
+tl.resizeTile('api-tile-1', 2, 1);
+
+// 3. Kartı en başa al / Move tile to first position
+tl.reorderTile('api-tile-3', 0);
+
+// 4. Sütun sayısını 4'e çıkar / Change columns to 4
+tl.setColumns(4);</code></pre>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function getApiTl() {
+            return window.Panoptes.TileLayout.get('apiLayout');
+        }
+
+        function apiResize(id, col, row) {
+            const tl = getApiTl();
+            if (tl) tl.resizeTile(id, col, row);
+        }
+
+        function apiReorder(id, index) {
+            const tl = getApiTl();
+            if (tl) tl.reorderTile(id, index);
+        }
+
+        function apiSetCols(cols) {
+            const tl = getApiTl();
+            if (tl) tl.setColumns(cols);
+        }
+
+        function apiReset() {
+            const tl = getApiTl();
+            if (tl) {
+                tl.setColumns(3);
+                tl.reset();
+            }
+        }
+    </script>
+}

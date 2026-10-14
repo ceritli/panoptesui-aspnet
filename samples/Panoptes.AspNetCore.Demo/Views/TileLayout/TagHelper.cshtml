@@ -1,0 +1,174 @@
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "TileLayout - Tag Helper Usage" : "TileLayout - Tag Helper Kullanımı";
+    ViewData["ActiveTab"] = "TagHelper";
+}
+
+<div class="space-y-6">
+    <partial name="_TileLayoutNav" />
+
+    <!-- Info Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight mb-2">@(isEn ? "Declarative Dashboard Definition with Tag Helper" : "Tag Helper ile Deklaratif Dashboard Tanımı")</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            @(isEn ? "Panoptes TileLayout offers a clean, hierarchical declarative syntax with pure C# Razor tags. Inside <panoptes-tilelayout>, define tile dimensions, positions, and behaviors using <panoptes-tilelayout-item>." : "Panoptes TileLayout, saf C# Razor etiketleri ile hiyerarşik ve temiz bir deklaratif sözdizimi sunar. <panoptes-tilelayout> ana kapsayıcı içinde <panoptes-tilelayout-item> veya <panoptes-tilelayout-container> etiketleri kullanarak her bir kartın boyutunu, konumunu ve davranışını belirleyebilirsiniz.")
+        </p>
+    </div>
+
+    <!-- Live Demo -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+        <h2 class="text-base font-bold text-slate-800">Deklaratif Grid Yapısı Örneği</h2>
+        <panoptes-tilelayout id="tagHelperLayout" columns="4" row-height="160px" gap="14px" reorderable="true" resizable="true">
+            <panoptes-tilelayout-item id="th-1" header-text="Kart 1 (col-span=2)" col-span="2" row-span="1">
+                <div class="p-2 text-xs text-slate-600">
+                    <p class="font-bold text-indigo-600">col-span="2" row-span="1"</p>
+                    <p class="mt-1">Bu kart 4 sütunlu ızgarada 2 sütun genişliğinde ve 1 satır yüksekliğinde yer kaplar.</p>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="th-2" header-text="Kart 2 (col-span=1)" col-span="1" row-span="1">
+                <div class="p-2 text-xs text-slate-600">
+                    <p class="font-bold text-emerald-600">col-span="1"</p>
+                    <p class="mt-1">Standart tek hücrelik kart.</p>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="th-3" header-text="Kart 3 (col-span=1, row-span=2)" col-span="1" row-span="2">
+                <div class="p-2 text-xs text-slate-600">
+                    <p class="font-bold text-purple-600">row-span="2"</p>
+                    <p class="mt-1">Dikeyde 2 satır yüksekliğinde uzanan yan panel.</p>
+                </div>
+            </panoptes-tilelayout-item>
+
+            <panoptes-tilelayout-item id="th-4" header-text="Kart 4 (col-span=3)" col-span="3" row-span="1">
+                <div class="p-2 text-xs text-slate-600">
+                    <p class="font-bold text-blue-600">col-span="3"</p>
+                    <p class="mt-1">3 sütunluk geniş içerik alanı.</p>
+                </div>
+            </panoptes-tilelayout-item>
+        </panoptes-tilelayout>
+    </div>
+
+    <!-- Parameter Reference Table -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm overflow-hidden">
+        <h2 class="text-base font-bold text-slate-800 mb-4">TagHelper Özellikleri (Attributes) Referansı</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-600 border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-200 bg-slate-50 font-bold text-slate-800">
+                        <th class="p-3">Etiket / Parametre</th>
+                        <th class="p-3">Tip</th>
+                        <th class="p-3">Varsayılan</th>
+                        <th class="p-3">Açıklama</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    <tr>
+                        <td class="p-3 font-mono text-indigo-600 font-bold">&lt;panoptes-tilelayout&gt;</td>
+                        <td class="p-3">TagHelper</td>
+                        <td class="p-3">-</td>
+                        <td class="p-3">Pano düzenini sarmalayan ana ızgara konteyneri.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">columns</td>
+                        <td class="p-3">int</td>
+                        <td class="p-3">3</td>
+                        <td class="p-3">Izgaradaki sütun sayısı (örn. 2, 3, 4, 6, 12).</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">column-width</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">"1fr"</td>
+                        <td class="p-3">Sütun genişliği tanımı (örn. "1fr", "250px", "20%").</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">row-height</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">"180px"</td>
+                        <td class="p-3">Izgara satırlarının varsayılan yüksekliği.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">gap</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">"16px"</td>
+                        <td class="p-3">Kartlar arasındaki yatay ve dikey boşluk.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">reorderable</td>
+                        <td class="p-3">bool</td>
+                        <td class="p-3">true</td>
+                        <td class="p-3">Sürükle-bırak ile kartları yeniden sıralama yeteneği.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">resizable</td>
+                        <td class="p-3">bool</td>
+                        <td class="p-3">true</td>
+                        <td class="p-3">2D köşe tutamacı ile yeniden boyutlandırma yeteneği.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono text-indigo-600 font-bold">&lt;panoptes-tilelayout-item&gt;</td>
+                        <td class="p-3">TagHelper</td>
+                        <td class="p-3">-</td>
+                        <td class="p-3">Tekil kart/kutu konteyneri.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">header-text / title</td>
+                        <td class="p-3">string</td>
+                        <td class="p-3">null</td>
+                        <td class="p-3">Kart başlığında görüntülenecek metin.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">col-span</td>
+                        <td class="p-3">int</td>
+                        <td class="p-3">1</td>
+                        <td class="p-3">Kartın kaplayacağı sütun genişliği.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">row-span</td>
+                        <td class="p-3">int</td>
+                        <td class="p-3">1</td>
+                        <td class="p-3">Kartın kaplayacağı satır yüksekliği.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-mono pl-6">removable</td>
+                        <td class="p-3">bool</td>
+                        <td class="p-3">false</td>
+                        <td class="p-3">Sağ üst köşede kapatma (x) butonu gösterir.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-tilelayout id=&quot;tagHelperLayout&quot; columns=&quot;4&quot; row-height=&quot;160px&quot; gap=&quot;14px&quot; reorderable=&quot;true&quot; resizable=&quot;true&quot;&gt;
+    &lt;panoptes-tilelayout-item id=&quot;th-1&quot; header-text=&quot;Kart 1 (col-span=2)&quot; col-span=&quot;2&quot; row-span=&quot;1&quot;&gt;
+        &lt;p&gt;Geniş İçerik&lt;/p&gt;
+    &lt;/panoptes-tilelayout-item&gt;
+
+    &lt;panoptes-tilelayout-item id=&quot;th-2&quot; header-text=&quot;Kart 2 (col-span=1)&quot; col-span=&quot;1&quot; row-span=&quot;1&quot;&gt;
+        &lt;p&gt;Tekli Kutu&lt;/p&gt;
+    &lt;/panoptes-tilelayout-item&gt;
+
+    &lt;panoptes-tilelayout-item id=&quot;th-3&quot; header-text=&quot;Kart 3 (col-span=1, row-span=2)&quot; col-span=&quot;1&quot; row-span=&quot;2&quot;&gt;
+        &lt;p&gt;Dikey Panel&lt;/p&gt;
+    &lt;/panoptes-tilelayout-item&gt;
+
+    &lt;panoptes-tilelayout-item id=&quot;th-4&quot; header-text=&quot;Kart 4 (col-span=3)&quot; col-span=&quot;3&quot; row-span=&quot;1&quot;&gt;
+        &lt;p&gt;Geniş Alt Panel&lt;/p&gt;
+    &lt;/panoptes-tilelayout-item&gt;
+&lt;/panoptes-tilelayout&gt;</code></pre>
+        </div>
+    </div>
+</div>

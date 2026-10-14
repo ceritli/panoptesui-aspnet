@@ -1,0 +1,19 @@
+@model Panoptes.AspNetCore.Demo.Controllers.TreeListPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <panoptes-treelist id="inlineTree"
+                           columns="@Model.Columns"
+                           items="@Model.Items"
+                           title="Çalışanlar" editable="inline" on-event="ptlOnEvent" />
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+}

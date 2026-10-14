@@ -1,0 +1,140 @@
+@model List<Panoptes.AspNetCore.Models.DropDownTreeItemModel>
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "DropDownTree - Floating Label" : "DropDownTree - Yüzen Etiket (Floating Label)";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(isEn ? "/en" : "/")" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(isEn ? "/en/DropDownTree" : "/DropDownTree")" class="hover:text-blue-600 transition">DropDownTree</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">@(isEn ? "Floating Label" : "Yüzen Etiket")</span>
+    </nav>
+
+    <!-- Top Navigation Bar between 15 examples -->
+    @await Html.PartialAsync("_DropDownTreeNav")
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "Adaptive Floating Label" : "Yüzen Etiket Desteği (Floating Label)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-50 text-purple-700 border border-purple-200">
+                    Material Design Pattern
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Saves vertical form space by floating the descriptive placeholder label above the border smoothly upon focus or value selection."
+                    : "Kullanıcı odaklandığında veya bir değer seçildiğinde zarif bir animasyonla yukarı doğru kayan (float eden) akıllı etiket desteği. Form alanlarında dikey alandan tasarruf sağlar.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-purple-50 text-purple-700 border border-purple-200 rounded-lg text-xs font-bold shrink-0">
+                ✓ floating-label
+            </span>
+        </div>
+    </div>
+
+    <!-- Live Showcase Card -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-base font-bold text-slate-800">@(isEn ? "5. Floating Label Hierarchical Input" : "5. Yüzen Etiketli Hiyerarşik Form Alanı")</h2>
+            <p class="text-xs text-slate-500 mt-1">
+                @(isEn 
+                    ? "When empty, the label sits inside the input; upon focus or selection, it floats above the border with a smooth micro-animation."
+                    : "Kutu başlangıçta boşken etiket girdi alanının içinde görünür; tıklandığında veya seçim yapıldığında kenarlığın üzerine yumuşak bir mikro-animasyonla taşınır.")
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div class="space-y-6">
+                <div class="space-y-1">
+                    <span class="text-xs font-semibold text-slate-500">@(isEn ? "1. Initially Empty (Click to test float)" : "1. Başlangıçta Boş (Tıklayıp Test Edin)")</span>
+                    <panoptes-dropdowntree id="ddt_floating_empty"
+                                          items="@Model"
+                                          floating-label="@(isEn ? "Select Office / Department" : "Görev Yeri / Departman Seçiniz")"
+                                          placeholder=""
+                                          dropdown-width="380px" />
+                </div>
+
+                <div class="space-y-1">
+                    <span class="text-xs font-semibold text-slate-500">@(isEn ? "2. Pre-Populated Value (Label Already Floated)" : "2. Başlangıçta Değeri Olan (Etiket Zaten Yukarıda)")</span>
+                    <panoptes-dropdowntree id="ddt_floating_filled"
+                                          items="@Model"
+                                          floating-label="@(isEn ? "Assigned Work Unit" : "Bağlı Bulunan Birim")"
+                                          value="software"
+                                          placeholder=""
+                                          dropdown-width="380px" />
+                </div>
+            </div>
+
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-xs text-slate-600 space-y-3">
+                <div class="font-bold text-slate-800 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span>@(isEn ? "How Floating Label Works" : "Floating Label Nasıl Çalışır?")</span>
+                </div>
+                <p class="leading-relaxed">
+                    @(isEn 
+                        ? "Simply declare `floating-label=\"Text\"`. The runtime script automatically observes focus/blur cycles and model mutations."
+                        : "floating-label=\"Metin\" niteliğini tanımlamanız yeterlidir. Panoptes JavaScript motoru, değer varlığını ve odaklanma durumunu sürekli izleyerek konumu senkronize eder.")
+                </p>
+                <div class="pt-2 border-t border-slate-200 text-[11px] text-slate-500 font-mono">
+                    @(isEn ? "Clicking the clear (x) button smoothly resets the label back into the input container." : "Temizle butonuna basıldığında etiket otomatik olarak girdi kutusu içine geri döner.")
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature Description Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Compact Vertical Footprint" : "Kompakt Dikey Yerleşimi")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Eliminates redundant label elements above form controls, saving valuable screen real estate on mobile devices."
+                    : "Form alanlarının üstündeki ekstra etiket satırlarını ortadan kaldırarak ekran yüksekliğinden tasarruf sağlar.")
+            </div>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Seamless Clear Integration" : "Kusursuz Temizleme Entegrasyonu")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Interacts naturally with clear buttons and programatic setValue calls without layout jitter."
+                    : "Temizleme butonları veya kod üzerinden değer sıfırlama işlemlerinde titreme olmaksızın pozisyon alır.")
+            </div>
+        </div>
+    </div>
+
+    <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+    <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                    @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                </span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-dropdowntree id="ddt_floating_demo"
+                       items="@@Model"
+                       floating-label="@(isEn ? "Select Office / Department" : "Görev Yeri / Departman Seçiniz")"
+                       dropdown-width="380px"&gt;
+&lt;/panoptes-dropdowntree&gt;</code></pre>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,418 @@
+@model Panoptes.AspNetCore.Demo.Controllers.StockChartDemoViewModel
+
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "StockChart (Financial Candlestick Chart) - Panoptes Corporate UI" : "StockChart (Finansal Mum Grafiği) - Panoptes Kurumsal UI";
+}
+
+<div class="space-y-8 pb-16">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="/" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="/StockChart" class="hover:text-blue-600 transition">@(isEn ? "Charts & Visuals" : "Grafikler & Görselleştirme")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">StockChart</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">StockChart @(isEn ? "(Financial Candlestick Chart)" : "(Finansal Mum Grafiği)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 font-mono">
+                    &lt;panoptes-stockchart&gt;
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    @(isEn ? "WAI-ARIA Compliant" : "WAI-ARIA Uyumlu")
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 font-mono">
+                    .NET 8 + C#
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Interactive Candlestick chart engine for financial markets, equity stocks and digital assets featuring Open-High-Low-Close (OHLC), volume sub-chart and timeline range navigators." 
+                    : "Finansal piyasalar, borsa hisseleri ve kripto varlıklar için mum (Candlestick) grafiği, işlem hacmi (Volume) ve zaman aralığı seçici navigatör.")
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Features & Demos" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">2</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">3</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-8">
+        <!-- DEMO 1: BIST:THYAO Türk Hava Yolları Hisse Senedi -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                        @(isEn 
+                            ? "1. BIST:THYAO Turkish Airlines (Open, High, Low, Close & Volume)" 
+                            : "1. BIST:THYAO Türk Hava Yolları (Açılış, Yüksek, Düşük, Kapanış & İşlem Hacmi)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn 
+                            ? "Move cursor across the chart to view live crosshair axes and price metrics. Use 1W, 1M, 3M, 6M, 1Y and All period buttons to adjust timeframe." 
+                            : "Fareyi grafik üzerinde gezdirerek canlı Crosshair eksen çizgilerini ve gün içi fiyat detaylarını görüntüleyebilir, üstteki 1H, 1A, 3A, 6A, 1Y ve Tümü butonlarıyla periyot değiştirebilirsiniz.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded font-medium border border-blue-100">&lt;panoptes-stockchart /&gt;</span>
+            </div>
+
+            <div class="p-8 max-w-5xl mx-auto space-y-4">
+                <panoptes-stockchart id="thyaoStockChart" 
+                                    symbol="BIST:THYAO" 
+                                    title="Türk Hava Yolları A.O." 
+                                    currency="₺" 
+                                    data="@Model.ThyaoData" 
+                                    height="420" 
+                                    show-volume="true" 
+                                    on-point-hover="onStockPointHover" />
+            </div>
+
+            <!-- Standart Kod Kutusu -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-stockchart id="thyaoStockChart" 
+                    symbol="BIST:THYAO" 
+                    title="Türk Hava Yolları A.O." 
+                    currency="₺" 
+                    data="@@Model.ThyaoData" 
+                    height="420" 
+                    show-volume="true" 
+                    on-point-hover="onStockPointHover" /&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEMO 2: BIST:ASELS & Programatik JavaScript API -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                        @(isEn 
+                            ? "2. BIST:ASELS Aselsan & Programmatic JavaScript API (Range Selection & PNG Export)" 
+                            : "2. BIST:ASELS Aselsan & Programatik JavaScript API (Aralık Seçimi & PNG İndirme)")
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        @(isEn 
+                            ? "Control the chart programmatically via external buttons (setRange) or export as high-resolution PNG image." 
+                            : "Harici butonlarla grafiği programatik olarak belirli periyotlara (setRange) ayarlayabilir veya yüksek çözünürlüklü PNG görseli olarak indirebilirsiniz.")
+                    </p>
+                </div>
+                <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium border border-emerald-100">Panoptes.StockChart API</span>
+            </div>
+
+            <div class="p-8 max-w-5xl mx-auto space-y-6">
+                <panoptes-stockchart id="aselsStockChart" 
+                                    symbol="BIST:ASELS" 
+                                    title="Aselsan Elektronik Sanayi" 
+                                    currency="₺" 
+                                    data="@Model.AselsData" 
+                                    height="380" 
+                                    show-volume="true" />
+
+                <!-- Programatik İşlem Butonları -->
+                <div class="flex flex-wrap items-center gap-2 pt-2">
+                    <button type="button" onclick="setAselsRange('7')" class="px-3 py-1.5 text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition active:scale-95 border border-indigo-200">
+                        @(isEn ? "Last 7 Days (1W)" : "Son 7 Gün (1H)")
+                    </button>
+                    <button type="button" onclick="setAselsRange('30')" class="px-3 py-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition active:scale-95 border border-emerald-200">
+                        @(isEn ? "Last 30 Days (1M)" : "Son 30 Gün (1A)")
+                    </button>
+                    <button type="button" onclick="setAselsRange('all')" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition active:scale-95 border border-slate-200">
+                        @(isEn ? "All Periods" : "Tüm Periyot")
+                    </button>
+                    <button type="button" onclick="exportAselsPng()" class="px-3 py-1.5 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition active:scale-95 border border-blue-200 flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        @(isEn ? "Export PNG Chart" : "PNG Grafiğini İndir")
+                    </button>
+                    <button type="button" onclick="clearStockLog()" class="ml-auto px-3 py-1.5 text-xs font-medium text-slate-500 hover:text-slate-800 transition">
+                        @(isEn ? "Clear Log" : "Günlüğü Temizle")
+                    </button>
+                </div>
+
+                <!-- Canlı Olay Günlüğü Terminali -->
+                <div class="space-y-1">
+                    <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">@(isEn ? "Live Financial Event Log:" : "Canlı Finans Olay Günlüğü:")</div>
+                    <div id="stockEventLog" class="h-28 bg-slate-950 text-slate-200 p-3 rounded-xl font-mono text-[11px] overflow-y-auto space-y-1 border border-slate-800 shadow-inner">
+                        <div class="text-slate-500">@(isEn ? "// Cursor movements and API triggers will be logged here..." : "// Fare imleci üzerindeki fiyat hareketleri ve API çağrıları burada listelenecektir...")</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Standart Kod Kutusu -->
+            <div class="px-6 pb-6">
+                <div class="panoptes-code-block rounded-xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">JavaScript API</span>
+                        </div>
+                        <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <span>@(isEn ? "Copy" : "Kopyala")</span>
+                        </button>
+                    </div>
+                    <div class="panoptes-code-viewer">
+                        <pre class="panoptes-raw-code hidden"><code>const chart = Panoptes.StockChart.getInstance('aselsStockChart');
+
+// Periyot değiştirme:
+chart.setRange('30'); // Son 30 gün
+
+// PNG görseli olarak indirme:
+chart.exportPng();</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parametre & Nitelik Referans Tablosu -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden w-full">
+            <div class="border-b border-slate-100 px-6 py-4 bg-slate-50/50">
+                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    @(isEn ? "Panoptes StockChart TagHelper Attributes Reference" : "Panoptes StockChart TagHelper Nitelik & Parametre Referansı")
+                </h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-slate-600">
+                            <th class="py-3 px-4 font-semibold">@(isEn ? "Attribute" : "Nitelik (Attribute)")</th>
+                            <th class="py-3 px-4 font-semibold">@(isEn ? "Type" : "Tür (Type)")</th>
+                            <th class="py-3 px-4 font-semibold">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-4 font-semibold">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 font-mono text-[11px] text-slate-700">
+                        <tr>
+                            <td class="py-2.5 px-4 font-bold text-blue-600">id</td>
+                            <td class="py-2.5 px-4 text-slate-500">string</td>
+                            <td class="py-2.5 px-4 text-slate-400">GUID</td>
+                            <td class="py-2.5 px-4 font-sans text-slate-600">@(isEn ? "Unique DOM identifier and JavaScript API instance handle." : "Grafiğin benzersiz DOM kimliği ve JavaScript API referansı.")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-bold text-blue-600">symbol</td>
+                            <td class="py-2.5 px-4 text-slate-500">string</td>
+                            <td class="py-2.5 px-4 text-slate-400">"BIST"</td>
+                            <td class="py-2.5 px-4 font-sans text-slate-600">@(isEn ? "Asset or equity ticker symbol (e.g. BIST:THYAO, BTC/USD)." : "Hisse veya parite sembolü (ör. BIST:THYAO, BTC/USD).")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-bold text-blue-600">title</td>
+                            <td class="py-2.5 px-4 text-slate-500">string</td>
+                            <td class="py-2.5 px-4 text-slate-400">null</td>
+                            <td class="py-2.5 px-4 font-sans text-slate-600">@(isEn ? "Instrument or company title." : "Şirket veya enstrüman tam adı.")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-bold text-blue-600">currency</td>
+                            <td class="py-2.5 px-4 text-slate-500">string</td>
+                            <td class="py-2.5 px-4 text-slate-400">"₺"</td>
+                            <td class="py-2.5 px-4 font-sans text-slate-600">@(isEn ? "Currency prefix or suffix (₺, $, €, £)." : "Fiyat ölçeğinde kullanılacak para birimi sembolü (₺, $, €, £).")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-bold text-blue-600">data</td>
+                            <td class="py-2.5 px-4 text-slate-500">List&lt;StockChartDataPoint&gt;</td>
+                            <td class="py-2.5 px-4 text-slate-400">[]</td>
+                            <td class="py-2.5 px-4 font-sans text-slate-600">@(isEn ? "Historical OHLCV data collection (Date, Open, High, Low, Close, Volume)." : "Tarihsel OHLCV veri noktaları (Date, Open, High, Low, Close, Volume).")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-bold text-blue-600">height</td>
+                            <td class="py-2.5 px-4 text-slate-500">int</td>
+                            <td class="py-2.5 px-4 text-slate-400">420</td>
+                            <td class="py-2.5 px-4 font-sans text-slate-600">@(isEn ? "Render canvas height in pixels." : "Grafik çizim alanının piksel cinsinden yüksekliği.")</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2.5 px-4 font-bold text-blue-600">show-volume</td>
+                            <td class="py-2.5 px-4 text-slate-500">bool</td>
+                            <td class="py-2.5 px-4 text-slate-400">true</td>
+                            <td class="py-2.5 px-4 font-sans text-slate-600">@(isEn ? "Renders volume histogram sub-chart under candlesticks." : "Grafiğin alt kısmında işlem hacmi çubuklarının çizilip çizilmeyeceği.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "TagHelper Attributes & Parameters" : "TagHelper Özellikleri & Parametreleri")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "Complete configuration attributes supported by <panoptes-stockchart>." : "<panoptes-stockchart> bileşeninin desteklediği tüm C# ve HTML nitelikleri.")</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-blue-100 text-blue-800">PanoptesStockchartTagHelper</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">@(isEn ? "Attribute" : "Özellik (Attribute)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Type" : "Tip (C#)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-6">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">id</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">Otomatik</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "DOM element ID." : "Bileşen kimliği.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">symbol</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">string</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">"BIST:THYAO"</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Financial instrument ticker symbol." : "Finansal enstrüman sembolü.")</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="py-3 px-6 font-mono font-bold text-blue-600">navigator</td>
+                            <td class="py-3 px-4 font-mono text-purple-600">bool</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">true</td>
+                            <td class="py-3 px-6 text-slate-700">@(isEn ? "Time range navigator slider." : "Alt zaman aralığı kaydırıcısı.")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY (WAI-ARIA & KEYBOARD) -->
+    <div id="panel-a11y" class="main-doc-panel space-y-8 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Standards & Keyboard Accessibility" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    @(isEn 
+                        ? "Panoptes StockChart is engineered in compliance with W3C WAI-ARIA standards for screen readers and keyboard navigation." 
+                        : "Panoptes StockChart bileşeni, W3C WAI-ARIA standartlarına uygun olarak ekran okuyucular ve salt klavye navigasyonu için tasarlanmıştır.")
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "WAI-ARIA Roles" : "WAI-ARIA Nitelikleri")</div>
+                    <div class="text-slate-600">
+                        @(isEn 
+                            ? "Standard role=\"figure\" role. Dynamically updates aria-disabled, aria-selected, and aria-label attributes." 
+                            : "Standart role=\"figure\" rolünü taşır. Duruma göre aria-disabled, aria-expanded, aria-selected ve aria-label nitelikleri dinamik olarak güncellenir.")
+                    </div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">@(isEn ? "Focus Management" : "Odak Yönetimi (Focus Management)")</div>
+                    <div class="text-slate-600">
+                        @(isEn 
+                            ? "Maintains tab order natively (tabIndex=\"0\"). High-contrast focus rings for visual indication." 
+                            : "Sekme sırasını doğal akışında korur (tabIndex=\"0\"). Görsel odak halkaları (focus ring) yüksek kontrastla görünür durumdadır.")
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları (Keyboard Shortcuts)")</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">@(isEn ? "Key" : "Tuş (Key)")</th>
+                                <th class="py-2.5 px-4">@(isEn ? "Function" : "İşlev (Function)")</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td class="py-2.5 px-4 font-mono font-bold text-slate-900"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs shadow-2xs">@(isEn ? "Left / Right Arrow" : "Sol / Sağ Ok")</kbd></td>
+                                <td class="py-2.5 px-4">@(isEn ? "Focuses on preceding/following candlestick on the timeline." : "Zaman ekseninde önceki/sonraki mumlara odaklanır.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    function logStockEvent(msg) {
+        const el = document.getElementById('stockEventLog');
+        if (!el) return;
+        const time = new Date().toLocaleTimeString('tr-TR');
+        const row = document.createElement('div');
+        row.innerHTML = `<span class="text-slate-500">[${time}]</span> <span class="text-emerald-400">${msg}</span>`;
+        el.appendChild(row);
+        el.scrollTop = el.scrollHeight;
+    }
+
+    function clearStockLog() {
+        const el = document.getElementById('stockEventLog');
+        if (el) el.innerHTML = '<div class="text-slate-500">// Günlük temizlendi...</div>';
+    }
+
+    function onStockPointHover(point) {
+        // Canlı hover bildirimi
+    }
+
+    function setAselsRange(range) {
+        const chart = Panoptes.StockChart.getInstance('aselsStockChart');
+        if (chart) {
+            chart.setRange(range);
+            logStockEvent(`Aralık güncellendi -> Periyot: ${range === 'all' ? 'Tümü' : range + ' gün'}`);
+        }
+    }
+
+    function exportAselsPng() {
+        const chart = Panoptes.StockChart.getInstance('aselsStockChart');
+        if (chart) {
+            chart.exportPng();
+            logStockEvent('ASELS grafiği PNG formatında indirildi.');
+        }
+    }
+</script>
+}

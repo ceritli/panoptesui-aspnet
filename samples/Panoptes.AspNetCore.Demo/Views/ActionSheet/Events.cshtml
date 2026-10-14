@@ -1,0 +1,121 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "ActionSheet - Events & Live Console" : "ActionSheet - Olaylar & Konsol (Events)";
+    ViewData["ActiveTab"] = "Events";
+}
+
+<div class="space-y-6">
+    <partial name="_ActionSheetNav" />
+
+    <!-- Info Card -->
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight mb-2">@(isEn ? "Event Listening & Live Console (Events)" : "Olay Dinleme & Canlı Konsol (Events)")</h1>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            @(isEn ? "ActionSheet triggers events when opened (on-open), closed (on-close), and when an action item is selected (on-select). Click the button below to open the sheet and observe real-time event logs in the console." : "ActionSheet bileşeni açıldığında (on-open), kapandığında (on-close) ve bir eylem seçildiğinde (on-select) olay tetikler. Aşağıdaki butona basarak eylem sayfasını açıp konsoldan anlık olay akışını gözlemleyebilirsiniz.")
+        </p>
+    </div>
+
+    <!-- Live Demo & Event Console -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- ActionSheet Trigger -->
+        <div class="lg:col-span-1 bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4 flex flex-col justify-between">
+            <div>
+                <h2 class="text-base font-bold text-slate-800 mb-2">@(isEn ? "Event Trigger Zone" : "Olay Tetikleme Alanı")</h2>
+                <p class="text-xs text-slate-500">@(isEn ? "Click the button to open the ActionSheet and select an item to inspect fired events." : "Butona tıklayarak ActionSheet'i açın ve bir öğe seçerek olayları inceleyin.")</p>
+            </div>
+            <button type="button" onclick="window.Panoptes.ActionSheet.open('eventsSheet')" class="w-full px-4 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <span>@(isEn ? "Open Event Menu" : "Olay Menüsünü Aç")</span>
+            </button>
+        </div>
+
+        <!-- Event Console Log -->
+        <div class="lg:col-span-2 bg-white rounded-3xl border border-slate-200 p-6 shadow-sm flex flex-col h-[320px]">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <h3 class="text-sm font-bold text-slate-800">@(isEn ? "Live Event Console" : "Canlı Olay Konsolu")</h3>
+                </div>
+                <button type="button" onclick="clearActionSheetLog()" class="text-xs font-semibold text-slate-400 hover:text-slate-700 transition cursor-pointer">@(isEn ? "Clear" : "Temizle")</button>
+            </div>
+            <div id="asEventLogContainer" class="flex-1 overflow-y-auto space-y-2 pr-1 font-mono text-[11px]">
+                <div class="text-slate-400 italic">@(isEn ? "Event listeners ready. Please click the button..." : "Olay dinleyicileri hazır. Lütfen butona basınız...")</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ActionSheet Definition -->
+    <panoptes-actionsheet id="eventsSheet" title='@(isEn ? "Event Test Menu" : "Olay Test Menüsü")' subtitle='@(isEn ? "Triggers open, select, and close events" : "open, select ve close olaylarını tetikler")' on-open="onSheetOpen" on-close="onSheetClose" on-select="onSheetSelect">
+        <panoptes-actionsheet-item id="ev-opt-approve" text='@(isEn ? "Approve and Submit" : "Onayla ve Gönder")' description='@(isEn ? "Confirmation code: #9941" : "İşlem onay kodu: #9941")' theme-color="primary"></panoptes-actionsheet-item>
+        <panoptes-actionsheet-item id="ev-opt-review" text='@(isEn ? "Request Review" : "İnceleme Talebi")' description='@(isEn ? "Sends review notification" : "Gözden geçirme bildirimi gönderir")'></panoptes-actionsheet-item>
+        <panoptes-actionsheet-item id="ev-opt-reject" text='@(isEn ? "Reject" : "Reddet")' description='@(isEn ? "Rejection with reason" : "Gerekçe belirtilerek reddedilir")' theme-color="danger"></panoptes-actionsheet-item>
+    </panoptes-actionsheet>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-actionsheet id=&quot;eventsSheet&quot; title=&quot;Başlık&quot; 
+    on-open=&quot;onSheetOpen&quot; 
+    on-close=&quot;onSheetClose&quot; 
+    on-select=&quot;onSheetSelect&quot;&gt;
+    &lt;panoptes-actionsheet-item id=&quot;ev-opt-approve&quot; text=&quot;Onayla&quot; /&gt;
+&lt;/panoptes-actionsheet&gt;
+
+&lt;script&gt;
+    function onSheetOpen(e) { console.log('ActionSheet açıldı'); }
+    function onSheetClose(e) { console.log('ActionSheet kapandı'); }
+    function onSheetSelect(e) { console.log(`Seçilen öğe: ${e.text} (ID: ${e.itemId})`); }
+&lt;/script&gt;</code></pre>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const isEnEvents = @(isEn ? "true" : "false");
+
+    function logAsEvent(title, detail, color = 'indigo') {
+        const container = document.getElementById('asEventLogContainer');
+        if (!container) return;
+
+        const time = new Date().toLocaleTimeString(isEnEvents ? 'en-US' : 'tr-TR');
+        const entry = document.createElement('div');
+        entry.className = `p-2 rounded-xl bg-slate-50 border border-slate-100 border-l-4 border-l-${color}-500 text-slate-700 leading-tight`;
+        entry.innerHTML = `
+            <div class="flex items-center justify-between text-[10px] text-slate-400 mb-0.5">
+                <span class="font-bold text-${color}-600">${title}</span>
+                <span>${time}</span>
+            </div>
+            <div>${detail}</div>
+        `;
+        container.insertBefore(entry, container.firstChild);
+    }
+
+    function clearActionSheetLog() {
+        const container = document.getElementById('asEventLogContainer');
+        if (container) container.innerHTML = `<div class="text-slate-400 italic">${isEnEvents ? "Console cleared." : "Konsol temizlendi."}</div>`;
+    }
+
+    function onSheetOpen(e) {
+        logAsEvent(isEnEvents ? 'OPEN FIRED' : 'OPEN TETİKLENDİ', isEnEvents ? 'ActionSheet successfully opened on screen.' : 'ActionSheet başarıyla ekranda açıldı.', 'emerald');
+    }
+
+    function onSheetClose(e) {
+        logAsEvent(isEnEvents ? 'CLOSE FIRED' : 'CLOSE TETİKLENDİ', isEnEvents ? 'ActionSheet closed.' : 'ActionSheet kapandı.', 'slate');
+    }
+
+    function onSheetSelect(e) {
+        const prefix = isEnEvents ? 'Selected Action:' : 'Seçilen Eylem:';
+        logAsEvent(isEnEvents ? 'SELECT FIRED' : 'SELECT TETİKLENDİ', `${prefix} <b>${e.text}</b> (ID: <code>${e.itemId}</code>)`, 'indigo');
+    }
+</script>
+}

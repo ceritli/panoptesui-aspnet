@@ -1,0 +1,48 @@
+@model Panoptes.AspNetCore.Demo.Controllers.TreeListPageModel
+
+<div class="space-y-6 pb-16">
+    <partial name="_Header" model="Model" />
+
+    <div class="space-y-4">
+        <template id="myToolbar">
+            <span style="display:inline-flex;align-items:center;gap:.75rem;font-size:12px">
+                <span style="padding:2px 10px;border-radius:9999px;background:#ecfdf5;color:#047857;font-weight:700">{{count}} kayıt</span>
+                <span style="padding:2px 10px;border-radius:9999px;background:#eff6ff;color:#1d4ed8;font-weight:700">{{selected}} seçili</span>
+                <button type="button" class="ptl-btn" onclick="tbExpand()">Teknoloji'yi Aç</button>
+                <button type="button" class="ptl-btn" onclick="tbRaise()">Seçililere %10 Zam</button>
+                <button type="button" class="ptl-btn ptl-btn-danger" onclick="tbDelete()">Seçilileri Sil</button>
+            </span>
+        </template>
+
+        <panoptes-treelist id="tbTree"
+                           title="Çalışanlar"
+                           columns="@Model.Columns"
+                           items="@Model.Items"
+                           selectable="multiple"
+                           toolbar-template="myToolbar"
+                           on-event="ptlOnEvent" />
+        <partial name="_LogBox" />
+    </div>
+
+    <partial name="_Code" model="Model" />
+</div>
+
+@section Scripts {
+    <partial name="_LogScript" />
+    <script>
+        function tbTree() { return Panoptes.TreeList.getInstance('tbTree'); }
+        function tbExpand() { const t = tbTree(); t.expand('1'); t.expand('2'); t.expand('3'); }
+        function tbRaise() {
+            const t = tbTree();
+            const sel = t.getSelectedItems();
+            if (!sel.length) { ptlLog('Önce satır seçin (Ctrl/Cmd + tıklama ile çoklu seçim)', 'text-amber-300'); return; }
+            sel.forEach(function (i) { t.updateItem(i.id, { Salary: Math.round(Number(i.values.Salary) * 1.1) }); });
+        }
+        function tbDelete() {
+            const t = tbTree();
+            const sel = t.getSelected();
+            if (!sel.length) { ptlLog('Silinecek satır seçilmedi', 'text-amber-300'); return; }
+            sel.forEach(function (id) { if (t.node(id)) t.removeItem(id); });
+        }
+    </script>
+}

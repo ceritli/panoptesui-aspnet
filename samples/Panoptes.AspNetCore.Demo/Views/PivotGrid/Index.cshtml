@@ -1,0 +1,308 @@
+@model Panoptes.AspNetCore.Demo.Controllers.PivotGridDemoViewModel
+@using Panoptes.AspNetCore.Demo.Services
+@{
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    string p = DemoTranslations.Prefix(isEn);
+    ViewData["Title"] = isEn ? "PivotGrid (Multi-Dimensional Cube Analytics)" : "PivotGrid (Çok Boyutlu Küp Analitiği)";
+}
+
+<div class="space-y-6">
+    <!-- Breadcrumb -->
+    <nav class="flex text-xs font-medium text-slate-400 gap-2 items-center">
+        <a href="@(p == "" ? "/" : p)" class="hover:text-blue-600 transition">@(isEn ? "Home" : "Ana Sayfa")</a>
+        <span>/</span>
+        <a href="@(p + "/PivotGrid")" class="hover:text-blue-600 transition">@(isEn ? "Data Management & Tables" : "Veri Yönetimi & Tablolar")</a>
+        <span>/</span>
+        <span class="text-slate-700 font-semibold">PivotGrid</span>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">@(isEn ? "PivotGrid (Multi-Dimensional Analytics)" : "PivotGrid (Çok Boyutlu Küp Analitiği)")</h1>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                    @(isEn ? "Analytics Component" : "Analitik Rapor Bileşeni")
+                </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
+                @(isEn 
+                    ? "Interactive cross-tabular reporting engine that aggregates data across multi-level rows and columns with dynamic dimensions and aggregate measures."
+                    : "Satırlar ve sütunlar boyunca çok seviyeli çapraz tablo özetleri, dinamik boyut alanları, toplam ölçümleri (Sum, Count) ve görsel alan yapılandırıcı paneli sunan analitik veri küpü motoru.")
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold">
+                @(isEn ? "✓ Production Ready" : "✓ Tam Sürüm Hazır")
+            </span>
+        </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Features | API | Accessibility) -->
+    <div class="border-b border-slate-200">
+        <nav class="flex gap-2 -mb-px" aria-label="Tabs">
+            <button type="button" 
+                    id="tab-btn-features" 
+                    onclick="switchMainDocTab('features')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-t-xl border-b-2 text-blue-600 border-blue-600 bg-blue-50/40 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>@(isEn ? "Examples (Features)" : "Örnekler (Features)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-blue-100 text-blue-800">1</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-api" 
+                    onclick="switchMainDocTab('api')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>@(isEn ? "API Reference (Props & Events)" : "API Referansı (Props & Events)")</span>
+                <span class="ml-1 px-1.5 py-0.5 text-[10px] rounded-full bg-slate-100 text-slate-700">10</span>
+            </button>
+
+            <button type="button" 
+                    id="tab-btn-a11y" 
+                    onclick="switchMainDocTab('a11y')"
+                    class="main-doc-tab inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-xl border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                <span>@(isEn ? "Accessibility (WAI-ARIA)" : "Erişilebilirlik (WAI-ARIA)")</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PANEL 1: FEATURES & SHOWCASE -->
+    <div id="panel-features" class="main-doc-panel space-y-6">
+    <!-- Live Grid / PivotGrid Preview (Grid/Paging.cshtml mimarisi) -->
+    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <span>@(isEn ? "📦 Live PivotGrid Demo" : "📦 Canlı PivotGrid Demosu")</span>
+            </h2>
+            <span class="text-xs text-slate-400">@(isEn ? "Multi-dimensional in-memory aggregation" : "Çok boyutlu bellek içi çapraz analiz")</span>
+        </div>
+
+        <!-- Hızlı Senaryo ve Şablon Butonları -->
+        <div class="mb-4 p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div class="flex items-center gap-2 flex-wrap">
+                <span class="font-bold text-slate-700 mr-1">@(isEn ? "Preset Views:" : "Hazır Rapor Şablonları:")</span>
+                <button type="button" onclick="setPresetScenario1()" class="px-2.5 py-1 text-xs font-semibold text-indigo-700 bg-white hover:bg-indigo-50 rounded-lg transition border border-indigo-200 shadow-2xs">
+                    @(isEn ? "Region x Channel (Revenue)" : "Bölge & Satış Kanalı (Ciro)")
+                </button>
+                <button type="button" onclick="setPresetScenario2()" class="px-2.5 py-1 text-xs font-semibold text-emerald-700 bg-white hover:bg-emerald-50 rounded-lg transition border border-emerald-200 shadow-2xs">
+                    @(isEn ? "Category x Year (Profit)" : "Kategori & Yıl (Net Kar)")
+                </button>
+                <button type="button" onclick="setPresetScenario3()" class="px-2.5 py-1 text-xs font-semibold text-amber-700 bg-white hover:bg-amber-50 rounded-lg transition border border-amber-200 shadow-2xs">
+                    @(isEn ? "Region & Category (Units)" : "Bölge & Kategori (Adetler)")
+                </button>
+                <button type="button" onclick="resetPreset()" class="px-2.5 py-1 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 rounded-lg transition border border-slate-200 shadow-2xs">
+                    @(isEn ? "Default View" : "Varsayılan Görünüm")
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button type="button" onclick="exportPivotCsv()" class="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition flex items-center gap-1 shadow-2xs">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span>@(isEn ? "Export CSV" : "CSV İndir")</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- The Panoptes PivotGrid Component -->
+        <panoptes-pivotgrid id="salesPivotGrid" 
+                            title="@(isEn ? "Corporate Sales Analytics Cube" : "Türkiye Kurumsal Satış & Gelir Küpü")" 
+                            fields="@Model.Fields" 
+                            rows="Region,Category" 
+                            columns="Year" 
+                            measures="Revenue" 
+                            data="@Model.SalesData" 
+                            show-configurator="true" />
+
+    </div>
+
+    <!-- Feature Highlight Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Visual Field Configurator" : "Görsel Boyut & Ölçüm Yapılandırıcı")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Interactive drag-and-drop or modal configuration panel enabling end users to pivot rows, columns, and metric aggregations on the fly."
+                    : "Kullanıcıların çalışma anında satır, sütun ve ölçüm metriklerini serbestçe yeniden düzenleyebildiği görsel alan yapılandırma paneli.")
+            </div>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
+            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5 mb-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span>@(isEn ? "Programmatic JavaScript API" : "Programatik JavaScript API")</span>
+            </div>
+            <div class="text-xs text-slate-500 leading-relaxed">
+                @(isEn 
+                    ? "Full client-side programmatic control with setConfiguration(), exportCsv(), and onUpdate callbacks."
+                    : "setConfiguration(), exportCsv() ve onUpdate callback'leri ile harici butonlardan veya rapor şablonlarından tam istemci kontrolü.")
+            </div>
+        </div>
+    </div>
+
+    <!-- Razor TagHelper Code Snippet (Light Code Viewer Standard) -->
+    <div class="panoptes-code-block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">
+                    @(isEn ? "Razor TagHelper (C# / .NET 8)" : "Razor TagHelper (C# / .NET 8)")
+                </span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy Code" : "Kodu Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-pivotgrid id="salesPivotGrid" 
+                    title="@(isEn ? "Corporate Sales Analytics Cube" : "Türkiye Kurumsal Satış Küpü")" 
+                    fields="@@Model.Fields" 
+                    rows="Region,Category" 
+                    columns="Year" 
+                    measures="Revenue" 
+                    data="@@Model.SalesData" 
+                    show-configurator="true" /&gt;</code></pre>
+        </div>
+    </div>
+    </div>
+
+    <!-- PANEL 2: API & ATTRIBUTES -->
+    <div id="panel-api" class="main-doc-panel space-y-6 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">@(isEn ? "TagHelper Properties & Parameters" : "TagHelper Özellikleri & Parametreleri")</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">@(isEn ? "All C# and HTML attributes supported by <panoptes-pivotgrid>." : "<panoptes-pivotgrid> bileşeninin desteklediği tüm C# ve HTML nitelikleri.")</p>
+                </div>
+                <span class="px-2.5 py-1 rounded text-[11px] font-mono bg-blue-100 text-blue-800">&lt;panoptes-pivotgrid&gt;</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                            <th class="py-3 px-6">@(isEn ? "Property / Attribute" : "Özellik (Attribute)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Type (C# / TS)" : "Tip (C# / TS)")</th>
+                            <th class="py-3 px-4">@(isEn ? "Default" : "Varsayılan")</th>
+                            <th class="py-3 px-6">@(isEn ? "Description" : "Açıklama")</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-slate-50/70 transition-colors"><td class="py-3 px-6 font-mono font-bold text-blue-600">id</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">zorunlu</td><td class="py-3 px-6">PivotGrid bileşeninin DOM kimliği.</td></tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors"><td class="py-3 px-6 font-mono font-bold text-blue-600">title</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td class="py-3 px-6">PivotGrid başlık metni.</td></tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors"><td class="py-3 px-6 font-mono font-bold text-blue-600">fields</td><td class="py-3 px-4 font-mono text-purple-600">object / List</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td class="py-3 px-6">Kullanılabilir boyut ve metrik alan tanımları listesi.</td></tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors"><td class="py-3 px-6 font-mono font-bold text-blue-600">rows</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">""</td><td class="py-3 px-6">Satırlara yerleştirilecek virgülle ayrılmış boyut alanları (örn: "Region,Category").</td></tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors"><td class="py-3 px-6 font-mono font-bold text-blue-600">columns</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">""</td><td class="py-3 px-6">Sütunlara yerleştirilecek boyut alanları (örn: "Year").</td></tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors"><td class="py-3 px-6 font-mono font-bold text-blue-600">measures</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">""</td><td class="py-3 px-6">Hesaplanacak metrik alanları ve toplam fonksiyonları (örn: "Revenue").</td></tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors"><td class="py-3 px-6 font-mono font-bold text-blue-600">data</td><td class="py-3 px-4 font-mono text-purple-600">IEnumerable</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td class="py-3 px-6">Analiz edilecek ham veri seti koleksiyonu.</td></tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors"><td class="py-3 px-6 font-mono font-bold text-blue-600">show-configurator</td><td class="py-3 px-4 font-mono text-purple-600">bool</td><td class="py-3 px-4 font-mono text-slate-400">true</td><td class="py-3 px-6">Görsel alan yapılandırma (drag-and-drop dimension configurator) paneli görünürlüğü.</td></tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors"><td class="py-3 px-6 font-mono font-bold text-blue-600">on-change</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td class="py-3 px-6">Küp yapılandırması veya filtreler değiştiğinde tetiklenen fonksiyon.</td></tr>
+                        <tr class="hover:bg-slate-50/70 transition-colors"><td class="py-3 px-6 font-mono font-bold text-blue-600">on-data-bound</td><td class="py-3 px-4 font-mono text-purple-600">string</td><td class="py-3 px-4 font-mono text-slate-400">null</td><td class="py-3 px-6">Çapraz tablo hesaplaması tamamlanıp matris çizildiğinde tetiklenen fonksiyon.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: ACCESSIBILITY -->
+    <div id="panel-a11y" class="main-doc-panel space-y-6 hidden">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    @(isEn ? "WAI-ARIA Accessibility Standards" : "WAI-ARIA Standartları & Klavye Erişilebilirliği")
+                </h2>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    @(isEn ? "Panoptes PivotGrid component follows W3C WAI-ARIA grid & treegrid standards for enterprise analytics accessibility." : "Panoptes PivotGrid bileşeni, W3C WAI-ARIA standartlarına uygun olarak analitik çapraz tablolar için tasarlanmıştır.")
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">WAI-ARIA Roles</div>
+                    <div class="text-slate-600"><code>role="treegrid / grid"</code>, <code>role="rowheader"</code>, <code>role="columnheader"</code>, <code>aria-expanded</code>.</div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div class="font-bold text-slate-800 font-mono">Keyboard Focus</div>
+                    <div class="text-slate-600">Matris hücreleri ve yapılandırıcı alan kutucukları klavye ile seçilip gezilebilir.</div>
+                </div>
+            </div>
+            <div class="pt-4 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 mb-3">@(isEn ? "Keyboard Shortcuts" : "Klavye Kısayolları")</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 font-bold">
+                                <th class="py-2.5 px-4 w-48">Tuş (Key)</th>
+                                <th class="py-2.5 px-4">İşlev</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                            <tr><td class="py-2.5 px-4 font-mono"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs">Tab / Shift + Tab</kbd></td><td class="py-2.5 px-4">Şablon butonları, alan paneli ve küp matrisi arasında geçiş.</td></tr>
+                            <tr><td class="py-2.5 px-4 font-mono"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs">Ok Tuşları (← ↑ → ↓)</kbd></td><td class="py-2.5 px-4">Matris hücreleri arasında serbest gezinme.</td></tr>
+                            <tr><td class="py-2.5 px-4 font-mono"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs">Enter / Space</kbd></td><td class="py-2.5 px-4">Hiyerarşik grup satırını genişletir (expand) veya daraltır (collapse).</td></tr>
+                            <tr><td class="py-2.5 px-4 font-mono"><kbd class="px-2 py-0.5 bg-slate-100 border border-slate-300 rounded text-xs">Home / End</kbd></td><td class="py-2.5 px-4">Satır veya sütunun en başına / en sonuna zıplama.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setPresetScenario1() {
+        const p = Panoptes.PivotGrid.getInstance('salesPivotGrid');
+        if (p) {
+            p.setConfiguration({
+                rows: ['Region'],
+                columns: ['Channel'],
+                measures: ['Revenue']
+            });
+        }
+    }
+
+    function setPresetScenario2() {
+        const p = Panoptes.PivotGrid.getInstance('salesPivotGrid');
+        if (p) {
+            p.setConfiguration({
+                rows: ['Category'],
+                columns: ['Year'],
+                measures: ['Profit']
+            });
+        }
+    }
+
+    function setPresetScenario3() {
+        const p = Panoptes.PivotGrid.getInstance('salesPivotGrid');
+        if (p) {
+            p.setConfiguration({
+                rows: ['Region', 'Category'],
+                columns: ['Year'],
+                measures: ['UnitsSold']
+            });
+        }
+    }
+
+    function resetPreset() {
+        const p = Panoptes.PivotGrid.getInstance('salesPivotGrid');
+        if (p) {
+            p.setConfiguration({
+                rows: ['Region', 'Category'],
+                columns: ['Year'],
+                measures: ['Revenue']
+            });
+        }
+    }
+
+    function exportPivotCsv() {
+        const p = Panoptes.PivotGrid.getInstance('salesPivotGrid');
+        if (p && typeof p.exportCsv === 'function') {
+            p.exportCsv();
+        } else {
+            alert('CSV dışa aktarım başlatılıyor...');
+        }
+    }
+</script>

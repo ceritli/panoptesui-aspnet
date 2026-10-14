@@ -1,0 +1,174 @@
+@{
+    var isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Map - Events & Live Console" : "Map - Olaylar (Events)";
+    ViewData["ActiveTab"] = "Events";
+}
+
+<div class="space-y-6">
+    <partial name="_MapNav" />
+
+    <!-- Hero Header -->
+    <div class="bg-gradient-to-r from-amber-700 via-orange-600 to-rose-700 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
+        <div class="relative z-10 max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold text-white mb-4">
+                <span>@(isEn ? "Real-Time Interaction Tracking" : "Gerçek Zamanlı Etkileşim Takibi")</span>
+            </div>
+            <h1 class="text-3xl font-extrabold tracking-tight mb-3">@(isEn ? "Map Events (Events)" : "Harita Olayları (Events)")</h1>
+            <p class="text-amber-100 text-sm sm:text-base leading-relaxed">
+                @(isEn ? "Capture and process real-time user actions such as panning (pan), zooming (zoom), marker clicks (markerClick), and shape clicks (shapeClick)." : "Kullanıcının haritayı kaydırması (pan), yakınlaştırması (zoom), işaretçilere veya şekillere tıklaması (markerClick, shapeClick) gibi tüm eylemleri canlı olarak yakalayıp işleyebilirsiniz.")
+            </p>
+        </div>
+        <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+    </div>
+
+    <!-- Map & Event Console Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <!-- Harita Alanı -->
+        <div class="lg:col-span-3 bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+            <h3 class="text-base font-bold text-slate-900">@(isEn ? "Interactive Event Test Map" : "Etkileşimli Olay Test Haritası")</h3>
+            <p class="text-xs text-slate-500">@(isEn ? "Pan the map, double click or click on markers to fire events." : "Haritada kaydırma yapın, çift tıklayın veya iğnelere tıklayarak olayları tetikleyin.")</p>
+
+            <panoptes-map id="eventsMap" center="39.9334, 32.8597" zoom="6" height="480px" controls="true"
+                          on-pan="handleMapPan" on-zoom-start="handleMapZoomStart" on-zoom-end="handleMapZoomEnd"
+                          on-click="handleMapClick" on-marker-click="handleMapMarkerClick" on-shape-click="handleMapShapeClick">
+                <panoptes-map-layer type="tile" title="OpenStreetMap" 
+                                    url-template="https://tile.openstreetmap.org/{z}/{x}/{y}.png" 
+                                    attribution="&copy; OpenStreetMap" />
+
+                <panoptes-map-marker lat="41.0082" lng="28.9784" title="İstanbul" color="#6366f1" icon="building" />
+                <panoptes-map-marker lat="39.9334" lng="32.8597" title="Ankara" color="#ef4444" icon="star" />
+                <panoptes-map-marker lat="38.4237" lng="27.1428" title="İzmir" color="#06b6d4" icon="pin" />
+            </panoptes-map>
+        </div>
+
+        <!-- Canlı Olay Günlüğü Konsolu -->
+        <div class="lg:col-span-2 bg-slate-900 rounded-3xl border border-slate-800 p-6 shadow-xl flex flex-col justify-between text-slate-300">
+            <div>
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <h4 class="text-sm font-bold text-white font-mono">Event Log Console</h4>
+                    </div>
+                    <button type="button" onclick="clearEventLog()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-semibold text-slate-300 transition cursor-pointer">
+                        @(isEn ? "Clear" : "Temizle")
+                    </button>
+                </div>
+
+                <div id="eventsLogContainer" class="space-y-2 max-h-[400px] overflow-y-auto pr-1 font-mono text-[11px]">
+                    <div class="text-slate-500 italic">@(isEn ? "Map initialized, waiting for interactions..." : "Harita başlatıldı, etkileşimler bekleniyor...")</div>
+                </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-800 text-[10px] text-slate-500 flex items-center justify-between">
+                <span>Panoptes Event Dispatcher</span>
+                <span id="eventCountBadge" class="font-bold text-indigo-400">0 @(isEn ? "Events" : "Olay")</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Snippet -->
+    <div class="panoptes-code-block rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-2xs">
+        <div class="flex items-center justify-between px-4 py-2 bg-slate-50/80 border-b border-slate-200/80 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[11px] font-semibold text-blue-600 bg-white border border-slate-200 shadow-2xs font-mono">Razor TagHelper</span>
+            </div>
+            <button type="button" onclick="copyPanoptesCode(this)" class="px-2.5 py-1 rounded-md bg-white hover:bg-slate-50 text-[11px] text-slate-600 font-medium flex items-center gap-1.5 border border-slate-200 transition shadow-2xs cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>@(isEn ? "Copy" : "Kopyala")</span>
+            </button>
+        </div>
+        <div class="panoptes-code-viewer">
+            <pre class="panoptes-raw-code hidden"><code>&lt;panoptes-map id=&quot;eventsMap&quot; center=&quot;39.9334, 32.8597&quot; zoom=&quot;6&quot; height=&quot;480px&quot;
+              on-pan=&quot;handleMapPan&quot;
+              on-zoom-start=&quot;handleMapZoomStart&quot;
+              on-zoom-end=&quot;handleMapZoomEnd&quot;
+              on-click=&quot;handleMapClick&quot;
+              on-marker-click=&quot;handleMapMarkerClick&quot;&gt;
+    &lt;!-- Katmanlar ve İşaretçiler --&gt;
+&lt;/panoptes-map&gt;
+
+&lt;script&gt;
+    function handleMapClick(e) {
+        console.log('Haritaya Tıklandı:', e.lat, e.lng);
+    }
+
+    function handleMapMarkerClick(e) {
+        console.log('İşaretçiye Tıklandı:', e.marker.title);
+    }
+&lt;/script&gt;</code></pre>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const isEnEv = @(isEn ? "true" : "false");
+    let logCounter = 0;
+
+    function appendEventLog(eventName, colorClass, details) {
+        const container = document.getElementById('eventsLogContainer');
+        if (!container) return;
+
+        // İlk italic mesajı temizle
+        if (logCounter === 0) container.innerHTML = '';
+
+        logCounter++;
+        const unit = isEnEv ? ' Events' : ' Olay';
+        document.getElementById('eventCountBadge').textContent = logCounter + unit;
+
+        const row = document.createElement('div');
+        row.className = 'p-2 rounded-xl bg-slate-800/60 border border-slate-700/50 flex flex-col gap-0.5 animate-fadeIn';
+        
+        const time = new Date().toLocaleTimeString(isEnEv ? 'en-US' : 'tr-TR', { hour12: false });
+        row.innerHTML = `
+            <div class="flex items-center justify-between">
+                <span class="font-bold ${colorClass}">[${eventName}]</span>
+                <span class="text-slate-500 text-[10px]">${time}</span>
+            </div>
+            <div class="text-slate-400 text-[10px] break-all">${details}</div>
+        `;
+
+        container.prepend(row);
+
+        // Maksimum 50 log tut
+        if (container.children.length > 50) {
+            container.lastElementChild?.remove();
+        }
+    }
+
+    function clearEventLog() {
+        logCounter = 0;
+        const unit = isEnEv ? '0 Events' : '0 Olay';
+        document.getElementById('eventCountBadge').textContent = unit;
+        const msg = isEnEv ? 'Event log cleared.' : 'Olay günlüğü temizlendi.';
+        document.getElementById('eventsLogContainer').innerHTML = `<div class="text-slate-500 italic">${msg}</div>`;
+    }
+
+    function handleMapPan(e) {
+        const centerStr = e.center ? (e.center.lat.toFixed(3) + ', ' + e.center.lng.toFixed(3)) : '-';
+        appendEventLog('pan', 'text-amber-400', `Type: ${e.type} | Center: ${centerStr}`);
+    }
+
+    function handleMapZoomStart(e) {
+        appendEventLog('zoomStart', 'text-cyan-400', `${isEnEv ? "Current Zoom" : "Mevcut Zoom"}: ${e.zoom}`);
+    }
+
+    function handleMapZoomEnd(e) {
+        appendEventLog('zoomEnd', 'text-indigo-400', `${isEnEv ? "New Zoom" : "Yeni Zoom"}: ${e.zoom}`);
+    }
+
+    function handleMapClick(e) {
+        appendEventLog('click', 'text-emerald-400', `${isEnEv ? "Coordinates" : "Koordinat"}: ${e.lat.toFixed(4)}, ${e.lng.toFixed(4)}`);
+    }
+
+    function handleMapMarkerClick(e) {
+        const unknownText = isEnEv ? "Unknown" : "Bilinmiyor";
+        appendEventLog('markerClick', 'text-rose-400', `${isEnEv ? "Marker" : "İşaretçi"}: ${e.marker?.title || unknownText} (${e.lat.toFixed(3)}, ${e.lng.toFixed(3)})`);
+    }
+
+    function handleMapShapeClick(e) {
+        const shapeText = isEnEv ? "Polygon" : "Poligon";
+        appendEventLog('shapeClick', 'text-purple-400', `${isEnEv ? "Shape" : "Şekil"}: ${e.properties?.name || shapeText}`);
+    }
+</script>
+}
