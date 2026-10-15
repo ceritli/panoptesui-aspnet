@@ -1,10 +1,12 @@
 @model Panoptes.AspNetCore.Demo.Controllers.SpreadsheetPageModel
+@using Panoptes.AspNetCore.Demo.Services
 @{
-var pages = Panoptes.AspNetCore.Demo.Controllers.SpreadsheetController.Pages;
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    var pages = Panoptes.AspNetCore.Demo.Controllers.SpreadsheetController.Pages;
 }
 
 @{
-    ViewData["Title"] = "Spreadsheet (Web Excel Tablosu) - Panoptes Kurumsal UI";
+    ViewData["Title"] = isEn ? "Spreadsheet (Web Excel Sheet) - Panoptes Enterprise UI" : "Spreadsheet (Web Excel Tablosu) - Panoptes Kurumsal UI";
 }
 
 <div class="space-y-8 pb-16">
@@ -33,7 +35,7 @@ var pages = Panoptes.AspNetCore.Demo.Controllers.SpreadsheetController.Pages;
                 </span>
             </div>
             <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
-                Hücre içi düzenleme, formül çubuğu (SUM, AVG, MIN, MAX vb.), şerit menü (ribbon), çoklu çalışma sayfası (sheets) ve XLSX/CSV dışa aktarım.
+                @(isEn ? "Full Excel experience in the browser: formula bar, ribbon, and multiple sheets for budgets and price lists, with .xlsx import and export." : "Tarayıcıda tam Excel deneyimi: formül çubuğu, şerit menü ve çoklu sayfalarla bütçe ve fiyat listeleri hazırlanır, .xlsx alınıp verilir.")
             </p>
         </div>
     </div>
@@ -120,8 +122,8 @@ var pages = Panoptes.AspNetCore.Demo.Controllers.SpreadsheetController.Pages;
             @foreach (var p in pages)
             {
                 <a href="/Spreadsheet/@p.Action" class="group block rounded-2xl border border-slate-200 p-3.5 hover:border-sky-300 hover:bg-sky-50/40 hover:-translate-y-0.5 hover:shadow-sm transition">
-                    <div class="text-sm font-bold text-slate-800 group-hover:text-sky-700 transition">@p.Title</div>
-                    <div class="text-[11px] text-slate-500 mt-0.5 leading-snug">@p.Description</div>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-sky-700 transition">@(isEn ? p.EnTitle : p.Title)</div>
+                    <div class="text-[11px] text-slate-500 mt-0.5 leading-snug">@(isEn ? p.EnDescription : p.Description)</div>
                 </a>
             }
         </div>
