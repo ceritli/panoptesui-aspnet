@@ -36,7 +36,7 @@ var productRating = ViewBag.ProductRating as int? ?? 4;
                 </span>
             </div>
             <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
-                Yıldız ve kalp ikonları, yarım puan hassasiyeti (0.5 precision), hover önizleme animasyonları ve salt okunur özet modunu destekleyen kurumsal puanlama bileşeni.
+                @(isEn ? "Star ratings for satisfaction surveys and product reviews." : "Memnuniyet anketi ve ürün değerlendirmesinde yıldızlı puanlama.")
             </p>
         </div>
     </div>

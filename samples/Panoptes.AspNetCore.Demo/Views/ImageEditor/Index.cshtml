@@ -1,5 +1,7 @@
+@using Panoptes.AspNetCore.Demo.Services
 @{
-    ViewData["Title"] = "ImageEditor (Görsel Düzenleyici) - Panoptes Kurumsal UI";
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "ImageEditor - Panoptes Enterprise UI" : "ImageEditor (Görsel Düzenleyici) - Panoptes Kurumsal UI";
 }
 
 <div class="space-y-8 pb-16">
@@ -28,7 +30,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
-                Kırpma (crop), yeniden boyutlandırma (resize), döndürme, filtreler, metin ekleme ve geri al/yinele destekli web görsel editörü.
+                @(isEn ? "Crop, resize, and annotate product photos before upload." : "Ürün fotoğrafı yüklemeden önce kırp, boyutlandır ve not ekle.")
             </p>
         </div>
     </div>
