@@ -1,5 +1,7 @@
+@using Panoptes.AspNetCore.Demo.Services
 @{
-    ViewData["Title"] = "ScrollView (Karosel & Kaydırıcı) - Panoptes Kurumsal UI";
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "ScrollView (Carousel) - Panoptes Enterprise UI" : "ScrollView (Karosel & Kaydırıcı) - Panoptes Kurumsal UI";
 }
 
 <div class="space-y-8 pb-16">
