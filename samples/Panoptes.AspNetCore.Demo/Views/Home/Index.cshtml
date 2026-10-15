@@ -69,8 +69,8 @@
                 100%
             </div>
             <div>
-                <div class="text-xs font-bold text-slate-800">Tailwind CSS</div>
-                <div class="text-xs text-slate-400">@(isEn ? "Fully Customizable" : "Tamamen Özelleştirilebilir")</div>
+                <div class="text-xs font-bold text-slate-800">@DemoTranslations.T("Home.Stat4Title", isEn)</div>
+                <div class="text-xs text-slate-400">@DemoTranslations.T("Home.Stat4Sub", isEn)</div>
             </div>
         </div>
     </div>
@@ -80,77 +80,77 @@
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
-                    <span>📊 Data Grid Özellik Sayfaları</span>
+                    <span>@DemoTranslations.T("Home.GridSectionTitle", isEn)</span>
                 </h2>
-                <p class="text-xs text-slate-500">Her özellik için izole çalışan özel demo sayfaları</p>
+                <p class="text-xs text-slate-500">@DemoTranslations.T("Home.GridSectionSub", isEn)</p>
             </div>
-            <a href="/Grid" class="text-xs font-bold text-blue-600 hover:text-blue-800 transition">Tümünü İncele →</a>
+            <a href="/Grid" class="text-xs font-bold text-blue-600 hover:text-blue-800 transition">@DemoTranslations.T("Home.ViewAll", isEn)</a>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <a href="/Grid/Paging" class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex flex-col justify-between">
                 <div class="space-y-2">
                     <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">📄</div>
-                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">Sayfalama (Paging)</div>
-                    <p class="text-xs text-slate-500 leading-relaxed">Özel sayfa boyutları, sayfa atlama ve hızlı navigasyon kontrolleri.</p>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">@DemoTranslations.T("Home.FeatPaging", isEn)</div>
+                    <p class="text-xs text-slate-500 leading-relaxed">@DemoTranslations.T("Home.FeatPagingDesc", isEn)</p>
                 </div>
-                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">Demoyu Aç →</div>
+                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">@DemoTranslations.T("Home.OpenDemo", isEn)</div>
             </a>
             <a href="/Grid/Sorting" class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex flex-col justify-between">
                 <div class="space-y-2">
                     <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">↕️</div>
-                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">Sıralama (Multi-Sort)</div>
-                    <p class="text-xs text-slate-500 leading-relaxed">Shift tuşuyla sınırsız çoklu sütun sıralama ve yön ikonları.</p>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">@DemoTranslations.T("Home.FeatSorting", isEn)</div>
+                    <p class="text-xs text-slate-500 leading-relaxed">@DemoTranslations.T("Home.FeatSortingDesc", isEn)</p>
                 </div>
-                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">Demoyu Aç →</div>
+                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">@DemoTranslations.T("Home.OpenDemo", isEn)</div>
             </a>
             <a href="/Grid/Filtering" class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex flex-col justify-between">
                 <div class="space-y-2">
                     <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">🔍</div>
-                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">Filtreleme (Row & Popover)</div>
-                    <p class="text-xs text-slate-500 leading-relaxed">Satır içi arama kutusu ve başlık filtre menüsü operatörleri.</p>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">@DemoTranslations.T("Home.FeatFiltering", isEn)</div>
+                    <p class="text-xs text-slate-500 leading-relaxed">@DemoTranslations.T("Home.FeatFilteringDesc", isEn)</p>
                 </div>
-                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">Demoyu Aç →</div>
+                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">@DemoTranslations.T("Home.OpenDemo", isEn)</div>
             </a>
             <a href="/Grid/Grouping" class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex flex-col justify-between">
                 <div class="space-y-2">
                     <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">🗂️</div>
-                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">Gruplama & Özetler</div>
-                    <p class="text-xs text-slate-500 leading-relaxed">Sürükle-bırak grup çubuğu, açılır/kapanır gruplar ve toplamlar.</p>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">@DemoTranslations.T("Home.FeatGrouping", isEn)</div>
+                    <p class="text-xs text-slate-500 leading-relaxed">@DemoTranslations.T("Home.FeatGroupingDesc", isEn)</p>
                 </div>
-                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">Demoyu Aç →</div>
+                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">@DemoTranslations.T("Home.OpenDemo", isEn)</div>
             </a>
             <a href="/Grid/Selection" class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex flex-col justify-between">
                 <div class="space-y-2">
                     <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">☑️</div>
-                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">Seçim (Checkbox)</div>
-                    <p class="text-xs text-slate-500 leading-relaxed">Tekli veya sol seçim kutularıyla sayfalar arası çoklu satır seçimi.</p>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">@DemoTranslations.T("Home.FeatSelection", isEn)</div>
+                    <p class="text-xs text-slate-500 leading-relaxed">@DemoTranslations.T("Home.FeatSelectionDesc", isEn)</p>
                 </div>
-                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">Demoyu Aç →</div>
+                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">@DemoTranslations.T("Home.OpenDemo", isEn)</div>
             </a>
             <a href="/Grid/InlineEdit" class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex flex-col justify-between">
                 <div class="space-y-2">
                     <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">✏️</div>
-                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">Satır İçi Düzenleme</div>
-                    <p class="text-xs text-slate-500 leading-relaxed">Satırdaki Düzenle butonuyla hücreleri anında forma dönüştürme.</p>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">@DemoTranslations.T("Home.FeatInlineEdit", isEn)</div>
+                    <p class="text-xs text-slate-500 leading-relaxed">@DemoTranslations.T("Home.FeatInlineEditDesc", isEn)</p>
                 </div>
-                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">Demoyu Aç →</div>
+                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">@DemoTranslations.T("Home.OpenDemo", isEn)</div>
             </a>
             <a href="/Grid/PopupEdit" class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex flex-col justify-between">
                 <div class="space-y-2">
                     <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">🪟</div>
-                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">Modal ile Düzenleme</div>
-                    <p class="text-xs text-slate-500 leading-relaxed">Panoptes form bileşenleriyle zenginleştirilmiş açılır düzenleme modalı.</p>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">@DemoTranslations.T("Home.FeatPopupEdit", isEn)</div>
+                    <p class="text-xs text-slate-500 leading-relaxed">@DemoTranslations.T("Home.FeatPopupEditDesc", isEn)</p>
                 </div>
-                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">Demoyu Aç →</div>
+                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">@DemoTranslations.T("Home.OpenDemo", isEn)</div>
             </a>
             <a href="/Grid/Hierarchy" class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition flex flex-col justify-between">
                 <div class="space-y-2">
                     <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">📦</div>
-                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">Hiyerarşi & Alt Grid</div>
-                    <p class="text-xs text-slate-500 leading-relaxed">Satır altında bağımsız çalışan iç içe stok hareketleri detay gridi.</p>
+                    <div class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition">@DemoTranslations.T("Home.FeatHierarchy", isEn)</div>
+                    <p class="text-xs text-slate-500 leading-relaxed">@DemoTranslations.T("Home.FeatHierarchyDesc", isEn)</p>
                 </div>
-                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">Demoyu Aç →</div>
+                <div class="text-xs font-bold text-blue-600 mt-4 flex items-center gap-1">@DemoTranslations.T("Home.OpenDemo", isEn)</div>
             </a>
         </div>
     </div>
@@ -160,11 +160,11 @@
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
-                    <span>🧩 16 Özel Form Bileşeni</span>
+                    <span>@DemoTranslations.T("Home.FormSectionTitle", isEn)</span>
                 </h2>
-                <p class="text-xs text-slate-500">Her bileşen için canlı test alanı, varyasyonlar, TagHelper kodu ve API özellikleri</p>
+                <p class="text-xs text-slate-500">@DemoTranslations.T("Home.FormSectionSub", isEn)</p>
             </div>
-            <a href="/Components/DatePicker" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition">Tümünü İncele →</a>
+            <a href="/Components/DatePicker" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition">@DemoTranslations.T("Home.ViewAll", isEn)</a>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-3">

@@ -37,8 +37,8 @@
                 <div class="text-xs text-slate-400 font-medium mt-0.5">@DemoTranslations.T("Catalog.Metric3", isEn)</div>
             </div>
             <div class="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10">
-                <div class="text-2xl sm:text-3xl font-black text-blue-400">Tailwind</div>
-                <div class="text-xs text-slate-400 font-medium mt-0.5">@(isEn ? "Modern CSS & Vanilla JS" : "Modern CSS & Saf JS")</div>
+                <div class="text-2xl sm:text-3xl font-black text-blue-400">@DemoTranslations.T("Catalog.Metric4Value", isEn)</div>
+                <div class="text-xs text-slate-400 font-medium mt-0.5">@DemoTranslations.T("Catalog.Metric4", isEn)</div>
             </div>
         </div>
     </div>
@@ -73,78 +73,83 @@
     const isEn = @(isEn ? "true" : "false");
 
     const catLabels = {
-        data: isEn ? 'Data & Grids' : 'Veri & Tablolar',
-        forms: isEn ? 'Forms & Inputs' : 'Form & Girdi',
-        nav: isEn ? 'Navigation' : 'Navigasyon',
-        popups: isEn ? 'Popups & Windows' : 'Pencereler',
-        scheduling: isEn ? 'Scheduling & Gantt' : 'Planlama',
-        charts: isEn ? 'Charts & Visuals' : 'Grafikler',
-        tools: isEn ? 'Tools & Media' : 'Araçlar'
+        data: '@DemoTranslations.T("Catalog.CatData", isEn)',
+        forms: '@DemoTranslations.T("Catalog.CatForms", isEn)',
+        nav: '@DemoTranslations.T("Catalog.CatNav", isEn)',
+        popups: '@DemoTranslations.T("Catalog.CatPopups", isEn)',
+        scheduling: '@DemoTranslations.T("Catalog.CatScheduling", isEn)',
+        charts: '@DemoTranslations.T("Catalog.CatCharts", isEn)',
+        tools: '@DemoTranslations.T("Catalog.CatTools", isEn)'
     };
+    const txtReady = '@DemoTranslations.T("Catalog.Ready", isEn)';
+    const txtParity = '@DemoTranslations.T("Catalog.EnterpriseParity", isEn)';
+    const txtOpenDemo = '@DemoTranslations.T("Catalog.OpenDemo", isEn)';
+    const txtNoResults = '@DemoTranslations.T("Catalog.NoResults", isEn)';
+    const txtNoResultsSub = '@DemoTranslations.T("Catalog.NoResultsSub", isEn)';
 
     const components = [
         // Data & Grids
-        { id: 'grid', name: 'Data Grid', cat: 'data', url: '/Grid', features: isEn ? ['Paging', 'Sorting', 'Multi-Filtering', 'Grouping', 'In-Line / Popup Edit', 'Hierarchical / Detail Grid', 'Excel & PDF Export', 'Search Panel', 'Aggregates', 'Virtual Scrolling'] : ['Sayfalama', 'Sıralama', 'Çoklu Filtreleme', 'Gruplama', 'Satır İçi / Popup Düzenleme', 'Hiyerarşik / Detay Tablo', 'Excel & PDF Dışa Aktarım', 'Arama Paneli', 'Agregasyonlar', 'Sanal Kaydırma'] },
-        { id: 'treelist', name: 'TreeList', cat: 'data', url: '/TreeList', features: isEn ? ['Hierarchical Tree View', 'Self-Referencing', 'Live Search', 'Column Resizing', 'In-Line Edit', 'Paging'] : ['Ağaç Yapılı Hiyerarşi', 'Kendi Kendine Referans', 'Canlı Arama', 'Sütun Boyutlandırma', 'Satır İçi Düzenleme', 'Sayfalama'] },
-        { id: 'pivotgrid', name: 'PivotGrid', cat: 'data', url: '/PivotGrid', features: isEn ? ['Multi-Dimensional Cross Table', 'Field Configurator', 'Row & Column Totals', 'Dynamic Filter', 'Excel Export'] : ['Çok Boyutlu Çapraz Tablo', 'Alan Yapılandırıcı', 'Satır & Sütun Toplamları', 'Dinamik Filtreleme', 'Excel Aktarım'] },
-        { id: 'spreadsheet', name: 'Spreadsheet', cat: 'data', url: '/Spreadsheet', features: isEn ? ['Excel-like Workbook', 'Formula Engine', 'Cell Formatting', 'PDF/XLSX Export', 'Validation'] : ['Excel Benzeri Hesap Tablosu', 'Formül Motoru', 'Hücre Biçimlendirme', 'PDF/XLSX Dışa Aktarma', 'Doğrulama'] },
-        { id: 'listview', name: 'ListView', cat: 'data', url: '/ListView', features: isEn ? ['Custom Template Cards', 'Paging', 'Multi-Selection', 'CRUD Operations', 'Dynamic Sort'] : ['Özel Şablon Kartlar', 'Sayfalama', 'Çoklu Seçim', 'CRUD İşlemleri', 'Dinamik Sıralama'] },
-        { id: 'pager', name: 'Pager', cat: 'data', url: '/Grid/Paging', features: isEn ? ['Standalone Paging Engine', 'Page Size Selector', 'Quick Jump', 'Summary Info'] : ['Bağımsız Sayfalama Motoru', 'Sayfa Boyut Seçici', 'Hızlı Atlayıcı', 'Özet Bilgi'] },
+        { id: 'grid', name: 'Data Grid', cat: 'data', url: '/Grid', desc: isEn ? 'The main grid for thousand-row tables with sorting, filtering, and editing; the backbone of account, stock, and order lists.' : 'Binlerce satırlık tablolar için sıralama, filtre ve düzenlemeli ana ızgara; cari, stok ve sipariş listelerinin omurgası.', features: isEn ? ['Paging', 'Sorting', 'Multi-Filtering', 'Grouping', 'In-Line / Popup Edit', 'Hierarchical / Detail Grid', 'Excel & PDF Export', 'Search Panel', 'Aggregates', 'Virtual Scrolling'] : ['Sayfalama', 'Sıralama', 'Çoklu Filtreleme', 'Gruplama', 'Satır İçi / Popup Düzenleme', 'Hiyerarşik / Detay Tablo', 'Excel & PDF Dışa Aktarım', 'Arama Paneli', 'Agregasyonlar', 'Sanal Kaydırma'] },
+        { id: 'treelist', name: 'TreeList', cat: 'data', url: '/TreeList', desc: isEn ? 'Shows hierarchical data such as departments, categories, and chart of accounts as a tree table, with roll-up totals.' : 'Birim, kategori ve hesap planı gibi hiyerarşik veriyi ağaç tablo olarak gösterir; alt-üst toplamlarıyla.', features: isEn ? ['Hierarchical Tree View', 'Self-Referencing', 'Live Search', 'Column Resizing', 'In-Line Edit', 'Paging'] : ['Ağaç Yapılı Hiyerarşi', 'Kendi Kendine Referans', 'Canlı Arama', 'Sütun Boyutlandırma', 'Satır İçi Düzenleme', 'Sayfalama'] },
+        { id: 'pivotgrid', name: 'PivotGrid', cat: 'data', url: '/PivotGrid', desc: isEn ? 'Summarizes sales and finance data by drag-and-drop; cross-tabs by region, product, and month.' : 'Satış ve finans verisini sürükle-bırakla özetler; bölge, ürün ve ay kırılımlı çapraz tablolar.', features: isEn ? ['Multi-Dimensional Cross Table', 'Field Configurator', 'Row & Column Totals', 'Dynamic Filter', 'Excel Export'] : ['Çok Boyutlu Çapraz Tablo', 'Alan Yapılandırıcı', 'Satır & Sütun Toplamları', 'Dinamik Filtreleme', 'Excel Aktarım'] },
+        { id: 'spreadsheet', name: 'Spreadsheet', cat: 'data', url: '/Spreadsheet', desc: isEn ? 'Excel experience in the browser with formulas, formatting, and .xlsx export; for budgets and price lists.' : 'Tarayıcıda Excel deneyimi: formüller, biçimlendirme ve .xlsx aktarım; bütçe ve fiyat listeleri için.', features: isEn ? ['Excel-like Workbook', 'Formula Engine', 'Cell Formatting', 'PDF/XLSX Export', 'Validation'] : ['Excel Benzeri Hesap Tablosu', 'Formül Motoru', 'Hücre Biçimlendirme', 'PDF/XLSX Dışa Aktarma', 'Doğrulama'] },
+        { id: 'listview', name: 'ListView', cat: 'data', url: '/ListView', desc: isEn ? 'Lists records with card templates; for custom presentations like staff directories and product showcases.' : 'Kayıtları kart şablonuyla listeler; personel dizini ve ürün vitrini gibi özel sunumlar için.', features: isEn ? ['Custom Template Cards', 'Paging', 'Multi-Selection', 'CRUD Operations', 'Dynamic Sort'] : ['Özel Şablon Kartlar', 'Sayfalama', 'Çoklu Seçim', 'CRUD İşlemleri', 'Dinamik Sıralama'] },
+        { id: 'pager', name: 'Pager', cat: 'data', url: '/Grid/Paging', desc: isEn ? 'Stand-alone paging engine with page size and quick-jump controls for long lists.' : 'Bağımsız sayfalama motoru; uzun listelerde sayfa boyutu ve hızlı atlama kontrolleri.', features: isEn ? ['Standalone Paging Engine', 'Page Size Selector', 'Quick Jump', 'Summary Info'] : ['Bağımsız Sayfalama Motoru', 'Sayfa Boyut Seçici', 'Hızlı Atlayıcı', 'Özet Bilgi'] },
 
         // Forms & Inputs
-        { id: 'datepicker', name: 'DatePicker', cat: 'forms', url: '/DatePicker', features: isEn ? ['Date Selection', 'Min/Max Limits', 'Custom Formats', 'Quick Clear'] : ['Tarih Seçimi', 'Min/Max Sınırları', 'Özel Formatlar', 'Hızlı Temizle'] },
-        { id: 'daterangepicker', name: 'DateRangePicker', cat: 'forms', url: '/Components/DateRangePicker', features: isEn ? ['Dual Calendar Range', 'Predefined Ranges', 'Start/End Binding'] : ['Çift Takvimli Aralık', 'Ön Tanımlı Aralıklar', 'Başlangıç/Bitiş Bağlama'] },
-        { id: 'timepicker', name: 'TimePicker', cat: 'forms', url: '/Components/DateTimePicker', features: isEn ? ['Hour & Minute Selection', '24h/12h Modes', 'Step Intervals'] : ['Saat & Dakika Seçimi', '24h/12h Modları', 'Adım Aralığı'] },
-        { id: 'datetimepicker', name: 'DateTimePicker', cat: 'forms', url: '/Components/DateTimePicker', features: isEn ? ['Integrated Date & Time', 'Advanced Popup', 'Local Timezone'] : ['Entegre Tarih ve Saat', 'Gelişmiş Popup', 'Yerel Saat Desteği'] },
-        { id: 'select', name: 'Select / DropDownList', cat: 'forms', url: '/Select', features: isEn ? ['Advanced Dropdown', 'Cascading Selection', 'Grouping', 'Custom Templates'] : ['Gelişmiş Açılır Liste', 'Kademeli Seçim (Cascading)', 'Gruplama', 'Özel Şablonlar'] },
-        { id: 'combobox', name: 'ComboBox', cat: 'forms', url: '/Components/ComboBox', features: isEn ? ['Editable & Selectable', 'Custom Value Entry', 'Autocomplete'] : ['Yazılabilir & Seçilebilir', 'Özel Değer Girişi', 'Otomatik Tamamlama'] },
-        { id: 'autocomplete', name: 'AutoComplete', cat: 'forms', url: '/Components/AutoComplete', features: isEn ? ['Instant Search Suggestions', 'Highlighted Match', 'Remote Binding'] : ['Anlık Arama Önerileri', 'Vurgulu Eşleşme', 'Uzak Veri Bağlama'] },
-        { id: 'multiselect', name: 'MultiSelect', cat: 'forms', url: '/Components/MultiSelect', features: isEn ? ['Chip Multi-Selection', 'Select All', 'Tag Limiting'] : ['Çipli Çoklu Seçim', 'Tümünü Seç', 'Etiket Limitleme'] },
-        { id: 'dropdowntree', name: 'DropDownTree', cat: 'forms', url: '/DropDownTree', features: isEn ? ['Tree-Structured Select', 'Checkbox Mode', 'Client Filter'] : ['Ağaç Yapılı Seçim', 'Onay Kutusu Modu', 'İstemci Filtreleme'] },
-        { id: 'multicolumncombobox', name: 'MultiColumnComboBox', cat: 'forms', url: '/Components/MultiColumnComboBox', features: isEn ? ['Multi-Column Dropdown Grid', 'Column Headers', 'Search Filter'] : ['Çok Sütunlu Izgara Açılır Liste', 'Sütun Başlıkları', 'Arama Filtresi'] },
-        { id: 'numerictextbox', name: 'NumericTextBox', cat: 'forms', url: '/Components/NumericTextBox', features: isEn ? ['Currency / Percent Format', 'Spin Buttons', 'Decimal Precision'] : ['Para Birimi / Yüzde Formatı', 'Artır/Azalt Düğmeleri', 'Ondalık Hassasiyet'] },
-        { id: 'otp', name: 'OtpInput', cat: 'forms', url: '/Otp', features: isEn ? ['SMS / 2FA Code Inputs', 'Auto Focus', 'Clipboard Paste'] : ['SMS / 2FA Kod Kutucukları', 'Otomatik Odaklama', 'Yapıştırma Desteği'] },
-        { id: 'signature', name: 'Signature', cat: 'forms', url: '/Signature', features: isEn ? ['HTML5 Touch Signature', 'PNG/SVG Export', 'Stroke & Color'] : ['HTML5 Dokunmatik İmza', 'PNG/SVG Dışa Aktarma', 'Çizgi Kalınlığı & Renk'] },
-        { id: 'rating', name: 'Rating', cat: 'forms', url: '/Rating', features: isEn ? ['Star & Heart Rating', 'Half-Precision', 'Read-Only Mode'] : ['Yıldız & Kalp Derecelendirme', 'Yarım Puan Hassasiyeti', 'Salt Okunur Mod'] },
-        { id: 'slider', name: 'Slider & Range', cat: 'forms', url: '/Slider', features: isEn ? ['Numeric Range Slider', 'Dual-Handle Range', 'Tick Marks'] : ['Sayısal Aralık Kaydırıcı', 'Çift Başlıklı Range', 'İşaretçiler'] },
-        { id: 'upload', name: 'Upload', cat: 'forms', url: '/Upload', features: isEn ? ['Drag & Drop Upload', 'Progress Bar', 'Multi-File'] : ['Sürükle-Bırak Dosya Yükleme', 'İlerleme Çubuğu', 'Çoklu Dosya'] },
-        { id: 'editor', name: 'Editor (WYSIWYG)', cat: 'forms', url: '/Editor', features: isEn ? ['Rich Text Editor', 'Insert Tables', 'HTML Source View', 'Image Insertion'] : ['Zengin Metin Editörü', 'Tablo Ekleme', 'HTML Kaynak Görünümü', 'Resim Ekleme'] },
+        { id: 'datepicker', name: 'DatePicker', cat: 'forms', url: '/DatePicker', desc: isEn ? 'Calendar date picking with format and limit control for due dates, birthdays, and appointments.' : 'Takvimden tarih seçimi; vade, doğum günü ve randevu alanlarında format ve sınır kontrolüyle.', features: isEn ? ['Date Selection', 'Min/Max Limits', 'Custom Formats', 'Quick Clear'] : ['Tarih Seçimi', 'Min/Max Sınırları', 'Özel Formatlar', 'Hızlı Temizle'] },
+        { id: 'daterangepicker', name: 'DateRangePicker', cat: 'forms', url: '/Components/DateRangePicker', desc: isEn ? 'Start-end range selection with presets; for report filters and leave requests.' : 'Başlangıç-bitiş aralığı seçimi; rapor filtreleri ve izin talepleri için hazır aralıklar.', features: isEn ? ['Dual Calendar Range', 'Predefined Ranges', 'Start/End Binding'] : ['Çift Takvimli Aralık', 'Ön Tanımlı Aralıklar', 'Başlangıç/Bitiş Bağlama'] },
+        { id: 'timepicker', name: 'TimePicker', cat: 'forms', url: '/Components/TimePicker', desc: isEn ? 'Hour and minute selection for shift starts and appointment times.' : 'Saat ve dakika seçimi; vardiya başlangıcı ve randevu saati gibi alanlar için.', features: isEn ? ['Hour & Minute Selection', '24h/12h Modes', 'Step Intervals'] : ['Saat & Dakika Seçimi', '24h/12h Modları', 'Adım Aralığı'] },
+        { id: 'datetimepicker', name: 'DateTimePicker', cat: 'forms', url: '/Components/DateTimePicker', desc: isEn ? 'Combines date and time in one field; for meeting and delivery scheduling.' : 'Tarih ve saati tek alanda birleştirir; toplantı ve teslimat planlamasında kullanılır.', features: isEn ? ['Integrated Date & Time', 'Advanced Popup', 'Local Timezone'] : ['Entegre Tarih ve Saat', 'Gelişmiş Popup', 'Yerel Saat Desteği'] },
+        { id: 'select', name: 'Select / DropDownList', cat: 'forms', url: '/Select', desc: isEn ? 'Cascading, grouped dropdowns for city-district and category-subcategory selection.' : 'Kademeli ve gruplu açılır liste; il-ilçe, kategori-alt kategori seçimlerinde.', features: isEn ? ['Advanced Dropdown', 'Cascading Selection', 'Grouping', 'Custom Templates'] : ['Gelişmiş Açılır Liste', 'Kademeli Seçim (Cascading)', 'Gruplama', 'Özel Şablonlar'] },
+        { id: 'combobox', name: 'ComboBox', cat: 'forms', url: '/Components/ComboBox', desc: isEn ? 'Editable dropdown; type a new value when missing, e.g. customer titles.' : 'Yazılabilir açılır liste; listede yoksa yeni değer girilir, müşteri unvanı gibi alanlarda.', features: isEn ? ['Editable & Selectable', 'Custom Value Entry', 'Autocomplete'] : ['Yazılabilir & Seçilebilir', 'Özel Değer Girişi', 'Otomatik Tamamlama'] },
+        { id: 'autocomplete', name: 'AutoComplete', cat: 'forms', url: '/Components/AutoComplete', desc: isEn ? 'Suggests as you type; fast keyboard selection in product and account search.' : 'Yazdıkça öneri sunar; ürün ve cari aramada klavyeden hızlı seçim.', features: isEn ? ['Instant Search Suggestions', 'Highlighted Match', 'Remote Binding'] : ['Anlık Arama Önerileri', 'Vurgulu Eşleşme', 'Uzak Veri Bağlama'] },
+        { id: 'multiselect', name: 'MultiSelect', cat: 'forms', url: '/Components/MultiSelect', desc: isEn ? 'Chip-based multi-select for permission roles and tagging.' : 'Çipli çoklu seçim; yetki rolleri ve etiket atamada kullanılır.', features: isEn ? ['Chip Multi-Selection', 'Select All', 'Tag Limiting'] : ['Çipli Çoklu Seçim', 'Tümünü Seç', 'Etiket Limitleme'] },
+        { id: 'dropdowntree', name: 'DropDownTree', cat: 'forms', url: '/DropDownTree', desc: isEn ? 'Tree-structured selector for hierarchical fields like departments and warehouses.' : 'Ağaç yapılı seçim kutusu; departman ve depo gibi hiyerarşik alanlarda tek tıkla seçim.', features: isEn ? ['Tree-Structured Select', 'Checkbox Mode', 'Client Filter'] : ['Ağaç Yapılı Seçim', 'Onay Kutusu Modu', 'İstemci Filtreleme'] },
+        { id: 'multicolumncombobox', name: 'MultiColumnComboBox', cat: 'forms', url: '/Components/MultiColumnComboBox', desc: isEn ? 'Multi-column grid dropdown; select by seeing product code, name, and price together.' : 'Çok sütunlu tablo açılır liste; ürün kodu, adı ve fiyatı bir arada görülerek seçim.', features: isEn ? ['Multi-Column Dropdown Grid', 'Column Headers', 'Search Filter'] : ['Çok Sütunlu Tablo Açılır Liste', 'Sütun Başlıkları', 'Arama Filtresi'] },
+        { id: 'numerictextbox', name: 'NumericTextBox', cat: 'forms', url: '/Components/NumericTextBox', desc: isEn ? 'Currency and percent formatted numeric entry; error-free amounts and rates.' : 'Para birimi ve yüzde formatlı sayı girişi; tutar ve oran alanlarında hatasız kayıt.', features: isEn ? ['Currency / Percent Format', 'Spin Buttons', 'Decimal Precision'] : ['Para Birimi / Yüzde Formatı', 'Artır/Azalt Düğmeleri', 'Ondalık Hassasiyet'] },
+        { id: 'otp', name: 'OtpInput', cat: 'forms', url: '/Otp', desc: isEn ? 'SMS and 2FA code boxes with auto-focus and paste support.' : 'SMS ve 2FA doğrulama kod kutucukları; otomatik odak ve yapıştırma desteğiyle.', features: isEn ? ['SMS / 2FA Code Inputs', 'Auto Focus', 'Clipboard Paste'] : ['SMS / 2FA Kod Kutucukları', 'Otomatik Odaklama', 'Yapıştırma Desteği'] },
+        { id: 'signature', name: 'Signature', cat: 'forms', url: '/Signature', desc: isEn ? 'Touch signature pad with PNG/SVG output for delivery and approval forms.' : 'Dokunmatik imza paneli; teslimat ve onay formlarında PNG/SVG çıktı.', features: isEn ? ['HTML5 Touch Signature', 'PNG/SVG Export', 'Stroke & Color'] : ['HTML5 Dokunmatik İmza', 'PNG/SVG Dışa Aktarma', 'Çizgi Kalınlığı & Renk'] },
+        { id: 'rating', name: 'Rating', cat: 'forms', url: '/Rating', desc: isEn ? 'Star and heart ratings for satisfaction surveys and product reviews.' : 'Yıldız ve kalp ile puanlama; müşteri memnuniyeti ve ürün değerlendirmelerinde.', features: isEn ? ['Star & Heart Rating', 'Half-Precision', 'Read-Only Mode'] : ['Yıldız & Kalp Derecelendirme', 'Yarım Puan Hassasiyeti', 'Salt Okunur Mod'] },
+        { id: 'slider', name: 'Slider & Range', cat: 'forms', url: '/Slider', desc: isEn ? 'Range sliders for visual value entry like price filters and percentages.' : 'Aralıklı kaydırıcı; fiyat filtresi ve yüzde seçimi gibi görsel değer girişi.', features: isEn ? ['Numeric Range Slider', 'Dual-Handle Range', 'Tick Marks'] : ['Sayısal Aralık Kaydırıcı', 'Çift Başlıklı Range', 'İşaretçiler'] },
+        { id: 'upload', name: 'Upload', cat: 'forms', url: '/Upload', desc: isEn ? 'Drag-and-drop file upload for document flows like invoice attachments.' : 'Sürükle-bırak dosya yükleme; fatura eki ve kimlik belgesi gibi evrak akışlarında.', features: isEn ? ['Drag & Drop Upload', 'Progress Bar', 'Multi-File'] : ['Sürükle-Bırak Dosya Yükleme', 'İlerleme Çubuğu', 'Çoklu Dosya'] },
+        { id: 'editor', name: 'Editor (WYSIWYG)', cat: 'forms', url: '/Editor', desc: isEn ? 'Rich text editor for formatted announcements, descriptions, and mail templates.' : 'Zengin metin editörü; duyuru, açıklama ve e-posta şablonlarında biçimli içerik.', features: isEn ? ['Rich Text Editor', 'Insert Tables', 'HTML Source View', 'Image Insertion'] : ['Zengin Metin Editörü', 'Tablo Ekleme', 'HTML Kaynak Görünümü', 'Resim Ekleme'] },
 
         // Navigation & Layout
-        { id: 'menu', name: 'Menu & ContextMenu', cat: 'nav', url: '/Menu', features: isEn ? ['Hierarchical Flyout Menu', 'Right-Click Context Menu', 'Smart Viewport Flip'] : ['Hiyerarşik Açılır Menü', 'Sağ Tık Bağlam Menüsü', 'Akıllı Viewport Hizalama'] },
-        { id: 'tabstrip', name: 'TabStrip', cat: 'nav', url: '/TabStrip', features: isEn ? ['4-Way Tabs', 'Lazy AJAX Loading', 'Closable Tabs', 'Runtime API'] : ['4 Yönlü Sekmeler', 'Lazy AJAX Yükleme', 'Kapatılabilir Sekmeler', 'Çalışma Zamanı API'] },
-        { id: 'panelbar', name: 'PanelBar (Accordion)', cat: 'nav', url: '/PanelBar', features: isEn ? ['Multi-Level Accordion', 'Single/Multi Expansion', 'Icons & Badges'] : ['Çok Seviyeli Akordiyon', 'Tekli/Çoklu Genişleme', 'İkon & Rozet Desteği'] },
-        { id: 'drawer', name: 'Drawer', cat: 'nav', url: '/Drawer', features: isEn ? ['Left/Right Side Drawer', 'Mini / Expanded Mode', 'Overlay & Push Modes'] : ['Sol/Sağ Yan Çekmece', 'Mini / Genişletilmiş Mod', 'Overlay & Push Modları'] },
-        { id: 'treeview', name: 'TreeView', cat: 'nav', url: '/TreeView', features: isEn ? ['Hierarchical Folder Tree', 'Checkboxes', 'Drag & Drop Nodes'] : ['Hiyerarşik Klasör Ağacı', 'Onay Kutuları', 'Sürükle-Bırak Düğüm Taşıma'] },
-        { id: 'stepper', name: 'Stepper & Wizard', cat: 'nav', url: '/Stepper', features: isEn ? ['Multi-Step Form Wizard', 'Step Validation', 'Horizontal / Vertical'] : ['Çok Adımlı Form Sihirbazı', 'Adım Doğrulama', 'Yatay / Dikey Düzen'] },
-        { id: 'breadcrumb', name: 'Breadcrumb', cat: 'nav', url: '/Breadcrumb', features: isEn ? ['Accessible Trail Bar', 'Auto Collapse', 'Root Icon'] : ['Erişilebilir Yol Çubuğu', 'Otomatik Daraltma', 'Kök İkonu'] },
-        { id: 'toolbar', name: 'ToolBar', cat: 'nav', url: '/ToolBar', features: isEn ? ['Responsive Toolbar', 'Overflow Menu', 'Button Groups'] : ['Responsive Araç Çubuğu', 'Taşan Öğeler Menüsü', 'Düğme Grupları'] },
-        { id: 'splitter', name: 'Splitter', cat: 'nav', url: '/Splitter', features: isEn ? ['Resizable Pane System', 'Collapsible Panes', 'Nested Layouts'] : ['Yeniden Boyutlandırılabilir Panel', 'Katlanabilir Bölmeler', 'İç İçe Paneller'] },
-        { id: 'tilelayout', name: 'TileLayout', cat: 'nav', url: '/TileLayout/Overview', features: isEn ? ['2D CSS Grid Dashboard', 'Drag & Drop Reordering', 'Card Resizing'] : ['2D CSS Grid Dashboard', 'Sürükle-Bırak Sıralama', 'Kart Boyutlandırma'] },
+        { id: 'menu', name: 'Menu & ContextMenu', cat: 'nav', url: '/Menu', desc: isEn ? 'Hierarchical menus and right-click context menus for module navigation and row actions.' : 'Hiyerarşik menü ve sağ tık bağlam menüsü; modül navigasyonu ve satır işlemleri için.', features: isEn ? ['Hierarchical Flyout Menu', 'Right-Click Context Menu', 'Smart Viewport Flip'] : ['Hiyerarşik Açılır Menü', 'Sağ Tık Bağlam Menüsü', 'Akıllı Viewport Hizalama'] },
+        { id: 'tabstrip', name: 'TabStrip', cat: 'nav', url: '/TabStrip', desc: isEn ? 'Tabbed content areas with lazy loading for multi-section forms like account cards.' : 'Sekmeli içerik alanları; cari kart detayı gibi çok bölümlü formlarda lazy yükleme.', features: isEn ? ['4-Way Tabs', 'Lazy AJAX Loading', 'Closable Tabs', 'Runtime API'] : ['4 Yönlü Sekmeler', 'Lazy AJAX Yükleme', 'Kapatılabilir Sekmeler', 'Çalışma Zamanı API'] },
+        { id: 'panelbar', name: 'PanelBar (Accordion)', cat: 'nav', url: '/PanelBar', desc: isEn ? 'Accordion panels for collapsible sections like settings and FAQs.' : 'Akordiyon paneller; ayar sayfaları ve SSS gibi katlanabilir bölümlerde.', features: isEn ? ['Multi-Level Accordion', 'Single/Multi Expansion', 'Icons & Badges'] : ['Çok Seviyeli Akordiyon', 'Tekli/Çoklu Genişleme', 'İkon & Rozet Desteği'] },
+        { id: 'drawer', name: 'Drawer', cat: 'nav', url: '/Drawer', desc: isEn ? 'Side drawer menus for mobile-friendly app shells and filter panels.' : 'Yan çekmece menü; mobil uyumlu uygulama kabuğu ve filtre panellerinde.', features: isEn ? ['Left/Right Side Drawer', 'Mini / Expanded Mode', 'Overlay & Push Modes'] : ['Sol/Sağ Yan Çekmece', 'Mini / Genişletilmiş Mod', 'Overlay & Push Modları'] },
+        { id: 'treeview', name: 'TreeView', cat: 'nav', url: '/TreeView', desc: isEn ? 'Folder trees with checkbox selection for file explorers and category management.' : 'Klasör ağacı; dosya gezgini ve kategori yönetiminde onay kutulu seçim.', features: isEn ? ['Hierarchical Folder Tree', 'Checkboxes', 'Drag & Drop Nodes'] : ['Hiyerarşik Klasör Ağacı', 'Onay Kutuları', 'Sürükle-Bırak Düğüm Taşıma'] },
+        { id: 'stepper', name: 'Stepper & Wizard', cat: 'nav', url: '/Stepper', desc: isEn ? 'Multi-step wizards with step validation for signup, application, and setup flows.' : 'Çok adımlı sihirbaz; üyelik, başvuru ve kurulum akışlarında adım doğrulamayla.', features: isEn ? ['Multi-Step Form Wizard', 'Step Validation', 'Horizontal / Vertical'] : ['Çok Adımlı Form Sihirbazı', 'Adım Doğrulama', 'Yatay / Dikey Düzen'] },
+        { id: 'breadcrumb', name: 'Breadcrumb', cat: 'nav', url: '/Breadcrumb', desc: isEn ? 'Trail bar showing site location with one-click return to upper levels.' : 'Yol çubuğu; kullanıcının sitedeki konumunu gösterir, üst seviyeye tek tıkla dönüş sağlar.', features: isEn ? ['Accessible Trail Bar', 'Auto Collapse', 'Root Icon'] : ['Erişilebilir Yol Çubuğu', 'Otomatik Daraltma', 'Kök İkonu'] },
+        { id: 'toolbar', name: 'ToolBar', cat: 'nav', url: '/ToolBar', desc: isEn ? 'Responsive toolbar grouping actions like New, Save, and Delete on list screens.' : 'Responsive araç çubuğu; liste ekranlarında Yeni, Kaydet ve Sil gibi eylemleri toplar.', features: isEn ? ['Responsive Toolbar', 'Overflow Menu', 'Button Groups'] : ['Responsive Araç Çubuğu', 'Taşan Öğeler Menüsü', 'Düğme Grupları'] },
+        { id: 'splitter', name: 'Splitter', cat: 'nav', url: '/Splitter', desc: isEn ? 'Resizable panes for side-by-side layouts like mail clients.' : 'Boyutlandırılabilir bölmeler; e-posta istemcisi gibi yan yana panel düzenlerinde.', features: isEn ? ['Resizable Pane System', 'Collapsible Panes', 'Nested Layouts'] : ['Yeniden Boyutlandırılabilir Panel', 'Katlanabilir Bölmeler', 'İç İçe Paneller'] },
+        { id: 'tilelayout', name: 'TileLayout', cat: 'nav', url: '/TileLayout/Overview', desc: isEn ? 'Drag-and-drop dashboard grid; users arrange their own KPI cards.' : 'Sürükle-bırak dashboard ızgarası; KPI kartlarını kullanıcı kendi düzenler.', features: isEn ? ['2D CSS Grid Dashboard', 'Drag & Drop Reordering', 'Card Resizing'] : ['2D CSS Grid Dashboard', 'Sürükle-Bırak Sıralama', 'Kart Boyutlandırma'] },
 
         // Popups & Windows
-        { id: 'window', name: 'Window', cat: 'popups', url: '/Window', features: isEn ? ['Draggable & Resizable', 'Maximize/Minimize', 'Modal & Non-Modal'] : ['Sürüklenebilir & Boyutlandırılabilir', 'Maximize/Minimize', 'Modal & Non-Modal'] },
-        { id: 'dialog', name: 'Dialog', cat: 'popups', url: '/Dialog', features: isEn ? ['Alert, Confirm, Prompt', 'Promise-based API', 'Keyboard Navigation'] : ['Alert, Confirm, Prompt', 'Promise Tabanlı API', 'Klavye Tuş Yönetimi'] },
-        { id: 'notification', name: 'Notification', cat: 'popups', url: '/Notification', features: isEn ? ['Toast Popups', 'Multi-Positioning', 'Auto Dismiss'] : ['Toast Açılır Bildirimler', 'Çoklu Pozisyonlama', 'Otomatik Kapanma'] },
-        { id: 'actionsheet', name: 'ActionSheet', cat: 'popups', url: '/ActionSheet/Overview', features: isEn ? ['Bottom Sheet Actions', 'Mobile Friendly', 'Cancel / Action Buttons'] : ['Alttan Açılan Eylem Sayfası', 'Mobil Uyumlu', 'İptal / Onay Butonları'] },
+        { id: 'window', name: 'Window', cat: 'popups', url: '/Window', desc: isEn ? 'Draggable windows for detail forms and report previews above the main screen.' : 'Sürüklenebilir pencereler; ana ekran üstünde detay form ve rapor önizlemede.', features: isEn ? ['Draggable & Resizable', 'Maximize/Minimize', 'Modal & Non-Modal'] : ['Sürüklenebilir & Boyutlandırılabilir', 'Maximize/Minimize', 'Modal & Non-Modal'] },
+        { id: 'dialog', name: 'Dialog', cat: 'popups', url: '/Dialog', desc: isEn ? 'Confirm and alert dialogs with promise-based flow for critical actions like delete approval.' : 'Onay ve uyarı diyalogları; silme onayı gibi kritik işlemlerde promise tabanlı akış.', features: isEn ? ['Alert, Confirm, Prompt', 'Promise-based API', 'Keyboard Navigation'] : ['Alert, Confirm, Prompt', 'Promise Tabanlı API', 'Klavye Desteği'] },
+        { id: 'notification', name: 'Notification', cat: 'popups', url: '/Notification', desc: isEn ? 'Toast notifications reporting save results without interrupting the screen.' : 'Toast bildirimler; kaydetme sonucu ve arka plan işlem bilgisinde ekranı bölmeden.', features: isEn ? ['Toast Popups', 'Multi-Positioning', 'Auto Dismiss'] : ['Toast Açılır Bildirimler', 'Çoklu Pozisyonlama', 'Otomatik Kapanma'] },
+        { id: 'actionsheet', name: 'ActionSheet', cat: 'popups', url: '/ActionSheet/Overview', desc: isEn ? 'Bottom action sheets for Share, Delete, and Edit options on mobile.' : 'Alttan açılan eylem sayfası; mobilde Paylaş, Sil ve Düzenle seçenekleri için.', features: isEn ? ['Bottom Sheet Actions', 'Mobile Friendly', 'Cancel / Action Buttons'] : ['Alttan Açılan Eylem Sayfası', 'Mobil Uyumlu', 'İptal / Onay Butonları'] },
 
         // Scheduling & Planning
-        { id: 'gantt', name: 'Gantt Chart', cat: 'scheduling', url: '/Gantt', features: isEn ? ['Project Task Tree', 'Timeline View', 'Progress Percentages'] : ['Proje Görev Ağacı', 'Zaman Çizelgesi (Timeline)', 'İlerleme Yüzdeleri'] },
-        { id: 'taskboard', name: 'TaskBoard (Kanban)', cat: 'scheduling', url: '/TaskBoard', features: isEn ? ['HTML5 Drag & Drop Kanban', 'Column Badges', 'Add & Edit Cards'] : ['HTML5 Drag & Drop Kanban', 'Sütun Sayaçları', 'Kart Ekleme & Düzenleme'] },
+        { id: 'gantt', name: 'Gantt Chart', cat: 'scheduling', url: '/Gantt', desc: isEn ? 'Project timelines tracking tasks, dependencies, and progress.' : 'Proje çizelgesi; görev, bağımlılık ve ilerleme takibinde zaman tüneli görünümü.', features: isEn ? ['Project Task Tree', 'Timeline View', 'Progress Percentages'] : ['Proje Görev Ağacı', 'Zaman Çizelgesi (Timeline)', 'İlerleme Yüzdeleri'] },
+        { id: 'taskboard', name: 'TaskBoard (Kanban)', cat: 'scheduling', url: '/TaskBoard', desc: isEn ? 'Kanban boards managing tickets and dev work by drag-and-drop.' : 'Kanban panosu; destek talebi ve yazılım işlerini sürükle-bırakla yönetir.', features: isEn ? ['HTML5 Drag & Drop Kanban', 'Column Badges', 'Add & Edit Cards'] : ['HTML5 Drag & Drop Kanban', 'Sütun Sayaçları', 'Kart Ekleme & Düzenleme'] },
 
         // Charts & Visualizations
-        { id: 'chart', name: 'Charts', cat: 'charts', url: '/Chart', features: isEn ? ['Bar, Line, Pie Charts', 'Vector SVG Graphics', 'Interactive Tooltips'] : ['Çubuk, Çizgi, Pasta Grafikleri', 'SVG Vektörel Çizim', 'İnteraktif Tooltip'] },
-        { id: 'stockchart', name: 'StockChart', cat: 'charts', url: '/StockChart', features: isEn ? ['Financial Candlestick', 'Volume Chart', 'Date Navigator'] : ['Finansal Mum Grafik (Candlestick)', 'Hacim Grafiği', 'Tarih Gezgini'] },
-        { id: 'gauge', name: 'Gauges', cat: 'charts', url: '/Gauge', features: isEn ? ['Radial Gauge Dial', 'Linear Thermometer', 'Target Value Ranges'] : ['Radyal Kadran Gösterge', 'Doğrusal Termometre', 'Hedef Değer Aralıkları'] },
-        { id: 'barcode', name: 'Barcode & QRCode', cat: 'charts', url: '/Barcode', features: isEn ? ['Vector Barcode (Code128)', '2D QR Code', 'High Resolution'] : ['SVG Çizgili Barkod (Code128)', '2D Karekod (QRCode)', 'Yüksek Çözünürlük'] },
-        { id: 'diagram', name: 'Diagram & OrgChart', cat: 'charts', url: '/Diagram', features: isEn ? ['Vector Flowcharts', 'Org Hierarchy Chart', 'Connectors'] : ['Vektörel Akış Şemaları', 'Organizasyon Şeması', 'Bağlantı Hatları'] },
-        { id: 'map', name: 'Map', cat: 'charts', url: '/Map/Overview', features: isEn ? ['Interactive Geo Map', 'Custom Markers', 'GeoJSON Layers'] : ['İnteraktif Coğrafi Harita', 'İşaretçiler (Markers)', 'GeoJSON Katmanları'] },
+        { id: 'chart', name: 'Charts', cat: 'charts', url: '/Chart', desc: isEn ? 'Bar, line, and pie charts; interactive visuals for sales and revenue reports.' : 'Çubuk, çizgi ve pasta grafikler; satış ve ciro raporlarında interaktif görselleştirme.', features: isEn ? ['Bar, Line, Pie Charts', 'Vector SVG Graphics', 'Interactive Tooltips'] : ['Çubuk, Çizgi, Pasta Grafikleri', 'SVG Vektörel Çizim', 'İnteraktif Tooltip'] },
+        { id: 'stockchart', name: 'StockChart', cat: 'charts', url: '/StockChart', desc: isEn ? 'Candlestick charts with volume and date navigator for stocks and FX.' : 'Finansal mum grafikler; hisse ve kur takibinde hacim ve tarih gezginiyle.', features: isEn ? ['Financial Candlestick', 'Volume Chart', 'Date Navigator'] : ['Finansal Mum Grafik (Candlestick)', 'Hacim Grafiği', 'Tarih Gezgini'] },
+        { id: 'gauge', name: 'Gauges', cat: 'charts', url: '/Gauge', desc: isEn ? 'Dial gauges presenting target achievement and quota tracking.' : 'Kadran göstergeler; hedef gerçekleşme ve kota takibinde ibreli sunum.', features: isEn ? ['Radial Gauge Dial', 'Linear Thermometer', 'Target Value Ranges'] : ['Radyal Kadran Gösterge', 'Doğrusal Termometre', 'Hedef Değer Aralıkları'] },
+        { id: 'barcode', name: 'Barcode & QRCode', cat: 'charts', url: '/Barcode', desc: isEn ? 'Barcode and QR generation with vector output for labels and shipment codes.' : 'Barkod ve QR üretim; ürün etiketi ve kargo takip kodlarında vektörel çıktı.', features: isEn ? ['Vector Barcode (Code128)', '2D QR Code', 'High Resolution'] : ['SVG Çizgili Barkod (Code128)', '2D Karekod (QRCode)', 'Yüksek Çözünürlük'] },
+        { id: 'diagram', name: 'Diagram & OrgChart', cat: 'charts', url: '/Diagram', desc: isEn ? 'Flow and organization charts for approval processes and company hierarchy.' : 'Akış ve organizasyon şemaları; onay süreçleri ve şirket hiyerarşisinde.', features: isEn ? ['Vector Flowcharts', 'Org Hierarchy Chart', 'Connectors'] : ['Vektörel Akış Şemaları', 'Organizasyon Şeması', 'Bağlantı Hatları'] },
+        { id: 'map', name: 'Map', cat: 'charts', url: '/Map/Overview', desc: isEn ? 'Interactive maps marking branches, customers, and field teams.' : 'İnteraktif harita; şube, müşteri ve saha ekip konumlarının işaretlenmesinde.', features: isEn ? ['Interactive Geo Map', 'Custom Markers', 'GeoJSON Layers'] : ['İnteraktif Coğrafi Harita', 'İşaretçiler (Markers)', 'GeoJSON Katmanları'] },
 
         // Tools & Media
-        { id: 'filemanager', name: 'FileManager', cat: 'tools', url: '/FileManager', features: isEn ? ['Cloud File Explorer', 'Directory Tree', 'Preview & Search'] : ['Bulut Dosya Yöneticisi', 'Klasör Hiyerarşisi', 'Önizleme & Arama'] },
-        { id: 'filter', name: 'Filter', cat: 'tools', url: '/Filter', features: isEn ? ['Hierarchical Query Builder', 'AND/OR Logic Groups', 'Dynamic Operators'] : ['Hiyerarşik Sorgu Oluşturucu', 'AND/OR Mantık Grupları', 'Dinamik İşleçler'] },
-        { id: 'pdfviewer', name: 'PdfViewer', cat: 'tools', url: '/PdfViewer', features: isEn ? ['Embedded PDF Viewer', 'Pagination & Zoom', 'Text Search'] : ['Gömülü PDF Görüntüleyici', 'Sayfalama & Yakınlaştırma', 'Metin Arama'] },
-        { id: 'mediaplayer', name: 'MediaPlayer', cat: 'tools', url: '/MediaPlayer', features: isEn ? ['HTML5 Video/Audio Player', 'Custom Control Bar', 'Fullscreen'] : ['HTML5 Video/Ses Oynatıcı', 'Özel Kontrol Çubuğu', 'Tam Ekran'] }
+        { id: 'filemanager', name: 'FileManager', cat: 'tools', url: '/FileManager', desc: isEn ? 'Cloud file manager combining folders, preview, and search for document archives.' : 'Bulut dosya yöneticisi; evrak arşivinde klasör, önizleme ve arama bir arada.', features: isEn ? ['Cloud File Explorer', 'Directory Tree', 'Preview & Search'] : ['Bulut Dosya Yöneticisi', 'Klasör Hiyerarşisi', 'Önizleme & Arama'] },
+        { id: 'filter', name: 'Filter', cat: 'tools', url: '/Filter', desc: isEn ? 'Visual query builder creating AND/OR filter groups without code, feeding reports.' : 'Görsel sorgu oluşturucu; teknik bilmeden VE/VEYA gruplu filtre kurar, raporlara bağlanır.', features: isEn ? ['Hierarchical Query Builder', 'AND/OR Logic Groups', 'Dynamic Operators'] : ['Hiyerarşik Sorgu Oluşturucu', 'AND/OR Mantık Grupları', 'Dinamik İşleçler'] },
+        { id: 'pdfviewer', name: 'PdfViewer', cat: 'tools', url: '/PdfViewer', desc: isEn ? 'Embedded PDF viewer with paging and search for contracts and e-invoices.' : 'Gömülü PDF görüntüleyici; sözleşme ve e-fatura önizlemede sayfalama ve arama.', features: isEn ? ['Embedded PDF Viewer', 'Pagination & Zoom', 'Text Search'] : ['Gömülü PDF Görüntüleyici', 'Sayfalama & Yakınlaştırma', 'Metin Arama'] },
+        { id: 'mediaplayer', name: 'MediaPlayer', cat: 'tools', url: '/MediaPlayer', desc: isEn ? 'Video and audio player with custom controls for training portals and announcements.' : 'Video ve ses oynatıcı; eğitim portalı ve duyuru videolarında özel kontrol çubuğu.', features: isEn ? ['HTML5 Video/Audio Player', 'Custom Control Bar', 'Fullscreen'] : ['HTML5 Video/Ses Oynatıcı', 'Özel Kontrol Çubuğu', 'Tam Ekran'] }
     ];
 
     const grid = document.getElementById('catalogGrid');
@@ -157,9 +162,10 @@
         const filtered = components.filter(c => {
             const currentCatTitle = catLabels[c.cat] || c.cat;
             const matchesCat = currentCat === 'all' || c.cat === currentCat;
-            const matchesQuery = !query || 
-                c.name.toLowerCase().includes(query) || 
-                currentCatTitle.toLowerCase().includes(query) || 
+            const matchesQuery = !query ||
+                c.name.toLowerCase().includes(query) ||
+                currentCatTitle.toLowerCase().includes(query) ||
+                (c.desc || '').toLowerCase().includes(query) ||
                 c.features.some(f => f.toLowerCase().includes(query));
             return matchesCat && matchesQuery;
         });
@@ -168,8 +174,8 @@
             grid.innerHTML = `
                 <div class="col-span-full py-16 text-center text-slate-400 bg-white rounded-2xl border border-slate-200">
                     <div class="text-3xl mb-2">🔍</div>
-                    <div class="font-bold text-sm text-slate-700">${isEn ? "No components found matching your search." : "Aramanıza uygun bileşen bulunamadı."}</div>
-                    <div class="text-xs text-slate-400 mt-1">${isEn ? "Try a different keyword or reset the category filter." : "Farklı bir kelime deneyin veya filtreyi sıfırlayın."}</div>
+                    <div class="font-bold text-sm text-slate-700">${txtNoResults}</div>
+                    <div class="text-xs text-slate-400 mt-1">${txtNoResultsSub}</div>
                 </div>
             `;
             return;
@@ -182,13 +188,14 @@
                         <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">${catLabels[c.cat] || c.cat}</span>
                         <span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                            ${isEn ? "Ready" : "Hazır"}
+                            ${txtReady}
                         </span>
                     </div>
                     <div>
                         <h3 class="text-base font-bold text-slate-900 group-hover:text-blue-600 transition flex items-center gap-2">
                             ${c.name}
                         </h3>
+                        <p class="text-xs text-slate-500 leading-relaxed mt-1">${c.desc || ''}</p>
                     </div>
                     <div class="flex flex-wrap gap-1 pt-1">
                         ${c.features.slice(0, 4).map(f => `
@@ -201,9 +208,9 @@
                 </div>
 
                 <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-                    <span class="text-xs text-slate-400 font-medium">${isEn ? "100% Enterprise Parity" : "%100 Kurumsal Eşlik"}</span>
+                    <span class="text-xs text-slate-400 font-medium">${txtParity}</span>
                     <a href="${langPrefix}${c.url}" class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-xl transition">
-                        ${isEn ? "Open Demo" : "Demoyu Aç"} <span>→</span>
+                        ${txtOpenDemo} <span>→</span>
                     </a>
                 </div>
             </div>
