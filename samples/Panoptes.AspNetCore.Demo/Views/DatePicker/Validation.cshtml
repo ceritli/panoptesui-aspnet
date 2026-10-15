@@ -22,8 +22,8 @@
             </div>
             <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
                 @(isEn 
-                    ? "Restrict user selection to an allowed date range; days outside boundaries are dimmed and locked." 
-                    : "Kullanıcının yalnızca geçerli bir tarih aralığında seçim yapmasını sağlayın; sınır dışındaki günler kilitlenir ve seçilemez.")
+                    ? "No picking outside the allowed range; backdated invoices stop at the source."
+                    : "İzinli aralığın dışına çıkılamaz; geçmiş tarihli fatura girişi kaynağında engellenir.")
             </p>
         </div>
         <div class="flex items-center gap-2">
