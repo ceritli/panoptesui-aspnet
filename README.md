@@ -145,6 +145,23 @@ dotnet run
 ```
 Navigate to `https://localhost:5001` to explore all 40+ components and live data scenarios.
 
+The demo header has a **Tailwind | Bootstrap** switcher (top right, choice persists in `localStorage`) so you can preview every component under both themes.
+
+---
+
+### 🎨 Bootstrap 5 Theme
+
+Prefer Bootstrap over Tailwind? Swap one stylesheet. `panoptes-bootstrap.css` is a drop-in replacement for `panoptes.css` written in the Bootstrap 5 visual language (colors, radii, focus rings, badges, pagination). The Scheduler inherits automatically through the shared `--panoptes-*` variables.
+
+```html
+<!-- Inside <head>, after Bootstrap -->
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/_content/Panoptes.AspNetCore/panoptes/panoptes-bootstrap.css" />
+<link rel="stylesheet" href="~/_content/Panoptes.AspNetCore/panoptes/panoptes-scheduler.css" />
+```
+
+No TagHelper or JS changes needed. The theme tracks Bootstrap's own CSS variables (with fallbacks), so custom Bootstrap palettes apply automatically.
+
 ---
 
 ### 🤝 Contributing & Community
@@ -176,7 +193,7 @@ Resmi web sitesi: **[https://panoptesui.com](https://panoptesui.com)**
 - **🚀 Veritabanı Seviyesinde Hız:** Entity Framework Core üzerinde `IQueryable` seviyesinde çalışan dinamik sıralama, filtreleme, sayfalama ve gruplama (`ToDataSourceResultAsync`).
 - **🎯 Doğal Razor TagHelper:** `.cshtml` şablonlarında doğrudan `<panoptes-grid>` ve `<panoptes-column>` etiketleri ile deklaratif geliştirme.
 - **⚡ Sıfır Dış Bağımlılık:** jQuery veya harici devasa JS kütüphaneleri gerektirmez; hafif, hızlı ve modern vanilla JS çekirdeğine sahiptir.
-- **🎨 Tailwind CSS Uyumlu:** Modern kurumsal tasarım standartları, koyu/açık tema uyumu ve şık mikro animasyonlar.
+- **🎨 Tailwind CSS Uyumlu:** Modern kurumsal tasarım standartları, koyu/açık tema uyumu ve şık mikro animasyonlar. Bootstrap 5 severler için `panoptes-bootstrap.css` teması da dahildir.
 - **📊 40+ Kurumsal Bileşen:** DataGrid, TreeList, Spreadsheet (Excel Benzeri Hesap Tablosu), PivotGrid, Scheduler (Randevu/Takvim), Gantt (İş Çizelgesi), TaskBoard (Kanban), FileManager, Vektörel Grafikler ve Zengin Form kontrolleri.
 - **🌍 18 Dil ve RTL Desteği:** Türkçe, İngilizce, Almanca, Fransızca, Arapça (RTL) dahil 18 dilde otomatik lokalizasyon.
 - **📑 Excel ve PDF Çıktısı:** Tablolarda tek tıkla Excel (.xlsx, .csv) ve PDF dışa aktarma.

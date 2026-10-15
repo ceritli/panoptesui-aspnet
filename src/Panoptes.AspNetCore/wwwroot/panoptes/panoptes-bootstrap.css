@@ -1,0 +1,960 @@
+/* ==========================================================================
+   Panoptes UI Components - Bootstrap 5 Theme
+   Drop-in replacement for panoptes.css. Pair with Bootstrap 5.3+
+   (e.g. ~/lib/bootstrap/dist/css/bootstrap.min.css) for a native look.
+   Works standalone too: every Bootstrap variable has a fallback.
+   Scheduler inherits automatically via --panoptes-* variables.
+   ========================================================================== */
+
+:root {
+  --panoptes-primary: var(--bs-primary, #0d6efd);
+  --panoptes-primary-hover: #0b5ed7;
+  --panoptes-border: var(--bs-border-color, #dee2e6);
+  --panoptes-bg-subtle: var(--bs-tertiary-bg, #f8f9fa);
+  --panoptes-text: var(--bs-body-color, #212529);
+  --panoptes-text-muted: var(--bs-secondary-color, #6c757d);
+  --panoptes-radius: var(--bs-border-radius, 0.375rem);
+  --panoptes-radius-sm: var(--bs-border-radius-sm, 0.25rem);
+  --panoptes-radius-lg: var(--bs-border-radius-lg, 0.5rem);
+  --panoptes-focus-ring: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  --panoptes-focus-border: #86b7fe;
+  --panoptes-success: #198754;
+  --panoptes-success-hover: #157347;
+  --panoptes-danger: #dc3545;
+  --panoptes-danger-hover: #bb2d3b;
+}
+
+.panoptes-grid-wrapper {
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bs-body-bg, #ffffff);
+  border-radius: var(--panoptes-radius);
+  border: 1px solid var(--panoptes-border);
+  box-shadow: var(--bs-box-shadow-sm, 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075));
+  overflow: visible;
+  position: relative;
+}
+
+/* Grouping Bar */
+.panoptes-group-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--panoptes-bg-subtle);
+  border-bottom: 1px solid var(--panoptes-border);
+  font-size: 0.8125rem;
+  color: var(--panoptes-text-muted);
+  flex-wrap: wrap;
+}
+
+.panoptes-group-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: var(--bs-body-bg, #ffffff);
+  border: 1px solid var(--panoptes-border);
+  border-radius: var(--panoptes-radius);
+  padding: 0.2rem 0.5rem;
+  font-weight: 500;
+  color: var(--panoptes-text);
+  box-shadow: var(--bs-box-shadow-sm, 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075));
+}
+
+.panoptes-group-chip-remove {
+  cursor: pointer;
+  color: var(--panoptes-text-muted);
+  border-radius: var(--bs-border-radius-pill, 50rem);
+  line-height: 1;
+}
+
+.panoptes-group-chip-remove:hover {
+  color: var(--panoptes-danger);
+}
+
+/* Toolbar */
+.panoptes-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: var(--bs-body-bg, #ffffff);
+  border-bottom: 1px solid var(--panoptes-border);
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.panoptes-toolbar-left, .panoptes-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.panoptes-search-input {
+  padding: 0.375rem 0.75rem 0.375rem 2.2rem;
+  font-size: 0.875rem;
+  border-radius: var(--panoptes-radius);
+  border: 1px solid var(--panoptes-border);
+  background-color: var(--bs-body-bg, #ffffff);
+  color: var(--panoptes-text);
+  outline: none;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  min-width: 220px;
+}
+
+.panoptes-search-input:focus {
+  border-color: var(--panoptes-focus-border);
+  box-shadow: var(--panoptes-focus-ring);
+}
+
+.panoptes-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  border-radius: var(--panoptes-radius);
+  border: 1px solid var(--panoptes-border);
+  background-color: var(--bs-body-bg, #ffffff);
+  color: var(--panoptes-text);
+  cursor: pointer;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  user-select: none;
+}
+
+.panoptes-btn:hover {
+  background-color: var(--bs-secondary-bg, #e9ecef);
+  border-color: var(--panoptes-border);
+  color: var(--panoptes-text);
+}
+
+.panoptes-btn-primary {
+  background-color: var(--panoptes-primary);
+  border-color: var(--panoptes-primary);
+  color: #ffffff;
+}
+
+.panoptes-btn-primary:hover {
+  background-color: var(--panoptes-primary-hover);
+  border-color: #0a58ca;
+  color: #ffffff;
+}
+
+.panoptes-btn-success {
+  background-color: var(--panoptes-success);
+  border-color: var(--panoptes-success);
+  color: #ffffff;
+}
+.panoptes-btn-success:hover {
+  background-color: var(--panoptes-success-hover);
+  border-color: #146c43;
+  color: #ffffff;
+}
+
+.panoptes-btn-danger {
+  background-color: var(--panoptes-danger);
+  border-color: var(--panoptes-danger);
+  color: #ffffff;
+}
+.panoptes-btn-danger:hover {
+  background-color: var(--panoptes-danger-hover);
+  border-color: #b02a37;
+  color: #ffffff;
+}
+
+.panoptes-btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: var(--panoptes-radius-sm);
+}
+
+/* Table Container */
+.panoptes-table-container {
+  width: 100%;
+  overflow-x: auto;
+  position: relative;
+  min-height: 220px;
+}
+
+.panoptes-table {
+  width: 100%;
+  text-align: left;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.875rem;
+  color: var(--panoptes-text);
+}
+
+.panoptes-table th {
+  background-color: var(--panoptes-bg-subtle);
+  color: var(--panoptes-text);
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--panoptes-border);
+  user-select: none;
+  white-space: nowrap;
+  position: relative;
+}
+
+.panoptes-table th.sortable {
+  cursor: pointer;
+}
+
+.panoptes-table th.sortable:hover {
+  background-color: var(--bs-secondary-bg, #e9ecef);
+}
+
+.panoptes-th-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+/* Resizer */
+.panoptes-resizer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  cursor: col-resize;
+  user-select: none;
+  height: 100%;
+}
+.panoptes-resizer:hover, .panoptes-resizer.resizing {
+  background-color: var(--panoptes-primary);
+}
+
+/* Frozen Columns */
+.panoptes-frozen-left {
+  position: sticky !important;
+  left: 0;
+  z-index: 10;
+  background-color: var(--bs-body-bg, #ffffff) !important;
+  box-shadow: 2px 0 5px -2px rgba(0,0,0,0.1);
+}
+th.panoptes-frozen-left {
+  z-index: 20;
+  background-color: var(--panoptes-bg-subtle) !important;
+}
+
+.panoptes-frozen-right {
+  position: sticky !important;
+  right: 0;
+  z-index: 10;
+  background-color: var(--bs-body-bg, #ffffff) !important;
+  box-shadow: -2px 0 5px -2px rgba(0,0,0,0.1);
+}
+th.panoptes-frozen-right {
+  z-index: 20;
+  background-color: var(--panoptes-bg-subtle) !important;
+}
+
+/* Rows & Cells */
+.panoptes-table td {
+  padding: 0.75rem 1rem;
+  color: var(--panoptes-text);
+  border-bottom: 1px solid var(--panoptes-border);
+  vertical-align: middle;
+  background-color: var(--bs-body-bg, #ffffff);
+}
+
+.panoptes-table tbody tr {
+  transition: background-color 0.12s ease;
+}
+
+.panoptes-table tbody tr:hover td {
+  background-color: var(--bs-table-hover-bg, rgba(0, 0, 0, 0.025));
+}
+
+.panoptes-table tbody tr.selected td {
+  background-color: var(--bs-primary-bg-subtle, #cfe2ff) !important;
+}
+
+.panoptes-table tbody tr.editing td {
+  background-color: var(--bs-warning-bg-subtle, #fff3cd) !important;
+}
+
+/* Group Header Row */
+.panoptes-group-header-row td {
+  background-color: var(--panoptes-bg-subtle) !important;
+  font-weight: 600;
+  color: var(--panoptes-text);
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid var(--panoptes-border);
+}
+
+.panoptes-group-header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Filter Popover */
+.panoptes-filter-btn {
+  padding: 0.2rem;
+  border-radius: var(--panoptes-radius-sm);
+  color: var(--panoptes-text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.panoptes-filter-btn:hover {
+  background-color: var(--bs-secondary-bg, #e9ecef);
+  color: var(--panoptes-text);
+}
+.panoptes-filter-btn.active {
+  color: var(--bs-primary-text-emphasis, #052c65);
+  background-color: var(--bs-primary-bg-subtle, #cfe2ff);
+}
+
+.panoptes-filter-popover {
+  position: absolute;
+  z-index: 1000;
+  background: var(--bs-body-bg, #ffffff);
+  border: 1px solid var(--bs-border-color-translucent, rgba(0, 0, 0, 0.175));
+  box-shadow: var(--bs-box-shadow, 0 0.5rem 1rem rgba(0, 0, 0, 0.15));
+  border-radius: var(--panoptes-radius);
+  padding: 0.875rem;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.panoptes-filter-popover select,
+.panoptes-filter-popover input {
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  border-radius: var(--panoptes-radius);
+  border: 1px solid var(--panoptes-border);
+  outline: none;
+  background-color: var(--bs-body-bg, #ffffff);
+  color: var(--panoptes-text);
+}
+.panoptes-filter-popover select:focus,
+.panoptes-filter-popover input:focus {
+  border-color: var(--panoptes-focus-border);
+  box-shadow: var(--panoptes-focus-ring);
+}
+
+.panoptes-filter-popover-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+/* Column Menu Chooser Dropdown */
+.panoptes-column-menu-dropdown {
+  position: absolute;
+  right: 1rem;
+  top: 3.5rem;
+  z-index: 1000;
+  background: var(--bs-body-bg, #ffffff);
+  border: 1px solid var(--bs-border-color-translucent, rgba(0, 0, 0, 0.175));
+  border-radius: var(--panoptes-radius);
+  box-shadow: var(--bs-box-shadow, 0 0.5rem 1rem rgba(0, 0, 0, 0.15));
+  padding: 0.5rem;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.panoptes-column-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--panoptes-text);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--panoptes-radius-sm);
+  cursor: pointer;
+}
+.panoptes-column-menu-item:hover {
+  background-color: var(--bs-dropdown-link-hover-bg, #e9ecef);
+}
+
+/* Pager (Bootstrap pagination language) */
+.panoptes-pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: var(--bs-body-bg, #ffffff);
+  border-top: 1px solid var(--panoptes-border);
+  font-size: 0.875rem;
+  color: var(--panoptes-text-muted);
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.panoptes-pager-left, .panoptes-pager-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.panoptes-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.5rem;
+  font-size: 0.875rem;
+  border-radius: var(--panoptes-radius);
+  border: 1px solid var(--panoptes-border);
+  background-color: var(--bs-body-bg, #ffffff);
+  color: var(--panoptes-primary);
+  cursor: pointer;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.panoptes-page-btn:hover:not(:disabled) {
+  background-color: var(--bs-pagination-hover-bg, #e9ecef);
+  border-color: var(--panoptes-border);
+  color: #0a58ca;
+}
+
+.panoptes-page-btn.active {
+  background-color: var(--panoptes-primary);
+  border-color: var(--panoptes-primary);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.panoptes-page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.panoptes-select-control {
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--panoptes-radius);
+  border: 1px solid var(--panoptes-border);
+  background-color: var(--bs-body-bg, #ffffff);
+  color: var(--panoptes-text);
+  font-size: 0.875rem;
+  outline: none;
+}
+
+/* Toast Notification */
+.panoptes-toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.panoptes-toast {
+  pointer-events: auto;
+  padding: 0.75rem 1.25rem;
+  background-color: #212529;
+  color: #ffffff;
+  border-radius: var(--panoptes-radius);
+  font-size: 0.875rem;
+  box-shadow: var(--bs-box-shadow, 0 0.5rem 1rem rgba(0, 0, 0, 0.15));
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: panoptes-slide-up 0.25s ease-out;
+}
+
+.panoptes-toast-success { background-color: var(--panoptes-success); }
+.panoptes-toast-error   { background-color: var(--panoptes-danger); }
+
+@keyframes panoptes-slide-up {
+  from { opacity: 0; transform: translateY(1rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Inline Edit Controls */
+.panoptes-edit-input {
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  border-radius: var(--panoptes-radius);
+  border: 1px solid var(--panoptes-text-muted);
+  outline: none;
+  background: var(--bs-body-bg, #ffffff);
+  color: var(--panoptes-text);
+}
+.panoptes-edit-input:focus {
+  border-color: var(--panoptes-focus-border);
+  box-shadow: var(--panoptes-focus-ring);
+}
+
+/* Master-Detail Hierarchy */
+.panoptes-expand-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: var(--panoptes-radius-sm);
+  border: 1px solid var(--panoptes-border);
+  background: var(--bs-body-bg, #ffffff);
+  color: var(--panoptes-text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.panoptes-expand-btn:hover {
+  background: var(--bs-secondary-bg, #e9ecef);
+  color: var(--panoptes-primary);
+}
+
+.panoptes-detail-row td {
+  background-color: var(--panoptes-bg-subtle) !important;
+  padding: 1.25rem !important;
+  border-bottom: 2px solid var(--panoptes-border);
+}
+
+.panoptes-detail-card {
+  background: var(--bs-body-bg, #ffffff);
+  border: 1px solid var(--panoptes-border);
+  border-radius: var(--panoptes-radius);
+  padding: 1rem;
+  box-shadow: var(--bs-box-shadow-sm, 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075));
+}
+
+/* In-Cell / Batch Dirty Indicators */
+td.panoptes-cell-dirty {
+  position: relative;
+}
+td.panoptes-cell-dirty::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 6px 0 0;
+  border-color: var(--panoptes-danger) transparent transparent transparent;
+}
+
+/* PopUp Modal */
+.panoptes-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(33, 37, 41, 0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.panoptes-modal {
+  background-color: var(--bs-body-bg, #ffffff);
+  border: 1px solid var(--bs-border-color-translucent, rgba(0, 0, 0, 0.175));
+  border-radius: var(--bs-modal-border-radius, var(--panoptes-radius-lg));
+  width: 100%;
+  max-width: 520px;
+  box-shadow: var(--bs-box-shadow-lg, 0 1rem 3rem rgba(0, 0, 0, 0.175));
+  overflow: visible;
+  animation: panoptes-zoom-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes panoptes-zoom-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.panoptes-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background-color: var(--panoptes-bg-subtle);
+  border-bottom: 1px solid var(--panoptes-border);
+}
+
+.panoptes-modal-body {
+  padding: 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.panoptes-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.875rem 1.25rem;
+  background-color: var(--panoptes-bg-subtle);
+  border-top: 1px solid var(--panoptes-border);
+}
+
+.panoptes-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.panoptes-form-group.col-span-2 {
+  grid-column: span 2;
+}
+
+.panoptes-form-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--panoptes-text-muted);
+}
+
+.panoptes-form-control {
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  border-radius: var(--panoptes-radius);
+  border: 1px solid var(--panoptes-border);
+  outline: none;
+  background: var(--bs-body-bg, #ffffff);
+  color: var(--panoptes-text);
+}
+
+.panoptes-form-control:focus {
+  border-color: var(--panoptes-focus-border);
+  box-shadow: var(--panoptes-focus-ring);
+}
+
+/* Checkbox Checklist in Filter */
+.panoptes-filter-checklist {
+  max-height: 120px;
+  overflow-y: auto;
+  border: 1px solid var(--panoptes-border);
+  border-radius: var(--panoptes-radius);
+  padding: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.panoptes-filter-check-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  color: var(--panoptes-text);
+  cursor: pointer;
+}
+
+/* Print/PDF Export */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .panoptes-grid-wrapper, .panoptes-grid-wrapper * {
+    visibility: visible;
+  }
+  .panoptes-grid-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none;
+    border: none;
+  }
+  .panoptes-toolbar, .panoptes-group-bar, .panoptes-pager, .panoptes-filter-btn, .panoptes-resizer {
+    display: none !important;
+  }
+}
+
+
+/* === Drag-to-Group DropZone === */
+.panoptes-group-bar.panoptes-drop-active {
+  background-color: var(--bs-primary-bg-subtle, #cfe2ff) !important;
+  border-bottom: 2px dashed var(--panoptes-primary) !important;
+  color: var(--bs-primary-text-emphasis, #052c65) !important;
+}
+
+.panoptes-group-prompt {
+  font-style: italic;
+  color: var(--panoptes-text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* === Row Selection === */
+tr.panoptes-row-selected td {
+  background-color: var(--bs-success-bg-subtle, #d1e7dd) !important;
+  color: var(--bs-success-text-emphasis, #0a3622);
+}
+
+tr.panoptes-row-selected td:first-child {
+  border-left: 3px solid var(--panoptes-success);
+}
+
+.panoptes-selection-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--bs-success-bg-subtle, #d1e7dd);
+  border: 1px solid var(--bs-success-border-subtle, #a3cfbb);
+  color: var(--bs-success-text-emphasis, #0a3622);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--bs-border-radius-pill, 50rem);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* === Group Footers & Aggregates === */
+.panoptes-group-footer-row td {
+  background-color: var(--panoptes-bg-subtle);
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--panoptes-text-muted);
+  border-top: 1px dashed var(--panoptes-border);
+  border-bottom: 1px solid var(--panoptes-border);
+}
+
+.panoptes-group-aggregate-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: var(--bs-secondary-bg, #e9ecef);
+  border: 1px solid var(--panoptes-border);
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--panoptes-radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--panoptes-text);
+  margin-left: 0.5rem;
+}
+
+/* === Context Menu === */
+.panoptes-context-menu {
+  position: fixed;
+  z-index: 99999;
+  background-color: var(--bs-body-bg, #ffffff);
+  border: 1px solid var(--bs-border-color-translucent, rgba(0, 0, 0, 0.175));
+  border-radius: var(--panoptes-radius);
+  box-shadow: var(--bs-box-shadow, 0 0.5rem 1rem rgba(0, 0, 0, 0.15));
+  min-width: 180px;
+  padding: 0.35rem 0;
+  font-size: 0.8125rem;
+  color: var(--panoptes-text);
+  animation: panoptes-fade-in 0.12s ease-out;
+}
+
+.panoptes-context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+  user-select: none;
+}
+
+.panoptes-context-menu-item:hover {
+  background-color: var(--bs-dropdown-link-hover-bg, #e9ecef);
+  color: var(--panoptes-text);
+}
+
+.panoptes-context-menu-item.panoptes-item-danger:hover {
+  background-color: var(--bs-danger-bg-subtle, #f8d7da);
+  color: var(--bs-danger-text-emphasis, #58151c);
+}
+
+.panoptes-context-menu-divider {
+  height: 1px;
+  background-color: var(--panoptes-border);
+  margin: 0.3rem 0;
+}
+
+@keyframes panoptes-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* === Auto-fit Resizer Handle Hover === */
+.panoptes-resizer:hover {
+  background-color: var(--panoptes-primary);
+  opacity: 0.7;
+}
+
+.panoptes-resizer.resizing {
+  background-color: var(--panoptes-primary-hover);
+  opacity: 1;
+}
+
+
+/* ==========================================
+   Panoptes Form Components (Phase 2)
+   ========================================== */
+
+/* DatePicker & DateRangePicker */
+.panoptes-calendar-popover,
+.panoptes-daterange-popover {
+  z-index: 10005 !important;
+  animation: panoptes-fade-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--bs-box-shadow-lg, 0 1rem 3rem rgba(0, 0, 0, 0.175));
+  border: 1px solid var(--bs-border-color-translucent, rgba(0, 0, 0, 0.175));
+  border-radius: var(--panoptes-radius);
+  background-color: var(--bs-body-bg, #ffffff);
+}
+
+.panoptes-cal-day:hover {
+  transform: scale(1.05);
+}
+
+/* Select & MultiSelect */
+.panoptes-select-dropdown,
+.panoptes-multiselect-dropdown {
+  animation: panoptes-fade-in 0.12s ease-out;
+  box-shadow: var(--bs-box-shadow, 0 0.5rem 1rem rgba(0, 0, 0, 0.15));
+  border: 1px solid var(--bs-border-color-translucent, rgba(0, 0, 0, 0.175));
+  border-radius: var(--panoptes-radius);
+  background-color: var(--bs-body-bg, #ffffff);
+}
+
+.panoptes-select-item:active,
+.panoptes-multi-item:active {
+  background-color: var(--bs-primary-bg-subtle, #cfe2ff);
+}
+
+/* NumericTextBox */
+.panoptes-numeric-group input::-webkit-outer-spin-button,
+.panoptes-numeric-group input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.panoptes-spin-up:hover,
+.panoptes-spin-down:hover {
+  background-color: var(--bs-secondary-bg, #e9ecef);
+  border-radius: var(--panoptes-radius-sm);
+}
+
+/* Unified High-Contrast Row Selection */
+tr.selected td,
+tr.panoptes-row-selected td {
+  background-color: var(--bs-primary-bg-subtle, #cfe2ff) !important;
+  color: var(--bs-primary-text-emphasis, #052c65) !important;
+}
+
+tr.selected td:first-child,
+tr.panoptes-row-selected td:first-child {
+  border-left: 4px solid var(--panoptes-primary) !important;
+}
+
+tr[data-key] {
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
+
+tr[data-key]:hover td {
+  background-color: var(--panoptes-bg-subtle);
+}
+
+tr.selected:hover td,
+tr.panoptes-row-selected:hover td {
+  background-color: #b6d4fe !important;
+}
+
+/* ========================================================
+   Panoptes Advanced Form Components (Enterprise Suite)
+   ======================================================== */
+
+/* TimePicker & DateTimePicker Popovers */
+.panoptes-timepicker-popover,
+.panoptes-datetimepicker-popover,
+.panoptes-colorpicker-popover,
+.panoptes-autocomplete-popover {
+  box-shadow: var(--bs-box-shadow, 0 0.5rem 1rem rgba(0, 0, 0, 0.15));
+  border: 1px solid var(--bs-border-color-translucent, rgba(0, 0, 0, 0.175));
+  border-radius: var(--panoptes-radius);
+  background-color: var(--bs-body-bg, #ffffff);
+  z-index: 10005 !important;
+  font-family: inherit;
+}
+
+/* Custom scrollbars inside popovers */
+.panoptes-time-hours::-webkit-scrollbar,
+.panoptes-time-minutes::-webkit-scrollbar,
+.panoptes-autocomplete-popover::-webkit-scrollbar {
+  width: 4px;
+}
+.panoptes-time-hours::-webkit-scrollbar-thumb,
+.panoptes-time-minutes::-webkit-scrollbar-thumb,
+.panoptes-autocomplete-popover::-webkit-scrollbar-thumb {
+  background-color: var(--bs-secondary-bg, #e9ecef);
+  border-radius: var(--bs-border-radius-pill, 50rem);
+}
+
+/* Color Swatches Hover Effect */
+.panoptes-color-swatch {
+  cursor: pointer;
+  outline: none;
+}
+.panoptes-color-swatch:focus-visible {
+  box-shadow: var(--panoptes-focus-ring);
+}
+
+/* Modal overflow fix so popovers are never clipped */
+.panoptes-modal {
+  overflow: visible !important;
+}
+.panoptes-modal-body {
+  overflow-y: visible !important;
+}
+
+/* Grid Inline Edit Cells with Panoptes Components */
+.panoptes-edit-cell .panoptes-input,
+.panoptes-edit-cell .panoptes-select-control {
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
+  font-size: 0.8125rem !important;
+}
+
+/* Panoptes Slider & RangeSlider Highlight Track & Dragging */
+.panoptes-slider-container {
+  touch-action: pan-y;
+}
+.panoptes-slider-track-wrap {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.panoptes-slider-highlight-track {
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  height: 100% !important;
+  pointer-events: none;
+}
+.panoptes-slider-thumb {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.panoptes-slider-dragging,
+.panoptes-slider-dragging * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+.panoptes-slider-dragging .panoptes-slider-thumb {
+  transition: none !important;
+}
+.panoptes-slider-value-display {
+  user-select: none;
+  -webkit-user-select: none;
+}

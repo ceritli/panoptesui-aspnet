@@ -55,10 +55,28 @@
         window.panoptes.currentLocale = '@currentLocale.Code';
         window.panoptes.direction = '@currentLocale.Direction';
     </script>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="~/_content/Panoptes.AspNetCore/panoptes/panoptes.css" />
+    <!-- Tailwind CSS CDN (Tailwind theme mode) -->
+    <script id="tailwindCdn" src="https://cdn.tailwindcss.com"></script>
+    <!-- Bootstrap 5.3 (Bootstrap theme mode, local) -->
+    <link id="bootstrapCss" rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" disabled />
+    <!-- Panoptes component theme: swapped by the theme switcher (data-bootstrap-href) -->
+    <link id="panoptesThemeCss" rel="stylesheet" href="~/_content/Panoptes.AspNetCore/panoptes/panoptes.css"
+          data-tailwind-href="@Url.Content("~/_content/Panoptes.AspNetCore/panoptes/panoptes.css")"
+          data-bootstrap-href="@Url.Content("~/_content/Panoptes.AspNetCore/panoptes/panoptes-bootstrap.css")" />
     <link rel="stylesheet" href="~/_content/Panoptes.AspNetCore/panoptes/panoptes-scheduler.css" />
+    <script>
+        // Apply saved UI theme before first paint. Modes: "tailwind" (default) | "bootstrap".
+        (function () {
+            try {
+                if (localStorage.getItem("panoptes-theme") === "bootstrap") {
+                    var bs = document.getElementById("bootstrapCss");
+                    var th = document.getElementById("panoptesThemeCss");
+                    if (bs) bs.removeAttribute("disabled");
+                    if (th && th.getAttribute("data-bootstrap-href")) th.href = th.getAttribute("data-bootstrap-href");
+                }
+            } catch (e) { /* private mode: stay on Tailwind theme */ }
+        })();
+    </script>
     <link rel="stylesheet" href="~/panoptes/leaflet/leaflet.css" asp-append-version="true" />
     <style>
         pre code {
@@ -193,6 +211,14 @@
                 <span class="w-px h-5 bg-slate-200 mx-1"></span>
                 <span class="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md border border-slate-200 hidden lg:inline-flex">
                     @DemoTranslations.T("TopNav.ZeroDep", isEn)
+                </span>
+
+                <!-- UI Theme Switcher: Tailwind | Bootstrap (choice persists in localStorage) -->
+                <span class="hidden lg:inline-flex items-center rounded-md border border-slate-200 overflow-hidden text-xs font-semibold" role="group" aria-label="UI theme">
+                    <button type="button" id="themeBtnTailwind" onclick="setPanoptesTheme('tailwind')"
+                            class="px-2.5 py-1 transition">Tailwind</button>
+                    <button type="button" id="themeBtnBootstrap" onclick="setPanoptesTheme('bootstrap')"
+                            class="px-2.5 py-1 transition">Bootstrap</button>
                 </span>
             </div>
         </div>
@@ -354,7 +380,29 @@
     <script src="~/panoptes/leaflet/leaflet.js" asp-append-version="true"></script>
     <script src="~/panoptes/panoptes-map.js" asp-append-version="true"></script>
     <script>
+        // UI theme switcher: swaps Bootstrap 5 + panoptes-bootstrap.css in/out, choice persists.
+        function setPanoptesTheme(mode) {
+            var bs = document.getElementById("bootstrapCss");
+            var th = document.getElementById("panoptesThemeCss");
+            var isBs = mode === "bootstrap";
+            if (bs) { if (isBs) bs.removeAttribute("disabled"); else bs.setAttribute("disabled", ""); }
+            if (th) th.href = isBs ? th.getAttribute("data-bootstrap-href") : th.getAttribute("data-tailwind-href");
+            try { localStorage.setItem("panoptes-theme", isBs ? "bootstrap" : "tailwind"); } catch (e) { /* ignore */ }
+            paintThemeButtons(isBs ? "bootstrap" : "tailwind");
+        }
+        function paintThemeButtons(mode) {
+            var tw = document.getElementById("themeBtnTailwind");
+            var bts = document.getElementById("themeBtnBootstrap");
+            var on = ["bg-slate-900", "text-white"], off = ["bg-white", "text-slate-600"];
+            [[tw, mode === "tailwind"], [bts, mode === "bootstrap"]].forEach(function (pair) {
+                if (!pair[0]) return;
+                pair[0].classList.remove.apply(pair[0].classList, pair[1] ? off : on);
+                pair[0].classList.add.apply(pair[0].classList, pair[1] ? on : off);
+            });
+        }
         document.addEventListener('DOMContentLoaded', () => {
+            // Tema butonlarının ilk boyası (kayıtlı seçime göre)
+            try { paintThemeButtons(localStorage.getItem("panoptes-theme") === "bootstrap" ? "bootstrap" : "tailwind"); } catch (e) { paintThemeButtons("tailwind"); }
             // Aktif menü öğesini görünür alana kaydır
             const activeLink = document.querySelector('.sidebar-link.active');
             if (activeLink) {

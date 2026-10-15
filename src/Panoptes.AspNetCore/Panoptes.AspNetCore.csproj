@@ -10,8 +10,8 @@
     <Authors>Fatih Ceritli, Panoptes UI</Authors>
     <Company>Panoptes UI</Company>
     <Product>Panoptes ASP.NET Core UI Components</Product>
-    <Description>Enterprise UI Components &amp; Razor TagHelpers (&lt;panoptes-grid&gt;, Scheduler, TreeList, Form components) for ASP.NET Core MVC &amp; Razor Pages. Zero external dependencies, Tailwind CSS compatible.</Description>
-    <PackageTags>panoptes;aspnetcore;taghelper;razor;grid;datagrid;components;ui;tailwind</PackageTags>
+    <Description>Enterprise UI Components &amp; Razor TagHelpers (&lt;panoptes-grid&gt;, Scheduler, TreeList, Form components) for ASP.NET Core MVC &amp; Razor Pages. Zero external dependencies, Tailwind CSS and Bootstrap 5 themes included.</Description>
+    <PackageTags>panoptes;aspnetcore;taghelper;razor;grid;datagrid;components;ui;tailwind;bootstrap</PackageTags>
     <PackageProjectUrl>https://panoptesui.com</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ceritli/panoptesui-aspnet</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
