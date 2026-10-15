@@ -1,7 +1,8 @@
 @model List<Panoptes.AspNetCore.Models.FilterFieldDefinition>
-
+@using Panoptes.AspNetCore.Demo.Services
 @{
-    ViewData["Title"] = "Filter (Görsel Sorgu & Filtre Motoru) - Panoptes Kurumsal UI";
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "Filter (Visual Query Builder) - Panoptes Enterprise UI" : "Filter (Görsel Sorgu & Filtre Motoru) - Panoptes Kurumsal UI";
 }
 
 <div class="space-y-8 pb-16">
@@ -30,7 +31,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
-                İç içe 'VE' / 'VEYA' mantıksal grupları, dinamik alan seçimi, zengin karşılaştırma operatörleri ve SQL / JSON ifade çıktısı sunan gelişmiş sorgu kurucu.
+                @(isEn ? "Build AND/OR report filters without code; analysts serve themselves." : "Rapor filtresini kod yazmadan VE/VEYA gruplarıyla kur; analist kendi işini görür.")
             </p>
         </div>
     </div>
