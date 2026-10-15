@@ -1,7 +1,8 @@
 @model Panoptes.AspNetCore.Demo.Controllers.TreeListDemoViewModel
-
+@using Panoptes.AspNetCore.Demo.Services
 @{
-    ViewData["Title"] = "TreeList (Ağaç Tablosu / Hiyerarşik Grid) - Panoptes Kurumsal UI";
+    bool isEn = DemoTranslations.IsEnglish(Context);
+    ViewData["Title"] = isEn ? "TreeList (Tree Table / Hierarchical Grid) - Panoptes Enterprise UI" : "TreeList (Ağaç Tablosu / Hiyerarşik Grid) - Panoptes Kurumsal UI";
 }
 
 <div class="space-y-8 pb-16">
@@ -30,7 +31,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
-                Sütunlu ızgara yapısını iç içe ana-çocuk ağaç hiyerarşisiyle birleştiren, satır içi düzenleme, sıralama ve Excel aktarımı sunan kurumsal tablo.
+                @(isEn ? "A column grid fused with a parent-child tree: org charts, account plans, and category trees with in-line editing, sorting, and Excel export in one table." : "Sütun ızgarası ile ana-çocuk ağacının birleşimi: organizasyon şeması, hesap planı ve kategori ağaçları; satır içi düzenleme, sıralama ve Excel aktarımıyla tek tabloda.")
             </p>
         </div>
     </div>

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Panoptes.AspNetCore.Demo.Services;
 using Panoptes.AspNetCore.Models;
 
 namespace Panoptes.AspNetCore.Demo.Controllers
@@ -183,15 +184,19 @@ namespace Panoptes.AspNetCore.Demo.Controllers
         //  Panoptes TreeList demo sayfaları
         // ============================================================
 
-        private IActionResult Show(string title, string description, string[] highlights, string razor, string script,
+        private IActionResult Show(string title, string description, string[] highlights,
+            string enTitle, string enDescription, string[] enHighlights,
+            string razor, string script,
             List<TreeListColumn>? columns = null, List<TreeListItem>? items = null)
         {
-            ViewData["Title"] = title + " - TreeList";
+            var isEn = DemoTranslations.IsEnglish(HttpContext);
+            var viewTitle = isEn ? enTitle : title;
+            ViewData["Title"] = viewTitle + " - TreeList";
             return View(new TreeListPageModel
             {
-                Title = title,
-                Description = description,
-                Highlights = highlights,
+                Title = viewTitle,
+                Description = isEn ? enDescription : description,
+                Highlights = isEn ? enHighlights : highlights,
                 RazorCode = razor,
                 ScriptCode = script,
                 Columns = columns ?? TreeListDemoData.EmployeeColumns(),
@@ -201,8 +206,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult Aggregates() => Show(
             "Toplamlar (Aggregates)",
-            "Sütunlara sum / avg / count / min / max tanımlayın. Üst düğümler alt kayıtlarının toplamını gösterir, alt bilgi satırı genel toplamı verir. Değerleri hücre içi düzenleyince toplamlar canlı güncellenir.",
+            "Bütçe ve prim gibi özetleri sütuna tanımla: üst düğümler alt kayıtları toplar, en alt satır genel toplamı verir. Hücre düzenlenince toplamlar canlı güncellenir.",
             new[] { "aggregates=\"both\"", "Üst düğüm toplamı (Σ)", "Genel toplam satırı", "sum / avg" },
+            "Totals (Aggregates)",
+            "Define sum, average, count, min, and max on columns: parents roll up children, a footer row shows grand totals. Totals refresh live as cells edit.",
+            new[] { "aggregates=\"both\"", "Parent rollups (Σ)", "Grand total row", "sum / avg" },
             """
             <panoptes-treelist id="budgetTree" title="Departman Bütçeleri"
                 columns="@Model.Columns" items="@Model.Items"
@@ -216,7 +224,10 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult Api() => Show(
             "API (Programatik Kontrol)",
-            "Panoptes.TreeList.getInstance(id) ile tüm işlemler JavaScript'ten yönetilebilir: genişlet/daralt, seç, sırala, filtrele, kayıt ekle/güncelle/sil, dışa aktar.",
+            "Ağacı JavaScript'ten sür: genişlet, seç, sırala, filtrele, ekle ve dışa aktar. Özel araç çubukları ve otomasyon buradan bağlanır.",
+            new[] { "expand / collapse", "select / getSelected", "sortBy / filter", "addItem / updateItem / removeItem", "exportExcel" },
+            "API (Programmatic Control)",
+            "Drive the tree from JavaScript: expand, select, sort, filter, add, and export. Custom toolbars and automation plug in here.",
             new[] { "expand / collapse", "select / getSelected", "sortBy / filter", "addItem / updateItem / removeItem", "exportExcel" },
             """
             <panoptes-treelist id="apiTree" columns="@Model.Columns" items="@Model.Items"
@@ -233,8 +244,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult CheckboxSelection() => Show(
             "Onay Kutulu Seçim",
-            "Her satırda onay kutusu bulunur. Üst düğümü işaretlemek tüm alt kayıtları seçer; kısmen seçili üst düğümler 'belirsiz' durumda gösterilir. Başlıktaki kutu tümünü seçer.",
+            "Her satırda onay kutusu; üst düğüm tüm alt kayıtları seçer, kısmi seçim belirsiz gösterilir. Toplu işlem öncesi güvenli seçim.",
             new[] { "selectable=\"checkbox\"", "Alt kayıtlara yayılan seçim", "Belirsiz (indeterminate) durum", "Tümünü seç" },
+            "Checkbox Selection",
+            "A checkbox per row; parents select all children, partial selection shows indeterminate. Safe selection before bulk actions.",
+            new[] { "selectable=\"checkbox\"", "Cascading selection", "Indeterminate state", "Select all" },
             """
             <panoptes-treelist id="chkTree" columns="@Model.Columns" items="@Model.Items"
                 selectable="checkbox" on-change="onChk" />
@@ -246,8 +260,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult ClientSidePaging() => Show(
             "İstemci Tarafı Sayfalama",
-            "Kök düğümler sayfalanır; açılan alt kayıtlar bağlı oldukları kökle birlikte kalır. Sayfa boyutu seçilebilir.",
+            "Kök düğümler sayfalanır, açık alt kayıtlar kökle birlikte kalır. On binlerce satırlık ağaçlarda hızlı açılış.",
             new[] { "pageable=\"true\"", "page-size / page-sizes", "Kök düğüm bazlı sayfalama" },
+            "Client-Side Paging",
+            "Root nodes page while open children stay with their root. Fast startup for ten-thousand-row staff and product trees.",
+            new[] { "pageable=\"true\"", "page-size / page-sizes", "Root-based paging" },
             """
             <panoptes-treelist id="pagingTree" columns="@Model.Columns" items="@Model.Items"
                 pageable="true" page-size="5" page-sizes="5,10,20" sortable="true" />
@@ -260,8 +277,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult ColumnMenu() => Show(
             "Sütun Menüsü",
-            "Her başlıkta bir menü: artan/azalan sıralama, o sütuna filtre, sütunları gösterme/gizleme ve sütunu kilitleme.",
+            "Her başlıkta menü: sıralama, filtre, göster/gizle ve kilitle. Kullanıcı tabloyu kendine göre düzenler.",
             new[] { "column-menu=\"true\"", "Sıralama", "Filtre", "Sütun göster/gizle", "Sütunu kilitle" },
+            "Column Menu",
+            "A menu per header: sort, filter, show/hide, and lock. Users shape the table themselves; fewer support tickets.",
+            new[] { "column-menu=\"true\"", "Sorting", "Filtering", "Show/hide columns", "Lock column" },
             """
             <panoptes-treelist id="menuTree" columns="@Model.Columns" items="@Model.Items"
                 column-menu="true" sortable="true" filterable="true" lockable="true" />
@@ -271,8 +291,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult ColumnReordering() => Show(
             "Sütun Sıralama (Sürükle)",
-            "Sütun başlıklarını sürükleyip bırakarak yerlerini değiştirin.",
+            "Sütun başlıklarını sürükleyip bırakarak yeniden sırala; muhasebe ve depo farklı dizilimle çalışır.",
             new[] { "reorderable=\"true\"", "Başlığı sürükle-bırak", "columnReorder olayı" },
+            "Column Reordering",
+            "Drag headers to reorder; accounting and warehouse work with different column orders.",
+            new[] { "reorderable=\"true\"", "Drag-and-drop headers", "columnReorder event" },
             """
             <panoptes-treelist id="reorderTree" columns="@Model.Columns" items="@Model.Items"
                 reorderable="true" on-event="ptlOnEvent" />
@@ -281,8 +304,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult ColumnResizing() => Show(
             "Sütun Boyutlandırma",
-            "Başlıkların sağ kenarını sürükleyerek sütun genişliğini değiştirin.",
+            "Başlık kenarını sürükleyerek genişliği ayarla; uzun metin sütunları tek hamlede sığar.",
             new[] { "resizable=\"true\"", "Sürükleyerek boyutlandır", "columnResize olayı" },
+            "Column Resizing",
+            "Drag the edge for width; long text columns fit in one move.",
+            new[] { "resizable=\"true\"", "Drag to resize", "columnResize event" },
             """
             <panoptes-treelist id="resizeTree" columns="@Model.Columns" items="@Model.Items"
                 resizable="true" on-event="ptlOnEvent" />
@@ -291,8 +317,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult DragDrop() => Show(
             "Sürükle & Bırak (Satır)",
-            "Satırları sürükleyerek ağaç yapısını değiştirin. Bir satırın üstüne/altına bırakınca kardeş olur, ortasına bırakınca alt kaydı olur. Bir düğüm kendi torununa taşınamaz.",
+            "Satırları sürükleyerek ağacı yeniden kur: üste ve alta bırakma kardeş, ortaya bırakma alt kayıt yapar. Organizasyon şeması fareyle düzenlenir.",
             new[] { "draggable=\"true\"", "Önce / içine / sonra bırakma", "drop olayı" },
+            "Row Drag & Drop",
+            "Restructure the tree by dragging rows: drop above/below for siblings, onto for children. Rearrange org charts with the mouse.",
+            new[] { "draggable=\"true\"", "Drop before / into / after", "drop event" },
             """
             <panoptes-treelist id="dragTree" columns="@Model.Columns" items="@Model.Items"
                 draggable="true" on-event="ptlOnEvent" />
@@ -306,8 +335,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult Editing() => Show(
             "Satır İçi Düzenleme",
-            "Satırdaki kalem düğmesiyle tüm satır düzenlenebilir hale gelir; kaydet/iptal düğmeleri görünür. Alt kayıt ekleme ve silme (onaylı) desteklenir.",
+            "Kalem düğmesi satırı forma çevirir; kaydet ve vazgeç ile güvenli düzenleme, onaylı silme ve alt kayıt ekleme desteklenir.",
             new[] { "editable=\"inline\"", "Alt kayıt ekle", "Silme onayı", "save / add / remove olayları" },
+            "In-Line Editing",
+            "The pencil button turns the row into a form with save and cancel. Staff card fixes without leaving the page.",
+            new[] { "editable=\"inline\"", "Add child record", "Delete confirmation", "save / add / remove events" },
             """
             <panoptes-treelist id="inlineTree" columns="@Model.Columns" items="@Model.Items"
                 editable="inline" on-event="ptlOnEvent" />
@@ -319,8 +351,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult EditingInCell() => Show(
             "Hücre İçi Düzenleme",
-            "Bir hücreye tıklayınca yalnızca o hücre düzenlenir; Enter / odak kaybı kaydeder, Esc iptal eder.",
+            "Hücreye tıkla, yaz, Enter ile kaydet; maaş ve stok gibi tek alan düzeltmeleri ışık hızında.",
             new[] { "editable=\"incell\"", "Tek hücre düzenleme", "Enter / Esc", "save olayı (oldValue → value)" },
+            "In-Cell Editing",
+            "Click, type, Enter: single-field fixes like salary and stock at full speed.",
+            new[] { "editable=\"incell\"", "Single-cell edit", "Enter / Esc", "save event (oldValue → value)" },
             """
             <panoptes-treelist id="incellTree" columns="@Model.Columns" items="@Model.Items"
                 editable="incell" on-event="ptlOnEvent" />
@@ -329,8 +364,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult EditingPopup() => Show(
             "Popup Düzenleme",
-            "Düzenleme düğmesi modal bir form açar. Sütun tipine göre uygun giriş alanı (metin, sayı, tarih, liste, onay kutusu) oluşturulur; zorunlu alanlar doğrulanır.",
+            "Düzenleme düğmesi modal form açar; sütun tipine uygun alan ve zorunlu kontrol ile hatasız kayıt.",
             new[] { "editable=\"popup\"", "Tipine göre form alanları", "Zorunlu alan doğrulaması", "Esc ile kapatma" },
+            "PopUp Editing",
+            "The edit button opens a modal form with type-matched fields and required validation.",
+            new[] { "editable=\"popup\"", "Type-matched fields", "Required validation", "Esc to close" },
             """
             <panoptes-treelist id="popupTree" columns="@Model.Columns" items="@Model.Items"
                 editable="popup" on-event="ptlOnEvent" />
@@ -339,8 +377,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult Events() => Show(
             "Olaylar (Events)",
-            "Seçim, genişletme, sıralama, filtre, sayfa, düzenleme, sürükleme, sütun ve dışa aktarma dahil tüm olaylar tek bir on-event geri çağırmasıyla veya instance.on(...) ile yakalanabilir.",
+            "Seçim, genişletme ve düzenleme dahil 25+ olay tek geri çağırmada yakalanır; denetim kaydı ve canlı sayaçlar buradan beslenir.",
             new[] { "on-event", "instance.on(name, fn)", "CustomEvent 'ptl:<ad>'", "25+ olay" },
+            "Events",
+            "25+ events including select, expand, and edit in one callback; feeds audit logs and live counters.",
+            new[] { "on-event", "instance.on(name, fn)", "CustomEvent 'ptl:<name>'", "25+ events" },
             """
             <panoptes-treelist id="eventsTree" columns="@Model.Columns" items="@Model.Items"
                 selectable="multiple" sortable="true" filterable="true" pageable="true" page-size="3"
@@ -353,7 +394,10 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult ExcelExport() => Show(
             "Excel Dışa Aktarım",
-            "Görünen (filtrelenmiş / sıralanmış) satırlar hiyerarşi girintisiyle Excel dosyası olarak indirilir.",
+            "Görünen satırlar hiyerarşi girintisiyle .xlsx iner; aylık personel ve bütçe raporu tek tıkla.",
+            new[] { "tools=\"excel\"", "export-name", "exportExcel() API" },
+            "Excel Export",
+            "Visible rows download as .xlsx with hierarchy indentation; monthly staff and budget reports in one click.",
             new[] { "tools=\"excel\"", "export-name", "exportExcel() API" },
             """
             <panoptes-treelist id="excelTree" columns="@Model.Columns" items="@Model.Items"
@@ -363,8 +407,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult FilterRow() => Show(
             "Filtre Satırı",
-            "Başlığın altında her sütun için filtre kutusu bulunur. Metinde 'içerir', sayıda >, <, >=, <=, = operatörleri; liste ve onay kutusu sütunlarında seçim kullanılır. Eşleşen düğümlerin üst düğümleri açık kalır.",
+            "Başlık altında sütun bazında kutu: metinde içerir, sayıda aralık, listede seçim. Eşleşen dallar açık kalır.",
             new[] { "filterable=\"true\"", "Tip duyarlı filtre", "Sayısal operatörler (>= 100000)", "filter olayı" },
+            "Filter Row",
+            "A filter box per header: contains for text, ranges for numbers, picks for lists. Matching branches stay open.",
+            new[] { "filterable=\"true\"", "Type-sensitive filters", "Numeric operators (>= 100000)", "filter event" },
             """
             <panoptes-treelist id="filterTree" columns="@Model.Columns" items="@Model.Items"
                 filterable="true" sortable="true" />
@@ -381,8 +428,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
             cols[1].Locked = true;
             return Show(
                 "Dondurulmuş Sütunlar",
-                "Locked = true olan sütunlar yatay kaydırmada sabit kalır. Kilitli sütunlar en başta yer almalıdır; sütun menüsünden de kilitlenebilir.",
+                "Ad Soyad ve Unvan gibi anahtar sütunlar yatay kaydırmada sabit kalır; geniş tabloda satır takibi kaybolmaz.",
                 new[] { "Locked = true", "Yatay kaydırmada sabit", "Sütun menüsünden kilitle" },
+                "Frozen Columns",
+                "Key columns like name and title stay fixed on horizontal scroll; you always know which row you are on.",
+                new[] { "Locked = true", "Pinned on scroll", "Lock from column menu" },
                 """
                 <panoptes-treelist id="frozenTree" columns="@Model.Columns" items="@Model.Items"
                     column-menu="true" lockable="true" resizable="true" />
@@ -396,8 +446,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult KeyboardNavigation() => Show(
             "Klavye Navigasyonu",
-            "Tabloya tıklayın veya Tab ile odaklanın; ardından klavye ile gezin: ↑ ↓ satırlar, → aç / alt kayıt, ← kapat / üst kayıt, Boşluk seç, Enter aç-kapat, Home/End, F2 düzenle, Del sil.",
+            "Fare yok: oklarla gezin, Boşlukla seç, F2 ile düzenle. Veri giriş operatörleri klavyeden kalkmaz.",
             new[] { "keyboard-hint=\"true\"", "Ok tuşları", "Boşluk / Enter", "F2 / Del" },
+            "Keyboard Navigation",
+            "No mouse needed: arrows navigate, Space selects, F2 edits. Data entry operators never leave the keyboard.",
+            new[] { "keyboard-hint=\"true\"", "Arrow keys", "Space / Enter", "F2 / Del" },
             """
             <panoptes-treelist id="kbTree" columns="@Model.Columns" items="@Model.Items"
                 selectable="multiple" editable="inline" keyboard="true" keyboard-hint="true" />
@@ -406,8 +459,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult MultiColumnHeaders() => Show(
             "Çok Katmanlı Başlıklar",
-            "Ardışık sütunlara aynı Group değerini verin; ortak bir üst başlık altında birleşirler.",
+            "Ardışık sütunları ortak üst başlıkta birleştir: Kişi, Organizasyon, Ücret grupları; bordro tek bakışta okunur.",
             new[] { "TreeListColumn.Group", "İki satırlı başlık", "Sıralama / filtre ile uyumlu" },
+            "Multi-Column Headers",
+            "Merge adjacent columns under shared headers like Person, Organization, and Pay; payroll tables read at a glance.",
+            new[] { "TreeListColumn.Group", "Two-row headers", "Works with sort / filter" },
             """
             <panoptes-treelist id="groupTree" columns="@Model.Columns" items="@Model.Items" sortable="true" />
             """,
@@ -419,8 +475,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult OData() => Show(
             "OData Bağlama",
-            "Veriler sunucudan OData sorgu parametreleriyle ($filter, $orderby, $top, $skip, $count) istenir. Kök düğümler sayfalanır, alt kayıtlar bir düğüm açılınca tembel (lazy) yüklenir. Üstteki 'Son istek' kutusu gönderilen isteği gösterir.",
+            "Veri OData parametreleriyle istenir; kökler sayfalanır, alt kayıtlar açılınca yüklenir. Mevcut OData servislerine doğrudan bağlanır.",
             new[] { "odata-url", "$filter / $orderby", "$top / $skip / $count", "Tembel alt kayıt yükleme" },
+            "OData Binding",
+            "Data arrives via OData parameters; roots page, children lazy-load on expand. Connects straight to existing OData services.",
+            new[] { "odata-url", "$filter / $orderby", "$top / $skip / $count", "Lazy child loading" },
             """
             <panoptes-treelist id="odataTree" columns="@Model.Columns"
                 odata-url="/TreeList/ODataProducts" pageable="true" page-size="4"
@@ -434,8 +493,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult PdfExport() => Show(
             "PDF Dışa Aktarım",
-            "Görünen satırlar yazdırma görünümünde açılır; tarayıcının 'PDF olarak kaydet' seçeneğiyle PDF üretilir.",
+            "Görünen satırlar yazdırma görünümünde açılır, tarayıcıdan PDF alınır; resmi evrak eki hazır.",
             new[] { "tools=\"pdf\"", "exportPdf() API", "A4 yatay yazdırma düzeni" },
+            "PDF Export",
+            "Visible rows open in print view for browser PDF export; official attachments like signature circulars ready.",
+            new[] { "tools=\"pdf\"", "exportPdf() API", "A4 landscape print layout" },
             """
             <panoptes-treelist id="pdfTree" columns="@Model.Columns" items="@Model.Items"
                 tools="pdf,expandAll,collapseAll" export-name="calisanlar" sortable="true" />
@@ -444,7 +506,10 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult PersistState() => Show(
             "Durumu Kaydet (Persist State)",
-            "Sıralama, filtre, sütun sırası/genişliği/görünürlüğü, açık düğümler ve sayfa tarayıcıda (localStorage) saklanır. Durumu değiştirin, 'Durumu Kaydet'e basın, sayfayı yenileyip 'Durumu Yükle' deyin.",
+            "Sıralama, filtre ve açık düğümler tarayıcıda saklanır; kullanıcı ertesi gün kaldığı ekrana döner.",
+            new[] { "persist-key", "saveState / loadState / resetState", "persist-auto", "localStorage" },
+            "Persist State",
+            "Sorting, filters, and open nodes persist in the browser; users return to their screen the next day.",
             new[] { "persist-key", "saveState / loadState / resetState", "persist-auto", "localStorage" },
             """
             <panoptes-treelist id="stateTree" columns="@Model.Columns" items="@Model.Items"
@@ -458,8 +523,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult RemoteDataBinding() => Show(
             "Uzak Veri Bağlama",
-            "Kök kayıtlar sunucudan yüklenir (sayfalı); bir düğüm ilk kez açıldığında alt kayıtlar tembel olarak istenir. Sıralama ve filtre sunucuda uygulanır.",
+            "Kökler sunucudan sayfalı gelir, alt kayıtlar açılınca istenir; dev ürün ağaçları tarayıcıyı yormaz.",
             new[] { "remote-url", "Tembel yükleme", "Sunucu tarafı sıralama / filtre", "Sunucu tarafı sayfalama" },
+            "Remote Data Binding",
+            "Paged roots from the server, children on demand; million-row product trees never strain the browser.",
+            new[] { "remote-url", "Lazy loading", "Server sorting / filtering", "Server paging" },
             """
             <panoptes-treelist id="remoteTree" columns="@Model.Columns"
                 remote-url="/TreeList/RemoteProducts" pageable="true" page-size="4"
@@ -473,8 +541,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult RowTemplate() => Show(
             "Satır Şablonu (Row Template)",
-            "Satırların HTML'ini tamamen siz belirleyin: window üzerindeki bir fonksiyon her satır için <td> içeriğini üretir. Girinti ve aç/kapat oku d.toggle / d.indent ile eklenir.",
+            "Satır HTML'ini tamamen siz yazın: rozet, ilerleme çubuğu ve mini grafik hücre içinde.",
             new[] { "row-template", "Özel HTML hücreler", "d.toggle / d.indent", "d.fmt(alan, değer)" },
+            "Row Template",
+            "Write row HTML yourself: badges, progress bars, and mini charts inside cells. Custom presentation for dashboards.",
+            new[] { "row-template", "Custom HTML cells", "d.toggle / d.indent", "d.fmt(field, value)" },
             """
             <panoptes-treelist id="tplTree" columns="@Model.Columns" items="@Model.Items" row-template="empRow" />
             """,
@@ -495,8 +566,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult SearchPanel() => Show(
             "Arama Paneli",
-            "Araç çubuğundaki arama kutusu ağaçta canlı arama yapar, eşleşmeleri vurgular ve üst düğümleri otomatik açar. Hangi alanlarda aranacağı search-fields ile belirlenir ve çalışma zamanında değiştirilebilir.",
+            "Araç çubuğundaki kutu ağaçta canlı arar, eşleşmeyi vurgular, üst düğümleri açar. Binlerce kayıtta isimle bulma.",
             new[] { "show-search", "search-fields", "Vurgulama", "setSearchFields() API" },
+            "Search Panel",
+            "The toolbar box live-searches the tree, highlights matches, and opens parents. Find a name among thousands of staff.",
+            new[] { "show-search", "search-fields", "Highlighting", "setSearchFields() API" },
             """
             <panoptes-treelist id="searchTree" columns="@Model.Columns" items="@Model.Items"
                 show-search="true" search-fields="Name,Role" />
@@ -505,8 +579,11 @@ namespace Panoptes.AspNetCore.Demo.Controllers
 
         public IActionResult ToolbarTemplate() => Show(
             "Araç Çubuğu Şablonu",
-            "Araç çubuğuna <template> ile özel HTML ekleyin. {{count}}, {{selected}} ve {{title}} belirteçleri canlı güncellenir; düğmeler instance API'sini çağırabilir.",
+            "Araç çubuğuna özel HTML ve düğmeler; seçili adet ve başlık canlı güncellenir, toplu işlemler buradan tetiklenir.",
             new[] { "toolbar-template", "{{count}} / {{selected}}", "Özel düğmeler", "Instance API" },
+            "Toolbar Template",
+            "Custom HTML and buttons in the toolbar; live count and title, bulk actions triggered here.",
+            new[] { "toolbar-template", "{{count}} / {{selected}}", "Custom buttons", "Instance API" },
             """
             <template id="myToolbar">
               <span>{{count}} kayıt, {{selected}} seçili</span>
