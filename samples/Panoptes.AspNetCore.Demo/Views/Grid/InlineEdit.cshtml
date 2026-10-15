@@ -29,8 +29,8 @@
             </div>
             <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
                 @(isEn 
-                    ? "Clicking the 'Edit' action button puts the entire selected row into interactive in-line edit mode using native Panoptes input controls with Save and Cancel."
-                    : "Satırdaki 'Düzenle' butonuna tıklandığında ilgili satırı doğrudan tablo hücreleri içerisinde Panoptes form kontrolleriyle düzenleme moduna geçirir.")
+                    ? "The row Edit button turns the whole row into a form with validated Panoptes inputs. Fix many fields of one record fast."
+                    : "Satırdaki Düzenle düğmesi tüm satırı forma çevirir; Panoptes giriş kontrolleri doğrulamayla birlikte gelir. Tek kaydın çok alanı hızlıca düzeltilir.")
             </p>
         </div>
         <div class="flex items-center gap-2">
@@ -80,8 +80,8 @@
             </div>
             <div class="text-xs text-slate-500 leading-relaxed">
                 @(isEn 
-                    ? "Changes are asynchronously committed to the backend REST API or rolled back seamlessly upon clicking Cancel."
-                    : "Değişiklik anında backend API'ye asenkron iletilir veya İptal butonuyla geri alınır.")
+                    ? "Save writes to the API instantly; Cancel restores the row."
+                    : "Kaydet API'ye anında yazılır, Vazgeç tüm satırı ilk haline döndürür.")
             </div>
         </div>
         <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
@@ -91,8 +91,8 @@
             </div>
             <div class="text-xs text-slate-500 leading-relaxed">
                 @(isEn 
-                    ? "The toolbar 'Add New' button prepends a blank editable row ready for instant input."
-                    : "Araç çubuğundaki 'Yeni Ekle' butonu en üste yeni boş bir satır açar.")
+                    ? "Add New opens a blank row on top; rapid data entry never breaks flow."
+                    : "Yeni Ekle en üste boş satır açar; art arda kayıt girişinde akış bölünmez.")
             </div>
         </div>
     </div>

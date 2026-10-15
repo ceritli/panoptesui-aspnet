@@ -29,8 +29,8 @@
             </div>
             <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
                 @(isEn 
-                    ? "Spreadsheet-like user experience: Click any cell to immediately edit its value. Modified cells are visually flagged with change indicators, and batch changes can be saved all at once."
-                    : "Excel benzeri deneyim: Doğrudan herhangi bir hücreye çift tıklayarak değeri değiştirin, değişen hücreler renkli olarak işaretlenir ve 'Tüm Değişiklikleri Kaydet' butonuyla toplu olarak sunucuya gönderilir.")
+                    ? "Excel habit: double-click, type, move on. Changed cells are flagged and all rows save with one button. End-of-day price updates take minutes."
+                    : "Excel alışkanlığıyla hücreye çift tıkla, yaz, geç: değişen hücreler işaretlenir, tüm satırlar tek butonla kaydedilir. Gün sonu fiyat güncellemeleri dakikalara iner.")
             </p>
         </div>
         <div class="flex items-center gap-2">
@@ -80,8 +80,8 @@
             </div>
             <div class="text-xs text-slate-500 leading-relaxed">
                 @(isEn 
-                    ? "Edited cells are decorated with red corner flags so users immediately see uncommitted changes."
-                    : "Değiştirilen hücrelerin köşesinde kırmızı üçgen işaret belirir.")
+                    ? "Uncommitted cells show a red corner mark; nothing slips through."
+                    : "Kaydedilmemiş hücre köşesindeki kırmızı işaretle belli olur; gözden kaçmaz.")
             </div>
         </div>
         <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
@@ -91,8 +91,8 @@
             </div>
             <div class="text-xs text-slate-500 leading-relaxed">
                 @(isEn 
-                    ? "Commit multiple edited rows and cells in a single atomic payload to minimize server requests."
-                    : "Tüm satırları tek tek bekletmeden tek bir API çağrısıyla kaydedin.")
+                    ? "All changes commit in one atomic API call; network traffic stays minimal."
+                    : "Tüm değişiklikler tek API çağrısıyla atomik kaydedilir; ağ trafiği minimumda kalır.")
             </div>
         </div>
     </div>

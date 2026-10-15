@@ -29,8 +29,8 @@
             </div>
             <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
                 @(isEn 
-                    ? "Ability to open nested detail sub-grids under main table rows. For instance, expanding a product displays its independent stock movement logs."
-                    : "Ana tablo satırlarının altında alt detay tabloları (Nested Sub-Grids) açma yeteneği. Örneğin bir ürün satırının altında o ürüne ait stok hareketleri tablosu bağımsız olarak çalışır.")
+                    ? "The '+' expander opens an independent detail grid under the row: order lines and product stock movements without leaving the screen."
+                    : "Satır altındaki '+' ile bağımsız detay tablosu açılır: siparişin kalemleri ve ürünün stok hareketleri ana ekrandan çıkmadan incelenir.")
             </p>
         </div>
         <div class="flex items-center gap-2">
@@ -99,8 +99,8 @@
             </div>
             <div class="text-xs text-slate-500 leading-relaxed">
                 @(isEn 
-                    ? "Sub-grid rows are fetched from the API only on demand when the user clicks the '+' expander."
-                    : "Alt tablo verileri yalnızca kullanıcı '+' butonuna bastığında API'den çekilir.")
+                    ? "Detail data loads only on expand; no wasted load at startup."
+                    : "Detay verisi yalnızca genişletilince çekilir; açılışta gereksiz yük binmez.")
             </div>
         </div>
         <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
@@ -110,8 +110,8 @@
             </div>
             <div class="text-xs text-slate-500 leading-relaxed">
                 @(isEn 
-                    ? "Each nested sub-grid manages its own page size, paging buttons, and column sorting."
-                    : "Alt grid kendi bağımsız sayfalamasına ve kolon ayarlarına sahiptir.")
+                    ? "Each detail grid manages its own paging and sorting, independent of the master."
+                    : "Her alt tablo kendi sayfalama ve sıralamasını yönetir, ana tablodan bağımsızdır.")
             </div>
         </div>
     </div>

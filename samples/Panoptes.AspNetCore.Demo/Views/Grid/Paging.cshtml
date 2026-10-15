@@ -29,8 +29,8 @@
             </div>
             <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
                 @(isEn 
-                    ? "High-performance pagination engine that divides large datasets into discrete pages, featuring custom page sizes (5, 10, 25, 50, 100), direct page jump, and total record statistics."
-                    : "Büyük veri setlerini yüksek performansla sayfalara bölen, özel sayfa boyutları (5, 10, 25, 50, 100), doğrudan sayfa numarasına atlama ve toplam kayıt istatistiği sunan sayfalama motoru.")
+                    ? "Splits ten-thousand-row lists into server-side pages; account statements and stock lists open in seconds. Users pick page size, record totals stay visible."
+                    : "On binlerce satırlık listeleri sunucu tarafında sayfalara böler; cari ekstre ve stok listeleri saniyeler içinde açılır. Sayfa boyutu kullanıcıya bırakılır, toplam kayıt her zaman görünür.")
             </p>
         </div>
         <div class="flex items-center gap-2">
@@ -82,8 +82,8 @@
             </div>
             <div class="text-xs text-slate-500 leading-relaxed">
                 @(isEn 
-                    ? "Only records for the active page are fetched from the server, keeping memory usage minimal."
-                    : "Sadece o sayfaya ait kayıtlar sunucudan çekilir, bellek tüketimi minimumda tutulur.")
+                    ? "Only the visible page is fetched; browser memory and network traffic stay low."
+                    : "Yalnızca görünen sayfanın kayıtları çekilir; tarayıcı belleği ve ağ trafiği düşük kalır.")
             </div>
         </div>
         <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
@@ -93,8 +93,8 @@
             </div>
             <div class="text-xs text-slate-500 leading-relaxed">
                 @(isEn 
-                    ? "Quick navigation controls for first, previous, next, and last page with custom page sizes."
-                    : "İlk sayfa, önceki, sonraki ve son sayfa hızlı erişim kontrolleri ve özel sayfa boyutları.")
+                    ? "First, previous, next, and last shortcuts with 5-100 page sizes on one bar."
+                    : "İlk, önceki, sonraki ve son sayfa kısayolları ile 5-100 arası sayfa boyutu tek çubukta.")
             </div>
         </div>
     </div>
