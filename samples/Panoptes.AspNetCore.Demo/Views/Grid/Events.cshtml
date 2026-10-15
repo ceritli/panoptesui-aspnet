@@ -19,7 +19,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
-                ASP.NET Core Grid Events (<code class="text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded">DataBound</code>, <code class="text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded">Change</code>, <code class="text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded">Page</code>, <code class="text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded">Sort</code>, <code class="text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded">Filter</code>) mimarisiyle; istemci tarafında tetiklenen olayları anlık olarak konsolda takip edin.
+                @(isEn ? "Watch client-side events such as DataBound, Change, Page, Sort, and Filter fire live in the console below. Wire your own logic, from audit logging to cascading updates, to the same hooks." : "DataBound, Change, Page, Sort ve Filter gibi istemci olaylarının aşağıdaki konsolda canlı tetiklendiğini izleyin. Denetim kaydı ve zincirleme güncellemeler gibi kendi mantığınızı aynı kancalara bağlayın.")
             </p>
         </div>
         <div class="flex items-center gap-2">

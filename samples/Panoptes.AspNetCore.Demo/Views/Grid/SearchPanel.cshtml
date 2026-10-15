@@ -19,7 +19,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
-                Gelişmiş ASP.NET Core Grid Search Panel özelliğiyle; kullanıcıların tek bir arama kutusundan ürün adı, kategori, ülke ve diğer metinsel alanlarda anlık ve çoklu sütun filtrelemesi yapmasını sağlar.
+                @(isEn ? "One search box scans product name, category, country, and every text column at once. Warehouse staff find the right row without knowing which column to filter." : "Tek arama kutusu ürün adı, kategori, ülke ve tüm metin sütunlarını aynı anda tarar. Depo personeli hangi sütunu filtreleyeceğini bilmeden doğru kaydı bulur.")
             </p>
         </div>
         <div class="flex items-center gap-2">
@@ -70,12 +70,12 @@
         <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
             <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold mb-3">1</div>
             <h3 class="font-bold text-slate-800 text-sm mb-1">Debounced Canlı Arama</h3>
-            <p class="text-xs text-slate-500 leading-relaxed">Kullanıcı yazarken 300ms gecikme ile sunucuya optimize sorgu gönderilir, gereksiz istek trafiği engellenir.</p>
+            <p class="text-xs text-slate-500 leading-relaxed">@(isEn ? "Typing waits 300ms before sending an optimized server query; no wasted request traffic." : "Yazarken 300ms beklenip optimize sorgu gönderilir; gereksiz istek trafiği engellenir.")</p>
         </div>
         <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
             <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold mb-3">2</div>
             <h3 class="font-bold text-slate-800 text-sm mb-1">Çoklu Sütun OR Mantığı</h3>
-            <p class="text-xs text-slate-500 leading-relaxed">Girilen terim `Name`, `Category`, `Country` gibi tüm metin sütunlarında `contains` filtresi olarak taranır.</p>
+            <p class="text-xs text-slate-500 leading-relaxed">@(isEn ? "The term scans every text column such as Name, Category, and Country as a contains filter." : "Girilen terim Name, Category ve Country gibi tüm metin sütunlarında contains filtresiyle taranır.")</p>
         </div>
         <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
             <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold mb-3">3</div>

@@ -29,8 +29,8 @@
             </div>
             <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
                 @(isEn 
-                    ? "Single row selection or persistent cross-page multi-row selection with checkboxes, Select All toggle, and live selected record counters."
-                    : "Tekli satır seçimi veya sol sütundaki CheckBox'lar aracılığıyla sayfalar arası çoklu seçim desteği. Tümünü seç (Select All) ve seçili satır sayaçları.")
+                    ? "Single selection or cross-page multi-select; the safe first step of bulk approve, bulk mail, and bulk delete. A live counter shows the count."
+                    : "Tekli seçim veya sayfalar arası korunan çoklu seçim; toplu onay, toplu e-posta ve toplu silme gibi işlemlerin güvenli ilk adımı. Sayaç seçili adedi canlı gösterir.")
             </p>
         </div>
         <div class="flex items-center gap-2">
@@ -81,8 +81,8 @@
             </div>
             <div class="text-xs text-slate-500 leading-relaxed">
                 @(isEn 
-                    ? "Selected rows are preserved in memory across page changes and filtering."
-                    : "Sayfa değiştirilse dahi daha önce seçilen kayıtlar bellekte korunur.")
+                    ? "Selection survives page and filter changes; users never lose their picks."
+                    : "Sayfa ve filtre değişse de seçim bellekte korunur; kullanıcı seçimini kaybetmez.")
             </div>
         </div>
         <div class="p-4 rounded-xl border border-slate-200 bg-white shadow-xs">
@@ -92,8 +92,8 @@
             </div>
             <div class="text-xs text-slate-500 leading-relaxed">
                 @(isEn 
-                    ? "Features native-looking, accessible SVG checkboxes with indeterminate support."
-                    : "Tarayıcı varsayılanı yerine Panoptes CheckBox bileşeni.")
+                    ? "Accessible SVG checkboxes with indeterminate-state support."
+                    : "Erişilebilir SVG onay kutuları; ara durum (belirsiz) desteğiyle.")
             </div>
         </div>
     </div>

@@ -19,7 +19,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-600 mt-2 max-w-3xl leading-relaxed">
-                Gelişmiş ASP.NET Core Grid Aggregates mimarisiyle; grup başlıklarında, grup altlarında (Group Footer) ve genel tablo tabanında (Grid Footer) otomatik <strong>Sum (Toplam)</strong>, <strong>Average (Ortalama)</strong>, <strong>Min</strong>, <strong>Max</strong> ve <strong>Count (Adet)</strong> hesaplamaları.
+                @(isEn ? "Group headers, group footers, and the grid footer calculate Sum, Average, Min, Max, and Count automatically. Regional sales rollups without leaving the table." : "Grup başlıkları, grup altları ve tablo tabanı Sum (Toplam), Average (Ortalama), Min, Max ve Count (Adet) değerlerini otomatik hesaplar. Bölge satış özetleri tablodan çıkmadan hazırlanır.")
             </p>
         </div>
         <div class="flex items-center gap-2">
